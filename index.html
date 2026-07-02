@@ -736,7 +736,7 @@ function renderPlanner(){
   }
   const list=cur().map(rb=>{
     const on=sel.has(rb.n);
-    const trio=rb.r.map(([d,r])=>`${d} ${r[0]}`).join(', ');
+    const trio=rb.r.map(([d,r])=>`<span style="color:${RC[r]}">${d} ${r[0]}</span>`).join(', ');
     return `<label class="planrow${on?' on':''}"><input type="checkbox" data-plan="${rb.n}"${on?' checked':''}><span class="planlv">R${rb.n}</span><span class="plancr">${CR[rb.n-1]}</span><span class="plandr">${trio}</span></label>`;
   }).join("");
   host.innerHTML=`<div class="plansum">${sum}</div><div class="planlist">${list}</div>`;
