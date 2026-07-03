@@ -40,7 +40,7 @@
   .panel{position:absolute;top:46px;left:0;right:0;background:var(--panel2);border:1px solid var(--accent);
     border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.6);z-index:50;overflow:hidden;max-height:62vh;overflow-y:auto}
   .hovercard{position:fixed;z-index:200;width:440px;max-width:92vw;background:var(--panel2);
-    border:1px solid var(--accent);border-radius:10px;box-shadow:0 14px 44px rgba(0,0,0,.7);pointer-events:none;overflow:hidden}
+    border:1px solid var(--accent);border-radius:10px;box-shadow:0 14px 44px rgba(0,0,0,.7);overflow:hidden}
   [data-droid]{cursor:help}
   .pitem{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-bottom:10px}
   .pitem:last-child{border-bottom:none}
@@ -762,21 +762,23 @@ function showHover(name,x,y){
   placeHover(x,y);
 }
 function hideHover(){hover.style.display='none';}
-let hoverTimer=null, hoverName=null, hx=0, hy=0;
-const HOVER_DELAY=500;
+let hoverTimer=null, hideTimer=null, hoverName=null, hx=0, hy=0;
+const HOVER_DELAY=500, HIDE_GRACE=250;   // grace lets the pointer cross the gap onto the card
 function scheduleHover(name,x,y){
   hx=x; hy=y;
-  if(name===hoverName){ if(hover.style.display==='block') placeHover(x,y); return; } // same droid: don't restart
-  clearTimeout(hoverTimer); hoverName=name; hideHover();
+  if(name===hoverName){ clearTimeout(hideTimer); return; }   // same droid: card stays where it appeared
+  clearTimeout(hoverTimer); clearTimeout(hideTimer); hoverName=name; hideHover();
   hoverTimer=setTimeout(()=>{ showHover(hoverName,hx,hy); }, HOVER_DELAY);
 }
-function cancelHover(){ clearTimeout(hoverTimer); hoverTimer=null; hoverName=null; hideHover(); }
+function cancelHover(){ clearTimeout(hoverTimer); clearTimeout(hideTimer); hoverTimer=null; hoverName=null; hideHover(); }
+function refreshHover(){ if(hover.style.display==='block'&&hoverName){ const m=gmap()[String(hoverName).toUpperCase()]; if(m) hover.innerHTML=droidCard(m); } }
 document.addEventListener('mouseover',e=>{const el=e.target.closest('[data-droid]'); if(el) scheduleHover(el.dataset.droid,e.clientX,e.clientY);});
 document.addEventListener('mousemove',e=>{
+  if(e.target.closest('.hovercard')){ clearTimeout(hideTimer); clearTimeout(hoverTimer); return; }  // interacting with the card: keep it
   const el=e.target.closest('[data-droid]');
-  if(!el){ cancelHover(); return; }
-  hx=e.clientX; hy=e.clientY;
-  if(hover.style.display==='block') placeHover(hx,hy);
+  if(!el){ clearTimeout(hoverTimer); clearTimeout(hideTimer); hideTimer=setTimeout(cancelHover,HIDE_GRACE); return; }
+  clearTimeout(hideTimer);
+  hx=e.clientX; hy=e.clientY;   // card is placed once at show time; it no longer follows the cursor
 });
 
 // ===================== RENDER =====================
@@ -834,8 +836,8 @@ function rbCardEl(rb){
       <div class="rb-prog">${reached?'':cnt+'/3'}</div><div class="rb-check">${done?'✓':''}</div>
     </div>
     <div class="reqs">${rb.r.map(([d,r])=>{const oi=ownedIdx(state.cycle,d),ri=RIDX[r],on=oi>=ri;
-      const pill=oi>=0?`<span class="tag ${TIERS[oi]} havepill${oi>=ri?' met':''}">${TIERS[oi]}</span>`:'';
-      return `<div class="req${on?' on':''}" data-own="${state.cycle}|${d}|${r}" data-droid="${d}"><div class="box">${on?'✓':''}</div>${droidImg(d,r,'')}<span class="dname" style="color:${RC[r]}" title="requires ${r}">${d}</span>${pill}</div>`;}).join("")}</div>`;
+      const pill=`<span class="tag ${r} havepill${on?' met':''}">${r}</span>`;   // right pill = REQUIRED tier (never flips on click)
+      return `<div class="req${on?' on':''}" data-own="${state.cycle}|${d}|${r}" data-droid="${d}"><div class="box">${on?'✓':''}</div>${droidImg(d,r,'')}<span class="dname" style="color:${oi>=0?RC[TIERS[oi]]:'var(--txt)'}" title="requires ${r}${oi>=0?' · have '+TIERS[oi]:''}">${d}</span>${pill}</div>`;}).join("")}</div>`;
   return el;
 }
 function renderRebirths(){
@@ -940,7 +942,7 @@ document.addEventListener('click',e=>{
   e.stopPropagation();
   const [op,cy,d,t]=b.dataset.qt.split('|');
   if(op==='+') addAt(+cy,d,t); else subAt(+cy,d,t);
-  save(); renderStats(); renderActiveView();
+  save(); renderStats(); renderActiveView(); refreshHover();
   if(searchEl.value.trim() && !panelEl.classList.contains('hidden')) renderSearch();
 });
 // Planner: tick rebirth levels to include in the combined-needs summary
@@ -972,6 +974,7 @@ document.addEventListener('click',e=>{
   save();
   renderStats();
   renderActiveView();
+  refreshHover();
   if(searchEl.value.trim() && !panelEl.classList.contains('hidden')) renderSearch();
 });
 
