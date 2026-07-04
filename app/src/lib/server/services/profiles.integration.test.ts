@@ -38,4 +38,16 @@ describe('profiles', () => {
 	it('empty name rejected with 422', async () => {
 		await expect(createProfile(db, alice.id, { name: '  ' })).rejects.toMatchObject({ status: 422 });
 	});
+	it('stranger cannot delete (403)', async () => {
+		const p = await createProfile(db, alice.id, { name: 'main' });
+		await expect(deleteProfile(db, bob.id, p.id)).rejects.toMatchObject({
+			status: 403, code: 'not_owner'
+		});
+	});
+	it('empty name rejected on update with 422', async () => {
+		const p = await createProfile(db, alice.id, { name: 'main' });
+		await expect(updateProfile(db, alice.id, p.id, { name: '  ' })).rejects.toMatchObject({
+			status: 422, code: 'invalid_input'
+		});
+	});
 });
