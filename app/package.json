@@ -12,6 +12,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test:unit": "vitest run src/lib/game",
 		"test:int": "vitest run src/lib/server --no-file-parallelism",
+		"test:e2e": "playwright test",
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "node drizzle/migrate.mjs",
 		"db:seed": "node drizzle/seed.mjs"
