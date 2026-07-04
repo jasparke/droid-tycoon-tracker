@@ -29,7 +29,8 @@ export function makeTracker(data: {
 		async setCount(cycle: number, droid: string, tier: Tier, n: number) {
 			const pid = state.activeId;
 			if (pid == null || !editable()) return;
-			const rows = (state.counts[pid] ??= []);
+			if (!state.counts[pid]) state.counts[pid] = [];
+			const rows = state.counts[pid];
 			const i = rows.findIndex((r) => r.cycle === cycle && r.droid === droid && r.tier === tier);
 			const prev = i >= 0 ? rows[i].n : 0;
 			if (n <= 0 && i >= 0) rows.splice(i, 1);
@@ -51,7 +52,8 @@ export function makeTracker(data: {
 			const pid = state.activeId;
 			if (pid == null || !editable()) return;
 			const prev = state.plans[pid]?.[cycle] ?? [];
-			((state.plans[pid] ??= {})[cycle] = rebirths);
+			if (!state.plans[pid]) state.plans[pid] = {};
+			state.plans[pid][cycle] = rebirths;
 			try {
 				await apiFetch(`/api/profiles/${pid}/plans/${cycle}`, {
 					method: 'PUT', body: JSON.stringify({ rebirths })
