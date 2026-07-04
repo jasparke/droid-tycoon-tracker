@@ -1,3 +1,4 @@
+name: dtt-prod
 services:
   app:
     build: ./app
