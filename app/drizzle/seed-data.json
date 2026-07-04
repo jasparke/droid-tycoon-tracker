@@ -1,0 +1,6236 @@
+{
+ "droids": [
+  {
+   "name": "MOUSE",
+   "rarity": "Common",
+   "type": "Worker"
+  },
+  {
+   "name": "PIT",
+   "rarity": "Common",
+   "type": "Worker"
+  },
+  {
+   "name": "GONK",
+   "rarity": "Common",
+   "type": "Worker"
+  },
+  {
+   "name": "CB",
+   "rarity": "Common",
+   "type": "Astromech"
+  },
+  {
+   "name": "R3",
+   "rarity": "Common",
+   "type": "Astromech"
+  },
+  {
+   "name": "R5",
+   "rarity": "Common",
+   "type": "Astromech"
+  },
+  {
+   "name": "R8",
+   "rarity": "Common",
+   "type": "Astromech"
+  },
+  {
+   "name": "IMPERIAL PROBE",
+   "rarity": "Common",
+   "type": "Battle"
+  },
+  {
+   "name": "B1 BATTLE",
+   "rarity": "Common",
+   "type": "Battle"
+  },
+  {
+   "name": "DRK-1 PROBE",
+   "rarity": "Common",
+   "type": "Battle"
+  },
+  {
+   "name": "ID10",
+   "rarity": "Common",
+   "type": "Battle"
+  },
+  {
+   "name": "BDX EXPLORER",
+   "rarity": "Rare",
+   "type": "Worker"
+  },
+  {
+   "name": "ARG",
+   "rarity": "Rare",
+   "type": "Worker"
+  },
+  {
+   "name": "SENATE HOVERCAM",
+   "rarity": "Rare",
+   "type": "Worker"
+  },
+  {
+   "name": "BU-4D",
+   "rarity": "Rare",
+   "type": "Worker"
+  },
+  {
+   "name": "BAL-CORE",
+   "rarity": "Rare",
+   "type": "Worker"
+  },
+  {
+   "name": "ROLL-R",
+   "rarity": "Rare",
+   "type": "Worker"
+  },
+  {
+   "name": "2BB",
+   "rarity": "Rare",
+   "type": "Astromech"
+  },
+  {
+   "name": "A-LT",
+   "rarity": "Rare",
+   "type": "Astromech"
+  },
+  {
+   "name": "R4",
+   "rarity": "Rare",
+   "type": "Astromech"
+  },
+  {
+   "name": "R9",
+   "rarity": "Rare",
+   "type": "Astromech"
+  },
+  {
+   "name": "B1 SECURITY",
+   "rarity": "Rare",
+   "type": "Battle"
+  },
+  {
+   "name": "NAV-EX",
+   "rarity": "Rare",
+   "type": "Battle"
+  },
+  {
+   "name": "VECT-ARM",
+   "rarity": "Rare",
+   "type": "Battle"
+  },
+  {
+   "name": "HOV-R",
+   "rarity": "Rare",
+   "type": "Battle"
+  },
+  {
+   "name": "GROUNDMECH",
+   "rarity": "Epic",
+   "type": "Worker"
+  },
+  {
+   "name": "LO",
+   "rarity": "Epic",
+   "type": "Worker"
+  },
+  {
+   "name": "AMP WALKER",
+   "rarity": "Epic",
+   "type": "Worker"
+  },
+  {
+   "name": "SEN-TRI",
+   "rarity": "Epic",
+   "type": "Worker"
+  },
+  {
+   "name": "OPTI-POD",
+   "rarity": "Epic",
+   "type": "Worker"
+  },
+  {
+   "name": "BB",
+   "rarity": "Epic",
+   "type": "Astromech"
+  },
+  {
+   "name": "R2",
+   "rarity": "Epic",
+   "type": "Astromech"
+  },
+  {
+   "name": "R6",
+   "rarity": "Epic",
+   "type": "Astromech"
+  },
+  {
+   "name": "TRAK-R",
+   "rarity": "Epic",
+   "type": "Astromech"
+  },
+  {
+   "name": "ORB-WALKER",
+   "rarity": "Epic",
+   "type": "Astromech"
+  },
+  {
+   "name": "GUNRUNNER",
+   "rarity": "Epic",
+   "type": "Worker"
+  },
+  {
+   "name": "UTIL-TEC",
+   "rarity": "Epic",
+   "type": "Astromech"
+  },
+  {
+   "name": "B1 HEAVY",
+   "rarity": "Epic",
+   "type": "Battle"
+  },
+  {
+   "name": "B2 SUPER",
+   "rarity": "Epic",
+   "type": "Battle"
+  },
+  {
+   "name": "B2 HEAVY",
+   "rarity": "Epic",
+   "type": "Battle"
+  },
+  {
+   "name": "STRIKE-ORB",
+   "rarity": "Epic",
+   "type": "Battle"
+  },
+  {
+   "name": "HAUL-R",
+   "rarity": "Epic",
+   "type": "Battle"
+  },
+  {
+   "name": "LNG-SHOT",
+   "rarity": "Epic",
+   "type": "Battle"
+  },
+  {
+   "name": "PROTO-ROLLER",
+   "rarity": "Legendary",
+   "type": "Worker"
+  },
+  {
+   "name": "MECHA-DROID",
+   "rarity": "Legendary",
+   "type": "Worker"
+  },
+  {
+   "name": "MONO-WLKR",
+   "rarity": "Legendary",
+   "type": "Worker"
+  },
+  {
+   "name": "BB9",
+   "rarity": "Legendary",
+   "type": "Astromech"
+  },
+  {
+   "name": "R7",
+   "rarity": "Legendary",
+   "type": "Astromech"
+  },
+  {
+   "name": "B2-RP",
+   "rarity": "Legendary",
+   "type": "Battle"
+  },
+  {
+   "name": "CYCLO-GRAV",
+   "rarity": "Legendary",
+   "type": "Battle"
+  },
+  {
+   "name": "OPTI-STRK",
+   "rarity": "Legendary",
+   "type": "Battle"
+  },
+  {
+   "name": "SNOW MOUSE",
+   "rarity": "Mythic",
+   "type": "Worker"
+  },
+  {
+   "name": "RIC",
+   "rarity": "Mythic",
+   "type": "Worker"
+  },
+  {
+   "name": "LOADLIFTER",
+   "rarity": "Mythic",
+   "type": "Worker"
+  },
+  {
+   "name": "LEP",
+   "rarity": "Mythic",
+   "type": "Worker"
+  },
+  {
+   "name": "RIC-1200",
+   "rarity": "Mythic",
+   "type": "Worker"
+  },
+  {
+   "name": "DRFT-R",
+   "rarity": "Mythic",
+   "type": "Astromech"
+  },
+  {
+   "name": "CYCLENS",
+   "rarity": "Mythic",
+   "type": "Astromech"
+  },
+  {
+   "name": "MO-TRAK",
+   "rarity": "Mythic",
+   "type": "Astromech"
+  },
+  {
+   "name": "TRI-TEK",
+   "rarity": "Mythic",
+   "type": "Astromech"
+  },
+  {
+   "name": "IG",
+   "rarity": "Mythic",
+   "type": "Battle"
+  },
+  {
+   "name": "KX",
+   "rarity": "Mythic",
+   "type": "Battle"
+  },
+  {
+   "name": "BB8",
+   "rarity": "Iconic",
+   "type": "Astromech"
+  },
+  {
+   "name": "MISTER BONES",
+   "rarity": "Iconic",
+   "type": "Battle"
+  },
+  {
+   "name": "IG-11 MARSHAL",
+   "rarity": "Iconic",
+   "type": "Battle"
+  },
+  {
+   "name": "DJ-R3X",
+   "rarity": "Iconic",
+   "type": "Worker"
+  },
+  {
+   "name": "CB-23",
+   "rarity": "Iconic",
+   "type": "Astromech"
+  },
+  {
+   "name": "R2-D2",
+   "rarity": "Iconic",
+   "type": "Astromech"
+  }
+ ],
+ "droidTiers": [
+  {
+   "droid": "MOUSE",
+   "tier": "Base",
+   "buy": 950,
+   "income": 2,
+   "sell": 665
+  },
+  {
+   "droid": "MOUSE",
+   "tier": "Gold",
+   "buy": 3800,
+   "income": 4,
+   "sell": 2660
+  },
+  {
+   "droid": "MOUSE",
+   "tier": "Diamond",
+   "buy": 7600,
+   "income": 8,
+   "sell": 5320
+  },
+  {
+   "droid": "MOUSE",
+   "tier": "Rainbow",
+   "buy": 11400,
+   "income": 16,
+   "sell": 7980
+  },
+  {
+   "droid": "MOUSE",
+   "tier": "Beskar",
+   "buy": 15200,
+   "income": 24,
+   "sell": 10640
+  },
+  {
+   "droid": "PIT",
+   "tier": "Base",
+   "buy": 1100,
+   "income": 2,
+   "sell": 770
+  },
+  {
+   "droid": "PIT",
+   "tier": "Gold",
+   "buy": 4400,
+   "income": 4,
+   "sell": 3080
+  },
+  {
+   "droid": "PIT",
+   "tier": "Diamond",
+   "buy": 8800,
+   "income": 8,
+   "sell": 6160
+  },
+  {
+   "droid": "PIT",
+   "tier": "Rainbow",
+   "buy": 13200,
+   "income": 16,
+   "sell": 9240
+  },
+  {
+   "droid": "PIT",
+   "tier": "Beskar",
+   "buy": 17600,
+   "income": 24,
+   "sell": 12320
+  },
+  {
+   "droid": "GONK",
+   "tier": "Base",
+   "buy": 3000,
+   "income": 4,
+   "sell": 2100
+  },
+  {
+   "droid": "GONK",
+   "tier": "Gold",
+   "buy": 12000,
+   "income": 8,
+   "sell": 8400
+  },
+  {
+   "droid": "GONK",
+   "tier": "Diamond",
+   "buy": 24000,
+   "income": 16,
+   "sell": 16800
+  },
+  {
+   "droid": "GONK",
+   "tier": "Rainbow",
+   "buy": 36000,
+   "income": 32,
+   "sell": 25200
+  },
+  {
+   "droid": "GONK",
+   "tier": "Beskar",
+   "buy": 48000,
+   "income": 48,
+   "sell": 33600
+  },
+  {
+   "droid": "CB",
+   "tier": "Base",
+   "buy": 2000,
+   "income": 3,
+   "sell": 1400
+  },
+  {
+   "droid": "CB",
+   "tier": "Gold",
+   "buy": 8000,
+   "income": 6,
+   "sell": 5600
+  },
+  {
+   "droid": "CB",
+   "tier": "Diamond",
+   "buy": 16000,
+   "income": 12,
+   "sell": 11200
+  },
+  {
+   "droid": "CB",
+   "tier": "Rainbow",
+   "buy": 24000,
+   "income": 24,
+   "sell": 16800
+  },
+  {
+   "droid": "CB",
+   "tier": "Beskar",
+   "buy": 32000,
+   "income": 36,
+   "sell": 22400
+  },
+  {
+   "droid": "R3",
+   "tier": "Base",
+   "buy": 2000,
+   "income": 3,
+   "sell": 1400
+  },
+  {
+   "droid": "R3",
+   "tier": "Gold",
+   "buy": 8000,
+   "income": 6,
+   "sell": 5600
+  },
+  {
+   "droid": "R3",
+   "tier": "Diamond",
+   "buy": 16000,
+   "income": 12,
+   "sell": 11200
+  },
+  {
+   "droid": "R3",
+   "tier": "Rainbow",
+   "buy": 24000,
+   "income": 24,
+   "sell": 16800
+  },
+  {
+   "droid": "R3",
+   "tier": "Beskar",
+   "buy": 32000,
+   "income": 36,
+   "sell": 22400
+  },
+  {
+   "droid": "R5",
+   "tier": "Base",
+   "buy": 2000,
+   "income": 3,
+   "sell": 1400
+  },
+  {
+   "droid": "R5",
+   "tier": "Gold",
+   "buy": 8000,
+   "income": 6,
+   "sell": 5600
+  },
+  {
+   "droid": "R5",
+   "tier": "Diamond",
+   "buy": 16000,
+   "income": 12,
+   "sell": 11200
+  },
+  {
+   "droid": "R5",
+   "tier": "Rainbow",
+   "buy": 24000,
+   "income": 24,
+   "sell": 16800
+  },
+  {
+   "droid": "R5",
+   "tier": "Beskar",
+   "buy": 32000,
+   "income": 36,
+   "sell": 22400
+  },
+  {
+   "droid": "R8",
+   "tier": "Base",
+   "buy": 3000,
+   "income": 4,
+   "sell": 2100
+  },
+  {
+   "droid": "R8",
+   "tier": "Gold",
+   "buy": 12000,
+   "income": 8,
+   "sell": 8400
+  },
+  {
+   "droid": "R8",
+   "tier": "Diamond",
+   "buy": 24000,
+   "income": 16,
+   "sell": 16800
+  },
+  {
+   "droid": "R8",
+   "tier": "Rainbow",
+   "buy": 36000,
+   "income": 32,
+   "sell": 25200
+  },
+  {
+   "droid": "R8",
+   "tier": "Beskar",
+   "buy": 48000,
+   "income": 48,
+   "sell": 33600
+  },
+  {
+   "droid": "IMPERIAL PROBE",
+   "tier": "Base",
+   "buy": 5000,
+   "income": 6,
+   "sell": 3500
+  },
+  {
+   "droid": "IMPERIAL PROBE",
+   "tier": "Gold",
+   "buy": 20000,
+   "income": 12,
+   "sell": 14000
+  },
+  {
+   "droid": "IMPERIAL PROBE",
+   "tier": "Diamond",
+   "buy": 40000,
+   "income": 24,
+   "sell": 28000
+  },
+  {
+   "droid": "IMPERIAL PROBE",
+   "tier": "Rainbow",
+   "buy": 60000,
+   "income": 48,
+   "sell": 42000
+  },
+  {
+   "droid": "IMPERIAL PROBE",
+   "tier": "Beskar",
+   "buy": 80000,
+   "income": 72,
+   "sell": 56000
+  },
+  {
+   "droid": "B1 BATTLE",
+   "tier": "Base",
+   "buy": 4000,
+   "income": 5,
+   "sell": 2800
+  },
+  {
+   "droid": "B1 BATTLE",
+   "tier": "Gold",
+   "buy": 16000,
+   "income": 10,
+   "sell": 11200
+  },
+  {
+   "droid": "B1 BATTLE",
+   "tier": "Diamond",
+   "buy": 32000,
+   "income": 20,
+   "sell": 22400
+  },
+  {
+   "droid": "B1 BATTLE",
+   "tier": "Rainbow",
+   "buy": 48000,
+   "income": 40,
+   "sell": 33600
+  },
+  {
+   "droid": "B1 BATTLE",
+   "tier": "Beskar",
+   "buy": 64000,
+   "income": 60,
+   "sell": 44800
+  },
+  {
+   "droid": "DRK-1 PROBE",
+   "tier": "Base",
+   "buy": 3000,
+   "income": 3,
+   "sell": 2100
+  },
+  {
+   "droid": "DRK-1 PROBE",
+   "tier": "Gold",
+   "buy": 12000,
+   "income": 6,
+   "sell": 8400
+  },
+  {
+   "droid": "DRK-1 PROBE",
+   "tier": "Diamond",
+   "buy": 24000,
+   "income": 12,
+   "sell": 16800
+  },
+  {
+   "droid": "DRK-1 PROBE",
+   "tier": "Rainbow",
+   "buy": 36000,
+   "income": 24,
+   "sell": 25200
+  },
+  {
+   "droid": "DRK-1 PROBE",
+   "tier": "Beskar",
+   "buy": 48000,
+   "income": 36,
+   "sell": 33600
+  },
+  {
+   "droid": "ID10",
+   "tier": "Base",
+   "buy": 4000,
+   "income": 4,
+   "sell": 2800
+  },
+  {
+   "droid": "ID10",
+   "tier": "Gold",
+   "buy": 16000,
+   "income": 8,
+   "sell": 11200
+  },
+  {
+   "droid": "ID10",
+   "tier": "Diamond",
+   "buy": 32000,
+   "income": 16,
+   "sell": 22400
+  },
+  {
+   "droid": "ID10",
+   "tier": "Rainbow",
+   "buy": 48000,
+   "income": 32,
+   "sell": 33600
+  },
+  {
+   "droid": "ID10",
+   "tier": "Beskar",
+   "buy": 64000,
+   "income": 48,
+   "sell": 44800
+  },
+  {
+   "droid": "BDX EXPLORER",
+   "tier": "Base",
+   "buy": 25000,
+   "income": 15,
+   "sell": 17500
+  },
+  {
+   "droid": "BDX EXPLORER",
+   "tier": "Gold",
+   "buy": 100000,
+   "income": 30,
+   "sell": 70000
+  },
+  {
+   "droid": "BDX EXPLORER",
+   "tier": "Diamond",
+   "buy": 200000,
+   "income": 60,
+   "sell": 140000
+  },
+  {
+   "droid": "BDX EXPLORER",
+   "tier": "Rainbow",
+   "buy": 300000,
+   "income": 120,
+   "sell": 210000
+  },
+  {
+   "droid": "BDX EXPLORER",
+   "tier": "Beskar",
+   "buy": 400000,
+   "income": 180,
+   "sell": 280000
+  },
+  {
+   "droid": "ARG",
+   "tier": "Base",
+   "buy": 88000,
+   "income": 42,
+   "sell": 61600
+  },
+  {
+   "droid": "ARG",
+   "tier": "Gold",
+   "buy": 352000,
+   "income": 84,
+   "sell": 246400
+  },
+  {
+   "droid": "ARG",
+   "tier": "Diamond",
+   "buy": 704000,
+   "income": 168,
+   "sell": 492800
+  },
+  {
+   "droid": "ARG",
+   "tier": "Rainbow",
+   "buy": 1060000,
+   "income": 336,
+   "sell": 739200
+  },
+  {
+   "droid": "ARG",
+   "tier": "Beskar",
+   "buy": 1410000,
+   "income": 504,
+   "sell": 985600
+  },
+  {
+   "droid": "SENATE HOVERCAM",
+   "tier": "Base",
+   "buy": 100000,
+   "income": 46,
+   "sell": 70000
+  },
+  {
+   "droid": "SENATE HOVERCAM",
+   "tier": "Gold",
+   "buy": 400000,
+   "income": 92,
+   "sell": 280000
+  },
+  {
+   "droid": "SENATE HOVERCAM",
+   "tier": "Diamond",
+   "buy": 800000,
+   "income": 184,
+   "sell": 560000
+  },
+  {
+   "droid": "SENATE HOVERCAM",
+   "tier": "Rainbow",
+   "buy": 1200000,
+   "income": 368,
+   "sell": 840000
+  },
+  {
+   "droid": "SENATE HOVERCAM",
+   "tier": "Beskar",
+   "buy": 1600000,
+   "income": 552,
+   "sell": 1120000
+  },
+  {
+   "droid": "BU-4D",
+   "tier": "Base",
+   "buy": 130000,
+   "income": 58,
+   "sell": 91000
+  },
+  {
+   "droid": "BU-4D",
+   "tier": "Gold",
+   "buy": 520000,
+   "income": 116,
+   "sell": 364000
+  },
+  {
+   "droid": "BU-4D",
+   "tier": "Diamond",
+   "buy": 1040000,
+   "income": 232,
+   "sell": 728000
+  },
+  {
+   "droid": "BU-4D",
+   "tier": "Rainbow",
+   "buy": 1560000,
+   "income": 464,
+   "sell": 1100000
+  },
+  {
+   "droid": "BU-4D",
+   "tier": "Beskar",
+   "buy": 2080000,
+   "income": 696,
+   "sell": 1450000
+  },
+  {
+   "droid": "BAL-CORE",
+   "tier": "Base",
+   "buy": 43000,
+   "income": 23,
+   "sell": 30100
+  },
+  {
+   "droid": "BAL-CORE",
+   "tier": "Gold",
+   "buy": 172000,
+   "income": 46,
+   "sell": 120400
+  },
+  {
+   "droid": "BAL-CORE",
+   "tier": "Diamond",
+   "buy": 344000,
+   "income": 92,
+   "sell": 240800
+  },
+  {
+   "droid": "BAL-CORE",
+   "tier": "Rainbow",
+   "buy": 516000,
+   "income": 184,
+   "sell": 361200
+  },
+  {
+   "droid": "BAL-CORE",
+   "tier": "Beskar",
+   "buy": 688000,
+   "income": 276,
+   "sell": 481600
+  },
+  {
+   "droid": "ROLL-R",
+   "tier": "Base",
+   "buy": 62000,
+   "income": 31,
+   "sell": 43400
+  },
+  {
+   "droid": "ROLL-R",
+   "tier": "Gold",
+   "buy": 248000,
+   "income": 62,
+   "sell": 173600
+  },
+  {
+   "droid": "ROLL-R",
+   "tier": "Diamond",
+   "buy": 496000,
+   "income": 124,
+   "sell": 347200
+  },
+  {
+   "droid": "ROLL-R",
+   "tier": "Rainbow",
+   "buy": 744000,
+   "income": 248,
+   "sell": 520800
+  },
+  {
+   "droid": "ROLL-R",
+   "tier": "Beskar",
+   "buy": 992000,
+   "income": 372,
+   "sell": 694400
+  },
+  {
+   "droid": "2BB",
+   "tier": "Base",
+   "buy": 30000,
+   "income": 17,
+   "sell": 21000
+  },
+  {
+   "droid": "2BB",
+   "tier": "Gold",
+   "buy": 120000,
+   "income": 34,
+   "sell": 84000
+  },
+  {
+   "droid": "2BB",
+   "tier": "Diamond",
+   "buy": 240000,
+   "income": 68,
+   "sell": 168000
+  },
+  {
+   "droid": "2BB",
+   "tier": "Rainbow",
+   "buy": 360000,
+   "income": 136,
+   "sell": 252000
+  },
+  {
+   "droid": "2BB",
+   "tier": "Beskar",
+   "buy": 480000,
+   "income": 204,
+   "sell": 336000
+  },
+  {
+   "droid": "A-LT",
+   "tier": "Base",
+   "buy": 74000,
+   "income": 36,
+   "sell": 51800
+  },
+  {
+   "droid": "A-LT",
+   "tier": "Gold",
+   "buy": 296000,
+   "income": 72,
+   "sell": 207200
+  },
+  {
+   "droid": "A-LT",
+   "tier": "Diamond",
+   "buy": 592000,
+   "income": 144,
+   "sell": 414400
+  },
+  {
+   "droid": "A-LT",
+   "tier": "Rainbow",
+   "buy": 885000,
+   "income": 288,
+   "sell": 621600
+  },
+  {
+   "droid": "A-LT",
+   "tier": "Beskar",
+   "buy": 1180000,
+   "income": 432,
+   "sell": 828800
+  },
+  {
+   "droid": "R4",
+   "tier": "Base",
+   "buy": 110000,
+   "income": 50,
+   "sell": 77000
+  },
+  {
+   "droid": "R4",
+   "tier": "Gold",
+   "buy": 440000,
+   "income": 100,
+   "sell": 308000
+  },
+  {
+   "droid": "R4",
+   "tier": "Diamond",
+   "buy": 880000,
+   "income": 200,
+   "sell": 616000
+  },
+  {
+   "droid": "R4",
+   "tier": "Rainbow",
+   "buy": 1320000,
+   "income": 400,
+   "sell": 922500
+  },
+  {
+   "droid": "R4",
+   "tier": "Beskar",
+   "buy": 1760000,
+   "income": 600,
+   "sell": 1230000
+  },
+  {
+   "droid": "R9",
+   "tier": "Base",
+   "buy": 120000,
+   "income": 54,
+   "sell": 84000
+  },
+  {
+   "droid": "R9",
+   "tier": "Gold",
+   "buy": 480000,
+   "income": 108,
+   "sell": 336000
+  },
+  {
+   "droid": "R9",
+   "tier": "Diamond",
+   "buy": 960000,
+   "income": 216,
+   "sell": 672000
+  },
+  {
+   "droid": "R9",
+   "tier": "Rainbow",
+   "buy": 1440000,
+   "income": 432,
+   "sell": 1000000
+  },
+  {
+   "droid": "R9",
+   "tier": "Beskar",
+   "buy": 1920000,
+   "income": 648,
+   "sell": 1340000
+  },
+  {
+   "droid": "B1 SECURITY",
+   "tier": "Base",
+   "buy": 150000,
+   "income": 66,
+   "sell": 105000
+  },
+  {
+   "droid": "B1 SECURITY",
+   "tier": "Gold",
+   "buy": 600000,
+   "income": 132,
+   "sell": 420000
+  },
+  {
+   "droid": "B1 SECURITY",
+   "tier": "Diamond",
+   "buy": 1200000,
+   "income": 264,
+   "sell": 840000
+  },
+  {
+   "droid": "B1 SECURITY",
+   "tier": "Rainbow",
+   "buy": 1800000,
+   "income": 528,
+   "sell": 1260000
+  },
+  {
+   "droid": "B1 SECURITY",
+   "tier": "Beskar",
+   "buy": 2400000,
+   "income": 792,
+   "sell": 1680000
+  },
+  {
+   "droid": "NAV-EX",
+   "tier": "Base",
+   "buy": 36000,
+   "income": 18,
+   "sell": 25200
+  },
+  {
+   "droid": "NAV-EX",
+   "tier": "Gold",
+   "buy": 144000,
+   "income": 36,
+   "sell": 100800
+  },
+  {
+   "droid": "NAV-EX",
+   "tier": "Diamond",
+   "buy": 288000,
+   "income": 72,
+   "sell": 201600
+  },
+  {
+   "droid": "NAV-EX",
+   "tier": "Rainbow",
+   "buy": 432000,
+   "income": 144,
+   "sell": 302400
+  },
+  {
+   "droid": "NAV-EX",
+   "tier": "Beskar",
+   "buy": 576000,
+   "income": 216,
+   "sell": 403200
+  },
+  {
+   "droid": "VECT-ARM",
+   "tier": "Base",
+   "buy": 52000,
+   "income": 27,
+   "sell": 36400
+  },
+  {
+   "droid": "VECT-ARM",
+   "tier": "Gold",
+   "buy": 208000,
+   "income": 54,
+   "sell": 145600
+  },
+  {
+   "droid": "VECT-ARM",
+   "tier": "Diamond",
+   "buy": 416000,
+   "income": 108,
+   "sell": 291200
+  },
+  {
+   "droid": "VECT-ARM",
+   "tier": "Rainbow",
+   "buy": 624000,
+   "income": 216,
+   "sell": 436800
+  },
+  {
+   "droid": "VECT-ARM",
+   "tier": "Beskar",
+   "buy": 832000,
+   "income": 324,
+   "sell": 582400
+  },
+  {
+   "droid": "HOV-R",
+   "tier": "Base",
+   "buy": 140000,
+   "income": 62,
+   "sell": 98000
+  },
+  {
+   "droid": "HOV-R",
+   "tier": "Gold",
+   "buy": 560000,
+   "income": 124,
+   "sell": 392000
+  },
+  {
+   "droid": "HOV-R",
+   "tier": "Diamond",
+   "buy": 1120000,
+   "income": 248,
+   "sell": 784000
+  },
+  {
+   "droid": "HOV-R",
+   "tier": "Rainbow",
+   "buy": 1680000,
+   "income": 496,
+   "sell": 1180000
+  },
+  {
+   "droid": "HOV-R",
+   "tier": "Beskar",
+   "buy": 2240000,
+   "income": 774,
+   "sell": 1560000
+  },
+  {
+   "droid": "GROUNDMECH",
+   "tier": "Base",
+   "buy": 900000,
+   "income": 120,
+   "sell": 630000
+  },
+  {
+   "droid": "GROUNDMECH",
+   "tier": "Gold",
+   "buy": 3600000,
+   "income": 240,
+   "sell": 2520000
+  },
+  {
+   "droid": "GROUNDMECH",
+   "tier": "Diamond",
+   "buy": 7200000,
+   "income": 480,
+   "sell": 5040000
+  },
+  {
+   "droid": "GROUNDMECH",
+   "tier": "Rainbow",
+   "buy": 10800000,
+   "income": 960,
+   "sell": 7560000
+  },
+  {
+   "droid": "GROUNDMECH",
+   "tier": "Beskar",
+   "buy": 112500000,
+   "income": 4080,
+   "sell": 78750000
+  },
+  {
+   "droid": "LO",
+   "tier": "Base",
+   "buy": 2100000,
+   "income": 240,
+   "sell": 1470000
+  },
+  {
+   "droid": "LO",
+   "tier": "Gold",
+   "buy": 8400000,
+   "income": 480,
+   "sell": 5880000
+  },
+  {
+   "droid": "LO",
+   "tier": "Diamond",
+   "buy": 16800000,
+   "income": 960,
+   "sell": 11760000
+  },
+  {
+   "droid": "LO",
+   "tier": "Rainbow",
+   "buy": 25200000,
+   "income": 1920,
+   "sell": 17640000
+  },
+  {
+   "droid": "LO",
+   "tier": "Beskar",
+   "buy": 262500000,
+   "income": 8160,
+   "sell": 183750000
+  },
+  {
+   "droid": "AMP WALKER",
+   "tier": "Base",
+   "buy": 5400000,
+   "income": 570,
+   "sell": 3780000
+  },
+  {
+   "droid": "AMP WALKER",
+   "tier": "Gold",
+   "buy": 21600000,
+   "income": 1140,
+   "sell": 15120000
+  },
+  {
+   "droid": "AMP WALKER",
+   "tier": "Diamond",
+   "buy": 43200000,
+   "income": 2280,
+   "sell": 30240000
+  },
+  {
+   "droid": "AMP WALKER",
+   "tier": "Rainbow",
+   "buy": 64800000,
+   "income": 4560,
+   "sell": 45360000
+  },
+  {
+   "droid": "AMP WALKER",
+   "tier": "Beskar",
+   "buy": 675000000,
+   "income": 19380,
+   "sell": 472500000
+  },
+  {
+   "droid": "SEN-TRI",
+   "tier": "Base",
+   "buy": 4800000,
+   "income": 510,
+   "sell": 3360000
+  },
+  {
+   "droid": "SEN-TRI",
+   "tier": "Gold",
+   "buy": 19200000,
+   "income": 1020,
+   "sell": 13440000
+  },
+  {
+   "droid": "SEN-TRI",
+   "tier": "Diamond",
+   "buy": 38400000,
+   "income": 2040,
+   "sell": 26880000
+  },
+  {
+   "droid": "SEN-TRI",
+   "tier": "Rainbow",
+   "buy": 57600000,
+   "income": 4080,
+   "sell": 40320000
+  },
+  {
+   "droid": "SEN-TRI",
+   "tier": "Beskar",
+   "buy": 600000000,
+   "income": 17340,
+   "sell": 420000000
+  },
+  {
+   "droid": "OPTI-POD",
+   "tier": "Base",
+   "buy": 3600000,
+   "income": 390,
+   "sell": 2520000
+  },
+  {
+   "droid": "OPTI-POD",
+   "tier": "Gold",
+   "buy": 14400000,
+   "income": 780,
+   "sell": 10080000
+  },
+  {
+   "droid": "OPTI-POD",
+   "tier": "Diamond",
+   "buy": 28800000,
+   "income": 1560,
+   "sell": 20160000
+  },
+  {
+   "droid": "OPTI-POD",
+   "tier": "Rainbow",
+   "buy": 43200000,
+   "income": 3120,
+   "sell": 30240000
+  },
+  {
+   "droid": "OPTI-POD",
+   "tier": "Beskar",
+   "buy": 450000000,
+   "income": 13260,
+   "sell": 315000000
+  },
+  {
+   "droid": "BB",
+   "tier": "Base",
+   "buy": 1200000,
+   "income": 150,
+   "sell": 840000
+  },
+  {
+   "droid": "BB",
+   "tier": "Gold",
+   "buy": 4800000,
+   "income": 300,
+   "sell": 3360000
+  },
+  {
+   "droid": "BB",
+   "tier": "Diamond",
+   "buy": 9600000,
+   "income": 600,
+   "sell": 6720000
+  },
+  {
+   "droid": "BB",
+   "tier": "Rainbow",
+   "buy": 14400000,
+   "income": 1200,
+   "sell": 10080000
+  },
+  {
+   "droid": "BB",
+   "tier": "Beskar",
+   "buy": 150000000,
+   "income": 5100,
+   "sell": 105000000
+  },
+  {
+   "droid": "R2",
+   "tier": "Base",
+   "buy": 3300000,
+   "income": 360,
+   "sell": 2310000
+  },
+  {
+   "droid": "R2",
+   "tier": "Gold",
+   "buy": 13200000,
+   "income": 720,
+   "sell": 9240000
+  },
+  {
+   "droid": "R2",
+   "tier": "Diamond",
+   "buy": 26400000,
+   "income": 1440,
+   "sell": 18480000
+  },
+  {
+   "droid": "R2",
+   "tier": "Rainbow",
+   "buy": 39600000,
+   "income": 2880,
+   "sell": 27720000
+  },
+  {
+   "droid": "R2",
+   "tier": "Beskar",
+   "buy": 412500000,
+   "income": 12240,
+   "sell": 288750000
+  },
+  {
+   "droid": "R6",
+   "tier": "Base",
+   "buy": 2700000,
+   "income": 300,
+   "sell": 1890000
+  },
+  {
+   "droid": "R6",
+   "tier": "Gold",
+   "buy": 10800000,
+   "income": 600,
+   "sell": 7560000
+  },
+  {
+   "droid": "R6",
+   "tier": "Diamond",
+   "buy": 21600000,
+   "income": 1200,
+   "sell": 15120000
+  },
+  {
+   "droid": "R6",
+   "tier": "Rainbow",
+   "buy": 32400000,
+   "income": 2400,
+   "sell": 22680000
+  },
+  {
+   "droid": "R6",
+   "tier": "Beskar",
+   "buy": 337500000,
+   "income": 10200,
+   "sell": 236250000
+  },
+  {
+   "droid": "TRAK-R",
+   "tier": "Base",
+   "buy": 3000000,
+   "income": 330,
+   "sell": 2100000
+  },
+  {
+   "droid": "TRAK-R",
+   "tier": "Gold",
+   "buy": 12000000,
+   "income": 660,
+   "sell": 8400000
+  },
+  {
+   "droid": "TRAK-R",
+   "tier": "Diamond",
+   "buy": 24000000,
+   "income": 1320,
+   "sell": 16800000
+  },
+  {
+   "droid": "TRAK-R",
+   "tier": "Rainbow",
+   "buy": 36000000,
+   "income": 2640,
+   "sell": 25200000
+  },
+  {
+   "droid": "TRAK-R",
+   "tier": "Beskar",
+   "buy": 375000000,
+   "income": 11220,
+   "sell": 262500000
+  },
+  {
+   "droid": "ORB-WALKER",
+   "tier": "Base",
+   "buy": 1500000,
+   "income": 180,
+   "sell": 1050000
+  },
+  {
+   "droid": "ORB-WALKER",
+   "tier": "Gold",
+   "buy": 6000000,
+   "income": 360,
+   "sell": 4200000
+  },
+  {
+   "droid": "ORB-WALKER",
+   "tier": "Diamond",
+   "buy": 12000000,
+   "income": 720,
+   "sell": 8400000
+  },
+  {
+   "droid": "ORB-WALKER",
+   "tier": "Rainbow",
+   "buy": 18000000,
+   "income": 1440,
+   "sell": 12600000
+  },
+  {
+   "droid": "ORB-WALKER",
+   "tier": "Beskar",
+   "buy": 187500000,
+   "income": 6120,
+   "sell": 131250000
+  },
+  {
+   "droid": "GUNRUNNER",
+   "tier": "Base",
+   "buy": 6300000,
+   "income": 660,
+   "sell": 4410000
+  },
+  {
+   "droid": "GUNRUNNER",
+   "tier": "Gold",
+   "buy": 25200000,
+   "income": 1320,
+   "sell": 17640000
+  },
+  {
+   "droid": "GUNRUNNER",
+   "tier": "Diamond",
+   "buy": 50400000,
+   "income": 2640,
+   "sell": 35280000
+  },
+  {
+   "droid": "GUNRUNNER",
+   "tier": "Rainbow",
+   "buy": 75600000,
+   "income": 5280,
+   "sell": 52920000
+  },
+  {
+   "droid": "GUNRUNNER",
+   "tier": "Beskar",
+   "buy": 787500000,
+   "income": 22440,
+   "sell": 551250000
+  },
+  {
+   "droid": "UTIL-TEC",
+   "tier": "Base",
+   "buy": 1800000,
+   "income": 210,
+   "sell": 1260000
+  },
+  {
+   "droid": "UTIL-TEC",
+   "tier": "Gold",
+   "buy": 7200000,
+   "income": 420,
+   "sell": 5040000
+  },
+  {
+   "droid": "UTIL-TEC",
+   "tier": "Diamond",
+   "buy": 14400000,
+   "income": 840,
+   "sell": 10080000
+  },
+  {
+   "droid": "UTIL-TEC",
+   "tier": "Rainbow",
+   "buy": 21600000,
+   "income": 1680,
+   "sell": 15120000
+  },
+  {
+   "droid": "UTIL-TEC",
+   "tier": "Beskar",
+   "buy": 225000000,
+   "income": 7140,
+   "sell": 157500000
+  },
+  {
+   "droid": "B1 HEAVY",
+   "tier": "Base",
+   "buy": 6000000,
+   "income": 630,
+   "sell": 4200000
+  },
+  {
+   "droid": "B1 HEAVY",
+   "tier": "Gold",
+   "buy": 24000000,
+   "income": 1260,
+   "sell": 16800000
+  },
+  {
+   "droid": "B1 HEAVY",
+   "tier": "Diamond",
+   "buy": 48000000,
+   "income": 2520,
+   "sell": 33600000
+  },
+  {
+   "droid": "B1 HEAVY",
+   "tier": "Rainbow",
+   "buy": 72000000,
+   "income": 4800,
+   "sell": 50400000
+  },
+  {
+   "droid": "B1 HEAVY",
+   "tier": "Beskar",
+   "buy": 750000000,
+   "income": 20400,
+   "sell": 525000000
+  },
+  {
+   "droid": "B2 SUPER",
+   "tier": "Base",
+   "buy": 3900000,
+   "income": 420,
+   "sell": 2730000
+  },
+  {
+   "droid": "B2 SUPER",
+   "tier": "Gold",
+   "buy": 15600000,
+   "income": 840,
+   "sell": 10920000
+  },
+  {
+   "droid": "B2 SUPER",
+   "tier": "Diamond",
+   "buy": 31200000,
+   "income": 1680,
+   "sell": 21840000
+  },
+  {
+   "droid": "B2 SUPER",
+   "tier": "Rainbow",
+   "buy": 46800000,
+   "income": 3360,
+   "sell": 32760000
+  },
+  {
+   "droid": "B2 SUPER",
+   "tier": "Beskar",
+   "buy": 487500000,
+   "income": 14280,
+   "sell": 341250000
+  },
+  {
+   "droid": "B2 HEAVY",
+   "tier": "Base",
+   "buy": 4500000,
+   "income": 480,
+   "sell": 3150000
+  },
+  {
+   "droid": "B2 HEAVY",
+   "tier": "Gold",
+   "buy": 18000000,
+   "income": 960,
+   "sell": 12600000
+  },
+  {
+   "droid": "B2 HEAVY",
+   "tier": "Diamond",
+   "buy": 36000000,
+   "income": 1920,
+   "sell": 25200000
+  },
+  {
+   "droid": "B2 HEAVY",
+   "tier": "Rainbow",
+   "buy": 54000000,
+   "income": 3840,
+   "sell": 37800000
+  },
+  {
+   "droid": "B2 HEAVY",
+   "tier": "Beskar",
+   "buy": 562500000,
+   "income": 16320,
+   "sell": 393750000
+  },
+  {
+   "droid": "STRIKE-ORB",
+   "tier": "Base",
+   "buy": 5100000,
+   "income": 540,
+   "sell": 3570000
+  },
+  {
+   "droid": "STRIKE-ORB",
+   "tier": "Gold",
+   "buy": 20400000,
+   "income": 1080,
+   "sell": 14280000
+  },
+  {
+   "droid": "STRIKE-ORB",
+   "tier": "Diamond",
+   "buy": 40800000,
+   "income": 2160,
+   "sell": 28560000
+  },
+  {
+   "droid": "STRIKE-ORB",
+   "tier": "Rainbow",
+   "buy": 61200000,
+   "income": 4320,
+   "sell": 42840000
+  },
+  {
+   "droid": "STRIKE-ORB",
+   "tier": "Beskar",
+   "buy": 637500000,
+   "income": 18360,
+   "sell": 446250000
+  },
+  {
+   "droid": "HAUL-R",
+   "tier": "Base",
+   "buy": 2400000,
+   "income": 270,
+   "sell": 1680000
+  },
+  {
+   "droid": "HAUL-R",
+   "tier": "Gold",
+   "buy": 9600000,
+   "income": 540,
+   "sell": 6720000
+  },
+  {
+   "droid": "HAUL-R",
+   "tier": "Diamond",
+   "buy": 19200000,
+   "income": 1080,
+   "sell": 13440000
+  },
+  {
+   "droid": "HAUL-R",
+   "tier": "Rainbow",
+   "buy": 28800000,
+   "income": 2160,
+   "sell": 20160000
+  },
+  {
+   "droid": "HAUL-R",
+   "tier": "Beskar",
+   "buy": 300000000,
+   "income": 9180,
+   "sell": 210000000
+  },
+  {
+   "droid": "LNG-SHOT",
+   "tier": "Base",
+   "buy": 4200000,
+   "income": 450,
+   "sell": 2940000
+  },
+  {
+   "droid": "LNG-SHOT",
+   "tier": "Gold",
+   "buy": 16800000,
+   "income": 900,
+   "sell": 11760000
+  },
+  {
+   "droid": "LNG-SHOT",
+   "tier": "Diamond",
+   "buy": 33600000,
+   "income": 1800,
+   "sell": 23520000
+  },
+  {
+   "droid": "LNG-SHOT",
+   "tier": "Rainbow",
+   "buy": 50400000,
+   "income": 3600,
+   "sell": 35280000
+  },
+  {
+   "droid": "LNG-SHOT",
+   "tier": "Beskar",
+   "buy": 525000000,
+   "income": 15300,
+   "sell": 367500000
+  },
+  {
+   "droid": "PROTO-ROLLER",
+   "tier": "Base",
+   "buy": 22000000,
+   "income": 972,
+   "sell": 15400000
+  },
+  {
+   "droid": "PROTO-ROLLER",
+   "tier": "Gold",
+   "buy": 88000000,
+   "income": 1940,
+   "sell": 61600000
+  },
+  {
+   "droid": "PROTO-ROLLER",
+   "tier": "Diamond",
+   "buy": 176000000,
+   "income": 3890,
+   "sell": 123200000
+  },
+  {
+   "droid": "PROTO-ROLLER",
+   "tier": "Rainbow",
+   "buy": 264000000,
+   "income": 7780,
+   "sell": 184800000
+  },
+  {
+   "droid": "PROTO-ROLLER",
+   "tier": "Beskar",
+   "buy": 8800000000,
+   "income": 23330,
+   "sell": 6160000000
+  },
+  {
+   "droid": "MECHA-DROID",
+   "tier": "Base",
+   "buy": 29000000,
+   "income": 1240,
+   "sell": 20300000
+  },
+  {
+   "droid": "MECHA-DROID",
+   "tier": "Gold",
+   "buy": 116000000,
+   "income": 2490,
+   "sell": 81200000
+  },
+  {
+   "droid": "MECHA-DROID",
+   "tier": "Diamond",
+   "buy": 232000000,
+   "income": 4970,
+   "sell": 162400000
+  },
+  {
+   "droid": "MECHA-DROID",
+   "tier": "Rainbow",
+   "buy": 348000000,
+   "income": 9950,
+   "sell": 243600000
+  },
+  {
+   "droid": "MECHA-DROID",
+   "tier": "Beskar",
+   "buy": 11600000000,
+   "income": 29860,
+   "sell": 8120000000
+  },
+  {
+   "droid": "MONO-WLKR",
+   "tier": "Base",
+   "buy": 37000000,
+   "income": 1500,
+   "sell": 25900000
+  },
+  {
+   "droid": "MONO-WLKR",
+   "tier": "Gold",
+   "buy": 148000000,
+   "income": 3000,
+   "sell": 103600000
+  },
+  {
+   "droid": "MONO-WLKR",
+   "tier": "Diamond",
+   "buy": 296000000,
+   "income": 6000,
+   "sell": 207200000
+  },
+  {
+   "droid": "MONO-WLKR",
+   "tier": "Rainbow",
+   "buy": 444000000,
+   "income": 12000,
+   "sell": 310800000
+  },
+  {
+   "droid": "MONO-WLKR",
+   "tier": "Beskar",
+   "buy": 14800000000,
+   "income": 36000,
+   "sell": 10360000000
+  },
+  {
+   "droid": "BB9",
+   "tier": "Base",
+   "buy": 28000000,
+   "income": 1300,
+   "sell": 19600000
+  },
+  {
+   "droid": "BB9",
+   "tier": "Gold",
+   "buy": 112000000,
+   "income": 2600,
+   "sell": 78400000
+  },
+  {
+   "droid": "BB9",
+   "tier": "Diamond",
+   "buy": 224000000,
+   "income": 5200,
+   "sell": 156800000
+  },
+  {
+   "droid": "BB9",
+   "tier": "Rainbow",
+   "buy": 336000000,
+   "income": 10400,
+   "sell": 235200000
+  },
+  {
+   "droid": "BB9",
+   "tier": "Beskar",
+   "buy": 11200000000,
+   "income": 31200,
+   "sell": 7840000000
+  },
+  {
+   "droid": "R7",
+   "tier": "Base",
+   "buy": 37000000,
+   "income": 1500,
+   "sell": 25900000
+  },
+  {
+   "droid": "R7",
+   "tier": "Gold",
+   "buy": 148000000,
+   "income": 3000,
+   "sell": 103600000
+  },
+  {
+   "droid": "R7",
+   "tier": "Diamond",
+   "buy": 296000000,
+   "income": 6000,
+   "sell": 207200000
+  },
+  {
+   "droid": "R7",
+   "tier": "Rainbow",
+   "buy": 444000000,
+   "income": 12000,
+   "sell": 310800000
+  },
+  {
+   "droid": "R7",
+   "tier": "Beskar",
+   "buy": 14800000000,
+   "income": 36000,
+   "sell": 10360000000
+  },
+  {
+   "droid": "B2-RP",
+   "tier": "Base",
+   "buy": 31000000,
+   "income": 1300,
+   "sell": 21700000
+  },
+  {
+   "droid": "B2-RP",
+   "tier": "Gold",
+   "buy": 124000000,
+   "income": 2600,
+   "sell": 86800000
+  },
+  {
+   "droid": "B2-RP",
+   "tier": "Diamond",
+   "buy": 248000000,
+   "income": 5210,
+   "sell": 173600000
+  },
+  {
+   "droid": "B2-RP",
+   "tier": "Rainbow",
+   "buy": 372000000,
+   "income": 10430,
+   "sell": 260400000
+  },
+  {
+   "droid": "B2-RP",
+   "tier": "Beskar",
+   "buy": 12400000000,
+   "income": 31300,
+   "sell": 8680000000
+  },
+  {
+   "droid": "CYCLO-GRAV",
+   "tier": "Base",
+   "buy": 30000000,
+   "income": 1260,
+   "sell": 21000000
+  },
+  {
+   "droid": "CYCLO-GRAV",
+   "tier": "Gold",
+   "buy": 120000000,
+   "income": 2520,
+   "sell": 84000000
+  },
+  {
+   "droid": "CYCLO-GRAV",
+   "tier": "Diamond",
+   "buy": 240000000,
+   "income": 5040,
+   "sell": 168000000
+  },
+  {
+   "droid": "CYCLO-GRAV",
+   "tier": "Rainbow",
+   "buy": 360000000,
+   "income": 10080,
+   "sell": 252000000
+  },
+  {
+   "droid": "CYCLO-GRAV",
+   "tier": "Beskar",
+   "buy": 12000000000,
+   "income": 30240,
+   "sell": 8400000000
+  },
+  {
+   "droid": "OPTI-STRK",
+   "tier": "Base",
+   "buy": 37000000,
+   "income": 1500,
+   "sell": 25900000
+  },
+  {
+   "droid": "OPTI-STRK",
+   "tier": "Gold",
+   "buy": 148000000,
+   "income": 3000,
+   "sell": 103600000
+  },
+  {
+   "droid": "OPTI-STRK",
+   "tier": "Diamond",
+   "buy": 296000000,
+   "income": 6000,
+   "sell": 207200000
+  },
+  {
+   "droid": "OPTI-STRK",
+   "tier": "Rainbow",
+   "buy": 444000000,
+   "income": 12000,
+   "sell": 310800000
+  },
+  {
+   "droid": "OPTI-STRK",
+   "tier": "Beskar",
+   "buy": 14800000000,
+   "income": 36000,
+   "sell": 10360000000
+  },
+  {
+   "droid": "SNOW MOUSE",
+   "tier": "Base",
+   "buy": 180000000,
+   "income": 4400,
+   "sell": 126000000
+  },
+  {
+   "droid": "SNOW MOUSE",
+   "tier": "Gold",
+   "buy": 720000000,
+   "income": 8800,
+   "sell": 504000000
+  },
+  {
+   "droid": "SNOW MOUSE",
+   "tier": "Diamond",
+   "buy": 1420000000,
+   "income": 17600,
+   "sell": 1000000000
+  },
+  {
+   "droid": "SNOW MOUSE",
+   "tier": "Rainbow",
+   "buy": 4320000000,
+   "income": 35200,
+   "sell": 3020000000
+  },
+  {
+   "droid": "SNOW MOUSE",
+   "tier": "Beskar",
+   "buy": 144000000000,
+   "income": 70400,
+   "sell": 100800000000
+  },
+  {
+   "droid": "RIC",
+   "tier": "Base",
+   "buy": 204000000,
+   "income": 5100,
+   "sell": 142800000
+  },
+  {
+   "droid": "RIC",
+   "tier": "Gold",
+   "buy": 912000000,
+   "income": 11600,
+   "sell": 638400000
+  },
+  {
+   "droid": "RIC",
+   "tier": "Diamond",
+   "buy": 1630000000,
+   "income": 20400,
+   "sell": 1140000000
+  },
+  {
+   "droid": "RIC",
+   "tier": "Rainbow",
+   "buy": 4900000000,
+   "income": 40800,
+   "sell": 3430000000
+  },
+  {
+   "droid": "RIC",
+   "tier": "Beskar",
+   "buy": 163200000000,
+   "income": 81600,
+   "sell": 114240000000
+  },
+  {
+   "droid": "LOADLIFTER",
+   "tier": "Base",
+   "buy": 300000000,
+   "income": 7200,
+   "sell": 210000000
+  },
+  {
+   "droid": "LOADLIFTER",
+   "tier": "Gold",
+   "buy": 1200000000,
+   "income": 14400,
+   "sell": 840000000
+  },
+  {
+   "droid": "LOADLIFTER",
+   "tier": "Diamond",
+   "buy": 2400000000,
+   "income": 28800,
+   "sell": 1680000000
+  },
+  {
+   "droid": "LOADLIFTER",
+   "tier": "Rainbow",
+   "buy": 7200000000,
+   "income": 57600,
+   "sell": 5040000000
+  },
+  {
+   "droid": "LOADLIFTER",
+   "tier": "Beskar",
+   "buy": 240000000000,
+   "income": 115200,
+   "sell": 168000000000
+  },
+  {
+   "droid": "LEP",
+   "tier": "Base",
+   "buy": 252000000,
+   "income": 6500,
+   "sell": 176400000
+  },
+  {
+   "droid": "LEP",
+   "tier": "Gold",
+   "buy": 1010000000,
+   "income": 13000,
+   "sell": 705600000
+  },
+  {
+   "droid": "LEP",
+   "tier": "Diamond",
+   "buy": 2020000000,
+   "income": 26000,
+   "sell": 1410000000
+  },
+  {
+   "droid": "LEP",
+   "tier": "Rainbow",
+   "buy": 6050000000,
+   "income": 52000,
+   "sell": 4230000000
+  },
+  {
+   "droid": "LEP",
+   "tier": "Beskar",
+   "buy": 201600000000,
+   "income": 104000,
+   "sell": 141120000000
+  },
+  {
+   "droid": "RIC-1200",
+   "tier": "Base",
+   "buy": 228000000,
+   "income": 5800,
+   "sell": 159600000
+  },
+  {
+   "droid": "RIC-1200",
+   "tier": "Gold",
+   "buy": 912000000,
+   "income": 11600,
+   "sell": 638400000
+  },
+  {
+   "droid": "RIC-1200",
+   "tier": "Diamond",
+   "buy": 1810000000,
+   "income": 23200,
+   "sell": 1270000000
+  },
+  {
+   "droid": "RIC-1200",
+   "tier": "Rainbow",
+   "buy": 5470000000,
+   "income": 46400,
+   "sell": 3820000000
+  },
+  {
+   "droid": "RIC-1200",
+   "tier": "Beskar",
+   "buy": 182400000000,
+   "income": 92800,
+   "sell": 127680000000
+  },
+  {
+   "droid": "DRFT-R",
+   "tier": "Base",
+   "buy": 228000000,
+   "income": 5800,
+   "sell": 159600000
+  },
+  {
+   "droid": "DRFT-R",
+   "tier": "Gold",
+   "buy": 912000000,
+   "income": 11600,
+   "sell": 638400000
+  },
+  {
+   "droid": "DRFT-R",
+   "tier": "Diamond",
+   "buy": 1810000000,
+   "income": 23200,
+   "sell": 1270000000
+  },
+  {
+   "droid": "DRFT-R",
+   "tier": "Rainbow",
+   "buy": 5470000000,
+   "income": 46400,
+   "sell": 3820000000
+  },
+  {
+   "droid": "DRFT-R",
+   "tier": "Beskar",
+   "buy": 182400000000,
+   "income": 92800,
+   "sell": 127680000000
+  },
+  {
+   "droid": "CYCLENS",
+   "tier": "Base",
+   "buy": 180000000,
+   "income": 4400,
+   "sell": 126000000
+  },
+  {
+   "droid": "CYCLENS",
+   "tier": "Gold",
+   "buy": 720000000,
+   "income": 8800,
+   "sell": 504000000
+  },
+  {
+   "droid": "CYCLENS",
+   "tier": "Diamond",
+   "buy": 1420000000,
+   "income": 17600,
+   "sell": 1000000000
+  },
+  {
+   "droid": "CYCLENS",
+   "tier": "Rainbow",
+   "buy": 4320000000,
+   "income": 35200,
+   "sell": 3020000000
+  },
+  {
+   "droid": "CYCLENS",
+   "tier": "Beskar",
+   "buy": 144000000000,
+   "income": 70400,
+   "sell": 100800000000
+  },
+  {
+   "droid": "MO-TRAK",
+   "tier": "Base",
+   "buy": 300000000,
+   "income": 7200,
+   "sell": 210000000
+  },
+  {
+   "droid": "MO-TRAK",
+   "tier": "Gold",
+   "buy": 1200000000,
+   "income": 14400,
+   "sell": 840000000
+  },
+  {
+   "droid": "MO-TRAK",
+   "tier": "Diamond",
+   "buy": 2400000000,
+   "income": 28800,
+   "sell": 1680000000
+  },
+  {
+   "droid": "MO-TRAK",
+   "tier": "Rainbow",
+   "buy": 7200000000,
+   "income": 57600,
+   "sell": 5040000000
+  },
+  {
+   "droid": "MO-TRAK",
+   "tier": "Beskar",
+   "buy": 240000000000,
+   "income": 115200,
+   "sell": 168000000000
+  },
+  {
+   "droid": "TRI-TEK",
+   "tier": "Base",
+   "buy": 252000000,
+   "income": 6500,
+   "sell": 176400000
+  },
+  {
+   "droid": "TRI-TEK",
+   "tier": "Gold",
+   "buy": 1010000000,
+   "income": 13000,
+   "sell": 705600000
+  },
+  {
+   "droid": "TRI-TEK",
+   "tier": "Diamond",
+   "buy": 2020000000,
+   "income": 26000,
+   "sell": 1410000000
+  },
+  {
+   "droid": "TRI-TEK",
+   "tier": "Rainbow",
+   "buy": 6050000000,
+   "income": 52000,
+   "sell": 4230000000
+  },
+  {
+   "droid": "TRI-TEK",
+   "tier": "Beskar",
+   "buy": 201600000000,
+   "income": 104000,
+   "sell": 141120000000
+  },
+  {
+   "droid": "IG",
+   "tier": "Base",
+   "buy": 342000000,
+   "income": 6700,
+   "sell": 239400000
+  },
+  {
+   "droid": "IG",
+   "tier": "Gold",
+   "buy": 1370000000,
+   "income": 17400,
+   "sell": 959000000
+  },
+  {
+   "droid": "IG",
+   "tier": "Diamond",
+   "buy": 2740000000,
+   "income": 34800,
+   "sell": 1910000000
+  },
+  {
+   "droid": "IG",
+   "tier": "Rainbow",
+   "buy": 5470000000,
+   "income": 46400,
+   "sell": 3820000000
+  },
+  {
+   "droid": "IG",
+   "tier": "Beskar",
+   "buy": 273600000000,
+   "income": 139000,
+   "sell": 191520000000
+  },
+  {
+   "droid": "KX",
+   "tier": "Base",
+   "buy": 300000000,
+   "income": 7200,
+   "sell": 210000000
+  },
+  {
+   "droid": "KX",
+   "tier": "Gold",
+   "buy": 1200000000,
+   "income": 14400,
+   "sell": 840000000
+  },
+  {
+   "droid": "KX",
+   "tier": "Diamond",
+   "buy": 2400000000,
+   "income": 28800,
+   "sell": 1680000000
+  },
+  {
+   "droid": "KX",
+   "tier": "Rainbow",
+   "buy": 7200000000,
+   "income": 57600,
+   "sell": 5040000000
+  },
+  {
+   "droid": "KX",
+   "tier": "Beskar",
+   "buy": 240000000000,
+   "income": 115200,
+   "sell": 168000000000
+  },
+  {
+   "droid": "BB8",
+   "tier": "Base",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "BB8",
+   "tier": "Gold",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "BB8",
+   "tier": "Diamond",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "BB8",
+   "tier": "Rainbow",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "BB8",
+   "tier": "Beskar",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "MISTER BONES",
+   "tier": "Base",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "MISTER BONES",
+   "tier": "Gold",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "MISTER BONES",
+   "tier": "Diamond",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "MISTER BONES",
+   "tier": "Rainbow",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "MISTER BONES",
+   "tier": "Beskar",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "IG-11 MARSHAL",
+   "tier": "Base",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "IG-11 MARSHAL",
+   "tier": "Gold",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "IG-11 MARSHAL",
+   "tier": "Diamond",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "IG-11 MARSHAL",
+   "tier": "Rainbow",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "IG-11 MARSHAL",
+   "tier": "Beskar",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "DJ-R3X",
+   "tier": "Base",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "DJ-R3X",
+   "tier": "Gold",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "DJ-R3X",
+   "tier": "Diamond",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "DJ-R3X",
+   "tier": "Rainbow",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "DJ-R3X",
+   "tier": "Beskar",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "CB-23",
+   "tier": "Base",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "CB-23",
+   "tier": "Gold",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "CB-23",
+   "tier": "Diamond",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "CB-23",
+   "tier": "Rainbow",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "CB-23",
+   "tier": "Beskar",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "R2-D2",
+   "tier": "Base",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "R2-D2",
+   "tier": "Gold",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "R2-D2",
+   "tier": "Diamond",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "R2-D2",
+   "tier": "Rainbow",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "R2-D2",
+   "tier": "Beskar",
+   "buy": null,
+   "income": null,
+   "sell": null
+  }
+ ],
+ "rebirthReqs": [
+  {
+   "cycle": 1,
+   "rebirth": 1,
+   "credits": "10K",
+   "unlock": "Worker Slot",
+   "droid": "CB",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 1,
+   "credits": "",
+   "unlock": null,
+   "droid": "PIT",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 1,
+   "credits": "",
+   "unlock": null,
+   "droid": "DRK-1 PROBE",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 2,
+   "credits": "150K",
+   "unlock": "Astromech Slot",
+   "droid": "BDX EXPLORER",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 2,
+   "credits": "",
+   "unlock": null,
+   "droid": "2BB",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 2,
+   "credits": "",
+   "unlock": null,
+   "droid": "BAL-CORE",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 3,
+   "credits": "975K",
+   "unlock": "Battle Slot",
+   "droid": "A-LT",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 3,
+   "credits": "",
+   "unlock": null,
+   "droid": "BU-4D",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 3,
+   "credits": "",
+   "unlock": null,
+   "droid": "R9",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 4,
+   "credits": "2.95M",
+   "unlock": "Worker Slot",
+   "droid": "ARG",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 4,
+   "credits": "",
+   "unlock": null,
+   "droid": "B1 SECURITY",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 4,
+   "credits": "",
+   "unlock": null,
+   "droid": "GROUNDMECH",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 5,
+   "credits": "5.35M",
+   "unlock": "Astromech Slot",
+   "droid": "BU-4D",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 5,
+   "credits": "",
+   "unlock": null,
+   "droid": "HOV-R",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 5,
+   "credits": "",
+   "unlock": null,
+   "droid": "R9",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 6,
+   "credits": "9.85M",
+   "unlock": "Battle Slot",
+   "droid": "A-LT",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 6,
+   "credits": "",
+   "unlock": null,
+   "droid": "ARG",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 6,
+   "credits": "",
+   "unlock": null,
+   "droid": "GROUNDMECH",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 7,
+   "credits": "14.5M",
+   "unlock": "Worker Slot",
+   "droid": "BU-4D",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 7,
+   "credits": "",
+   "unlock": null,
+   "droid": "B1 SECURITY",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 7,
+   "credits": "",
+   "unlock": null,
+   "droid": "BB",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 8,
+   "credits": "36M",
+   "unlock": "Astromech Slot",
+   "droid": "HOV-R",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 8,
+   "credits": "",
+   "unlock": null,
+   "droid": "LO",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 8,
+   "credits": "",
+   "unlock": null,
+   "droid": "UTIL-TEC",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 9,
+   "credits": "89M",
+   "unlock": "Battle Slot",
+   "droid": "TRAK-R",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 9,
+   "credits": "",
+   "unlock": null,
+   "droid": "R6",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 9,
+   "credits": "",
+   "unlock": null,
+   "droid": "GROUNDMECH",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 10,
+   "credits": "220M",
+   "unlock": "Worker Slot",
+   "droid": "STRIKE-ORB",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 10,
+   "credits": "",
+   "unlock": null,
+   "droid": "HAUL-R",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 10,
+   "credits": "",
+   "unlock": null,
+   "droid": "LO",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 11,
+   "credits": "550M",
+   "unlock": "Astromech Slot",
+   "droid": "AMP WALKER",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 11,
+   "credits": "",
+   "unlock": null,
+   "droid": "B1 HEAVY",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 11,
+   "credits": "",
+   "unlock": null,
+   "droid": "BB9",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 12,
+   "credits": "1.36B",
+   "unlock": "Worker Slot",
+   "droid": "PROTO-ROLLER",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 12,
+   "credits": "",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 12,
+   "credits": "",
+   "unlock": null,
+   "droid": "MONO-WLKR",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 13,
+   "credits": "3.40B",
+   "unlock": "Astromech Slot",
+   "droid": "R7",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 13,
+   "credits": "",
+   "unlock": null,
+   "droid": "CYCLO-GRAV",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 13,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 14,
+   "credits": "8.45B",
+   "unlock": "Worker Slot",
+   "droid": "OPTI-STRK",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 14,
+   "credits": "",
+   "unlock": null,
+   "droid": "MONO-WLKR",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 14,
+   "credits": "",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 15,
+   "credits": "21.00B",
+   "unlock": "Astromech Slot",
+   "droid": "B2-RP",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 15,
+   "credits": "",
+   "unlock": null,
+   "droid": "BB9",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 15,
+   "credits": "",
+   "unlock": null,
+   "droid": "R7",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 16,
+   "credits": "52.00B",
+   "unlock": "Worker Slot",
+   "droid": "OPTI-STRK",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 16,
+   "credits": "",
+   "unlock": null,
+   "droid": "MONO-WLKR",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 16,
+   "credits": "",
+   "unlock": null,
+   "droid": "PROTO-ROLLER",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 17,
+   "credits": "130.00B",
+   "unlock": "Lounge Slot",
+   "droid": "B2-RP",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 17,
+   "credits": "",
+   "unlock": null,
+   "droid": "CYCLO-GRAV",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 17,
+   "credits": "",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 18,
+   "credits": "325.00B",
+   "unlock": "Lounge Slot",
+   "droid": "BB9",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 18,
+   "credits": "",
+   "unlock": null,
+   "droid": "R7",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 18,
+   "credits": "",
+   "unlock": null,
+   "droid": "MONO-WLKR",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 19,
+   "credits": "810.00B",
+   "unlock": "Lounge Slot",
+   "droid": "B2-RP",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 19,
+   "credits": "",
+   "unlock": null,
+   "droid": "CYCLO-GRAV",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 19,
+   "credits": "",
+   "unlock": null,
+   "droid": "PROTO-ROLLER",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 20,
+   "credits": "2.00T",
+   "unlock": "Lounge Slot",
+   "droid": "R7",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 20,
+   "credits": "",
+   "unlock": null,
+   "droid": "OPTI-STRK",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 20,
+   "credits": "",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 21,
+   "credits": "3.00T",
+   "unlock": "None",
+   "droid": "BB",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 21,
+   "credits": "",
+   "unlock": null,
+   "droid": "ORB-WALKER",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 21,
+   "credits": "",
+   "unlock": null,
+   "droid": "GROUNDMECH",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 22,
+   "credits": "4.50T",
+   "unlock": "None",
+   "droid": "AMP WALKER",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 22,
+   "credits": "",
+   "unlock": null,
+   "droid": "B1 HEAVY",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 22,
+   "credits": "",
+   "unlock": null,
+   "droid": "PROTO-ROLLER",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 23,
+   "credits": "6.00T",
+   "unlock": "None",
+   "droid": "OPTI-STRK",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 23,
+   "credits": "",
+   "unlock": null,
+   "droid": "MONO-WLKR",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 23,
+   "credits": "",
+   "unlock": null,
+   "droid": "R7",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 24,
+   "credits": "9.00T",
+   "unlock": null,
+   "droid": "BB9",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 24,
+   "credits": "",
+   "unlock": null,
+   "droid": "CYCLO-GRAV",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 24,
+   "credits": "",
+   "unlock": null,
+   "droid": "MO-TRAK",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 25,
+   "credits": "13.50T",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 25,
+   "credits": "",
+   "unlock": null,
+   "droid": "IG",
+   "tier": "Base"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 25,
+   "credits": "",
+   "unlock": null,
+   "droid": "DRFT-R",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 26,
+   "credits": "21.00T",
+   "unlock": null,
+   "droid": "CYCLENS",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 26,
+   "credits": "",
+   "unlock": null,
+   "droid": "LOADLIFTER",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 26,
+   "credits": "",
+   "unlock": null,
+   "droid": "RIC-1200",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 27,
+   "credits": "32.00T",
+   "unlock": null,
+   "droid": "KX",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 27,
+   "credits": "",
+   "unlock": null,
+   "droid": "TRI-TEK",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 1,
+   "rebirth": 27,
+   "credits": "",
+   "unlock": null,
+   "droid": "SNOW MOUSE",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 1,
+   "credits": "10K",
+   "unlock": null,
+   "droid": "ID10",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 1,
+   "credits": "",
+   "unlock": null,
+   "droid": "MOUSE",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 1,
+   "credits": "",
+   "unlock": null,
+   "droid": "GONK",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 2,
+   "credits": "150K",
+   "unlock": null,
+   "droid": "ROLL-R",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 2,
+   "credits": "",
+   "unlock": null,
+   "droid": "SENATE HOVERCAM",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 2,
+   "credits": "",
+   "unlock": null,
+   "droid": "NAV-EX",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 3,
+   "credits": "975K",
+   "unlock": null,
+   "droid": "R4",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 3,
+   "credits": "",
+   "unlock": null,
+   "droid": "VECT-ARM",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 3,
+   "credits": "",
+   "unlock": null,
+   "droid": "BDX EXPLORER",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 4,
+   "credits": "2.95M",
+   "unlock": null,
+   "droid": "2BB",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 4,
+   "credits": "",
+   "unlock": null,
+   "droid": "BAL-CORE",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 4,
+   "credits": "",
+   "unlock": null,
+   "droid": "ORB-WALKER",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 5,
+   "credits": "5.35M",
+   "unlock": null,
+   "droid": "R4",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 5,
+   "credits": "",
+   "unlock": null,
+   "droid": "VECT-ARM",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 5,
+   "credits": "",
+   "unlock": null,
+   "droid": "NAV-EX",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 6,
+   "credits": "9.85M",
+   "unlock": null,
+   "droid": "GUNRUNNER",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 6,
+   "credits": "",
+   "unlock": null,
+   "droid": "2BB",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 6,
+   "credits": "",
+   "unlock": null,
+   "droid": "BAL-CORE",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 7,
+   "credits": "14.5M",
+   "unlock": null,
+   "droid": "ROLL-R",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 7,
+   "credits": "",
+   "unlock": null,
+   "droid": "BDX EXPLORER",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 7,
+   "credits": "",
+   "unlock": null,
+   "droid": "R2",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 8,
+   "credits": "36M",
+   "unlock": null,
+   "droid": "R4",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 8,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2 SUPER",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 8,
+   "credits": "",
+   "unlock": null,
+   "droid": "GUNRUNNER",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 9,
+   "credits": "89M",
+   "unlock": null,
+   "droid": "NAV-EX",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 9,
+   "credits": "",
+   "unlock": null,
+   "droid": "STRIKE-ORB",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 9,
+   "credits": "",
+   "unlock": null,
+   "droid": "AMP WALKER",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 10,
+   "credits": "220M",
+   "unlock": null,
+   "droid": "VECT-ARM",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 10,
+   "credits": "",
+   "unlock": null,
+   "droid": "R2",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 10,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2 SUPER",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 11,
+   "credits": "550M",
+   "unlock": null,
+   "droid": "STRIKE-ORB",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 11,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2 HEAVY",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 11,
+   "credits": "",
+   "unlock": null,
+   "droid": "BAL-CORE",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 12,
+   "credits": "1.36B",
+   "unlock": null,
+   "droid": "ORB-WALKER",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 12,
+   "credits": "",
+   "unlock": null,
+   "droid": "R2",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 12,
+   "credits": "",
+   "unlock": null,
+   "droid": "BB-9",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 13,
+   "credits": "3.40B",
+   "unlock": null,
+   "droid": "B2 SUPER",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 13,
+   "credits": "",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 13,
+   "credits": "",
+   "unlock": null,
+   "droid": "PROTO-ROLLER",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 14,
+   "credits": "8.45B",
+   "unlock": null,
+   "droid": "B2 HEAVY",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 14,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 14,
+   "credits": "",
+   "unlock": null,
+   "droid": "R7",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 15,
+   "credits": "21.00B",
+   "unlock": null,
+   "droid": "STRIKE-ORB",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 15,
+   "credits": "",
+   "unlock": null,
+   "droid": "BB9",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 15,
+   "credits": "",
+   "unlock": null,
+   "droid": "PROTO-ROLLER",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 16,
+   "credits": "52.00B",
+   "unlock": null,
+   "droid": "AMP WALKER",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 16,
+   "credits": "",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 16,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 17,
+   "credits": "130.00B",
+   "unlock": null,
+   "droid": "OPTI-POD",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 17,
+   "credits": "",
+   "unlock": null,
+   "droid": "MONO-WALKER",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 17,
+   "credits": "",
+   "unlock": null,
+   "droid": "R7",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 18,
+   "credits": "325.00B",
+   "unlock": null,
+   "droid": "UTIL-TEC",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 18,
+   "credits": "",
+   "unlock": null,
+   "droid": "BB9",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 18,
+   "credits": "",
+   "unlock": null,
+   "droid": "PROTO-ROLLER",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 19,
+   "credits": "810.00B",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 19,
+   "credits": "",
+   "unlock": null,
+   "droid": "R7",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 19,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 20,
+   "credits": "2.00T",
+   "unlock": null,
+   "droid": "MONO-WALKER",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 20,
+   "credits": "",
+   "unlock": null,
+   "droid": "OPTI-STRIKE",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 20,
+   "credits": "",
+   "unlock": null,
+   "droid": "CYCLO-GRAV",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 21,
+   "credits": "3.00T",
+   "unlock": null,
+   "droid": "LO",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 21,
+   "credits": "",
+   "unlock": null,
+   "droid": "R6",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 21,
+   "credits": "",
+   "unlock": null,
+   "droid": "HAUL-R",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 22,
+   "credits": "4.50T",
+   "unlock": null,
+   "droid": "SEN-TRI",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 22,
+   "credits": "",
+   "unlock": null,
+   "droid": "STRIKE-ORB",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 22,
+   "credits": "",
+   "unlock": null,
+   "droid": "PROTO-ROLLER",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 23,
+   "credits": "6.00T",
+   "unlock": null,
+   "droid": "BB9",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 23,
+   "credits": "",
+   "unlock": null,
+   "droid": "CYCLO-GRAV",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 23,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 24,
+   "credits": "9.00T",
+   "unlock": null,
+   "droid": "OPTI-STRK",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 24,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 24,
+   "credits": "",
+   "unlock": null,
+   "droid": "SNOW MOUSE",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 25,
+   "credits": "13.50T",
+   "unlock": null,
+   "droid": "MONO-WLKR",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 25,
+   "credits": "",
+   "unlock": null,
+   "droid": "TRI-TEK",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 25,
+   "credits": "",
+   "unlock": null,
+   "droid": "RIC-1200",
+   "tier": "Base"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 26,
+   "credits": "21.00T",
+   "unlock": null,
+   "droid": "KX",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 26,
+   "credits": "",
+   "unlock": null,
+   "droid": "DRFT-R",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 26,
+   "credits": "",
+   "unlock": null,
+   "droid": "IG",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 27,
+   "credits": "32.00T",
+   "unlock": null,
+   "droid": "LEP",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 27,
+   "credits": "",
+   "unlock": null,
+   "droid": "LOADLIFTER",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 2,
+   "rebirth": 27,
+   "credits": "",
+   "unlock": null,
+   "droid": "MO-TRAK",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 1,
+   "credits": "10K",
+   "unlock": null,
+   "droid": "MOUSE",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 1,
+   "credits": "",
+   "unlock": null,
+   "droid": "PIT",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 1,
+   "credits": "",
+   "unlock": null,
+   "droid": "GONK",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 2,
+   "credits": "150K",
+   "unlock": null,
+   "droid": "R3",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 2,
+   "credits": "",
+   "unlock": null,
+   "droid": "2BB",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 2,
+   "credits": "",
+   "unlock": null,
+   "droid": "SENATE HOVERCAM",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 3,
+   "credits": "975K",
+   "unlock": null,
+   "droid": "R8",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 3,
+   "credits": "",
+   "unlock": null,
+   "droid": "R5",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 3,
+   "credits": "",
+   "unlock": null,
+   "droid": "R4",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 4,
+   "credits": "2.95M",
+   "unlock": null,
+   "droid": "B1 BATTLE",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 4,
+   "credits": "",
+   "unlock": null,
+   "droid": "R9",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 4,
+   "credits": "",
+   "unlock": null,
+   "droid": "B1 SECURITY",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 5,
+   "credits": "5.35M",
+   "unlock": null,
+   "droid": "R3",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 5,
+   "credits": "",
+   "unlock": null,
+   "droid": "2BB",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 5,
+   "credits": "",
+   "unlock": null,
+   "droid": "SENATE HOVERCAM",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 6,
+   "credits": "9.85M",
+   "unlock": null,
+   "droid": "R5",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 6,
+   "credits": "",
+   "unlock": null,
+   "droid": "R4",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 6,
+   "credits": "",
+   "unlock": null,
+   "droid": "BDX EXPLORER",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 7,
+   "credits": "14.5M",
+   "unlock": null,
+   "droid": "R8",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 7,
+   "credits": "",
+   "unlock": null,
+   "droid": "B1 BATTLE",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 7,
+   "credits": "",
+   "unlock": null,
+   "droid": "R9",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 8,
+   "credits": "36M",
+   "unlock": null,
+   "droid": "R3",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 8,
+   "credits": "",
+   "unlock": null,
+   "droid": "B1 SECURITY",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 8,
+   "credits": "",
+   "unlock": null,
+   "droid": "2BB",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 9,
+   "credits": "89M",
+   "unlock": null,
+   "droid": "R5",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 9,
+   "credits": "",
+   "unlock": null,
+   "droid": "R4",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 9,
+   "credits": "",
+   "unlock": null,
+   "droid": "BDX EXPLORER",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 10,
+   "credits": "220M",
+   "unlock": null,
+   "droid": "SENATE HOVERCAM",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 10,
+   "credits": "",
+   "unlock": null,
+   "droid": "GROUNDMECH",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 10,
+   "credits": "",
+   "unlock": null,
+   "droid": "TRAK-R",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 11,
+   "credits": "550M",
+   "unlock": null,
+   "droid": "B2 HEAVY",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 11,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2 SUPER",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 11,
+   "credits": "",
+   "unlock": null,
+   "droid": "UTIL-TEC",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 12,
+   "credits": "1.36B",
+   "unlock": null,
+   "droid": "BAL-CORE",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 12,
+   "credits": "",
+   "unlock": null,
+   "droid": "GROUNDMECH",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 12,
+   "credits": "",
+   "unlock": null,
+   "droid": "TRAK-R",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 13,
+   "credits": "3.40B",
+   "unlock": null,
+   "droid": "B2 SUPER",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 13,
+   "credits": "",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 13,
+   "credits": "",
+   "unlock": null,
+   "droid": "PROTO-ROLLER",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 14,
+   "credits": "8.45B",
+   "unlock": null,
+   "droid": "B2 HEAVY",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 14,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 14,
+   "credits": "",
+   "unlock": null,
+   "droid": "R7",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 15,
+   "credits": "21.00B",
+   "unlock": null,
+   "droid": "STRIKE-ORB",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 15,
+   "credits": "",
+   "unlock": null,
+   "droid": "BB9",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 15,
+   "credits": "",
+   "unlock": null,
+   "droid": "PROTO-ROLLER",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 16,
+   "credits": "52.00B",
+   "unlock": null,
+   "droid": "AMP WALKER",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 16,
+   "credits": "",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 16,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 17,
+   "credits": "130.00B",
+   "unlock": null,
+   "droid": "OPTI-POD",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 17,
+   "credits": "",
+   "unlock": null,
+   "droid": "MONO-WALKER",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 17,
+   "credits": "",
+   "unlock": null,
+   "droid": "R7",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 18,
+   "credits": "325.00B",
+   "unlock": null,
+   "droid": "UTIL-TEC",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 18,
+   "credits": "",
+   "unlock": null,
+   "droid": "BB9",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 18,
+   "credits": "",
+   "unlock": null,
+   "droid": "PROTO-ROLLER",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 19,
+   "credits": "810.00B",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 19,
+   "credits": "",
+   "unlock": null,
+   "droid": "R7",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 19,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 20,
+   "credits": "2.00T",
+   "unlock": null,
+   "droid": "MONO-WALKR",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 20,
+   "credits": "",
+   "unlock": null,
+   "droid": "OPTI-STRK",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 20,
+   "credits": "",
+   "unlock": null,
+   "droid": "CYCLO-GRAV",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 21,
+   "credits": "3.00T",
+   "unlock": null,
+   "droid": "B2 SUPER",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 21,
+   "credits": "",
+   "unlock": null,
+   "droid": "OPTI-POD",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 21,
+   "credits": "",
+   "unlock": null,
+   "droid": "R2",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 22,
+   "credits": "4.50T",
+   "unlock": null,
+   "droid": "GUNRUNNER",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 22,
+   "credits": "",
+   "unlock": null,
+   "droid": "LNG-SHOT",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 22,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 23,
+   "credits": "6.00T",
+   "unlock": null,
+   "droid": "MONO-WALKR",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 23,
+   "credits": "",
+   "unlock": null,
+   "droid": "CYCLO-GRAV",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 23,
+   "credits": "",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 24,
+   "credits": "9.00T",
+   "unlock": null,
+   "droid": "BB9",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 24,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 24,
+   "credits": "",
+   "unlock": null,
+   "droid": "RIC",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 25,
+   "credits": "13.50T",
+   "unlock": null,
+   "droid": "PROTO-ROLLER",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 25,
+   "credits": "",
+   "unlock": null,
+   "droid": "LOADLIFTER",
+   "tier": "Base"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 25,
+   "credits": "",
+   "unlock": null,
+   "droid": "MO-TRAK",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 26,
+   "credits": "21.00T",
+   "unlock": null,
+   "droid": "LEP",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 26,
+   "credits": "",
+   "unlock": null,
+   "droid": "TRI-TEK",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 26,
+   "credits": "",
+   "unlock": null,
+   "droid": "SNOW MOUSE",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 27,
+   "credits": "32.00T",
+   "unlock": null,
+   "droid": "RIC-1200",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 27,
+   "credits": "",
+   "unlock": null,
+   "droid": "IG",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 3,
+   "rebirth": 27,
+   "credits": "",
+   "unlock": null,
+   "droid": "DRFT-R",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 1,
+   "credits": "10K",
+   "unlock": null,
+   "droid": "ID10",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 1,
+   "credits": "",
+   "unlock": null,
+   "droid": "PIT",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 1,
+   "credits": "",
+   "unlock": null,
+   "droid": "DRK-1 PROBE",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 2,
+   "credits": "150K",
+   "unlock": null,
+   "droid": "R3",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 2,
+   "credits": "",
+   "unlock": null,
+   "droid": "2BB",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 2,
+   "credits": "",
+   "unlock": null,
+   "droid": "SENATE HOVERCAM",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 3,
+   "credits": "975K",
+   "unlock": null,
+   "droid": "R5",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 3,
+   "credits": "",
+   "unlock": null,
+   "droid": "R8",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 3,
+   "credits": "",
+   "unlock": null,
+   "droid": "R4",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 4,
+   "credits": "2.95M",
+   "unlock": null,
+   "droid": "B1 BATTLE",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 4,
+   "credits": "",
+   "unlock": null,
+   "droid": "R9",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 4,
+   "credits": "",
+   "unlock": null,
+   "droid": "B1 SECURITY",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 5,
+   "credits": "5.35M",
+   "unlock": null,
+   "droid": "R3",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 5,
+   "credits": "",
+   "unlock": null,
+   "droid": "2BB",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 5,
+   "credits": "",
+   "unlock": null,
+   "droid": "SENATE HOVERCAM",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 6,
+   "credits": "9.85M",
+   "unlock": null,
+   "droid": "R5",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 6,
+   "credits": "",
+   "unlock": null,
+   "droid": "R4",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 6,
+   "credits": "",
+   "unlock": null,
+   "droid": "BDX EXPLORER",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 7,
+   "credits": "14.5M",
+   "unlock": null,
+   "droid": "R8",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 7,
+   "credits": "",
+   "unlock": null,
+   "droid": "B1 BATTLE",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 7,
+   "credits": "",
+   "unlock": null,
+   "droid": "R9",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 8,
+   "credits": "36M",
+   "unlock": null,
+   "droid": "R3",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 8,
+   "credits": "",
+   "unlock": null,
+   "droid": "B1 SECURITY",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 8,
+   "credits": "",
+   "unlock": null,
+   "droid": "2BB",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 9,
+   "credits": "89M",
+   "unlock": null,
+   "droid": "R5",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 9,
+   "credits": "",
+   "unlock": null,
+   "droid": "R4",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 9,
+   "credits": "",
+   "unlock": null,
+   "droid": "BDX EXPLORER",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 10,
+   "credits": "220M",
+   "unlock": null,
+   "droid": "SENATE HOVERCAM",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 10,
+   "credits": "",
+   "unlock": null,
+   "droid": "GROUNDMECH",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 10,
+   "credits": "",
+   "unlock": null,
+   "droid": "TRAK-R",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 11,
+   "credits": "550M",
+   "unlock": null,
+   "droid": "B2 HEAVY",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 11,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2 SUPER",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 11,
+   "credits": "",
+   "unlock": null,
+   "droid": "UTIL-TEC",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 12,
+   "credits": "1.36B",
+   "unlock": null,
+   "droid": "BAL-CORE",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 12,
+   "credits": "",
+   "unlock": null,
+   "droid": "GROUNDMECH",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 12,
+   "credits": "",
+   "unlock": null,
+   "droid": "TRAK-R",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 13,
+   "credits": "3.40B",
+   "unlock": null,
+   "droid": "B2 SUPER",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 13,
+   "credits": "",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 13,
+   "credits": "",
+   "unlock": null,
+   "droid": "PROTO-ROLLER",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 14,
+   "credits": "8.45B",
+   "unlock": null,
+   "droid": "BAL-CORE",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 14,
+   "credits": "",
+   "unlock": null,
+   "droid": "GROUNDMECH",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 14,
+   "credits": "",
+   "unlock": null,
+   "droid": "TRAK-R",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 15,
+   "credits": "21.00B",
+   "unlock": null,
+   "droid": "B2 HEAVY",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 15,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2 SUPER",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 15,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 16,
+   "credits": "52.00B",
+   "unlock": null,
+   "droid": "UTIL-TEC",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 16,
+   "credits": "",
+   "unlock": null,
+   "droid": "BB9",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 16,
+   "credits": "",
+   "unlock": null,
+   "droid": "R7",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 17,
+   "credits": "130.00B",
+   "unlock": null,
+   "droid": "OPTI-STRK",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 17,
+   "credits": "",
+   "unlock": null,
+   "droid": "CYCLO-GRAV",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 17,
+   "credits": "",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 18,
+   "credits": "325.00B",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 18,
+   "credits": "",
+   "unlock": null,
+   "droid": "BB9",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 18,
+   "credits": "",
+   "unlock": null,
+   "droid": "R7",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 19,
+   "credits": "810.00B",
+   "unlock": null,
+   "droid": "MECHA-DROID",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 19,
+   "credits": "",
+   "unlock": null,
+   "droid": "R7",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 19,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 20,
+   "credits": "2.00T",
+   "unlock": null,
+   "droid": "MONO-WALKR",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 20,
+   "credits": "",
+   "unlock": null,
+   "droid": "OPTI-STRK",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 20,
+   "credits": "",
+   "unlock": null,
+   "droid": "CYCLO-GRAV",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 21,
+   "credits": "3.00T",
+   "unlock": null,
+   "droid": "AMP WALKER",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 21,
+   "credits": "",
+   "unlock": null,
+   "droid": "GROUNDMECH",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 21,
+   "credits": "",
+   "unlock": null,
+   "droid": "HAUL-R",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 22,
+   "credits": "4.50T",
+   "unlock": null,
+   "droid": "GUNRUNNER",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 22,
+   "credits": "",
+   "unlock": null,
+   "droid": "STRIKE-ORB",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 22,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2 SUPER",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 23,
+   "credits": "6.00T",
+   "unlock": null,
+   "droid": "MONO-WALKR",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 23,
+   "credits": "",
+   "unlock": null,
+   "droid": "CYCLO-GRAV",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 23,
+   "credits": "",
+   "unlock": null,
+   "droid": "B2-RP",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 24,
+   "credits": "9.00T",
+   "unlock": null,
+   "droid": "MECHA DROID",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 24,
+   "credits": "",
+   "unlock": null,
+   "droid": "PROTO-ROLLER",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 24,
+   "credits": "",
+   "unlock": null,
+   "droid": "MO-TRAK",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 25,
+   "credits": "13.50T",
+   "unlock": null,
+   "droid": "OPTI-STRK",
+   "tier": "Beskar"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 25,
+   "credits": "",
+   "unlock": null,
+   "droid": "TRI-TEK",
+   "tier": "Base"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 25,
+   "credits": "",
+   "unlock": null,
+   "droid": "DRFT-R",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 26,
+   "credits": "21.00T",
+   "unlock": null,
+   "droid": "CYCLENS",
+   "tier": "Gold"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 26,
+   "credits": "",
+   "unlock": null,
+   "droid": "LEP",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 26,
+   "credits": "",
+   "unlock": null,
+   "droid": "MO-TRAK",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 27,
+   "credits": "32.00T",
+   "unlock": null,
+   "droid": "RIC-1200",
+   "tier": "Diamond"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 27,
+   "credits": "",
+   "unlock": null,
+   "droid": "SNOW MOUSE",
+   "tier": "Rainbow"
+  },
+  {
+   "cycle": 4,
+   "rebirth": 27,
+   "credits": "",
+   "unlock": null,
+   "droid": "LOADLIFTER",
+   "tier": "Beskar"
+  }
+ ],
+ "chipCosts": [
+  {
+   "rarity": "Common",
+   "toGold": 5,
+   "toDiamond": 25,
+   "toRainbow": 40,
+   "toBeskar": 80
+  },
+  {
+   "rarity": "Rare",
+   "toGold": 30,
+   "toDiamond": 60,
+   "toRainbow": 100,
+   "toBeskar": 250
+  },
+  {
+   "rarity": "Epic",
+   "toGold": 120,
+   "toDiamond": 180,
+   "toRainbow": 240,
+   "toBeskar": 5000
+  },
+  {
+   "rarity": "Legendary",
+   "toGold": 400,
+   "toDiamond": 1200,
+   "toRainbow": 4000,
+   "toBeskar": 12000
+  },
+  {
+   "rarity": "Mythic",
+   "toGold": 8000,
+   "toDiamond": 15000,
+   "toRainbow": 40000,
+   "toBeskar": 80000
+  }
+ ],
+ "rebirthMeta": [
+  {
+   "rebirth": 12,
+   "nova": 11,
+   "creditMult": 22,
+   "xpMult": 110
+  },
+  {
+   "rebirth": 13,
+   "nova": 16,
+   "creditMult": 32,
+   "xpMult": 160
+  },
+  {
+   "rebirth": 14,
+   "nova": 22,
+   "creditMult": 44,
+   "xpMult": 220
+  },
+  {
+   "rebirth": 15,
+   "nova": 29,
+   "creditMult": 58,
+   "xpMult": 290
+  },
+  {
+   "rebirth": 16,
+   "nova": 37,
+   "creditMult": 74,
+   "xpMult": 370
+  },
+  {
+   "rebirth": 17,
+   "nova": 46,
+   "creditMult": 92,
+   "xpMult": 460
+  },
+  {
+   "rebirth": 18,
+   "nova": 56,
+   "creditMult": 112,
+   "xpMult": 560
+  },
+  {
+   "rebirth": 19,
+   "nova": 67,
+   "creditMult": 134,
+   "xpMult": 670
+  },
+  {
+   "rebirth": 20,
+   "nova": 79,
+   "creditMult": 158,
+   "xpMult": 790
+  },
+  {
+   "rebirth": 21,
+   "nova": 92,
+   "creditMult": 184,
+   "xpMult": 920
+  },
+  {
+   "rebirth": 22,
+   "nova": 106,
+   "creditMult": 212,
+   "xpMult": 1060
+  },
+  {
+   "rebirth": 23,
+   "nova": 121,
+   "creditMult": 242,
+   "xpMult": 1210
+  },
+  {
+   "rebirth": 24,
+   "nova": 137,
+   "creditMult": 274,
+   "xpMult": 1370
+  },
+  {
+   "rebirth": 25,
+   "nova": 154,
+   "creditMult": 308,
+   "xpMult": 1540
+  },
+  {
+   "rebirth": 26,
+   "nova": 172,
+   "creditMult": 344,
+   "xpMult": 1720
+  },
+  {
+   "rebirth": 27,
+   "nova": 191,
+   "creditMult": 382,
+   "xpMult": 1910
+  }
+ ],
+ "novaShop": [
+  {
+   "category": "Core upgrades",
+   "item": "Max Health",
+   "level": 1,
+   "cost": 1
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Max Health",
+   "level": 2,
+   "cost": 6
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Max Health",
+   "level": 3,
+   "cost": 13
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Max Health",
+   "level": 4,
+   "cost": 19
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Max Health",
+   "level": 5,
+   "cost": 25
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Max Health",
+   "level": 6,
+   "cost": 31
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Max Health",
+   "level": 7,
+   "cost": 37
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Max Health",
+   "level": 8,
+   "cost": 43
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Damage",
+   "level": 1,
+   "cost": 1
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Damage",
+   "level": 2,
+   "cost": 13
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Damage",
+   "level": 3,
+   "cost": 25
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Damage",
+   "level": 4,
+   "cost": 37
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Damage",
+   "level": 5,
+   "cost": 49
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Damage",
+   "level": 6,
+   "cost": 61
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Damage",
+   "level": 7,
+   "cost": 73
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Damage",
+   "level": 8,
+   "cost": 85
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 1,
+   "cost": 2
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 2,
+   "cost": 6
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 3,
+   "cost": 10
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 4,
+   "cost": 14
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 5,
+   "cost": 18
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 6,
+   "cost": 22
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 7,
+   "cost": 26
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 8,
+   "cost": 30
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 9,
+   "cost": 34
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 10,
+   "cost": 38
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 11,
+   "cost": 42
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 12,
+   "cost": 46
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 13,
+   "cost": 50
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 14,
+   "cost": 54
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 15,
+   "cost": 58
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 16,
+   "cost": 62
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 17,
+   "cost": 66
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 18,
+   "cost": 70
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Flawless Charm",
+   "level": 1,
+   "cost": 500
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 1,
+   "cost": 1
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 2,
+   "cost": 2
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 3,
+   "cost": 4
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 4,
+   "cost": 6
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 5,
+   "cost": 8
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 6,
+   "cost": 10
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 7,
+   "cost": 12
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 8,
+   "cost": 14
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 9,
+   "cost": 16
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 10,
+   "cost": 18
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 11,
+   "cost": 20
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 12,
+   "cost": 22
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 13,
+   "cost": 24
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 14,
+   "cost": 26
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 15,
+   "cost": 28
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 16,
+   "cost": 30
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 17,
+   "cost": 32
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Movement Speed",
+   "level": 18,
+   "cost": 34
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Double Daily Quests",
+   "level": 1,
+   "cost": 75
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Pickaxe Mastery",
+   "level": 1,
+   "cost": 5
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Pickaxe Mastery",
+   "level": 2,
+   "cost": 10
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Pickaxe Mastery",
+   "level": 3,
+   "cost": 15
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Pickaxe Mastery",
+   "level": 4,
+   "cost": 20
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Pickaxe Mastery",
+   "level": 5,
+   "cost": 25
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Pickaxe Mastery",
+   "level": 6,
+   "cost": 30
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Pickaxe Mastery",
+   "level": 7,
+   "cost": 35
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Pickaxe Mastery",
+   "level": 8,
+   "cost": 40
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Pickaxe Mastery",
+   "level": 9,
+   "cost": 45
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Pickaxe Mastery",
+   "level": 10,
+   "cost": 50
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Pickaxe Mastery",
+   "level": 11,
+   "cost": 55
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Jawa Bartering",
+   "level": 1,
+   "cost": 5
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Jawa Bartering",
+   "level": 2,
+   "cost": 15
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Jawa Bartering",
+   "level": 3,
+   "cost": 30
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Jawa Bartering",
+   "level": 4,
+   "cost": 45
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Jawa Bartering",
+   "level": 5,
+   "cost": 60
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Super Crates",
+   "level": 1,
+   "cost": 10
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Super Crates",
+   "level": 2,
+   "cost": 25
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Lounge Slot",
+   "level": 1,
+   "cost": 1
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Lounge Slot",
+   "level": 2,
+   "cost": 30
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Lounge Slot",
+   "level": 3,
+   "cost": 60
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Upgrade Chip Scrap",
+   "level": 1,
+   "cost": 2
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Upgrade Chip Scrap",
+   "level": 2,
+   "cost": 5
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Upgrade Chip Scrap",
+   "level": 3,
+   "cost": 10
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Upgrade Chip Scrap",
+   "level": 4,
+   "cost": 15
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Upgrade Chip Scrap",
+   "level": 5,
+   "cost": 20
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Upgrade Chip Scrap",
+   "level": 6,
+   "cost": 25
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Upgrade Chip Scrap",
+   "level": 7,
+   "cost": 30
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Upgrade Chip Scrap",
+   "level": 8,
+   "cost": 35
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Upgrade Chip Scrap",
+   "level": 9,
+   "cost": 40
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Upgrade Chip Scrap",
+   "level": 10,
+   "cost": 45
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 1,
+   "cost": 25
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 2,
+   "cost": 55
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 3,
+   "cost": 85
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 4,
+   "cost": 115
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 5,
+   "cost": 145
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 6,
+   "cost": 175
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 7,
+   "cost": 205
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 8,
+   "cost": 235
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 9,
+   "cost": 265
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 10,
+   "cost": 295
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Blueprint Scrap",
+   "level": 1,
+   "cost": 1
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Blueprint Scrap",
+   "level": 2,
+   "cost": 12
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Blueprint Scrap",
+   "level": 3,
+   "cost": 24
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Blueprint Scrap",
+   "level": 4,
+   "cost": 36
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Crafting Speed",
+   "level": 1,
+   "cost": 3
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Crafting Speed",
+   "level": 2,
+   "cost": 18
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Crafting Speed",
+   "level": 3,
+   "cost": 33
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Crafting Speed",
+   "level": 4,
+   "cost": 48
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Crafting Speed",
+   "level": 5,
+   "cost": 63
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Crafting Speed",
+   "level": 6,
+   "cost": 78
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Crafting Speed",
+   "level": 7,
+   "cost": 93
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Crafting Speed",
+   "level": 8,
+   "cost": 108
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Crafting Speed",
+   "level": 9,
+   "cost": 123
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Crafting Speed",
+   "level": 10,
+   "cost": 138
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Blueprint Storage",
+   "level": 1,
+   "cost": 10
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Blueprint Storage",
+   "level": 2,
+   "cost": 75
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Blueprint Storage",
+   "level": 3,
+   "cost": 150
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Collect All",
+   "level": 1,
+   "cost": 3
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Collect All",
+   "level": 2,
+   "cost": 25
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Collect All",
+   "level": 3,
+   "cost": 100
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Rebirth Droid Alert",
+   "level": 1,
+   "cost": 10
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Blueprint Vendor",
+   "level": 1,
+   "cost": 10
+  }
+ ],
+ "cosmetics": [
+  {
+   "category": "general",
+   "name": "Blue Paint",
+   "requirement": "Rebirth 1 time"
+  },
+  {
+   "category": "general",
+   "name": "Gold Paint",
+   "requirement": "Rebirth 5 times"
+  },
+  {
+   "category": "general",
+   "name": "Diamond Paint",
+   "requirement": "Rebirth 10 times"
+  },
+  {
+   "category": "general",
+   "name": "Rainbow Paint",
+   "requirement": "Rebirth 15 times"
+  },
+  {
+   "category": "general",
+   "name": "Worker Green",
+   "requirement": "Craft 100 droids"
+  },
+  {
+   "category": "general",
+   "name": "Battle Orange",
+   "requirement": "Craft 250 droids"
+  },
+  {
+   "category": "general",
+   "name": "Astromech Purple",
+   "requirement": "Craft 500 droids"
+  },
+  {
+   "category": "general",
+   "name": "Flawless Paint",
+   "requirement": "Craft 15 flawless droids"
+  },
+  {
+   "category": "general",
+   "name": "Super Flawless",
+   "requirement": "Craft 50 flawless droids"
+  },
+  {
+   "category": "general",
+   "name": "Beskar Paint",
+   "requirement": "Collect 25 different Beskar droids"
+  },
+  {
+   "category": "general",
+   "name": "Super Beskar",
+   "requirement": "Collect 50 different Beskar droids"
+  },
+  {
+   "category": "general",
+   "name": "Nova Stage 1/2/3",
+   "requirement": "30 / +120 / +400 nova crystals"
+  },
+  {
+   "category": "general",
+   "name": "Ringmaster",
+   "requirement": "Fly through every yellow ring"
+  },
+  {
+   "category": "general",
+   "name": "Adv. Ringmaster",
+   "requirement": "Fly through every orange ring"
+  },
+  {
+   "category": "general",
+   "name": "Hats (16)",
+   "requirement": "Find in world / events"
+  }
+ ]
+}
