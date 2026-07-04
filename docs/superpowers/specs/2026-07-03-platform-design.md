@@ -73,6 +73,8 @@ docs/superpowers/specs/ # design docs
 - `rebirth_reqs` (cycle, rebirth, droid, tier, credits, unlock; PK = cycle+rebirth+droid+tier —
   matches the prototype schema, which permits one droid at two tiers within a rebirth)
 - `chip_costs` (rarity PK, to_gold, to_diamond, to_rainbow, to_beskar)
+- `rebirth_meta` (rebirth PK, nova, credit_mult, xp_mult) — per-rebirth nova crystals and
+  multipliers shown in the checklist header (prototype constants `NOVA`/`CRED`/`XP`)
 - `nova_shop` (category, item, level, cost; PK = category+item+level)
 - `cosmetics` (category, name, requirement; PK = category+name)
 - `data_versions` (id, ingested_at, source, checksum) — each ingest is one version;
