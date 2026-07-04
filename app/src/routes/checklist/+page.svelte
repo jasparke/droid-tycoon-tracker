@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { makeTracker } from '$lib/client/tracker.svelte';
+	import { toast } from '$lib/client/toast.svelte';
 	import { isMet, ownedIdx } from '$lib/game/inventory';
-	import { TIERS, RIDX, type Tier } from '$lib/game/tiers';
+	import { TIERS, type Tier } from '$lib/game/tiers';
 	const t = makeTracker(page.data as never);
 	const ref = page.data.reference;
 	const cycle = $derived(t.active()?.cycle ?? 1);
@@ -17,6 +18,15 @@
 	const meta = (rb: number) => ref.rebirthMeta.find((m: { rebirth: number }) => m.rebirth === rb);
 	function toggle(droid: string, tier: Tier) {
 		const met = isMet(t.countRows(), cycle, droid, tier);
+		if (met) {
+			const exact = t.countRows().some(
+				(c) => c.cycle === cycle && c.droid === droid && c.tier === tier && c.n > 0
+			);
+			if (!exact) {
+				toast('Met via a higher tier — adjust counts in Inventory');
+				return;
+			}
+		}
 		t.setCount(cycle, droid, tier, met ? 0 : 1);
 	}
 </script>

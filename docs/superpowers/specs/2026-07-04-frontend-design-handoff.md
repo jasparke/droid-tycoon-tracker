@@ -66,7 +66,9 @@ dark-only; the rebuild may add a light theme if you design one.
    ~250ms grace. Content refreshes live when counts change.
 3. **Counts-as semantics:** owning a higher tier satisfies lower-tier requirements
    (a Beskar copy checks a Gold requirement) — met-state visuals must reflect `isMet`,
-   not exact-tier match.
+   not exact-tier match. Toggling a requirement that is met only via a higher owned
+   tier is a guarded no-op with an explanatory toast (adjust counts in Inventory
+   instead).
 4. **Planner dedupe:** combined needs across selected rebirths show only the highest
    tier per droid; summary chips are tier-colored pills with owned state.
 5. **Optimistic writes:** every count/plan edit applies instantly and visibly rolls
