@@ -23,4 +23,14 @@ describe('combinedNeeds', () => {
 	it('empty selection yields empty list', () => {
 		expect(combinedNeeds(reqs, new Set())).toEqual([]);
 	});
+	it('sorts alphabetically within the same tier', () => {
+		const same: Requirement[] = [
+			{ rebirth: 1, droid: 'ZED', tier: 'Gold' },
+			{ rebirth: 1, droid: 'ABC', tier: 'Gold' }
+		];
+		expect(combinedNeeds(same, new Set([1]))).toEqual([
+			{ droid: 'ABC', tier: 'Gold' },
+			{ droid: 'ZED', tier: 'Gold' }
+		]);
+	});
 });
