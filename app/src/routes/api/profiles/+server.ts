@@ -13,6 +13,6 @@ export const GET: RequestHandler = ({ locals }) =>
 export const POST: RequestHandler = ({ locals, request }) =>
 	guard(async () => {
 		const user = requireUser(locals);
-		const body = await request.json().catch(() => ({}));
+		const body = (await request.json().catch(() => ({}))) ?? {};
 		return json({ profile: await createProfile(db, user.id, body) }, { status: 201 });
 	});

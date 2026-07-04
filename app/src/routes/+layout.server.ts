@@ -8,8 +8,10 @@ import { counts, plans } from '$lib/server/schema';
 const PUBLIC = new Set(['/login', '/register']);
 
 export const load: LayoutServerLoad = async ({ locals, url }) => {
+	// track the URL so every client-side navigation reruns this load — pages seed per-page tracker state from it
+	const pathname = url.pathname;
 	if (!locals.user) {
-		if (!PUBLIC.has(url.pathname)) redirect(303, '/login');
+		if (!PUBLIC.has(pathname)) redirect(303, '/login');
 		return { user: null, reference: null, profiles: [] };
 	}
 	const [reference, profiles, allCounts, allPlans] = await Promise.all([

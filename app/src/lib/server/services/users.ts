@@ -15,6 +15,8 @@ export async function register(
 	input: { username: string; password: string; inviteCode: string },
 	expectedInvite: string
 ) {
+	if (!expectedInvite)
+		throw new ApiError(503, 'invite_unconfigured', 'Registration is not configured on this server');
 	if (input.inviteCode !== expectedInvite) throw new ApiError(403, 'bad_invite', 'Invalid invite code');
 	const username = input.username?.trim() ?? '';
 	if (username.length < 2 || (input.password?.length ?? 0) < 8)

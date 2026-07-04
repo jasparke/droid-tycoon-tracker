@@ -30,6 +30,11 @@ describe('register', () => {
 	it('rejects short password with 422', async () => {
 		await expect(register(db, { ...good, password: 'short' }, INVITE)).rejects.toBeInstanceOf(ApiError);
 	});
+	it('rejects registration when no invite code is configured (503)', async () => {
+		await expect(register(db, { ...good, inviteCode: '' }, '')).rejects.toMatchObject({
+			status: 503, code: 'invite_unconfigured'
+		});
+	});
 });
 
 describe('login + sessions', () => {

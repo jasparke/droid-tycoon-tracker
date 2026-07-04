@@ -9,9 +9,9 @@ import { ApiError } from '$lib/server/api-error';
 
 export const POST: RequestHandler = ({ request, cookies }) =>
 	guard(async () => {
-		const body = await request.json().catch(() => {
+		const body = (await request.json().catch(() => {
 			throw new ApiError(422, 'bad_json', 'Body must be JSON');
-		});
+		})) ?? {};
 		const user = await register(db, body, env.INVITE_CODE ?? '');
 		const s = await createSession(db, user.id);
 		cookies.set('session', s.token, {
