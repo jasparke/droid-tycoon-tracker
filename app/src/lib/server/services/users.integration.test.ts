@@ -1,7 +1,9 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
+import { eq } from 'drizzle-orm';
 import { testDb, resetUserZone } from '../testing/db';
 import { register, login, validateSession, logout } from './users';
 import { ApiError } from '../api-error';
+import { sessions } from '../schema';
 
 let db: Awaited<ReturnType<typeof testDb>>['db'];
 let sql: Awaited<ReturnType<typeof testDb>>['sql'];
@@ -50,5 +52,12 @@ describe('login + sessions', () => {
 	});
 	it('unknown token is null', async () => {
 		expect(await validateSession(db, 'not-a-token')).toBeNull();
+	});
+	it('expired session is null and its row is deleted', async () => {
+		await register(db, good, INVITE);
+		const { token } = await login(db, { username: 'jasparke', password: good.password });
+		await db.update(sessions).set({ expiresAt: new Date(Date.now() - 1000) }).where(eq(sessions.token, token));
+		expect(await validateSession(db, token)).toBeNull();
+		expect(await db.query.sessions.findFirst({ where: eq(sessions.token, token) })).toBeUndefined();
 	});
 });

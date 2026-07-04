@@ -7,6 +7,9 @@ import { ApiError } from '../api-error';
 
 const SESSION_DAYS = 30;
 
+// hash of a throwaway string; verified for unknown users so login latency doesn't reveal username existence
+const DUMMY_HASH = '$argon2id$v=19$m=19456,t=2,p=1$winwLiBhdA0z9MbskKV2Lg$41e8zS9FXUSr5XUm2pibON0+4/7U+V9HxZWz3ye2dFs';
+
 export async function register(
 	db: Db,
 	input: { username: string; password: string; inviteCode: string },
@@ -36,8 +39,8 @@ export async function createSession(db: Db, userId: number) {
 
 export async function login(db: Db, input: { username: string; password: string }) {
 	const u = await db.query.users.findFirst({ where: eq(users.username, input.username ?? '') });
-	if (!u || !(await verify(u.pwHash, input.password ?? '')))
-		throw new ApiError(401, 'bad_credentials', 'Wrong username or password');
+	const ok = await verify(u?.pwHash ?? DUMMY_HASH, input.password ?? '');
+	if (!u || !ok) throw new ApiError(401, 'bad_credentials', 'Wrong username or password');
 	const s = await createSession(db, u.id);
 	return { user: { id: u.id, username: u.username }, ...s };
 }
