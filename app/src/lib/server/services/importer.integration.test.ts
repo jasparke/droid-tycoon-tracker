@@ -46,4 +46,16 @@ describe('importCode', () => {
 		});
 		expect(await db.select().from(profiles)).toHaveLength(0);
 	});
+	it('skips malformed count keys and invalid plan cycles without losing good rows', async () => {
+		const code = mkCode({
+			name: 'x',
+			counts: { '|MOUSE|Gold': 2, 'abc|MOUSE|Gold': 1, 'garbage': 5, '2|MOUSE|Gold': 3 },
+			plan: { abc: [1], '2': [4] }
+		});
+		const res = await importCode(db, uid, code);
+		expect(res.imported).toBe(1);
+		expect(res.skipped.sort()).toEqual(['abc|MOUSE|Gold', 'garbage', '|MOUSE|Gold']);
+		expect(await db.select().from(counts).where(eq(counts.profileId, res.profileId))).toHaveLength(1);
+		expect(await db.select().from(plans).where(eq(plans.profileId, res.profileId))).toHaveLength(1);
+	});
 });
