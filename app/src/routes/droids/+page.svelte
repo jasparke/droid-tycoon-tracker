@@ -14,6 +14,8 @@
 	);
 	const stat = (droid: string, tier: Tier) =>
 		ref.droidTiers.find((s: { droid: string; tier: string }) => s.droid === droid && s.tier === tier);
+	const owned = (droid: string, tier: Tier) =>
+		t.countRows().find((c) => c.cycle === cycle && c.droid === droid && c.tier === tier)?.n ?? 0;
 </script>
 
 <h1>All Droids</h1>
@@ -31,7 +33,7 @@
 					{@const s = stat(d.name, tier)}
 					<td>
 						<button disabled={!t.editable()} title="add one {tier}"
-							onclick={() => t.setCount(cycle, d.name, tier, 1)}>+</button>
+							onclick={() => t.setCount(cycle, d.name, tier, owned(d.name, tier) + 1)}>+</button>
 						{s?.buy?.toLocaleString() ?? '—'} / {s?.income ?? '—'}/s
 					</td>
 				{/each}
