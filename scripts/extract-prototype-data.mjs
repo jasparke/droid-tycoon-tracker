@@ -42,6 +42,11 @@ const droids = tuples(/insert into droids[^;]*values([\s\S]*?);/).map(([name, ra
 const droidTiers = tuples(/insert into droid_tiers[^;]*values([\s\S]*?);/).map(
 	([droid, tier, buy, income, sell]) => ({ droid, tier, buy, income, sell })
 );
+// The frozen prototype's rebirths insert misspells these droids relative to its droids insert.
+const DROID_ALIASES = {
+	'BB-9': 'BB9', 'MONO-WALKER': 'MONO-WLKR', 'MONO-WALKR': 'MONO-WLKR',
+	'OPTI-STRIKE': 'OPTI-STRK', 'MECHA DROID': 'MECHA-DROID'
+};
 const rebirthReqs = tuples(/insert into rebirths[^;]*values([\s\S]*?);/).map(
 	([cycle, rebirth, credits, unlock, droid, tier]) => ({
 		cycle,
@@ -52,7 +57,7 @@ const rebirthReqs = tuples(/insert into rebirths[^;]*values([\s\S]*?);/).map(
 		// sentinel for "no additional credit cost" for this row.
 		credits: credits == null ? '' : credits,
 		unlock: unlock == null ? null : String(unlock).trim() || null,
-		droid,
+		droid: DROID_ALIASES[droid] ?? droid,
 		tier
 	})
 );

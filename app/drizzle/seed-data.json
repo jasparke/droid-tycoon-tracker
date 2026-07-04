@@ -3657,7 +3657,7 @@
    "rebirth": 12,
    "credits": "",
    "unlock": null,
-   "droid": "BB-9",
+   "droid": "BB9",
    "tier": "Base"
   },
   {
@@ -3769,7 +3769,7 @@
    "rebirth": 17,
    "credits": "",
    "unlock": null,
-   "droid": "MONO-WALKER",
+   "droid": "MONO-WLKR",
    "tier": "Gold"
   },
   {
@@ -3833,7 +3833,7 @@
    "rebirth": 20,
    "credits": "2.00T",
    "unlock": null,
-   "droid": "MONO-WALKER",
+   "droid": "MONO-WLKR",
    "tier": "Rainbow"
   },
   {
@@ -3841,7 +3841,7 @@
    "rebirth": 20,
    "credits": "",
    "unlock": null,
-   "droid": "OPTI-STRIKE",
+   "droid": "OPTI-STRK",
    "tier": "Rainbow"
   },
   {
@@ -4417,7 +4417,7 @@
    "rebirth": 17,
    "credits": "",
    "unlock": null,
-   "droid": "MONO-WALKER",
+   "droid": "MONO-WLKR",
    "tier": "Gold"
   },
   {
@@ -4481,7 +4481,7 @@
    "rebirth": 20,
    "credits": "2.00T",
    "unlock": null,
-   "droid": "MONO-WALKR",
+   "droid": "MONO-WLKR",
    "tier": "Rainbow"
   },
   {
@@ -4553,7 +4553,7 @@
    "rebirth": 23,
    "credits": "6.00T",
    "unlock": null,
-   "droid": "MONO-WALKR",
+   "droid": "MONO-WLKR",
    "tier": "Beskar"
   },
   {
@@ -5129,7 +5129,7 @@
    "rebirth": 20,
    "credits": "2.00T",
    "unlock": null,
-   "droid": "MONO-WALKR",
+   "droid": "MONO-WLKR",
    "tier": "Rainbow"
   },
   {
@@ -5201,7 +5201,7 @@
    "rebirth": 23,
    "credits": "6.00T",
    "unlock": null,
-   "droid": "MONO-WALKR",
+   "droid": "MONO-WLKR",
    "tier": "Beskar"
   },
   {
@@ -5225,7 +5225,7 @@
    "rebirth": 24,
    "credits": "9.00T",
    "unlock": null,
-   "droid": "MECHA DROID",
+   "droid": "MECHA-DROID",
    "tier": "Beskar"
   },
   {
