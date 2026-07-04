@@ -104,8 +104,15 @@ invalidates future invites without affecting existing accounts.
 
 ## Frontend skeleton (visual design deferred)
 
-- Routes: `/checklist`, `/planner`, `/inventory`, `/droids`, `/keepers`, `/login`,
+- Routes: `/checklist`, `/planner`, `/inventory`, `/droids`, `/keepers`, `/roi`, `/login`,
   `/register` — replacing the prototype's tab state with shareable URLs.
+- **ROI view (`/roi`, new — not in prototype):** ranks all (droid, tier) pairs by
+  credit efficiency. Primary metric: payback time = buy cost ÷ income/s (inverse shown as
+  income per 1k credits). Chips are a separate currency and are NOT mixed into the metric;
+  cumulative chip cost appears as a context column. Sortable/filterable by rarity, type,
+  and tier; rows the active profile owns are marked. Includes a cost-vs-income scatter —
+  values span ~10³ to ~10¹² credits, so axes must be log-log (design session may restyle,
+  not re-scale). Math lives in `src/lib/game/roi.ts`, pure and unit-tested.
 - A client store hydrates from `GET /api/reference` + `GET /api/profiles` at load.
   Writes are optimistic with rollback + visible toast on failure.
 - All game math ports from the prototype into `src/lib/game/` as pure TS functions
