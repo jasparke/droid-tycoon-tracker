@@ -1,0 +1,9 @@
+:root {
+	--base: #cfd8e6; --gold: #ffcf3f; --diamond: #4fd0ff; --rainbow: #ff6ad5; --beskar: #9aa6b8;
+}
+.tier-Base { color: var(--base); } .tier-Gold { color: var(--gold); }
+.tier-Diamond { color: var(--diamond); } .tier-Rainbow { color: var(--rainbow); }
+.tier-Beskar { color: var(--beskar); }
+body { font-family: system-ui, sans-serif; margin: 0 auto; max-width: 1100px; padding: 1rem; }
+nav a { margin-right: 0.75rem; }
+table { border-collapse: collapse; } td, th { padding: 2px 8px; text-align: left; }
