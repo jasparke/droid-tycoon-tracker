@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { db } from '$lib/server/db';
-import { guard, requireUser, intParam } from '$lib/server/respond';
+import { guard, requireUser, intParam, decodeParam } from '$lib/server/respond';
 import { setCount } from '$lib/server/services/counts';
 
 export const PUT: RequestHandler = ({ locals, params, request }) =>
@@ -10,7 +10,7 @@ export const PUT: RequestHandler = ({ locals, params, request }) =>
 		const body = (await request.json().catch(() => ({}))) ?? {};
 		const res = await setCount(
 			db, user.id, intParam(params.id, 'id'), intParam(params.cycle, 'cycle'),
-			decodeURIComponent(params.droid), params.tier, Number(body.n)
+			decodeParam(params.droid, 'droid'), params.tier, Number(body.n)
 		);
 		return json(res);
 	});
