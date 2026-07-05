@@ -1,42 +1,37 @@
-# sv
+# Droid Tycoon tracker (app)
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Multi-user web tracker for **Star Wars: Droid Tycoon** rebirths — SvelteKit +
+Postgres. Replaces the frozen single-file prototype in `../prototype/`.
 
-## Creating a project
+## Development
 
-If you're seeing this, you've probably already done this step. Congrats!
+    npm install
 
-```sh
-# create a new project
-npx sv create my-app
-```
+Start the dev database from the repo root (Postgres with a `dtt` dev database
+and a `dtt_test` integration database on `localhost:5432`):
 
-To recreate this project with the same configuration:
+    docker compose -f docker-compose.dev.yml up -d
 
-```sh
-# recreate this project
-npx sv@0.16.2 create --template minimal --types ts --install npm app
-```
+Apply migrations, seed the game reference data, then run the dev server:
 
-## Developing
+    npm run db:migrate
+    npm run db:seed
+    INVITE_CODE=dev npm run dev
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+`db.ts` and the `db:*` scripts default to `postgres://dtt:dtt@localhost:5432/dtt`;
+set `DATABASE_URL` to override. Registration needs `INVITE_CODE` (inline as above,
+or in `app/.env`).
 
-```sh
-npm run dev
+## Tests
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+- `npm run check` — svelte-check type check (no database).
+- `npm run test:unit` — pure game-logic units in `src/lib/game` (no database).
+- `npm run test:int` — service + helper tests in `src/lib/server`; needs the
+  `dtt_test` database up (migrations are applied automatically).
+- `npm run test:e2e` — Playwright smoke; builds the app and runs it against the
+  `dtt` database. Needs the dev database up and browsers installed
+  (`npx playwright install`).
 
-## Building
+## Production
 
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+See the [root README](../README.md) for the Docker Compose deployment.
