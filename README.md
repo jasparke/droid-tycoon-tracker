@@ -21,8 +21,6 @@ replaces it; everything in this section documents the prototype.
 
 A single-file, offline-friendly tracker for **Star Wars: Droid Tycoon** (Fortnite). Plan rebirths, track which droids you own at which tier, see income / upgrade-chip costs / sell values, and manage multiple player profiles — with optional cross-device cloud sync.
 
-**[▶ Live version](https://YOUR-USERNAME.github.io/droid-tycoon-tracker/)** *(update this link after enabling GitHub Pages)*
-
 ### Features
 
 - **All 4 rebirth cycles × 27 rebirths** with exact credit costs, Nova crystal counts, credit/XP multipliers, and unlock slots.
