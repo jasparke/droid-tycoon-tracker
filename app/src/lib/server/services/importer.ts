@@ -20,15 +20,18 @@ export async function importCode(db: Db, userId: number, code: string) {
 	}
 	const known = new Set((await db.select({ name: droids.name }).from(droids)).map((r) => r.name));
 	const skipped = new Set<string>();
-	const countRows: { cycle: number; droid: string; tier: string; n: number }[] = [];
+	// keyed by normalized cycle|droid|tier so duplicate source keys collapse to the last occurrence
+	const byTriple = new Map<string, { cycle: number; droid: string; tier: string; n: number }>();
 	for (const [key, n] of Object.entries(proto.counts ?? {})) {
 		const [cy, droid, tier] = key.split('|');
 		const cycle = Number(cy);
 		if (!cy || !droid || !Number.isInteger(cycle)) { skipped.add(key); continue; }
 		if (!known.has(droid)) { skipped.add(droid); continue; }
-		if (!isTier(tier) || !Number.isInteger(n) || n <= 0) { skipped.add(droid); continue; }
-		countRows.push({ cycle, droid, tier, n });
+		if (!isTier(tier)) { skipped.add(droid); continue; }
+		if (!Number.isInteger(n) || n < 0 || n > 1_000_000) { skipped.add(key); continue; }
+		byTriple.set(`${cycle}|${droid}|${tier}`, { cycle, droid, tier, n });
 	}
+	const countRows = [...byTriple.values()];
 	return await db.transaction(async (tx) => {
 		const [p] = await tx.insert(profiles).values({
 			userId,
