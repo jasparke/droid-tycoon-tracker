@@ -29,6 +29,8 @@ export async function importCode(db: Db, userId: number, code: string) {
 		if (!known.has(droid)) { skipped.add(droid); continue; }
 		if (!isTier(tier)) { skipped.add(droid); continue; }
 		if (!Number.isInteger(n) || n < 0 || n > 1_000_000) { skipped.add(key); continue; }
+		// n=0 means absence (setCount's 0-deletes-the-row convention) — drop, but let it shadow earlier dupes
+		if (n === 0) { byTriple.delete(`${cycle}|${droid}|${tier}`); continue; }
 		byTriple.set(`${cycle}|${droid}|${tier}`, { cycle, droid, tier, n });
 	}
 	const countRows = [...byTriple.values()];
