@@ -1,0 +1,28 @@
+name: dtt-prod
+services:
+  app:
+    build: ./app
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://dtt:${POSTGRES_PASSWORD:?set in .env}@db:5432/dtt
+      SESSION_SECRET: ${SESSION_SECRET:?set in .env}
+      INVITE_CODE: ${INVITE_CODE:?set in .env}
+      ORIGIN: ${ORIGIN:?set in .env} # e.g. https://droids.example.lan — required by adapter-node for form origin checks
+    ports: ["3000:3000"]
+    depends_on:
+      db: { condition: service_healthy }
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: dtt
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set in .env}
+      POSTGRES_DB: dtt
+    volumes: [dtt-pg:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dtt"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes:
+  dtt-pg:

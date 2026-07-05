@@ -1,5 +1,19 @@
 # Droid Tycoon Rebirth Tracker
 
+> **Repo layout:** `app/` is the multi-user web app (SvelteKit + Postgres — see
+> `docs/superpowers/specs/2026-07-03-platform-design.md`). `prototype/` is the frozen
+> single-file tracker it replaces; open `prototype/index.html` to use it as before.
+
+## Running the app (docker)
+
+    cp .env.example .env   # set POSTGRES_PASSWORD, SESSION_SECRET, INVITE_CODE, ORIGIN
+    docker compose up -d --build
+    docker compose exec app node drizzle/seed.mjs   # first run only: load game reference data
+
+The app listens on port 3000 (HTTP) — front it with your reverse proxy for TLS.
+Register the first account with your INVITE_CODE. Import old tracker data via
+the export code from the prototype (☁ → Export) using POST /api/import or the UI.
+
 A single-file, offline-friendly tracker for **Star Wars: Droid Tycoon** (Fortnite). Plan rebirths, track which droids you own at which tier, see income / upgrade-chip costs / sell values, and manage multiple player profiles — with optional cross-device cloud sync.
 
 **[▶ Live version](https://YOUR-USERNAME.github.io/droid-tycoon-tracker/)** *(update this link after enabling GitHub Pages)*
