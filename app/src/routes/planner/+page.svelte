@@ -5,13 +5,13 @@
 	import { isMet } from '$lib/game/inventory';
 	import type { Tier } from '$lib/game/tiers';
 	const t = makeTracker(page.data as never);
-	const ref = page.data.reference;
+	const ref = page.data.reference!; // guaranteed present: this route is auth-gated by the root layout
 	const cycle = $derived(t.active()?.cycle ?? 1);
 	const reqs = $derived(
 		ref.rebirthReqs
-			.filter((r: { cycle: number }) => r.cycle === cycle)
-			.map((r: { rebirth: number; droid: string; tier: Tier }) => ({
-				rebirth: r.rebirth, droid: r.droid, tier: r.tier
+			.filter((r) => r.cycle === cycle)
+			.map((r) => ({
+				rebirth: r.rebirth, droid: r.droid, tier: r.tier as Tier
 			})) as Requirement[]
 	);
 	const selected = $derived(new Set(t.planFor(cycle)));

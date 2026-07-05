@@ -4,7 +4,7 @@
 	import { TIERS, type Tier } from '$lib/game/tiers';
 	import { ownedIdx } from '$lib/game/inventory';
 	const t = makeTracker(page.data as never);
-	const ref = page.data.reference;
+	const ref = page.data.reference!; // guaranteed present: this route is auth-gated by the root layout
 	const cycle = $derived(t.active()?.cycle ?? 1);
 	let q = $state('');
 	const list = $derived(
