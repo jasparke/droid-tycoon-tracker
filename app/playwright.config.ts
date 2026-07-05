@@ -9,8 +9,7 @@ export default defineConfig({
 		env: {
 			PORT: '4173',
 			DATABASE_URL: 'postgres://dtt:dtt@localhost:5432/dtt',
-			INVITE_CODE: 'e2e-invite',
-			SESSION_SECRET: 'e2e-secret'
+			INVITE_CODE: 'e2e-invite'
 		}
 	}
 });

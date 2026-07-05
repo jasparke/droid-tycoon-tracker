@@ -6,7 +6,7 @@
 
 ## Running the app (docker)
 
-    cp .env.example .env   # set POSTGRES_PASSWORD, SESSION_SECRET, INVITE_CODE, ORIGIN
+    cp .env.example .env   # set POSTGRES_PASSWORD, INVITE_CODE, ORIGIN
     docker compose up -d --build
     docker compose exec app node drizzle/seed.mjs   # first run only: load game reference data
 
