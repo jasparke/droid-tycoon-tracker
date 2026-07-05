@@ -50,4 +50,27 @@ describe('profiles', () => {
 			status: 422, code: 'invalid_input'
 		});
 	});
+	it('rejects non-integer / out-of-range cycle with 422', async () => {
+		const p = await createProfile(db, alice.id, { name: 'main' });
+		await expect(updateProfile(db, alice.id, p.id, { cycle: 'x' as unknown as number })).rejects.toMatchObject({
+			status: 422, code: 'invalid_input'
+		});
+		await expect(updateProfile(db, alice.id, p.id, { cycle: 2147483648 })).rejects.toMatchObject({
+			status: 422, code: 'invalid_input'
+		});
+	});
+	it('rejects non-object prefs with 422', async () => {
+		const p = await createProfile(db, alice.id, { name: 'main' });
+		await expect(updateProfile(db, alice.id, p.id, { prefs: [] })).rejects.toMatchObject({
+			status: 422, code: 'invalid_input'
+		});
+		await expect(updateProfile(db, alice.id, p.id, { prefs: 'x' })).rejects.toMatchObject({
+			status: 422, code: 'invalid_input'
+		});
+	});
+	it('accepts a valid patch of all fields', async () => {
+		const p = await createProfile(db, alice.id, { name: 'main' });
+		const upd = await updateProfile(db, alice.id, p.id, { cycle: 3, currentRebirth: 5, prefs: { theme: 'dark' } });
+		expect(upd).toMatchObject({ cycle: 3, currentRebirth: 5, prefs: { theme: 'dark' } });
+	});
 });

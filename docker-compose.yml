@@ -5,7 +5,6 @@ services:
     restart: unless-stopped
     environment:
       DATABASE_URL: postgres://dtt:${POSTGRES_PASSWORD:?set in .env}@db:5432/dtt
-      SESSION_SECRET: ${SESSION_SECRET:?set in .env}
       INVITE_CODE: ${INVITE_CODE:?set in .env}
       ORIGIN: ${ORIGIN:?set in .env} # e.g. https://droids.example.lan — required by adapter-node for form origin checks
     ports: ["3000:3000"]

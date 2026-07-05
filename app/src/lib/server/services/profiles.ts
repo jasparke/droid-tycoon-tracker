@@ -3,6 +3,15 @@ import type { Db } from '../db';
 import { profiles, users } from '../schema';
 import { ApiError } from '../api-error';
 
+const INT4_MAX = 2_147_483_647;
+
+// patch fields arrive from untrusted JSON; keep them in int4 range before they reach Postgres
+function intField(value: unknown, name: string, min: number): number {
+	if (typeof value !== 'number' || !Number.isInteger(value) || value < min || value > INT4_MAX)
+		throw new ApiError(422, 'invalid_input', `${name} must be an integer between ${min} and ${INT4_MAX}`);
+	return value;
+}
+
 export async function assertOwner(db: Db, userId: number, profileId: number) {
 	const p = await db.query.profiles.findFirst({ where: eq(profiles.id, profileId) });
 	if (!p) throw new ApiError(404, 'not_found', 'Profile not found');
@@ -35,9 +44,13 @@ export async function updateProfile(
 	await assertOwner(db, userId, profileId);
 	const allowed: Record<string, unknown> = {};
 	if (patch.name !== undefined) allowed.name = String(patch.name).trim();
-	if (patch.cycle !== undefined) allowed.cycle = patch.cycle;
-	if (patch.currentRebirth !== undefined) allowed.currentRebirth = patch.currentRebirth;
-	if (patch.prefs !== undefined) allowed.prefs = patch.prefs;
+	if (patch.cycle !== undefined) allowed.cycle = intField(patch.cycle, 'cycle', 1);
+	if (patch.currentRebirth !== undefined) allowed.currentRebirth = intField(patch.currentRebirth, 'currentRebirth', 0);
+	if (patch.prefs !== undefined) {
+		if (typeof patch.prefs !== 'object' || patch.prefs === null || Array.isArray(patch.prefs))
+			throw new ApiError(422, 'invalid_input', 'prefs must be a plain object');
+		allowed.prefs = patch.prefs;
+	}
 	if (allowed.name === '') throw new ApiError(422, 'invalid_input', 'Profile name required');
 	const [p] = await db.update(profiles).set(allowed).where(eq(profiles.id, profileId)).returning();
 	return p;

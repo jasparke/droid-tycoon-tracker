@@ -20,3 +20,11 @@ export function intParam(value: string | undefined, name: string): number {
 	if (!Number.isInteger(n)) throw new ApiError(422, 'bad_param', `${name} must be an integer`);
 	return n;
 }
+
+export function decodeParam(value: string, name: string): string {
+	try {
+		return decodeURIComponent(value);
+	} catch {
+		throw new ApiError(422, 'bad_param', `${name} is not a valid encoded value`);
+	}
+}

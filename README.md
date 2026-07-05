@@ -6,7 +6,7 @@
 
 ## Running the app (docker)
 
-    cp .env.example .env   # set POSTGRES_PASSWORD, SESSION_SECRET, INVITE_CODE, ORIGIN
+    cp .env.example .env   # set POSTGRES_PASSWORD, INVITE_CODE, ORIGIN
     docker compose up -d --build
     docker compose exec app node drizzle/seed.mjs   # first run only: load game reference data
 
@@ -14,11 +14,14 @@ The app listens on port 3000 (HTTP) — front it with your reverse proxy for TLS
 Register the first account with your INVITE_CODE. Import old tracker data via
 the export code from the prototype (☁ → Export) using POST /api/import or the UI.
 
+## Prototype (frozen)
+
+The original single-file tracker, preserved under `prototype/`. The app above
+replaces it; everything in this section documents the prototype.
+
 A single-file, offline-friendly tracker for **Star Wars: Droid Tycoon** (Fortnite). Plan rebirths, track which droids you own at which tier, see income / upgrade-chip costs / sell values, and manage multiple player profiles — with optional cross-device cloud sync.
 
-**[▶ Live version](https://YOUR-USERNAME.github.io/droid-tycoon-tracker/)** *(update this link after enabling GitHub Pages)*
-
-## Features
+### Features
 
 - **All 4 rebirth cycles × 27 rebirths** with exact credit costs, Nova crystal counts, credit/XP multipliers, and unlock slots.
 - **Full droid reference for 68 droids** — class (Common → Iconic), type (Worker / Astromech / Battle), and per-tier **income, buy cost, and sell value** (Base → Beskar).
@@ -28,16 +31,16 @@ A single-file, offline-friendly tracker for **Star Wars: Droid Tycoon** (Fortnit
 - **Droids to Keep**, **All Droids**, and **Inventory** views, plus a **Nova Shop / Cosmetics / flawless** reference panel.
 - **Multiple profiles**, each with isolated inventory & progress. Export/Import via code, and optional **Supabase cloud sync** for cross-device.
 
-## Use it
+### Use it
 
-Just open `index.html` in a browser — everything runs client-side. Progress is saved locally (and mirrored into the URL, so bookmarking preserves it).
+Just open `prototype/index.html` in a browser — everything runs client-side. Progress is saved locally (and mirrored into the URL, so bookmarking preserves it).
 
 > **Tip:** hosting it (GitHub Pages / any static host) makes `localStorage` reliable — some browsers block storage for `file://` pages.
 
-## Cloud sync (optional)
+### Cloud sync (optional)
 
 1. Create a free [Supabase](https://supabase.com) project.
-2. In the Supabase **SQL editor**, run [`schema.sql`](schema.sql). It seeds the droid/rebirth reference tables and creates a `players` sync table.
+2. In the Supabase **SQL editor**, run [`schema.sql`](prototype/schema.sql). It seeds the droid/rebirth reference tables and creates a `players` sync table.
 3. In Supabase **Settings ▸ API**, copy your **Project URL** and **anon public key**.
 4. In the tracker, click the **☁** button, paste the URL + key, and choose a **sync code** (a secret you reuse on every device).
 
