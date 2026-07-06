@@ -8,6 +8,13 @@
       "when": 1783195907556,
       "tag": "0000_colorful_nitro",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1783375768571,
+      "tag": "0001_clean_chat",
+      "breakpoints": true
     }
   ]
 }

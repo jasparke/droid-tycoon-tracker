@@ -12,8 +12,8 @@ beforeAll(async () => {
 describe('getReference', () => {
 	it('returns all reference tables and the newest version', async () => {
 		const ref = await getReference(db);
-		expect(ref.droids.map((d) => d.name).sort()).toEqual(['CB', 'MOUSE']);
-		expect(ref.droidTiers.length).toBe(3);
+		expect(ref.droids.map((d) => d.name).sort()).toEqual(['CB', 'CB-23', 'MOUSE', 'R2-D2']);
+		expect(ref.droidTiers.length).toBe(4);
 		expect(ref.rebirthReqs.length).toBe(2);
 		expect(ref.chipCosts[0].rarity).toBe('Common');
 		expect(ref.rebirthMeta[0]).toMatchObject({ rebirth: 12, nova: 11 });

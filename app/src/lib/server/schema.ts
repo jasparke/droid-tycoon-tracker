@@ -1,5 +1,5 @@
 import {
-	pgTable, serial, text, integer, bigint, timestamp, jsonb, primaryKey
+	pgTable, serial, text, integer, bigint, timestamp, jsonb, primaryKey, numeric
 } from 'drizzle-orm/pg-core';
 
 // ---------- user zone ----------
@@ -43,7 +43,9 @@ export const plans = pgTable('plans', {
 export const droids = pgTable('droids', {
 	name: text('name').primaryKey(),
 	rarity: text('rarity').notNull(),
-	type: text('type').notNull()
+	type: text('type').notNull(),
+	incomePct: numeric('income_pct'),      // Iconic %/s (droid-level; Iconics have no tier grid)
+	buyNc: integer('buy_nc')                // CB-23's 75 nova-crystal Base cost
 });
 
 export const droidTiers = pgTable('droid_tiers', {
@@ -65,10 +67,10 @@ export const rebirthReqs = pgTable('rebirth_reqs', {
 
 export const chipCosts = pgTable('chip_costs', {
 	rarity: text('rarity').primaryKey(),
-	toGold: integer('to_gold').notNull(),
-	toDiamond: integer('to_diamond').notNull(),
-	toRainbow: integer('to_rainbow').notNull(),
-	toBeskar: integer('to_beskar').notNull()
+	toGold: integer('to_gold'),             // nullable now: Iconic row is all-N/A
+	toDiamond: integer('to_diamond'),
+	toRainbow: integer('to_rainbow'),
+	toBeskar: integer('to_beskar')
 });
 
 export const rebirthMeta = pgTable('rebirth_meta', {
@@ -95,5 +97,30 @@ export const dataVersions = pgTable('data_versions', {
 	id: serial('id').primaryKey(),
 	ingestedAt: timestamp('ingested_at', { withTimezone: true }).notNull().defaultNow(),
 	source: text('source').notNull(),
-	checksum: text('checksum').notNull()
+	checksum: text('checksum').notNull(),
+	payload: jsonb('payload')               // code-invariant: always written (see plan deviation note)
+});
+
+export const droidSellValues = pgTable('droid_sell_values', {
+	rarity: text('rarity').notNull(),
+	tier: text('tier').notNull(),           // Gold|Diamond|Rainbow|Beskar (no Base column in sheet)
+	multiplier: integer('multiplier').notNull()
+}, (t) => [primaryKey({ columns: [t.rarity, t.tier] })]);
+
+export const flawlessSpawn = pgTable('flawless_spawn', {
+	tier: text('tier').primaryKey(),        // Base|Gold|Diamond|Rainbow|Beskar
+	oneIn: integer('one_in').notNull()      // probability = 1/oneIn
+});
+
+export const novaPaintStages = pgTable('nova_paint_stages', {
+	stage: integer('stage').primaryKey(),   // global ladder: 1→30, 2→120, 3→400
+	crystalCost: integer('crystal_cost').notNull()
+});
+
+export const syncPreviews = pgTable('sync_previews', {
+	checksum: text('checksum').primaryKey(),
+	baseVersionId: integer('base_version_id').notNull(),
+	payload: jsonb('payload').notNull(),
+	flags: jsonb('flags').notNull(),
+	builtAt: timestamp('built_at', { withTimezone: true }).notNull().defaultNow()
 });
