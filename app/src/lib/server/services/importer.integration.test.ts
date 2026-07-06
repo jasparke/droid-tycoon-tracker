@@ -58,4 +58,30 @@ describe('importCode', () => {
 		expect(await db.select().from(counts).where(eq(counts.profileId, res.profileId))).toHaveLength(1);
 		expect(await db.select().from(plans).where(eq(plans.profileId, res.profileId))).toHaveLength(1);
 	});
+	it('dedupes keys normalizing to the same cycle|droid|tier — last occurrence wins', async () => {
+		const code = mkCode({ name: 'dup', counts: { '1|MOUSE|Gold': 3, '01|MOUSE|Gold': 7 }, plan: {} });
+		const res = await importCode(db, uid, code);
+		expect(res.imported).toBe(1);
+		const rows = await db.select().from(counts).where(eq(counts.profileId, res.profileId));
+		expect(rows).toHaveLength(1);
+		expect(rows[0]).toMatchObject({ cycle: 1, droid: 'MOUSE', tier: 'Gold', n: 7 });
+	});
+	it('skips out-of-range or non-integer n by raw key; drops n=0 silently (0 means absence)', async () => {
+		const code = mkCode({
+			name: 'nbound',
+			counts: { '1|MOUSE|Gold': -1, '1|CB|Base': 1000001, '1|MOUSE|Base': 1.5, '1|MOUSE|Beskar': 0 },
+			plan: {}
+		});
+		const res = await importCode(db, uid, code);
+		expect(res.imported).toBe(0);
+		expect(res.skipped.sort()).toEqual(['1|CB|Base', '1|MOUSE|Base', '1|MOUSE|Gold']);
+		const rows = await db.select().from(counts).where(eq(counts.profileId, res.profileId));
+		expect(rows).toHaveLength(0);
+	});
+	it('a later n=0 shadows an earlier duplicate of the same key', async () => {
+		const code = mkCode({ name: 'zshadow', counts: { '1|MOUSE|Gold': 3, '01|MOUSE|Gold': 0 }, plan: {} });
+		const res = await importCode(db, uid, code);
+		expect(res.imported).toBe(0);
+		expect(res.skipped).toEqual([]);
+	});
 });

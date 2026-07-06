@@ -5,7 +5,7 @@
 	import { isMet, ownedIdx } from '$lib/game/inventory';
 	import { TIERS, type Tier } from '$lib/game/tiers';
 	const t = makeTracker(page.data as never);
-	const ref = page.data.reference;
+	const ref = page.data.reference!; // guaranteed present: this route is auth-gated by the root layout
 	const cycle = $derived(t.active()?.cycle ?? 1);
 	const reqs = $derived(
 		ref.rebirthReqs.filter((r: { cycle: number }) => r.cycle === cycle)
@@ -45,14 +45,15 @@
 	{@const info = rows.find((r: { credits: string }) => r.credits) ?? rows[0]}
 	<section>
 		<h2>R{rb} <small>{info.credits} credits
-			{#if meta(rb)}· {meta(rb).nova} nova · +{meta(rb).creditMult}% cr · +{meta(rb).xpMult}% xp{/if}
+			{#if meta(rb)}· {meta(rb)?.nova} nova · +{meta(rb)?.creditMult}% cr · +{meta(rb)?.xpMult}% xp{/if}
 			{#if info.unlock}· unlocks {info.unlock}{/if}</small></h2>
 		<ul>
 			{#each rows as r}
+				{@const tier = r.tier as Tier}
 				{@const oi = ownedIdx(t.countRows(), cycle, r.droid)}
-				{@const met = isMet(t.countRows(), cycle, r.droid, r.tier)}
+				{@const met = isMet(t.countRows(), cycle, r.droid, tier)}
 				<li>
-					<button disabled={!t.editable()} onclick={() => toggle(r.droid, r.tier)}>
+					<button disabled={!t.editable()} onclick={() => toggle(r.droid, tier)}>
 						{met ? '☑' : '☐'}
 					</button>
 					<span class={oi >= 0 ? `tier-${TIERS[oi]}` : ''} title="requires {r.tier}{oi >= 0 ? ` · have ${TIERS[oi]}` : ''}">{r.droid}</span>

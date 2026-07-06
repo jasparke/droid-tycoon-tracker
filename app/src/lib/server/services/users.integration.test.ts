@@ -1,9 +1,12 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
+import { createHash } from 'node:crypto';
 import { eq } from 'drizzle-orm';
 import { testDb, resetUserZone } from '../testing/db';
 import { register, login, validateSession, logout } from './users';
 import { ApiError } from '../api-error';
 import { sessions } from '../schema';
+
+const sha256 = (t: string) => createHash('sha256').update(t).digest('hex');
 
 let db: Awaited<ReturnType<typeof testDb>>['db'];
 let sql: Awaited<ReturnType<typeof testDb>>['sql'];
@@ -61,8 +64,26 @@ describe('login + sessions', () => {
 	it('expired session is null and its row is deleted', async () => {
 		await register(db, good, INVITE);
 		const { token } = await login(db, { username: 'jasparke', password: good.password });
-		await db.update(sessions).set({ expiresAt: new Date(Date.now() - 1000) }).where(eq(sessions.token, token));
+		await db.update(sessions).set({ expiresAt: new Date(Date.now() - 1000) }).where(eq(sessions.token, sha256(token)));
 		expect(await validateSession(db, token)).toBeNull();
-		expect(await db.query.sessions.findFirst({ where: eq(sessions.token, token) })).toBeUndefined();
+		expect(await db.query.sessions.findFirst({ where: eq(sessions.token, sha256(token)) })).toBeUndefined();
+	});
+	it('stores only a hash of the token, never the raw value', async () => {
+		await register(db, good, INVITE);
+		const { token } = await login(db, { username: 'jasparke', password: good.password });
+		const rows = await db.select().from(sessions);
+		expect(rows).toHaveLength(1);
+		expect(rows[0].token).toBe(sha256(token));
+		expect(rows.some((r) => r.token === token)).toBe(false);
+	});
+	it('sweeps all expired session rows on login', async () => {
+		await register(db, good, INVITE);
+		const { token: stale } = await login(db, { username: 'jasparke', password: good.password });
+		await db.update(sessions).set({ expiresAt: new Date(Date.now() - 1000) }).where(eq(sessions.token, sha256(stale)));
+		expect(await db.select().from(sessions)).toHaveLength(1);
+		await login(db, { username: 'jasparke', password: good.password });
+		const rows = await db.select().from(sessions);
+		expect(rows).toHaveLength(1);
+		expect(rows.every((r) => r.expiresAt > new Date())).toBe(true);
 	});
 });

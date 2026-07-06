@@ -5,17 +5,15 @@
 	import { TIERS, RIDX, type Tier } from '$lib/game/tiers';
 	import { ownedIdx } from '$lib/game/inventory';
 	const t = makeTracker(page.data as never);
-	const ref = page.data.reference;
+	const ref = page.data.reference!; // guaranteed present: this route is auth-gated by the root layout
 	const cycle = $derived(t.active()?.cycle ?? 1);
 	let rarity = $state('all'), type = $state('all'), tier = $state('all');
 	type DroidMeta = { name: string; rarity: string; type: string };
-	const meta = new Map<string, DroidMeta>(ref.droids.map((d: DroidMeta) => [d.name, d]));
-	const stats: TierStat[] = ref.droidTiers.map(
-		(s: { droid: string; tier: Tier; buy: number | null; income: number | null }) => ({
-			droid: s.droid, tier: s.tier, buy: s.buy, income: s.income,
-			rarity: meta.get(s.droid)?.rarity ?? '?', type: meta.get(s.droid)?.type ?? '?'
-		})
-	);
+	const meta = new Map<string, DroidMeta>(ref.droids.map((d): [string, DroidMeta] => [d.name, d]));
+	const stats: TierStat[] = ref.droidTiers.map((s) => ({
+		droid: s.droid, tier: s.tier as Tier, buy: s.buy, income: s.income,
+		rarity: meta.get(s.droid)?.rarity ?? '?', type: meta.get(s.droid)?.type ?? '?'
+	}));
 	const rows = $derived(
 		roiTable(stats).filter(
 			(r) => (rarity === 'all' || r.rarity === rarity) &&

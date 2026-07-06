@@ -8,9 +8,13 @@ RUN npm run build && npm prune --omit=dev
 FROM node:22-alpine
 WORKDIR /app
 ENV NODE_ENV=production
-COPY --from=build /app/build build
-COPY --from=build /app/node_modules node_modules
-COPY --from=build /app/package.json .
-COPY --from=build /app/drizzle drizzle
+RUN addgroup -S app && adduser -S -G app app
+COPY --from=build --chown=app:app /app/build build
+COPY --from=build --chown=app:app /app/node_modules node_modules
+COPY --from=build --chown=app:app /app/package.json .
+COPY --from=build --chown=app:app /app/drizzle drizzle
+USER app
 EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+	CMD node -e "fetch('http://localhost:3000/login').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
 CMD ["sh", "-c", "node drizzle/migrate.mjs && node build"]
