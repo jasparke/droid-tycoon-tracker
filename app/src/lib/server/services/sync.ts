@@ -4,6 +4,7 @@ import { buildPayload } from '../sync/build';
 import { diffTables } from '../sync/diff';
 import type { Payload, PayloadTables, Flag } from '../sync/types';
 import { ApiError } from '../api-error';
+import { checksumOf } from '../sync/canonical.js';
 
 const EMPTY_TABLES: PayloadTables = { droids: [], droidTiers: [], rebirthReqs: [], chipCosts: [], rebirthMeta: [], novaShop: [], cosmetics: [], droidSellValues: [], flawlessSpawn: [], novaPaintStages: [] };
 
@@ -90,4 +91,37 @@ export async function applyPayload(sql: Sql, input: { baseVersionId: number; pay
 		await tx`delete from sync_previews where checksum = ${input.payloadChecksum}`;
 	});
 	return { versionId };
+}
+
+export async function rollback(sql: Sql, versionId: number): Promise<{ versionId: number }> {
+	const rows = await sql`select payload, source from data_versions where id = ${versionId}`;
+	if (!rows[0]) throw new ApiError(404, 'not_found', `No version ${versionId}`);
+	const payload = rows[0].payload as Payload;
+	const checksum = checksumOf(payload.tables as unknown as Record<string, unknown[]>);
+	const active = await sql`select id from data_versions order by id desc limit 1`;
+	const baseVersionId = active[0]?.id ?? 0;
+	// same identity-serializer gotcha as stagePayload's insert: pre-stringify before sql.json().
+	await sql`insert into sync_previews (checksum, base_version_id, payload, flags)
+		values (${checksum}, ${baseVersionId}, ${sql.json(JSON.stringify(payload))}, ${sql.json(JSON.stringify([]))})
+		on conflict (checksum) do update set base_version_id = excluded.base_version_id, payload = excluded.payload, flags = excluded.flags, built_at = now()`;
+	return applyPayload(sql, { baseVersionId, payloadChecksum: checksum, acknowledgedHolds: [] });
+}
+
+export interface VersionSummary {
+	id: number;
+	ingestedAt: Date;
+	source: string;
+	rowCounts: Record<string, number> | null;
+	orphanReport: unknown[];
+}
+
+export async function listVersions(sql: Sql): Promise<VersionSummary[]> {
+	const rows = await sql`select id, ingested_at as "ingestedAt", source, payload from data_versions order by id desc`;
+	return rows.map((r) => ({
+		id: r.id,
+		ingestedAt: r.ingestedAt,
+		source: r.source,
+		rowCounts: (r.payload?.meta?.rowCounts as Record<string, number> | undefined) ?? null,
+		orphanReport: (r.payload?.meta?.orphanReport as unknown[] | undefined) ?? []
+	}));
 }

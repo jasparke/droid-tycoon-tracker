@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { testDb, seedMinimalReference } from '../testing/db';
-import { stagePayload, stagePreview, applyPayload } from './sync';
+import { stagePayload, stagePreview, applyPayload, rollback, listVersions } from './sync';
 import { validBuilt, CSV_BY_GID } from '../sync/__fixtures__/tabs';
 
 let sql: Awaited<ReturnType<typeof testDb>>['sql'];
@@ -60,5 +60,18 @@ describe('applyPayload', () => {
 		await sql`insert into data_versions (source, checksum, payload) values ('interloper','x',${sql.json(JSON.stringify({}))})`; // N+1 lands
 		await expect(applyPayload(sql, { baseVersionId: p.baseVersionId, payloadChecksum: p.payloadChecksum, acknowledgedHolds: [] }))
 			.rejects.toMatchObject({ status: 409, code: 'stale_base' });
+	});
+});
+
+describe('rollback / listVersions', () => {
+	it('rollback re-applies a stored version as a new append-only version', async () => {
+		const p2 = await stagePayload(sql, validBuilt());
+		const v2 = await applyPayload(sql, { baseVersionId: p2.baseVersionId, payloadChecksum: p2.payloadChecksum, acknowledgedHolds: [] });
+		const rb = await rollback(sql, v2.versionId);
+		expect(rb.versionId).toBeGreaterThan(v2.versionId);
+		const versions = await listVersions(sql);
+		expect(versions[0].id).toBe(rb.versionId);        // newest first
+		expect(versions.length).toBeGreaterThanOrEqual(3); // fixture v1 + v2 + rollback
+		expect(versions.find((v) => v.id === v2.versionId)?.rowCounts).toBeDefined();
 	});
 });
