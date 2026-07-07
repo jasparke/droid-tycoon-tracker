@@ -166,7 +166,8 @@
 	.pmenu {
 		position: absolute; bottom: 100%; left: 12px; right: 12px; margin-bottom: 6px;
 		background: var(--panel); border: 1px solid var(--line-ctrl); border-radius: 6px;
-		display: flex; flex-direction: column; overflow: hidden; z-index: 40;
+		display: flex; flex-direction: column; overflow-x: hidden; z-index: 40;
+		max-height: 60vh; overflow-y: auto;
 	}
 	.pitem {
 		display: flex; align-items: center; gap: 6px; padding: 7px 10px; text-align: left;
