@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('register → toggle a count → reload → persisted', async ({ page }) => {
+test('register → tap a chip → reload → persisted', async ({ page }) => {
 	const user = `smoke${Date.now()}`;
 	await page.goto('/register');
 	await page.getByLabel('Username').fill(user);
@@ -13,13 +13,14 @@ test('register → toggle a count → reload → persisted', async ({ page }) =>
 	await page.request.post('/api/profiles', { data: { name: 'main' } });
 	await page.reload();
 
-	const firstBox = page.getByRole('button', { name: '☐' }).first();
+	const firstRow = page.locator('.row').first();
+	const chip = firstRow.locator('button.chip').first(); // required tier: satisfies on +1
 	await Promise.all([
 		page.waitForResponse((r) => r.url().includes('/counts/') && r.ok()),
-		firstBox.click()
+		chip.click()
 	]);
-	await expect(page.getByRole('button', { name: '☑' }).first()).toBeVisible();
+	await expect(firstRow.getByTestId('verdict')).toContainText('✓');
 
 	await page.reload();
-	await expect(page.getByRole('button', { name: '☑' }).first()).toBeVisible();
+	await expect(page.locator('.row').first().getByTestId('verdict')).toContainText('✓');
 });

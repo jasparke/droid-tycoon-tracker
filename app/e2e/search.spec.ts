@@ -12,8 +12,6 @@ async function registerWithProfile(page: Page, user: string) {
 }
 
 test('search popover: hotkeys, arrows, count edit persists', async ({ page }) => {
-	test.skip(true, 'enabled in the checklist rewrite task');
-
 	await registerWithProfile(page, `srch${Date.now()}`);
 
 	// a droid name guaranteed to exist: first checklist row
@@ -44,6 +42,9 @@ test('search popover: hotkeys, arrows, count edit persists', async ({ page }) =>
 
 	// reopen after reload: count survived
 	await page.reload();
+	// wait for hydration (the svelte:window keydown listener) to attach before firing the
+	// hotkey — 'load' alone can race the client-side hydrate() on a busier machine
+	await page.waitForLoadState('networkidle');
 	await page.keyboard.press('Control+k');
 	await dialog.getByPlaceholder('search droid…').fill(droid.slice(0, 3));
 	await dialog.getByRole('button', { name: droid, exact: true }).click();

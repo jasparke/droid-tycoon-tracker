@@ -14,7 +14,11 @@ export default defineConfig({
 		env: {
 			PORT: '4173',
 			DATABASE_URL,
-			INVITE_CODE: 'e2e-invite'
+			INVITE_CODE: 'e2e-invite',
+			// adapter-node defaults to assuming https when computing the request origin for its
+			// CSRF check, so a plain http form POST (e.g. the shell's logout form) gets rejected
+			// as cross-site without this — same requirement documented in docker-compose.yml
+			ORIGIN: 'http://localhost:4173'
 		}
 	}
 });
