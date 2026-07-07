@@ -33,8 +33,20 @@
 		reference?.version ? new Date(reference.version.ingestedAt).toISOString().slice(0, 10) : null
 	);
 	let profOpen = $state(false);
+	let profilesEl = $state<HTMLElement | null>(null);
 	const activeP = $derived(t.active());
+
+	function onWindowClick(e: MouseEvent) {
+		if (!profOpen) return;
+		if (!profilesEl?.contains(e.target as Node)) profOpen = false;
+	}
+	function onWindowKeydown(e: KeyboardEvent) {
+		if (!profOpen) return;
+		if (e.key === 'Escape') profOpen = false;
+	}
 </script>
+
+<svelte:window onclick={onWindowClick} onkeydown={onWindowKeydown} />
 
 <div class="shell">
 	<aside>
@@ -51,9 +63,9 @@
 				{/if}
 			{/each}
 		</nav>
-		<div class="profiles">
+		<div class="profiles" bind:this={profilesEl}>
 			<div class="plabel">PROFILES</div>
-			<button class="pcard" onclick={() => (profOpen = !profOpen)}>
+			<button class="pcard" aria-expanded={profOpen} aria-haspopup="menu" onclick={() => (profOpen = !profOpen)}>
 				<span class="avatar">{(activeP?.owner ?? user.username)[0].toUpperCase()}</span>
 				<span class="pname">{activeP ? `${activeP.owner}/${activeP.name}` : 'no profile'}</span>
 				<span class="caret">▾</span>
