@@ -46,7 +46,7 @@
 					rows,
 					met: rows.filter((r) => r.met).length,
 					total: rows.length,
-					credits: reqRows[0]?.credits ?? '',
+					credits: reqRows.find((r) => r.credits)?.credits ?? '',
 					unlock: reqRows.find((r) => r.unlock)?.unlock ?? ''
 				};
 			});

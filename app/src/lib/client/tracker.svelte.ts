@@ -114,6 +114,7 @@ export function makeTracker(data: {
 			const p = active();
 			if (!p || !editable()) return;
 			const v = Math.min(27, Math.max(1, Math.round(n)));
+			if (v === p.currentRebirth && rbPrev === null) return;
 			if (rbPrev === null) { rbPrev = p.currentRebirth; rbProfile = p; }
 			p.currentRebirth = v;
 			clearTimeout(rbTimer);

@@ -42,9 +42,15 @@ test('chips, verdicts, ladder, hide-done, header controls', async ({ page }) => 
 	await expect(chip).toContainText('1');
 
 	// hide done hides the now-met row
-	await page.getByRole('button', { name: /HIDE DONE/ }).click();
+	await Promise.all([
+		page.waitForResponse((r) => /\/api\/profiles\/\d+$/.test(r.url()) && r.request().method() === 'PATCH' && r.ok()),
+		page.getByRole('button', { name: /HIDE DONE/ }).click()
+	]);
 	await expect(page.locator('.row .dname', { hasText: droid }).first()).toBeHidden();
-	await page.getByRole('button', { name: /HIDE DONE/ }).click();
+	await Promise.all([
+		page.waitForResponse((r) => /\/api\/profiles\/\d+$/.test(r.url()) && r.request().method() === 'PATCH' && r.ok()),
+		page.getByRole('button', { name: /HIDE DONE/ }).click()
+	]);
 
 	// cycle toggle persists via PATCH (await both PATCHes so the stepper wait below can't
 	// accidentally match a straggling cycle response)
