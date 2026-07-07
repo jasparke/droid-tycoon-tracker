@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
-import { createHash } from 'node:crypto';
 import postgres from 'postgres';
+import { checksumOf } from '../src/lib/server/sync/canonical.js';
 
 const url = process.env.DATABASE_URL ?? 'postgres://dtt:dtt@localhost:5432/dtt';
 const raw = readFileSync(new URL('./seed-data.json', import.meta.url), 'utf8');
@@ -21,10 +21,25 @@ await sql.begin(async (tx) => {
 		await tx`insert into rebirth_meta ${tx({ rebirth: r.rebirth, nova: r.nova, credit_mult: r.creditMult, xp_mult: r.xpMult })}`;
 	for (const r of d.novaShop) await tx`insert into nova_shop ${tx(r)}`;
 	for (const r of d.cosmetics) await tx`insert into cosmetics ${tx(r)}`;
-	await tx`insert into data_versions ${tx({
-		source: 'prototype-constants',
-		checksum: createHash('sha256').update(raw).digest('hex')
-	})}`;
+
+	const tables = {
+		droids: d.droids, droidTiers: d.droidTiers, rebirthReqs: d.rebirthReqs, chipCosts: d.chipCosts,
+		rebirthMeta: d.rebirthMeta, novaShop: d.novaShop, cosmetics: d.cosmetics,
+		droidSellValues: d.droidSellValues ?? [], flawlessSpawn: d.flawlessSpawn ?? [], novaPaintStages: d.novaPaintStages ?? []
+	};
+	const payload = {
+		meta: {
+			source: 'prototype-constants',
+			fetchedAt: new Date().toISOString(),
+			tabChecksums: {},
+			rowCounts: Object.fromEntries(Object.entries(tables).map(([k, v]) => [k, v.length])),
+			orphanReport: []
+		},
+		tables
+	};
+	// raw postgres client (no drizzle wrapping) → normal jsonb serializer stringifies for us; pass the object.
+	await tx`insert into data_versions (source, checksum, payload)
+		values ('prototype-constants', ${checksumOf(tables)}, ${tx.json(payload)})`;
 });
 await sql.end();
 console.log('seeded');

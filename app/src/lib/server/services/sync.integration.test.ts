@@ -63,6 +63,13 @@ describe('applyPayload', () => {
 	});
 });
 
+describe('payload invariant', () => {
+	it('no data_versions row ever has a null payload after apply', async () => {
+		const nulls = await sql`select count(*)::int as n from data_versions where payload is null`;
+		expect(nulls[0].n).toBe(0);
+	});
+});
+
 describe('rollback / listVersions', () => {
 	it('rollback re-applies a stored version as a new append-only version', async () => {
 		const p2 = await stagePayload(sql, validBuilt());

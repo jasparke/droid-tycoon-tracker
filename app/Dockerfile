@@ -12,5 +12,6 @@ COPY --from=build /app/build build
 COPY --from=build /app/node_modules node_modules
 COPY --from=build /app/package.json .
 COPY --from=build /app/drizzle drizzle
+COPY --from=build /app/src/lib/server/sync/canonical.js src/lib/server/sync/canonical.js
 EXPOSE 3000
-CMD ["sh", "-c", "node drizzle/migrate.mjs && node build"]
+CMD ["sh", "-c", "node drizzle/migrate.mjs && node drizzle/backfill-payload.mjs && node build"]
