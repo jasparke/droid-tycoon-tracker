@@ -19,4 +19,14 @@ describe('getReference', () => {
 		expect(ref.rebirthMeta[0]).toMatchObject({ rebirth: 12, nova: 11 });
 		expect(ref.version?.source).toBe('test-fixture');
 	});
+
+	it('serves the new reference tables and iconic columns', async () => {
+		const ref = await getReference(db);
+		expect(ref.droidSellValues).toEqual([
+			{ rarity: 'Common', tier: 'Gold', multiplier: 4 }, { rarity: 'Common', tier: 'Beskar', multiplier: 13 }
+		]);
+		expect(ref.flawlessSpawn.find((f) => f.tier === 'Base')?.oneIn).toBe(1000);
+		expect(ref.novaPaintStages).toHaveLength(3);
+		expect(ref.droids.find((d) => d.name === 'R2-D2')).toMatchObject({ incomePct: '25', buyNc: null });
+	});
 });
