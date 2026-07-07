@@ -26,10 +26,33 @@ export function makeTracker(data: {
 	const editable = () => active()?.userId === data.user.id;
 	let rbTimer: ReturnType<typeof setTimeout> | undefined;
 	let rbPrev: number | null = null;
+	let rbProfile: ProfileRow | null = null;
+	// send the pending rebirth PATCH for `p`, rolling back to `prev` + toasting on failure
+	const flushRebirthSave = (p: ProfileRow, prev: number) => {
+		const current = p.currentRebirth;
+		apiFetch(`/api/profiles/${p.id}`, {
+			method: 'PATCH', body: JSON.stringify({ currentRebirth: current })
+		}).catch((e) => {
+			p.currentRebirth = prev;
+			toast(`Save failed: ${(e as Error).message}`);
+		});
+	};
+	// flush (and clear) any pending debounced rebirth save, e.g. before switching profiles
+	const flushPendingRebirth = () => {
+		clearTimeout(rbTimer);
+		rbTimer = undefined;
+		if (rbProfile && rbPrev !== null) flushRebirthSave(rbProfile, rbPrev);
+		rbProfile = null;
+		rbPrev = null;
+	};
 	return {
 		state, active, editable,
 		myProfiles: () => mine,
-		selectProfile(id: number) { state.activeId = id; state.hideDoneOverride = null; },
+		selectProfile(id: number) {
+			flushPendingRebirth();
+			state.activeId = id;
+			state.hideDoneOverride = null;
+		},
 		countRows: () => state.counts[state.activeId ?? -1] ?? [],
 		planFor: (cycle: number) => state.plans[state.activeId ?? -1]?.[cycle] ?? [],
 		async setCount(cycle: number, droid: string, tier: Tier, n: number) {
@@ -91,22 +114,11 @@ export function makeTracker(data: {
 			const p = active();
 			if (!p || !editable()) return;
 			const v = Math.min(27, Math.max(1, Math.round(n)));
-			if (rbPrev === null) rbPrev = p.currentRebirth;
+			if (rbPrev === null) { rbPrev = p.currentRebirth; rbProfile = p; }
 			p.currentRebirth = v;
 			clearTimeout(rbTimer);
 			// coalesce rapid stepper clicks into one PATCH
-			rbTimer = setTimeout(async () => {
-				const prev = rbPrev ?? p.currentRebirth;
-				rbPrev = null;
-				try {
-					await apiFetch(`/api/profiles/${p.id}`, {
-						method: 'PATCH', body: JSON.stringify({ currentRebirth: p.currentRebirth })
-					});
-				} catch (e) {
-					p.currentRebirth = prev;
-					toast(`Save failed: ${(e as Error).message}`);
-				}
-			}, 400);
+			rbTimer = setTimeout(flushPendingRebirth, 400);
 		},
 		async setHideDone(b: boolean) {
 			const p = active();
