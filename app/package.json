@@ -10,7 +10,7 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"test:unit": "vitest run src/lib/game",
+		"test:unit": "vitest run src/lib/game src/lib/client",
 		"test:int": "vitest run src/lib/server --no-file-parallelism",
 		"test:e2e": "playwright test",
 		"db:generate": "drizzle-kit generate",

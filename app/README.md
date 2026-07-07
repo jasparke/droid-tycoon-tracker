@@ -25,7 +25,7 @@ or in `app/.env`).
 ## Tests
 
 - `npm run check` — svelte-check type check (no database).
-- `npm run test:unit` — pure game-logic units in `src/lib/game` (no database).
+- `npm run test:unit` — pure units in `src/lib/game` and `src/lib/client` (no database).
 - `npm run test:int` — service + helper tests in `src/lib/server`; needs the
   `dtt_test` database up (migrations are applied automatically).
 - `npm run test:e2e` — Playwright smoke; builds the app and runs it against the
