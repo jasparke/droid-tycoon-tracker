@@ -18,3 +18,12 @@ export function totalOf(counts: CountRow[], cycle: number, droid: string): numbe
 	for (const c of counts) if (c.cycle === cycle && c.droid === droid) s += c.n;
 	return s;
 }
+
+// Lowest owned tier index >= the required tier (counts-as); -1 when unmet.
+// Drives the green satisfying-ring and checklist verdicts.
+export function satisfyingIdx(counts: CountRow[], cycle: number, droid: string, tier: Tier): number {
+	const per = [0, 0, 0, 0, 0];
+	for (const c of counts) if (c.cycle === cycle && c.droid === droid) per[RIDX[c.tier]] += c.n;
+	for (let i = RIDX[tier]; i <= 4; i++) if (per[i] > 0) return i;
+	return -1;
+}
