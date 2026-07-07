@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { makeTracker } from '$lib/client/tracker.svelte';
+	import { getTracker } from '$lib/client/tracker-context';
 	import { toast } from '$lib/client/toast.svelte';
 	import { isMet, ownedIdx } from '$lib/game/inventory';
 	import { TIERS, type Tier } from '$lib/game/tiers';
-	const t = makeTracker(page.data as never);
+	const t = getTracker()!;
 	const ref = page.data.reference!; // guaranteed present: this route is auth-gated by the root layout
 	const cycle = $derived(t.active()?.cycle ?? 1);
 	const reqs = $derived(

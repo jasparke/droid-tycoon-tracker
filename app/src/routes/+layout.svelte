@@ -6,7 +6,11 @@
 	import '@fontsource/jetbrains-mono/700.css';
 	import '../app.css';
 	import Toasts from '$lib/components/Toasts.svelte';
+	import { makeTracker } from '$lib/client/tracker.svelte';
+	import { setTracker } from '$lib/client/tracker-context';
 	let { data, children } = $props();
+	const t = data.user ? makeTracker(data as never) : null;
+	if (t) setTracker(t);
 </script>
 
 {#if data.user}

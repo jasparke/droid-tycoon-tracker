@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/state';
-	import { makeTracker } from '$lib/client/tracker.svelte';
+	import { getTracker } from '$lib/client/tracker-context';
 	import { TIERS, type Tier } from '$lib/game/tiers';
-	const t = makeTracker(page.data as never);
+	const t = getTracker()!;
 	const cycle = $derived(t.active()?.cycle ?? 1);
 	const rows = $derived.by(() => {
 		const byDroid = new Map<string, Partial<Record<Tier, number>>>();

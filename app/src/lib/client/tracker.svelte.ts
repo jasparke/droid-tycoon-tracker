@@ -1,9 +1,12 @@
 import { apiFetch } from './api';
 import { toast } from './toast.svelte';
 import type { CountRow } from '$lib/game/inventory';
-import type { Tier } from '$lib/game/tiers';
+import { RIDX, type Tier } from '$lib/game/tiers';
 
-type ProfileRow = { id: number; userId: number; owner: string; name: string; cycle: number; currentRebirth: number };
+type ProfileRow = {
+	id: number; userId: number; owner: string; name: string;
+	cycle: number; currentRebirth: number; prefs: unknown
+};
 
 export function makeTracker(data: {
 	user: { id: number };
@@ -16,14 +19,17 @@ export function makeTracker(data: {
 		profiles: data.profiles,
 		activeId: mine[0]?.id ?? data.profiles[0]?.id ?? null,
 		counts: structuredClone(data.countsByProfile) as Record<number, CountRow[]>,
-		plans: structuredClone(data.plansByCycle) as Record<number, Record<number, number[]>>
+		plans: structuredClone(data.plansByCycle) as Record<number, Record<number, number[]>>,
+		hideDoneOverride: null as boolean | null
 	});
 	const active = () => state.profiles.find((p) => p.id === state.activeId) ?? null;
 	const editable = () => active()?.userId === data.user.id;
+	let rbTimer: ReturnType<typeof setTimeout> | undefined;
+	let rbPrev: number | null = null;
 	return {
 		state, active, editable,
 		myProfiles: () => mine,
-		selectProfile(id: number) { state.activeId = id; },
+		selectProfile(id: number) { state.activeId = id; state.hideDoneOverride = null; },
 		countRows: () => state.counts[state.activeId ?? -1] ?? [],
 		planFor: (cycle: number) => state.plans[state.activeId ?? -1]?.[cycle] ?? [],
 		async setCount(cycle: number, droid: string, tier: Tier, n: number) {
@@ -62,6 +68,68 @@ export function makeTracker(data: {
 				state.plans[pid][cycle] = prev;
 				toast(`Save failed: ${(e as Error).message}`);
 			}
+		},
+		cycle: () => active()?.cycle ?? 1,
+		rebirth: () => Math.min(27, Math.max(1, active()?.currentRebirth ?? 1)),
+		hideDone(): boolean {
+			if (!editable() && state.hideDoneOverride !== null) return state.hideDoneOverride;
+			return ((active()?.prefs ?? {}) as { hideDone?: boolean }).hideDone ?? false;
+		},
+		async setCycle(n: 1 | 2) {
+			const p = active();
+			if (!p || !editable() || p.cycle === n) return;
+			const prev = p.cycle;
+			p.cycle = n;
+			try {
+				await apiFetch(`/api/profiles/${p.id}`, { method: 'PATCH', body: JSON.stringify({ cycle: n }) });
+			} catch (e) {
+				p.cycle = prev;
+				toast(`Save failed: ${(e as Error).message}`);
+			}
+		},
+		setRebirth(n: number) {
+			const p = active();
+			if (!p || !editable()) return;
+			const v = Math.min(27, Math.max(1, Math.round(n)));
+			if (rbPrev === null) rbPrev = p.currentRebirth;
+			p.currentRebirth = v;
+			clearTimeout(rbTimer);
+			// coalesce rapid stepper clicks into one PATCH
+			rbTimer = setTimeout(async () => {
+				const prev = rbPrev ?? p.currentRebirth;
+				rbPrev = null;
+				try {
+					await apiFetch(`/api/profiles/${p.id}`, {
+						method: 'PATCH', body: JSON.stringify({ currentRebirth: p.currentRebirth })
+					});
+				} catch (e) {
+					p.currentRebirth = prev;
+					toast(`Save failed: ${(e as Error).message}`);
+				}
+			}, 400);
+		},
+		async setHideDone(b: boolean) {
+			const p = active();
+			if (!p) return;
+			if (!editable()) {
+				// viewing someone else's profile: local view state only
+				state.hideDoneOverride = b;
+				return;
+			}
+			const prevPrefs = { ...((p.prefs ?? {}) as Record<string, unknown>) };
+			p.prefs = { ...prevPrefs, hideDone: b };
+			try {
+				await apiFetch(`/api/profiles/${p.id}`, { method: 'PATCH', body: JSON.stringify({ prefs: p.prefs }) });
+			} catch (e) {
+				p.prefs = prevPrefs;
+				toast(`Save failed: ${(e as Error).message}`);
+			}
+		},
+		countsFor(cycle: number, droid: string): number[] {
+			const out = [0, 0, 0, 0, 0];
+			for (const r of state.counts[state.activeId ?? -1] ?? [])
+				if (r.cycle === cycle && r.droid === droid) out[RIDX[r.tier]] += r.n;
+			return out;
 		}
 	};
 }
