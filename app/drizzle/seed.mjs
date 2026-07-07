@@ -9,7 +9,7 @@ const sql = postgres(url, { max: 1 });
 
 await sql.begin(async (tx) => {
 	// replace-all semantics: reference zone is owned by the seeder (later: sync worker)
-	await tx`truncate droids, droid_tiers, rebirth_reqs, chip_costs, rebirth_meta, nova_shop, cosmetics`;
+	await tx`truncate droids, droid_tiers, rebirth_reqs, chip_costs, rebirth_meta, nova_shop, cosmetics, droid_sell_values, flawless_spawn, nova_paint_stages`;
 	for (const r of d.droids) await tx`insert into droids ${tx(r)}`;
 	for (const r of d.droidTiers)
 		await tx`insert into droid_tiers ${tx({ droid: r.droid, tier: r.tier, buy: r.buy, income: r.income, sell: r.sell })}`;

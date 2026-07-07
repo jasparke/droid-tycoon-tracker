@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { testDb, seedMinimalReference } from '../testing/db';
 import { stagePayload, stagePreview, applyPayload, rollback, listVersions } from './sync';
 import { validBuilt, CSV_BY_GID } from '../sync/__fixtures__/tabs';
+import { checksumOf } from '../sync/canonical.js';
 
 let sql: Awaited<ReturnType<typeof testDb>>['sql'];
 beforeEach(async () => { ({ sql } = await testDb()); await seedMinimalReference(sql); });
@@ -60,6 +61,23 @@ describe('applyPayload', () => {
 		await sql`insert into data_versions (source, checksum, payload) values ('interloper','x',${sql.json(JSON.stringify({}))})`; // N+1 lands
 		await expect(applyPayload(sql, { baseVersionId: p.baseVersionId, payloadChecksum: p.payloadChecksum, acknowledgedHolds: [] }))
 			.rejects.toMatchObject({ status: 409, code: 'stale_base' });
+	});
+
+	it('serializes concurrent applies — exactly one wins, the other 409s', async () => {
+		const a = await stagePayload(sql, validBuilt());
+		const built2 = validBuilt();
+		built2.payload.tables.droids.push({ name: 'ZZZ', rarity: 'Common', type: 'Worker', incomePct: null, buyNc: null });
+		built2.checksum = checksumOf(built2.payload.tables as unknown as Record<string, unknown[]>);
+		const b = await stagePayload(sql, built2);
+		expect(a.baseVersionId).toBe(b.baseVersionId);
+		const results = await Promise.allSettled([
+			applyPayload(sql, { baseVersionId: a.baseVersionId, payloadChecksum: a.payloadChecksum, acknowledgedHolds: [] }),
+			applyPayload(sql, { baseVersionId: b.baseVersionId, payloadChecksum: b.payloadChecksum, acknowledgedHolds: [] })
+		]);
+		expect(results.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
+		const rejected = results.filter((r) => r.status === 'rejected');
+		expect(rejected).toHaveLength(1);
+		expect((rejected[0] as PromiseRejectedResult).reason).toMatchObject({ status: 409, code: 'stale_base' });
 	});
 });
 

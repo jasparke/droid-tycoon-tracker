@@ -3,6 +3,7 @@ import { checksumOf } from '../src/lib/server/sync/canonical.js';
 
 const url = process.env.DATABASE_URL ?? 'postgres://dtt:dtt@localhost:5432/dtt';
 const sql = postgres(url, { max: 1 });
+const num = (v) => (v == null ? null : Number(v));
 const nulls = await sql`select id from data_versions where payload is null`;
 if (nulls.length) {
 	const [droids, droidTiers, rebirthReqs, chipCosts, rebirthMeta, novaShop, cosmetics, droidSellValues, flawlessSpawn, novaPaintStages] = await Promise.all([
@@ -17,9 +18,13 @@ if (nulls.length) {
 		sql`select tier, one_in as "oneIn" from flawless_spawn`,
 		sql`select stage, crystal_cost as "crystalCost" from nova_paint_stages`
 	]);
-	const tables = { droids, droidTiers, rebirthReqs, chipCosts, rebirthMeta, novaShop, cosmetics, droidSellValues, flawlessSpawn, novaPaintStages };
+	const tables = {
+		droids: droids.map((r) => ({ name: r.name, rarity: r.rarity, type: r.type, incomePct: num(r.incomePct), buyNc: r.buyNc })),
+		droidTiers: droidTiers.map((r) => ({ droid: r.droid, tier: r.tier, buy: num(r.buy), income: num(r.income), sell: num(r.sell) })),
+		rebirthReqs, chipCosts, rebirthMeta, novaShop, cosmetics, droidSellValues, flawlessSpawn, novaPaintStages
+	};
 	const payload = { meta: { source: 'backfill', fetchedAt: new Date().toISOString(), tabChecksums: {}, rowCounts: Object.fromEntries(Object.entries(tables).map(([k, v]) => [k, v.length])), orphanReport: [] }, tables };
-	for (const { id } of nulls) await sql`update data_versions set payload = ${sql.json(payload)}, checksum = ${checksumOf(tables)} where id = ${id}`;
+	for (const { id } of nulls) await sql`update data_versions set payload = ${sql.json(payload)}, checksum = ${checksumOf(tables)} where id = ${id} and payload is null`;
 	console.log(`backfilled ${nulls.length} version(s)`);
 }
 await sql.end();

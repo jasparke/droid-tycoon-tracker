@@ -77,6 +77,7 @@ export function parseDroidReference(csv: string) {
 		}
 	}
 	assertHeader(chipCosts.length > 0, 'UPGRADE COSTS block found');
+	assertHeader(droidSellValues.length > 0, 'DROID SELL VALUE block found');
 	assertHeader(flawlessSpawn.length === 5, 'FLAWLESS SPAWN block found');
 	return { droids, droidTiers, chipCosts, droidSellValues, flawlessSpawn };
 }

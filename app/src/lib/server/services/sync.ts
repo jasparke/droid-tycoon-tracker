@@ -7,6 +7,7 @@ import { ApiError } from '../api-error';
 import { checksumOf } from '../sync/canonical.js';
 
 const EMPTY_TABLES: PayloadTables = { droids: [], droidTiers: [], rebirthReqs: [], chipCosts: [], rebirthMeta: [], novaShop: [], cosmetics: [], droidSellValues: [], flawlessSpawn: [], novaPaintStages: [] };
+const SYNC_APPLY_LOCK = 4242; // fixed advisory-lock key serializing all apply/rollback transactions
 
 async function activeVersion(sql: Sql): Promise<{ id: number; checksum: string; payload: Payload | null } | null> {
 	const rows = await sql`select id, checksum, payload from data_versions order by id desc limit 1`;
@@ -62,12 +63,16 @@ export async function applyPayload(sql: Sql, input: { baseVersionId: number; pay
 	if (flags.some((f) => f.kind === 'reject')) throw new ApiError(422, 'ingest_rejected', 'Payload failed a reject-class invariant — ingest refused');
 	const ackd = new Set(input.acknowledgedHolds);
 	for (const f of flags.filter((x) => x.kind === 'hold')) {
-		if (!ackd.has(f.key ?? '')) throw new ApiError(422, 'unacknowledged_hold', `Hold not acknowledged: ${f.key} (${f.message})`);
+		if (!f.key || !ackd.has(f.key)) throw new ApiError(422, 'unacknowledged_hold', `Hold not acknowledged: ${f.key ?? '(no key)'} (${f.message})`);
 	}
 
 	let versionId = 0;
 	await sql.begin(async (tx) => {
-		const active = await tx`select id from data_versions order by id desc limit 1 for update`;
+		// Serialize apply/rollback on a fixed advisory lock so the version re-read below sees any
+		// concurrently-committed newer version. (SELECT..ORDER BY id DESC LIMIT 1 FOR UPDATE does not:
+		// after blocking, EvalPlanQual re-locks the same row and misses a concurrent insert.)
+		await tx`select pg_advisory_xact_lock(${SYNC_APPLY_LOCK})`;
+		const active = await tx`select max(id)::int as id from data_versions`;
 		const activeId = active[0]?.id ?? 0;
 		if (activeId !== input.baseVersionId) throw new ApiError(409, 'stale_base', `Active version is ${activeId}, preview was against ${input.baseVersionId} — re-preview`);
 
