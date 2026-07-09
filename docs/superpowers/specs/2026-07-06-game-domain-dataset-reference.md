@@ -309,8 +309,8 @@ The 6 **Iconic** droids break the normal model and need bespoke design treatment
 |Droid buy cost (credits)|950|~273,600,000,000|~8–9 orders of magnitude|
 |Droid income (credits/s)|2|139,000|per-second; iconics are %/s instead|
 |Rebirth credit threshold|10K|32.00T|stored as display text|
-|Chip cost (single step)|5|75,000|integer counts, chip glyph|
-|Nova Crystal cost (shop)|1|~295|small integers|
+|Chip cost (single step)|5|75,000|integer counts, chip glyph; sheet values — modeled Mythic max is 80,000 (§5.1)|
+|Nova Crystal cost (shop)|1|500|small integers; 500 is the lone Flawless Charm outlier — next highest is 295|
 |Roster|68 droids|—|11 C / 14 R / 18 E / 8 L / 11 M / 6 Iconic|
 
 Conventions the app already relies on (see UI handoff for the full list):
@@ -334,7 +334,9 @@ Conventions the app already relies on (see UI handoff for the full list):
 - **Known corruption in the live sheet:** at least one droid ("IG") has anomalous economic
   values (Base ≈ 228M, Gold ≈ 1.37B — wildly out of family); the planned validator *holds*
   such rows rather than importing them. Don't design around outlier numbers you can't
-  sanity-check.
+  sanity-check. Note the *modeled* IG row is only partially repaired: Base was corrected to
+  342M (= Gold ÷ 4) but IG still sits off-family in §8.1 (e.g. Rainbow buy is 16× Base where
+  other Mythics are 24×), so treat IG as the roster's outlier even in canonical data.
 - **Unmodeled tables** (§5.4, §5.5, §5.6, §5.8 extras) are transcribed here from sheet recon;
   their column semantics are mostly pinned but a couple (sell-value unit) are approximate —
   flagged inline.
@@ -577,7 +579,7 @@ Iconic droids show `—` (no tier grid — see §5.8 for their %/s income). Grou
 
 ### 8.2 Rebirth requirements (4 cycles × 27 rebirths = 324 rows)
 
-Each rebirth lists its credit threshold, the droids-at-tier you must own (counts-as applies), and what completing it unlocks. Blank credits/unlock = inherited/none.
+Each rebirth lists its credit threshold, the droids-at-tier you must own (counts-as applies), and what completing it unlocks. Blank unlock = none (every rebirth carries its own credit threshold).
 
 #### Cycle 1 (original path)
 
