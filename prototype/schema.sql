@@ -740,7 +740,7 @@ insert into rebirths(cycle,rb,credits,unlock,droid,tier) values (1,1,'10K',' Wor
 (4,27,NULL,NULL,'SNOW MOUSE','Rainbow'),
 (4,27,NULL,NULL,'LOADLIFTER','Beskar') on conflict do nothing;
 
-insert into chip_costs values ('Common',5,25,40,80),('Rare',30,60,100,250),('Epic',120,180,240,5000),('Legendary',400,1200,4000,12000),('Mythic',8000,15000,40000,80000) on conflict (class) do nothing;
+insert into chip_costs values ('Common',5,25,40,80),('Rare',30,60,100,250),('Epic',120,180,240,5000),('Legendary',400,1200,4000,12000),('Mythic',6000,13000,30000,75000) on conflict (class) do nothing;
 
 -- open RLS so the static page (anon key) can sync by sync_code. sync_code acts as a shared secret.
 alter table players enable row level security;
