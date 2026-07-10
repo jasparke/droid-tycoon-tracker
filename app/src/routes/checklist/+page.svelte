@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { getTracker } from '$lib/client/tracker-context';
-	import { satisfyingIdx } from '$lib/game/inventory';
+	import { satisfyingIdxOf } from '$lib/game/inventory';
 	import { RIDX, TIERS, type Tier } from '$lib/game/tiers';
 	import { pad2 } from '$lib/client/format';
 	import TierChip from '$lib/components/TierChip.svelte';
@@ -20,6 +20,8 @@
 		return m;
 	});
 
+	const rbMeta = $derived(new Map(ref.rebirthMeta.map((m) => [m.rebirth, m])));
+
 	const blocks = $derived.by(() => {
 		const by = new Map<number, typeof ref.rebirthReqs>();
 		for (const r of ref.rebirthReqs)
@@ -30,24 +32,28 @@
 			.map(([rb, reqRows]) => {
 				const rows = reqRows.map((r) => {
 					const tier = r.tier as Tier;
-					const sat = satisfyingIdx(t.countRows(), cycle, r.droid, tier);
+					const counts = t.countsFor(cycle, r.droid); // per-tier [B,G,D,R,BK], scanned once
+					const sat = satisfyingIdxOf(counts, tier);
 					return {
 						droid: r.droid,
 						tier,
 						sat,
 						met: sat >= 0,
-						counts: t.countsFor(cycle, r.droid),
+						counts,
 						meta: droidMeta.get(r.droid) ?? '',
 						chipTiers: TIERS.slice(RIDX[tier])
 					};
 				});
+				const m = rbMeta.get(rb);
 				return {
 					rb,
 					rows,
 					met: rows.filter((r) => r.met).length,
 					total: rows.length,
 					credits: reqRows.find((r) => r.credits)?.credits ?? '',
-					unlock: reqRows.find((r) => r.unlock)?.unlock ?? ''
+					unlock: reqRows.find((r) => r.unlock)?.unlock ?? '',
+					creditMult: m?.creditMult ?? null,
+					xpMult: m?.xpMult ?? null
 				};
 			});
 	});
@@ -80,6 +86,9 @@
 			<div class="bhead">
 				<span class="brb">RB{pad2(b.rb)}</span>
 				<span class="bcred">{b.credits}</span>
+				{#if b.creditMult !== null}
+					<span class="bmult">+{b.creditMult}% cr · +{b.xpMult}% xp</span>
+				{/if}
 				<span class="bmet" class:done={b.met === b.total}>{b.met}/{b.total}</span>
 				<span class="bunlock">{b.unlock}</span>
 			</div>
@@ -128,6 +137,7 @@
 	}
 	.brb { font: 700 11px var(--font-mono); color: var(--accent); letter-spacing: 1px; }
 	.bcred { font: 600 10px var(--font-mono); color: var(--warn); }
+	.bmult { font: 600 8.5px var(--font-mono); color: var(--txt-3); letter-spacing: 0.5px; }
 	.bmet { font: 600 9px var(--font-mono); color: var(--txt-2); }
 	.bmet.done { color: var(--good); }
 	.bunlock { margin-left: auto; font: 600 8.5px var(--font-mono); color: var(--txt-3); letter-spacing: 0.5px; }

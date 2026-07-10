@@ -20,4 +20,13 @@ describe('earliestReq', () => {
 	it('scopes to the cycle', () => {
 		expect(earliestReq(reqs, 2, 1, 'Mouse')).toEqual({ rebirth: 1, tier: 'Base' });
 	});
+	it('keeps the highest required tier when a droid is required twice at the same rebirth', () => {
+		// order-independent: lower tier listed first must not win the tie
+		const tie = [
+			{ cycle: 1, rebirth: 4, droid: 'Twin', tier: 'Gold' },
+			{ cycle: 1, rebirth: 4, droid: 'Twin', tier: 'Beskar' }
+		];
+		expect(earliestReq(tie, 1, 1, 'Twin')).toEqual({ rebirth: 4, tier: 'Beskar' });
+		expect(earliestReq([...tie].reverse(), 1, 1, 'Twin')).toEqual({ rebirth: 4, tier: 'Beskar' });
+	});
 });

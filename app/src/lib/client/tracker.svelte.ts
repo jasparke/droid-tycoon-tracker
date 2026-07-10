@@ -8,16 +8,18 @@ type ProfileRow = {
 	cycle: number; currentRebirth: number; prefs: unknown
 };
 
-export function makeTracker(data: {
+export type TrackerData = {
 	user: { id: number };
 	profiles: ProfileRow[];
 	countsByProfile: Record<number, CountRow[]>;
 	plansByCycle: Record<number, Record<number, number[]>>;
-}) {
-	const mine = data.profiles.filter((p) => p.userId === data.user.id);
+};
+
+export function makeTracker(data: TrackerData) {
+	const isMine = (p: ProfileRow) => p.userId === data.user.id;
 	const state = $state({
 		profiles: data.profiles,
-		activeId: mine[0]?.id ?? data.profiles[0]?.id ?? null,
+		activeId: data.profiles.filter(isMine)[0]?.id ?? data.profiles[0]?.id ?? null,
 		counts: structuredClone(data.countsByProfile) as Record<number, CountRow[]>,
 		plans: structuredClone(data.plansByCycle) as Record<number, Record<number, number[]>>,
 		hideDoneOverride: null as boolean | null
@@ -27,13 +29,17 @@ export function makeTracker(data: {
 	let rbTimer: ReturnType<typeof setTimeout> | undefined;
 	let rbPrev: number | null = null;
 	let rbProfile: ProfileRow | null = null;
+	let rbSeq = 0; // bumps on every rebirth edit; guards a failed in-flight PATCH from
+	// rolling back over a newer optimistic edit (lost update)
 	// send the pending rebirth PATCH for `p`, rolling back to `prev` + toasting on failure
 	const flushRebirthSave = (p: ProfileRow, prev: number) => {
 		const current = p.currentRebirth;
+		const savedSeq = rbSeq;
 		apiFetch(`/api/profiles/${p.id}`, {
 			method: 'PATCH', body: JSON.stringify({ currentRebirth: current })
 		}).catch((e) => {
-			p.currentRebirth = prev;
+			// only revert if no newer edit happened while this request was in flight
+			if (rbSeq === savedSeq) p.currentRebirth = prev;
 			toast(`Save failed: ${(e as Error).message}`);
 		});
 	};
@@ -47,11 +53,22 @@ export function makeTracker(data: {
 	};
 	return {
 		state, active, editable,
-		myProfiles: () => mine,
+		myProfiles: () => state.profiles.filter(isMine),
 		selectProfile(id: number) {
 			flushPendingRebirth();
 			state.activeId = id;
 			state.hideDoneOverride = null;
+		},
+		// re-seed server-backed data on navigation (the layout load reruns every nav).
+		// Preserves the active-profile selection; flushes any pending save first so an
+		// un-round-tripped edit is persisted rather than dropped.
+		applyServerData(next: TrackerData) {
+			flushPendingRebirth();
+			state.profiles = next.profiles;
+			state.counts = structuredClone(next.countsByProfile);
+			state.plans = structuredClone(next.plansByCycle);
+			if (!state.profiles.some((p) => p.id === state.activeId))
+				state.activeId = next.profiles.filter(isMine)[0]?.id ?? next.profiles[0]?.id ?? null;
 		},
 		countRows: () => state.counts[state.activeId ?? -1] ?? [],
 		planFor: (cycle: number) => state.plans[state.activeId ?? -1]?.[cycle] ?? [],
@@ -117,6 +134,7 @@ export function makeTracker(data: {
 			if (v === p.currentRebirth && rbPrev === null) return;
 			if (rbPrev === null) { rbPrev = p.currentRebirth; rbProfile = p; }
 			p.currentRebirth = v;
+			rbSeq++;
 			clearTimeout(rbTimer);
 			// coalesce rapid stepper clicks into one PATCH
 			rbTimer = setTimeout(flushPendingRebirth, 400);

@@ -66,7 +66,7 @@
 		<div class="profiles" bind:this={profilesEl}>
 			<div class="plabel">PROFILES</div>
 			<button class="pcard" aria-expanded={profOpen} aria-haspopup="menu" onclick={() => (profOpen = !profOpen)}>
-				<span class="avatar">{(activeP?.owner ?? user.username)[0].toUpperCase()}</span>
+				<span class="avatar">{((activeP?.owner ?? user.username) || '?').charAt(0).toUpperCase()}</span>
 				<span class="pname">{activeP ? `${activeP.owner}/${activeP.name}` : 'no profile'}</span>
 				<span class="caret">▾</span>
 			</button>

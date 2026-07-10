@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { ownedIdx, isMet, totalOf, satisfyingIdx, type CountRow } from './inventory';
+import { ownedIdx, isMet, totalOf, satisfyingIdx, satisfyingIdxOf, type CountRow } from './inventory';
 
 const counts: CountRow[] = [
 	{ cycle: 1, droid: 'CYCLO-GRAV', tier: 'Rainbow', n: 1 },
@@ -58,5 +58,26 @@ describe('satisfyingIdx', () => {
 		expect(satisfyingIdx(rows, 1, 'Mouse', 'Rainbow')).toBe(-1);
 		expect(satisfyingIdx(rows, 2, 'Mouse', 'Base')).toBe(-1); // wrong cycle
 		expect(satisfyingIdx([], 1, 'Mouse', 'Base')).toBe(-1);
+	});
+});
+
+describe('satisfyingIdxOf (per-tier array form)', () => {
+	// per = [Base, Gold, Diamond, Rainbow, Beskar]
+	it('returns the lowest owned tier index at or above the requirement', () => {
+		expect(satisfyingIdxOf([1, 0, 2, 0, 0], 'Base')).toBe(0); // exact
+		expect(satisfyingIdxOf([1, 0, 2, 0, 0], 'Gold')).toBe(2); // no Gold, Diamond counts-as
+		expect(satisfyingIdxOf([0, 0, 0, 0, 1], 'Base')).toBe(4); // only Beskar
+	});
+	it('returns -1 when nothing at or above the requirement is owned', () => {
+		expect(satisfyingIdxOf([1, 0, 2, 0, 0], 'Rainbow')).toBe(-1);
+		expect(satisfyingIdxOf([0, 0, 0, 0, 0], 'Base')).toBe(-1);
+	});
+	it('agrees with satisfyingIdx on the same data', () => {
+		const mouseRows: CountRow[] = [
+			{ cycle: 1, droid: 'Mouse', tier: 'Base', n: 1 },
+			{ cycle: 1, droid: 'Mouse', tier: 'Diamond', n: 2 }
+		];
+		const per = [1, 0, 2, 0, 0];
+		expect(satisfyingIdxOf(per, 'Gold')).toBe(satisfyingIdx(mouseRows, 1, 'Mouse', 'Gold'));
 	});
 });

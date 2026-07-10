@@ -1,4 +1,4 @@
-import { isTier, type Tier } from './tiers';
+import { isTier, RIDX, type Tier } from './tiers';
 
 export type ReqRow = { cycle: number; rebirth: number; droid: string; tier: string };
 
@@ -13,7 +13,13 @@ export function earliestReq(
 	let best: { rebirth: number; tier: Tier } | null = null;
 	for (const r of reqs) {
 		if (r.cycle !== cycle || r.droid !== droid || r.rebirth < fromRb || !isTier(r.tier)) continue;
-		if (!best || r.rebirth < best.rebirth) best = { rebirth: r.rebirth, tier: r.tier };
+		// earliest rebirth wins; at the same rebirth, keep the highest required tier (order-independent)
+		if (
+			!best ||
+			r.rebirth < best.rebirth ||
+			(r.rebirth === best.rebirth && RIDX[r.tier] > RIDX[best.tier])
+		)
+			best = { rebirth: r.rebirth, tier: r.tier };
 	}
 	return best;
 }
