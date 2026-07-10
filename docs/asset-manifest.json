@@ -19,6 +19,25 @@
         "Rainbow",
         "Beskar"
       ]
+    },
+    "sourceInvestigation": {
+      "date": "2026-07-09",
+      "note": "Droid Tycoon is a Fortnite/UEFN game by FOAD + Blzn Studios (not Roblox). FOAD develops in-editor and publishes NO public GitHub asset repo — that lead is a dead end. Two community sources carry the art; droidtrakr is complete, droidex is partial.",
+      "sourcesEvaluated": [
+        {
+          "name": "droidtrakr.com",
+          "result": "COMPLETE — all 340/340 verified HTTP 200, content-type image/webp (~40KB/file). Exact webp format + normName filenames we already use; zero remapping. Already the prototype's source. PRIMARY source for self-hosting."
+        },
+        {
+          "name": "erikpeik/droidex (GitHub)",
+          "result": "PARTIAL — 258/340 as PNG in public/droids/. Covers 248 directly + MONO-WLKR/OPTI-STRK via name-map. MISSING all 11 Mythics + Iconic upper tiers (82 files). Different naming (AMP_WALKER_BESKAR.png) needs remap; PNG needs webp convert; NO LICENSE file (all-rights-reserved). Fallback/mirror only."
+        },
+        {
+          "name": "FOAD GitHub",
+          "result": "DOES NOT EXIST — UEFN game, no public asset repo. Do not re-investigate."
+        }
+      ],
+      "ipNote": "All sources are fan-extracted Star Wars / Fortnite art (© Lucasfilm/Epic/FOAD). Self-hosting for a private tracker is the same posture as the prototype's existing hot-link; keep droidtrakr attribution in README."
     }
   },
   "summary": {
@@ -55,7 +74,7 @@
       "id": "droid-art",
       "title": "Droid tier art",
       "priority": "P0 — critical (bulk of the work)",
-      "status": "hotlinked-remote",
+      "status": "hotlinked-remote (verified fully available to self-host)",
       "action": "retrieve + self-host",
       "format": "webp",
       "count": 340,
@@ -63,7 +82,7 @@
       "remoteBaseUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/",
       "localTargetDir": "app/static/assets/droids/",
       "attribution": "Community site droidtrakr.com — keep credit in README when self-hosting.",
-      "notes": "Prototype load order: IndexedDB blob cache → local assets/droids/ → remote fetch. Rebuild should copy all 340 into app static assets. Some higher tiers may 404 on the remote host if art doesn't exist yet — verify each fetch and record gaps.",
+      "notes": "Prototype load order: IndexedDB blob cache -> local assets/droids/ -> remote fetch. Rebuild should copy all 340 into app static assets. VERIFIED 2026-07-09: droidtrakr serves all 340 as webp (no gaps) — pull directly, no rename. droidex is a partial PNG fallback only (see sources).",
       "files": [
         {
           "filename": "MOUSE_Default.webp",
@@ -3464,6 +3483,42 @@
           "type": "Astromech",
           "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2D2_Beskar.webp",
           "localTarget": "app/static/assets/droids/R2D2_Beskar.webp"
+        }
+      ],
+      "verified": {
+        "date": "2026-07-09",
+        "method": "parallel HEAD sweep of all 340 filenames against droidtrakr remote base",
+        "result": "340/340 present, HTTP 200, content-type image/webp",
+        "approxTotalSize": "~13-15 MB (≈40 KB/file from samples)"
+      },
+      "sources": [
+        {
+          "name": "droidtrakr.com",
+          "role": "primary",
+          "baseUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/",
+          "format": "webp",
+          "naming": "matches this manifest's filenames exactly (normName + Title-case tier, Base->_Default)",
+          "coverage": "340/340 (verified 2026-07-09)",
+          "howToPull": "download each files[].remoteUrl to files[].localTarget; no rename needed",
+          "attribution": "required — credit droidtrakr.com in README"
+        },
+        {
+          "name": "erikpeik/droidex",
+          "role": "fallback-mirror",
+          "repo": "https://github.com/erikpeik/droidex",
+          "path": "public/droids/",
+          "format": "png",
+          "naming": "UPPERCASE tier + underscores-for-spaces, keeps hyphens (e.g. AMP_WALKER_BESKAR.png, A-LT_DEFAULT.png); map to ours via normName=strip-non-alphanumerics and Title-case the tier (DEFAULT->Base)",
+          "coverage": "258/340 — missing all 11 Mythics + Iconic upper tiers (~82 files)",
+          "nameAliases": {
+            "MONO-WLKR": "MONO_WALKER (droidex normName MONOWALKER)",
+            "OPTI-STRK": "OPTI_STRIKE (droidex normName OPTISTRIKE)"
+          },
+          "caveats": [
+            "no LICENSE file (all-rights-reserved)",
+            "PNG not webp (convert if webp desired)",
+            "incomplete for Mythic/Iconic — use droidtrakr for those"
+          ]
         }
       ]
     },
