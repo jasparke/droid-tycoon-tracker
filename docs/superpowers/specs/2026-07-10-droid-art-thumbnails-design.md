@@ -161,3 +161,26 @@ Art is fan-extracted (© Lucasfilm / Epic / FOAD) sourced from the community sit
 droidtrakr.com. Self-hosting a private tracker is the same posture as the prototype's
 existing hot-link. Keep the droidtrakr credit in `README.md`; add a one-line note that
 the images are self-hosted copies.
+
+## Addendum 2026-07-12 — actual droidtrakr coverage (supersedes "all 340")
+
+Implementation of the fetch (plan Task 3) found the asset-manifest's "verified 340/340"
+claim is **wrong**: droidtrakr publishes only **293/340** `.webp`. Confirmed against
+droidtrakr's own `/droid-images.js` manifest, not a transient network failure.
+
+- **67 of 68 Base/`_Default` files exist** — the only art v1 renders. The lone gap is
+  **R2-D2**, which has zero art anywhere (droidtrakr serves `UnknownBlueprint.png`);
+  `DroidImg` degrades it to the text name. So v1 is fully functional with what exists.
+- The other **42 missing files are higher tiers** (Gold/Diamond/Rainbow/Beskar) that v1
+  never renders (Base-only). They matter only to the deferred tier-art enhancement.
+
+**Decision (user, 2026-07-12): "chase the 47 elsewhere."** Fallback source is the
+droidex GitHub repo (`erikpeik/droidex`): ~258/340 as PNG, needing webp conversion +
+filename remap, no LICENSE, and still missing R2-D2 + all 11 Mythics + Iconic upper
+tiers. So chasing recovers *some* of the 47; the genuinely-unavailable remainder stays
+covered by `DroidImg`'s graceful fallback.
+
+**Constraint change:** the "self-host all 340" global constraint becomes "self-host all
+that droidtrakr + droidex publish (~293–300); accept genuinely-unavailable files as
+graceful gaps." The fetch script must treat a real 404 as a logged skip (still failing
+on network/5xx), not a hard failure, so it can commit the partial set.
