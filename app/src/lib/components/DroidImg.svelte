@@ -11,9 +11,9 @@
 
 	const REMOTE = 'https://droidtrakr.com/droid-tycoon/assets/droids/';
 	// local /assets/droids → droidtrakr remote (once) → hidden; never breaks layout.
+	let img: HTMLImageElement;
 	let triedRemote = false;
-	function onError(e: Event) {
-		const img = e.currentTarget as HTMLImageElement;
+	function onError() {
 		if (!triedRemote) {
 			triedRemote = true;
 			img.src = REMOTE + droidArtFile(name, tier);
@@ -21,9 +21,17 @@
 			img.style.visibility = 'hidden';
 		}
 	}
+	// reset the fallback state whenever the droid/tier changes on a reused instance
+	$effect(() => {
+		name;
+		tier;
+		triedRemote = false;
+		if (img) img.style.visibility = '';
+	});
 </script>
 
 <img
+	bind:this={img}
 	class="dimg {cls}"
 	src={droidArtUrl(name, tier)}
 	width={size}
