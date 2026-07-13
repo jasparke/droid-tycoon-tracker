@@ -22,6 +22,10 @@
  * skip, but a network error or 5xx anywhere — including fetching the manifest
  * itself, or an unparseable manifest — hard-fails the run (exit 1) so a
  * transient outage can never reclassify recoverable files as "unavailable".
+ * The PNG -> webp conversion step is held to the same rule: cwebp missing
+ * from PATH, or failing/producing invalid output on a validated PNG, is a
+ * tool/environment problem — it hard-fails the run, it is never logged as
+ * "unavailable".
  * One deliberate exception: a 4xx on the manifest URL itself warns and
  * disables the PNG fallback for the run (the manifest being deliberately
  * removed is a content change, not an outage).
@@ -115,30 +119,30 @@ const haveCwebp = async () => {
 	return cwebpOk;
 };
 
-// Convert a PNG buffer to a validated webp at `dest`. True on success.
+// Convert a PNG buffer to a validated webp at `dest`. True on success; throws
+// HardFail for any conversion problem (cwebp missing from PATH, non-zero
+// exit, or invalid output) — a tool/environment failure, never a logged
+// "unavailable" skip (see header policy).
 async function pngToWebp(buf, dest, label) {
 	if (!(await haveCwebp())) {
-		console.warn(`  cwebp not on PATH; cannot convert ${label}`);
-		return false;
+		throw new HardFail('cwebp not found on PATH — required to convert PNG sources');
 	}
 	const tmpPng = path.join(tmpdir(), `droid-art-${process.pid}-${path.basename(dest)}.png`);
 	try {
 		await writeFile(tmpPng, buf);
 		await execFileP('cwebp', ['-q', '90', tmpPng, '-o', dest]);
-		const out = await readFile(dest);
-		if (!isWebp(out)) {
-			await rm(dest, { force: true });
-			console.warn(`  cwebp produced invalid webp for ${label}`);
-			return false;
-		}
-		return true;
 	} catch (e) {
 		await rm(dest, { force: true });
-		console.warn(`  cwebp failed for ${label}: ${e.message}`);
-		return false;
+		throw new HardFail(`cwebp failed for ${label}: ${e.message}`);
 	} finally {
 		await rm(tmpPng, { force: true });
 	}
+	const out = await readFile(dest);
+	if (!isWebp(out)) {
+		await rm(dest, { force: true });
+		throw new HardFail(`cwebp produced invalid webp for ${label}`);
+	}
+	return true;
 }
 
 // Lazily fetch droidtrakr's manifest, indexed by `normName(name):Tier`.
@@ -179,7 +183,8 @@ async function droidtrakrManifest() {
 }
 
 // Fallback 1: droidtrakr manifest PNG -> webp at `dest`. True on success,
-// false on a genuine miss; throws HardFail on network/5xx.
+// false on a genuine miss; throws HardFail on network/5xx or a conversion
+// failure (missing/broken cwebp).
 async function recoverFromManifestPng(name, tier, dest) {
 	const idx = await droidtrakrManifest();
 	if (!idx) return false;
@@ -194,7 +199,8 @@ async function recoverFromManifestPng(name, tier, dest) {
 }
 
 // Fallback 2: droidex PNG -> webp at `dest`. True on success, false on a
-// genuine miss (404 = droidex lacks it); throws HardFail on network/5xx.
+// genuine miss (404 = droidex lacks it); throws HardFail on network/5xx or a
+// conversion failure (missing/broken cwebp).
 async function recoverFromDroidex(name, tier, dest) {
 	const src = droidexFile(name, tier);
 	const buf = await fetchOrHardFail(DROIDEX_RAW + src, `droidex ${src}`);
