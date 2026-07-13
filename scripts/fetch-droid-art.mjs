@@ -2,36 +2,52 @@
  * Fetch + self-host droid tier-art webp into app/static/assets/droids/.
  *
  * Primary source: droidtrakr.com. It publishes 293 of the 340 expected files
- * (68 droids x 5 tiers). The other 47 (R2-D2's 5 tiers + 42 higher-tier files)
- * are NOT on droidtrakr.
+ * (68 droids x 5 tiers) as `.webp` at the normName path. The rest need the
+ * fallbacks below.
  *
  * IMPORTANT — droidtrakr does not 404 for a missing asset. It 308-redirects to
  * its single-page app, which answers 200 with a ~12.8 KB `text/html`
  * (`<!doctype html>`) body. That HTML body IS droidtrakr's "not found" signal.
  * So this script classifies a response by its *bytes*, not its status code:
  *   - valid webp (image/webp + RIFF/WEBP magic, non-empty) -> save.
- *   - not-found signal (non-webp body, e.g. the SPA HTML, or a 4xx) -> skip,
- *     then try the droidex fallback below.
+ *   - not-found signal (non-webp body, e.g. the SPA HTML, or a 4xx) -> try the
+ *     fallbacks below, else logged skip.
  *   - network error / 5xx / a webp content-type with corrupt bytes -> FAIL
  *     (exit 1) so a broken pull is never silently committed.
  * (This overrides the original plan's "non-webp 200 -> fail" rule, which assumed
  * droidtrakr returns 404s; it does not, so that rule would hard-fail every gap.)
  *
- * Fallback source — droidex (https://github.com/erikpeik/droidex), no LICENSE:
- *   For each file droidtrakr lacks, try the droidex GitHub repo at a pinned
- *   commit. droidex stores PNGs under public/droids/ named `{NAME}_{TIER}.png`
- *   where NAME is the droid name upper-cased with spaces -> "_" and hyphens
- *   kept (e.g. "IG-11 MARSHAL" -> "IG-11_MARSHAL"), TIER upper-cased. A hit is
- *   downloaded and converted PNG -> webp with `cwebp -q 90` (native dimensions
- *   preserved; no upscaling). droidex covers only LO's Gold/Diamond/Rainbow of
- *   our 47 gaps; everything else (R2-D2, the Mythics, Iconic upper tiers) is
- *   absent there too and stays a graceful gap (DroidImg degrades to text).
- *   Provenance is fully reconstructible from this file: repo + DROIDEX_SHA +
- *   the remap rule above + the cwebp command.
+ * Fallback 1 — droidtrakr's own image manifest (PNG-only tier arts, 19 files):
+ *   droidtrakr's frontend does not derive asset paths from normName; it uses
+ *   https://droidtrakr.com/droid-images.js (`window.DROID_IMAGES`, keyed
+ *   `"{NAME}:{Tier}"`). For 19 higher-tier arts the manifest points at `.png`
+ *   paths that do NOT follow the normName convention — original casing,
+ *   literal spaces, hyphens (e.g. `SNOW MOUSE_Diamond.png`,
+ *   `Loadlifter_Diamond.png`, `RIC-1200_Beskar.png`, `DRFT-R_Diamond.png`).
+ *   This fallback looks the droid up in that manifest (keys matched through
+ *   normName), fetches the PNG from REMOTE + the manifest path's basename
+ *   (URL-encoded), and converts it with `cwebp -q 90` (native dimensions
+ *   preserved; no upscaling). Manifest entries already ending in `.webp` are
+ *   ignored — those are the normName paths the primary fetch already tried.
+ *
+ * Fallback 2 — droidex (https://github.com/erikpeik/droidex), no LICENSE:
+ *   The droidex GitHub repo at a pinned commit stores PNGs under
+ *   public/droids/ named `{NAME}_{TIER}.png` where NAME is the droid name
+ *   upper-cased with spaces -> "_" and hyphens kept (e.g. "IG-11 MARSHAL" ->
+ *   "IG-11_MARSHAL"), TIER upper-cased. A hit is downloaded and converted the
+ *   same way (`cwebp -q 90`, native 195x178). droidex covers only LO's
+ *   Gold/Diamond/Rainbow of our gaps.
+ *
+ * After both fallbacks, 25 files remain genuinely unavailable anywhere public:
+ * R2-D2 x5 (droidtrakr serves UnknownBlueprint for it) plus the Mythics'
+ * (BB8 / MISTER BONES / IG-11 MARSHAL / DJ-R3X / CB-23) Gold/Diamond/Rainbow/
+ * Beskar. Those stay graceful gaps: DroidImg degrades to the text name.
+ * Provenance is fully reconstructible from this file: the manifest URL, the
+ * droidex repo + DROIDEX_SHA, the name remap rules, and the cwebp command.
  *
  * Idempotent: files already on disk are skipped without any network call, so a
  * re-run against the committed set exits 0 and re-downloads nothing. cwebp is
- * only invoked when a droidex file is missing locally, so the committed-set
+ * only invoked when a fallback file is missing locally, so the committed-set
  * re-run needs no cwebp on PATH.
  */
 import { readFile, mkdir, writeFile, access, rm } from 'node:fs/promises';
@@ -45,6 +61,7 @@ const dir = import.meta.dirname;
 const SEED = path.join(dir, '../app/drizzle/seed-data.json');
 const OUT = path.join(dir, '../app/static/assets/droids');
 const REMOTE = 'https://droidtrakr.com/droid-tycoon/assets/droids/';
+const MANIFEST_URL = 'https://droidtrakr.com/droid-images.js';
 const TIERS = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar'];
 
 // droidex fallback (see header). Pinned commit so the pull is reproducible.
@@ -62,7 +79,7 @@ const isWebp = (b) =>
 	b.length >= 12 && b.toString('latin1', 0, 4) === 'RIFF' && b.toString('latin1', 8, 12) === 'WEBP';
 const isPng = (b) => b.length >= 8 && b.toString('hex', 0, 4) === '89504e47';
 
-// Is cwebp on PATH? (Only needed for droidex recovery of files not yet on disk.)
+// Is cwebp on PATH? (Only needed to recover fallback files not yet on disk.)
 let cwebpOk = null;
 const haveCwebp = async () => {
 	if (cwebpOk === null) {
@@ -71,8 +88,77 @@ const haveCwebp = async () => {
 	return cwebpOk;
 };
 
-// Try to recover one file from droidex: fetch PNG, convert to webp at `dest`.
-// Returns true on success. Misses are soft (best-effort fallback source).
+// Convert a PNG buffer to a validated webp at `dest`. True on success.
+async function pngToWebp(buf, dest, label) {
+	if (!(await haveCwebp())) {
+		console.warn(`  cwebp not on PATH; cannot convert ${label}`);
+		return false;
+	}
+	const tmpPng = path.join(tmpdir(), `droid-art-${process.pid}-${path.basename(dest)}.png`);
+	try {
+		await writeFile(tmpPng, buf);
+		await execFileP('cwebp', ['-q', '90', tmpPng, '-o', dest]);
+		const out = await readFile(dest);
+		if (!isWebp(out)) {
+			await rm(dest, { force: true });
+			console.warn(`  cwebp produced invalid webp for ${label}`);
+			return false;
+		}
+		return true;
+	} catch (e) {
+		await rm(dest, { force: true });
+		console.warn(`  cwebp failed for ${label}: ${e.message}`);
+		return false;
+	} finally {
+		await rm(tmpPng, { force: true });
+	}
+}
+
+// Lazily fetch droidtrakr's manifest, indexed by `normName(name):Tier`.
+// null after a failed attempt (fallback then degrades to droidex; if the
+// network is down the primary fetch has already hard-failed the run).
+let manifestIdx;
+async function droidtrakrManifest() {
+	if (manifestIdx !== undefined) return manifestIdx;
+	try {
+		const res = await fetch(MANIFEST_URL);
+		if (!res.ok) throw new Error(`HTTP ${res.status}`);
+		const src = await res.text();
+		const json = src.replace(/^window\.DROID_IMAGES\s*=\s*/, '').replace(/;?\s*$/, '');
+		manifestIdx = new Map();
+		for (const [key, p] of Object.entries(JSON.parse(json))) {
+			const i = key.indexOf(':');
+			manifestIdx.set(`${normName(key.slice(0, i))}:${key.slice(i + 1)}`, p);
+		}
+	} catch (e) {
+		console.warn(`  droidtrakr manifest unavailable (${e.message}); skipping PNG fallback`);
+		manifestIdx = null;
+	}
+	return manifestIdx;
+}
+
+// Fallback 1: droidtrakr manifest PNG -> webp at `dest`. True on success.
+async function recoverFromManifestPng(name, tier, dest) {
+	const idx = await droidtrakrManifest();
+	if (!idx) return false;
+	const p = idx.get(`${normName(name)}:${fileTier(tier)}`);
+	// .webp entries are the normName paths the primary fetch already tried.
+	if (!p || !p.toLowerCase().endsWith('.png')) return false;
+	const src = path.posix.basename(p);
+	let buf;
+	try {
+		const res = await fetch(REMOTE + encodeURIComponent(src));
+		if (!res.ok) return false;
+		buf = Buffer.from(await res.arrayBuffer());
+	} catch (e) {
+		console.warn(`  droidtrakr PNG fetch failed for ${src}: ${e.message}`);
+		return false;
+	}
+	if (!isPng(buf)) return false; // SPA HTML = manifest entry is stale
+	return pngToWebp(buf, dest, src);
+}
+
+// Fallback 2: droidex PNG -> webp at `dest`. True on success.
 async function recoverFromDroidex(name, tier, dest) {
 	const src = droidexFile(name, tier);
 	let buf;
@@ -85,28 +171,7 @@ async function recoverFromDroidex(name, tier, dest) {
 		return false;
 	}
 	if (!isPng(buf)) return false;
-	if (!(await haveCwebp())) {
-		console.warn(`  cwebp not on PATH; cannot convert ${src}`);
-		return false;
-	}
-	const tmpPng = path.join(tmpdir(), `droidex-${process.pid}-${src}`);
-	try {
-		await writeFile(tmpPng, buf);
-		await execFileP('cwebp', ['-q', '90', tmpPng, '-o', dest]);
-		const out = await readFile(dest);
-		if (!isWebp(out)) {
-			await rm(dest, { force: true });
-			console.warn(`  cwebp produced invalid webp for ${src}`);
-			return false;
-		}
-		return true;
-	} catch (e) {
-		await rm(dest, { force: true });
-		console.warn(`  cwebp failed for ${src}: ${e.message}`);
-		return false;
-	} finally {
-		await rm(tmpPng, { force: true });
-	}
+	return pngToWebp(buf, dest, src);
 }
 
 const { droids } = JSON.parse(await readFile(SEED, 'utf8'));
@@ -116,7 +181,8 @@ console.log(`${droids.length} droids × ${TIERS.length} tiers = ${pairs.length} 
 
 let onDisk = 0;
 let fromTrakr = 0;
-const recovered = [];
+const recoveredPng = [];
+const recoveredDroidex = [];
 const unavailable = [];
 const hardFailed = [];
 
@@ -127,7 +193,7 @@ for (const { name, tier } of pairs) {
 		onDisk++;
 		continue;
 	}
-	// 1) droidtrakr (primary).
+	// Primary: droidtrakr webp at the normName path.
 	let res;
 	try {
 		res = await fetch(REMOTE + f);
@@ -151,20 +217,26 @@ for (const { name, tier } of pairs) {
 		hardFailed.push(`${f} (image/webp but corrupt/empty: ${buf.length}B)`);
 		continue;
 	}
-	// Non-webp body (SPA HTML / 4xx) = droidtrakr does not have it. Try droidex.
-	if (await recoverFromDroidex(name, tier, dest)) {
-		recovered.push(f);
+	// Non-webp body (SPA HTML / 4xx) = not at the normName path. Fallbacks:
+	if (await recoverFromManifestPng(name, tier, dest)) {
+		recoveredPng.push(f);
+	} else if (await recoverFromDroidex(name, tier, dest)) {
+		recoveredDroidex.push(f);
 	} else {
 		unavailable.push(f);
 	}
 }
 
 console.log(
-	`on disk (skipped) ${onDisk} | droidtrakr ${fromTrakr} | droidex recovered ${recovered.length} | unavailable ${unavailable.length}`
+	`on disk (skipped) ${onDisk} | droidtrakr webp ${fromTrakr} | droidtrakr png ${recoveredPng.length} | droidex ${recoveredDroidex.length} | unavailable ${unavailable.length}`
 );
-if (recovered.length) {
-	console.log(`recovered from droidex (${recovered.length}):`);
-	for (const x of recovered) console.log('  ' + x);
+if (recoveredPng.length) {
+	console.log(`converted from droidtrakr manifest PNGs (${recoveredPng.length}):`);
+	for (const x of recoveredPng) console.log('  ' + x);
+}
+if (recoveredDroidex.length) {
+	console.log(`recovered from droidex (${recoveredDroidex.length}):`);
+	for (const x of recoveredDroidex) console.log('  ' + x);
 }
 if (unavailable.length) {
 	console.log(
@@ -177,5 +249,5 @@ if (hardFailed.length) {
 	for (const x of hardFailed) console.error('  ' + x);
 	process.exit(1);
 }
-const total = onDisk + fromTrakr + recovered.length;
+const total = onDisk + fromTrakr + recoveredPng.length + recoveredDroidex.length;
 console.log(`present ${total}/${pairs.length} droid art files (${unavailable.length} genuinely unavailable)`);
