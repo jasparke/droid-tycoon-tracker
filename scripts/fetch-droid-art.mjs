@@ -17,6 +17,15 @@
  * (This overrides the original plan's "non-webp 200 -> fail" rule, which assumed
  * droidtrakr returns 404s; it does not, so that rule would hard-fail every gap.)
  *
+ * The fallback fetches follow the same exit-code policy: a genuine not-found
+ * (HTTP 4xx on a PNG URL, or absence from the manifest / droidex) is a logged
+ * skip, but a network error or 5xx anywhere — including fetching the manifest
+ * itself, or an unparseable manifest — hard-fails the run (exit 1) so a
+ * transient outage can never reclassify recoverable files as "unavailable".
+ * One deliberate exception: a 4xx on the manifest URL itself warns and
+ * disables the PNG fallback for the run (the manifest being deliberately
+ * removed is a content change, not an outage).
+ *
  * Fallback 1 — droidtrakr's own image manifest (PNG-only tier arts, 19 files):
  *   droidtrakr's frontend does not derive asset paths from normName; it uses
  *   https://droidtrakr.com/droid-images.js (`window.DROID_IMAGES`, keyed
@@ -68,6 +77,10 @@ const TIERS = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar'];
 const DROIDEX_SHA = '4e159c2026dec6e84f43d8eabe04c4b542d3fc85';
 const DROIDEX_RAW = `https://raw.githubusercontent.com/erikpeik/droidex/${DROIDEX_SHA}/public/droids/`;
 
+// Network error / 5xx / corrupt source — must abort the run with exit 1,
+// unlike a genuine not-found (which is a logged skip).
+class HardFail extends Error {}
+
 const normName = (n) => String(n).toUpperCase().replace(/[^A-Z0-9]/g, '');
 const fileTier = (t) => (t === 'Base' ? 'Default' : t);
 const artFile = (name, tier) => `${normName(name)}_${fileTier(tier)}.webp`;
@@ -78,6 +91,20 @@ const exists = (p) => access(p).then(() => true, () => false);
 const isWebp = (b) =>
 	b.length >= 12 && b.toString('latin1', 0, 4) === 'RIFF' && b.toString('latin1', 8, 12) === 'WEBP';
 const isPng = (b) => b.length >= 8 && b.toString('hex', 0, 4) === '89504e47';
+
+// Fetch a fallback URL, classifying failures per the exit-code policy:
+// network error or 5xx -> HardFail; 4xx -> null (genuine miss); ok -> body.
+async function fetchOrHardFail(url, label) {
+	let res;
+	try {
+		res = await fetch(url);
+	} catch (e) {
+		throw new HardFail(`${label} network: ${e.message}`);
+	}
+	if (res.status >= 500) throw new HardFail(`${label} HTTP ${res.status}`);
+	if (!res.ok) return null;
+	return Buffer.from(await res.arrayBuffer());
+}
 
 // Is cwebp on PATH? (Only needed to recover fallback files not yet on disk.)
 let cwebpOk = null;
@@ -115,29 +142,44 @@ async function pngToWebp(buf, dest, label) {
 }
 
 // Lazily fetch droidtrakr's manifest, indexed by `normName(name):Tier`.
-// null after a failed attempt (fallback then degrades to droidex; if the
-// network is down the primary fetch has already hard-failed the run).
+// Cached across calls: a Map on success; null when disabled by a 4xx on the
+// manifest URL; a HardFail (rethrown per file) on network/5xx/unparseable.
 let manifestIdx;
 async function droidtrakrManifest() {
+	if (manifestIdx instanceof HardFail) throw manifestIdx;
 	if (manifestIdx !== undefined) return manifestIdx;
+	let buf;
 	try {
-		const res = await fetch(MANIFEST_URL);
-		if (!res.ok) throw new Error(`HTTP ${res.status}`);
-		const src = await res.text();
-		const json = src.replace(/^window\.DROID_IMAGES\s*=\s*/, '').replace(/;?\s*$/, '');
-		manifestIdx = new Map();
+		buf = await fetchOrHardFail(MANIFEST_URL, 'manifest');
+	} catch (e) {
+		manifestIdx = e;
+		throw e;
+	}
+	if (buf === null) {
+		console.warn('  droidtrakr manifest gone (4xx); PNG fallback disabled for this run');
+		manifestIdx = null;
+		return manifestIdx;
+	}
+	try {
+		const json = buf
+			.toString('utf8')
+			.replace(/^window\.DROID_IMAGES\s*=\s*/, '')
+			.replace(/;?\s*$/, '');
+		const idx = new Map();
 		for (const [key, p] of Object.entries(JSON.parse(json))) {
 			const i = key.indexOf(':');
-			manifestIdx.set(`${normName(key.slice(0, i))}:${key.slice(i + 1)}`, p);
+			idx.set(`${normName(key.slice(0, i))}:${key.slice(i + 1)}`, p);
 		}
+		manifestIdx = idx;
 	} catch (e) {
-		console.warn(`  droidtrakr manifest unavailable (${e.message}); skipping PNG fallback`);
-		manifestIdx = null;
+		manifestIdx = new HardFail(`manifest unparseable: ${e.message}`);
+		throw manifestIdx;
 	}
 	return manifestIdx;
 }
 
-// Fallback 1: droidtrakr manifest PNG -> webp at `dest`. True on success.
+// Fallback 1: droidtrakr manifest PNG -> webp at `dest`. True on success,
+// false on a genuine miss; throws HardFail on network/5xx.
 async function recoverFromManifestPng(name, tier, dest) {
 	const idx = await droidtrakrManifest();
 	if (!idx) return false;
@@ -145,31 +187,18 @@ async function recoverFromManifestPng(name, tier, dest) {
 	// .webp entries are the normName paths the primary fetch already tried.
 	if (!p || !p.toLowerCase().endsWith('.png')) return false;
 	const src = path.posix.basename(p);
-	let buf;
-	try {
-		const res = await fetch(REMOTE + encodeURIComponent(src));
-		if (!res.ok) return false;
-		buf = Buffer.from(await res.arrayBuffer());
-	} catch (e) {
-		console.warn(`  droidtrakr PNG fetch failed for ${src}: ${e.message}`);
-		return false;
-	}
+	const buf = await fetchOrHardFail(REMOTE + encodeURIComponent(src), `droidtrakr png ${src}`);
+	if (buf === null) return false;
 	if (!isPng(buf)) return false; // SPA HTML = manifest entry is stale
 	return pngToWebp(buf, dest, src);
 }
 
-// Fallback 2: droidex PNG -> webp at `dest`. True on success.
+// Fallback 2: droidex PNG -> webp at `dest`. True on success, false on a
+// genuine miss (404 = droidex lacks it); throws HardFail on network/5xx.
 async function recoverFromDroidex(name, tier, dest) {
 	const src = droidexFile(name, tier);
-	let buf;
-	try {
-		const res = await fetch(DROIDEX_RAW + src);
-		if (!res.ok) return false; // droidex genuinely lacks it
-		buf = Buffer.from(await res.arrayBuffer());
-	} catch (e) {
-		console.warn(`  droidex fetch failed for ${src}: ${e.message}`);
-		return false;
-	}
+	const buf = await fetchOrHardFail(DROIDEX_RAW + src, `droidex ${src}`);
+	if (buf === null) return false;
 	if (!isPng(buf)) return false;
 	return pngToWebp(buf, dest, src);
 }
@@ -218,12 +247,17 @@ for (const { name, tier } of pairs) {
 		continue;
 	}
 	// Non-webp body (SPA HTML / 4xx) = not at the normName path. Fallbacks:
-	if (await recoverFromManifestPng(name, tier, dest)) {
-		recoveredPng.push(f);
-	} else if (await recoverFromDroidex(name, tier, dest)) {
-		recoveredDroidex.push(f);
-	} else {
-		unavailable.push(f);
+	try {
+		if (await recoverFromManifestPng(name, tier, dest)) {
+			recoveredPng.push(f);
+		} else if (await recoverFromDroidex(name, tier, dest)) {
+			recoveredDroidex.push(f);
+		} else {
+			unavailable.push(f);
+		}
+	} catch (e) {
+		if (!(e instanceof HardFail)) throw e;
+		hardFailed.push(`${f} (${e.message})`);
 	}
 }
 
