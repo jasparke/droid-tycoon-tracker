@@ -5,6 +5,7 @@
 	import { earliestReq } from '$lib/game/requirements';
 	import { pad2 } from '$lib/client/format';
 	import TierLadder from '$lib/components/TierLadder.svelte';
+	import DroidImg from '$lib/components/DroidImg.svelte';
 
 	const t = getTracker()!;
 	const ref = page.data.reference!;
@@ -69,6 +70,7 @@
 			</div>
 			{#if active}
 				<div class="ahead">
+					<DroidImg name={active.name} size={22} />
 					<span class="aname">{active.name}</span>
 					<span class="ameta">{active.rarity.toUpperCase()} · {active.type.toUpperCase()}</span>
 					<span class="averdict" class:keep={!!req}>
