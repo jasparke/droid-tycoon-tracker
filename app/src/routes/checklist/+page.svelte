@@ -7,6 +7,7 @@
 	import TierChip from '$lib/components/TierChip.svelte';
 	import TierLadder from '$lib/components/TierLadder.svelte';
 	import StatStrip from '$lib/components/StatStrip.svelte';
+	import DroidImg from '$lib/components/DroidImg.svelte';
 
 	const t = getTracker()!;
 	const ref = page.data.reference!; // auth-gated route: reference is always present
@@ -94,6 +95,7 @@
 			</div>
 			{#each b.rows as r (r.droid + r.tier)}
 				<div class="row" class:met={r.met}>
+					<DroidImg name={r.droid} size={28} />
 					<div class="ncol">
 						<span class="dname">{r.droid}</span>
 						<span class="dmeta">{r.meta}</span>
