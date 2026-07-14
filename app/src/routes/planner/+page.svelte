@@ -4,6 +4,7 @@
 	import { combinedNeeds, type Requirement } from '$lib/game/planner';
 	import { isMet } from '$lib/game/inventory';
 	import type { Tier } from '$lib/game/tiers';
+	import DroidImg from '$lib/components/DroidImg.svelte';
 	const t = getTracker()!;
 	const ref = page.data.reference!; // guaranteed present: this route is auth-gated by the root layout
 	const cycle = $derived(t.active()?.cycle ?? 1);
@@ -29,7 +30,7 @@
 <ul>
 	{#each needs as n}
 		{@const have = isMet(t.countRows(), cycle, n.droid, n.tier)}
-		<li class="tier-{n.tier}">{n.droid} [{n.tier}] {have ? '✓ owned' : ''}</li>
+		<li class="tier-{n.tier}"><DroidImg name={n.droid} size={20} /> {n.droid} [{n.tier}] {have ? '✓ owned' : ''}</li>
 	{/each}
 </ul>
 <h2>Rebirths</h2>
