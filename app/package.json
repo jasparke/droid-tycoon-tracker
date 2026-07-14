@@ -10,7 +10,7 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"test:unit": "vitest run src/lib/game",
+		"test:unit": "vitest run src/lib/game src/lib/client",
 		"test:int": "vitest run src/lib/server --no-file-parallelism",
 		"test:e2e": "playwright test",
 		"db:generate": "drizzle-kit generate",
@@ -32,6 +32,8 @@
 		"vitest": "^4.1.9"
 	},
 	"dependencies": {
+		"@fontsource/chakra-petch": "^5.2.7",
+		"@fontsource/jetbrains-mono": "^5.2.8",
 		"@node-rs/argon2": "^2.0.2",
 		"drizzle-orm": "^0.45.2",
 		"postgres": "^3.4.9"

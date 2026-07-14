@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { apiFetch } from '$lib/client/api';
 	import { toast } from '$lib/client/toast.svelte';
 	let username = $state(''), password = $state(''), inviteCode = $state('');
@@ -9,7 +8,7 @@
 			await apiFetch('/api/auth/register', {
 				method: 'POST', body: JSON.stringify({ username, password, inviteCode })
 			});
-			await goto('/checklist', { invalidateAll: true });
+			location.assign('/checklist'); // full reload so the layout re-inits the shared tracker
 		} catch (err) { toast((err as Error).message); }
 	}
 </script>
