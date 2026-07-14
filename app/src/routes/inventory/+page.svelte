@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getTracker } from '$lib/client/tracker-context';
 	import { TIERS, type Tier } from '$lib/game/tiers';
+	import DroidImg from '$lib/components/DroidImg.svelte';
 	const t = getTracker()!;
 	const cycle = $derived(t.active()?.cycle ?? 1);
 	const rows = $derived.by(() => {
@@ -19,7 +20,7 @@
 	<thead><tr><th>Droid</th>{#each TIERS as tier}<th class="tier-{tier}">{tier}</th>{/each}</tr></thead>
 	<tbody>
 		{#each rows as [droid, m]}
-			<tr><td>{droid}</td>
+			<tr><td><DroidImg name={droid} size={20} /> {droid}</td>
 				{#each TIERS as tier}
 					<td>
 						<button disabled={!t.editable()} onclick={() => t.setCount(cycle, droid, tier, at(m, tier) - 1)}>−</button>

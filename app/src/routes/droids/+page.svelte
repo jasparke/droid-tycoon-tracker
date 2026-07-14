@@ -3,6 +3,7 @@
 	import { getTracker } from '$lib/client/tracker-context';
 	import { TIERS, type Tier } from '$lib/game/tiers';
 	import { ownedIdx } from '$lib/game/inventory';
+	import DroidImg from '$lib/components/DroidImg.svelte';
 	const t = getTracker()!;
 	const ref = page.data.reference!; // guaranteed present: this route is auth-gated by the root layout
 	const cycle = $derived(t.active()?.cycle ?? 1);
@@ -27,7 +28,7 @@
 		{#each list as d}
 			{@const oi = ownedIdx(t.countRows(), cycle, d.name)}
 			<tr>
-				<td>{d.name}</td><td>{d.rarity}</td><td>{d.type}</td>
+				<td><DroidImg name={d.name} size={20} /> {d.name}</td><td>{d.rarity}</td><td>{d.type}</td>
 				<td>{oi >= 0 ? TIERS[oi] : '—'}</td>
 				{#each TIERS as tier}
 					{@const s = stat(d.name, tier)}

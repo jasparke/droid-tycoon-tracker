@@ -4,6 +4,7 @@
 	import { roiTable, type TierStat } from '$lib/game/roi';
 	import { TIERS, RIDX, type Tier } from '$lib/game/tiers';
 	import { ownedIdx } from '$lib/game/inventory';
+	import DroidImg from '$lib/components/DroidImg.svelte';
 	const t = getTracker()!;
 	const ref = page.data.reference!; // guaranteed present: this route is auth-gated by the root layout
 	const cycle = $derived(t.active()?.cycle ?? 1);
@@ -61,7 +62,7 @@
 	<tbody>
 		{#each rows as r, i}
 			<tr>
-				<td>{i + 1}</td><td>{r.droid}</td><td class="tier-{r.tier}">{r.tier}</td>
+				<td>{i + 1}</td><td><DroidImg name={r.droid} size={20} /> {r.droid}</td><td class="tier-{r.tier}">{r.tier}</td>
 				<td>{r.rarity}</td><td>{r.type}</td>
 				<td>{(r.buy as number).toLocaleString()}</td><td>{r.income}</td>
 				<td>{fmt(r.paybackSeconds)}</td><td>{r.incomePer1k.toFixed(2)}</td>
