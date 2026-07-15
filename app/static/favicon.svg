@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <title>Droid Tycoon Tracker</title>
+  <!-- On-brand: the app's upgrade-chip / droid-core motif (mirrors CHIPICON in
+       the prototype) in the holo-terminal cyan on a dark tile. Palette values
+       are hardcoded because a favicon renders outside the app stylesheet. -->
+  <rect width="32" height="32" rx="7" fill="#0d1626"/>
+  <g stroke="#35c8ff" stroke-width="2.2" stroke-linecap="round">
+    <path d="M13 5v5M19 5v5M13 22v5M19 22v5M5 13h5M5 19h5M22 13h5M22 19h5"/>
+  </g>
+  <rect x="10" y="10" width="12" height="12" rx="3" fill="#35c8ff"/>
+  <circle cx="16" cy="16" r="3.1" fill="#0d1626"/>
+  <circle cx="16" cy="16" r="1.5" fill="#35c8ff"/>
+</svg>
