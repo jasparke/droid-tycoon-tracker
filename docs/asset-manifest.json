@@ -18,7 +18,8 @@
         "Diamond",
         "Rainbow",
         "Beskar"
-      ]
+      ],
+      "iconicException": "Iconic-rarity droids are single-tier: they have no tier grid and cannot be chip-upgraded. Art exists only as {normName}_Default.webp — never generate Gold/Diamond/Rainbow/Beskar filenames for them."
     },
     "sourceInvestigation": {
       "date": "2026-07-09",
@@ -26,7 +27,7 @@
       "sourcesEvaluated": [
         {
           "name": "droidtrakr.com",
-          "result": "COMPLETE — all 340/340 verified HTTP 200, content-type image/webp (~40KB/file). Exact webp format + normName filenames we already use; zero remapping. Already the prototype's source. PRIMARY source for self-hosting."
+          "result": "PRIMARY, mostly complete — serves 293 real image files (an earlier HEAD sweep claimed 340/340 but some 200s were fallback responses, not images). Exact webp format + normName filenames; the prototype's existing source. All 315 files now on main were pulled from here."
         },
         {
           "name": "erikpeik/droidex (GitHub)",
@@ -37,17 +38,18 @@
           "result": "DOES NOT EXIST — UEFN game, no public asset repo. Do not re-investigate."
         }
       ],
-      "ipNote": "All sources are fan-extracted Star Wars / Fortnite art (© Lucasfilm/Epic/FOAD). Self-hosting for a private tracker is the same posture as the prototype's existing hot-link; keep droidtrakr attribution in README."
+      "ipNote": "All sources are fan-extracted Star Wars / Fortnite art (© Lucasfilm/Epic/FOAD). Self-hosting for a private tracker is the same posture as the prototype's existing hot-link; keep droidtrakr attribution in README.",
+      "correction": "2026-07-15: Iconic droids are single-tier (user-confirmed; matches chipCosts having no Iconic row and game-domain reference §5.8). The 340-file target was wrong — true universe is 316."
     }
   },
   "summary": {
-    "totalRequiredFiles": 340,
+    "totalRequiredFiles": 316,
     "categories": [
       {
         "id": "droid-art",
-        "need": 340,
+        "need": 316,
         "priority": "P0",
-        "status": "hotlinked-remote (must self-host)"
+        "status": "self-hosted 315/316 on main (PR #10); R2D2_Default.webp outstanding"
       },
       {
         "id": "app-icons",
@@ -74,15 +76,15 @@
       "id": "droid-art",
       "title": "Droid tier art",
       "priority": "P0 — critical (bulk of the work)",
-      "status": "hotlinked-remote (verified fully available to self-host)",
+      "status": "self-hosted on main (PR #10): 315/316; 1 outstanding",
       "action": "retrieve + self-host",
       "format": "webp",
-      "count": 340,
-      "grid": "68 droids × 5 tiers",
+      "count": 316,
+      "grid": "62 tiered droids × 5 tiers + 6 Iconic droids × 1 (Iconics are single-tier)",
       "remoteBaseUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/",
       "localTargetDir": "app/static/assets/droids/",
       "attribution": "Community site droidtrakr.com — keep credit in README when self-hosting.",
-      "notes": "Prototype load order: IndexedDB blob cache -> local assets/droids/ -> remote fetch. Rebuild should copy all 340 into app static assets. VERIFIED 2026-07-09: droidtrakr serves all 340 as webp (no gaps) — pull directly, no rename. droidex is a partial PNG fallback only (see sources).",
+      "notes": "Iconic droids (BB8, CB-23, DJ-R3X, IG-11 MARSHAL, MISTER BONES, R2-D2) have exactly ONE tier — no tier grid, no chip costs (see game-domain reference §5.8). Only their _Default art exists or is needed; earlier manifest revisions wrongly listed 68×5=340 files. PR #10 (main eeea1c8) self-hosts 315/316 under app/static/assets/droids/ via DroidImg.svelte + art.ts. Sole gap: R2D2_Default.webp (verify upstream when network allows).",
       "files": [
         {
           "filename": "MOUSE_Default.webp",
@@ -3195,46 +3197,6 @@
           "localTarget": "app/static/assets/droids/BB8_Default.webp"
         },
         {
-          "filename": "BB8_Gold.webp",
-          "droid": "BB8",
-          "normName": "BB8",
-          "tier": "Gold",
-          "rarity": "Iconic",
-          "type": "Astromech",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB8_Gold.webp",
-          "localTarget": "app/static/assets/droids/BB8_Gold.webp"
-        },
-        {
-          "filename": "BB8_Diamond.webp",
-          "droid": "BB8",
-          "normName": "BB8",
-          "tier": "Diamond",
-          "rarity": "Iconic",
-          "type": "Astromech",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB8_Diamond.webp",
-          "localTarget": "app/static/assets/droids/BB8_Diamond.webp"
-        },
-        {
-          "filename": "BB8_Rainbow.webp",
-          "droid": "BB8",
-          "normName": "BB8",
-          "tier": "Rainbow",
-          "rarity": "Iconic",
-          "type": "Astromech",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB8_Rainbow.webp",
-          "localTarget": "app/static/assets/droids/BB8_Rainbow.webp"
-        },
-        {
-          "filename": "BB8_Beskar.webp",
-          "droid": "BB8",
-          "normName": "BB8",
-          "tier": "Beskar",
-          "rarity": "Iconic",
-          "type": "Astromech",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB8_Beskar.webp",
-          "localTarget": "app/static/assets/droids/BB8_Beskar.webp"
-        },
-        {
           "filename": "MISTERBONES_Default.webp",
           "droid": "MISTER BONES",
           "normName": "MISTERBONES",
@@ -3243,46 +3205,6 @@
           "type": "Battle",
           "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MISTERBONES_Default.webp",
           "localTarget": "app/static/assets/droids/MISTERBONES_Default.webp"
-        },
-        {
-          "filename": "MISTERBONES_Gold.webp",
-          "droid": "MISTER BONES",
-          "normName": "MISTERBONES",
-          "tier": "Gold",
-          "rarity": "Iconic",
-          "type": "Battle",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MISTERBONES_Gold.webp",
-          "localTarget": "app/static/assets/droids/MISTERBONES_Gold.webp"
-        },
-        {
-          "filename": "MISTERBONES_Diamond.webp",
-          "droid": "MISTER BONES",
-          "normName": "MISTERBONES",
-          "tier": "Diamond",
-          "rarity": "Iconic",
-          "type": "Battle",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MISTERBONES_Diamond.webp",
-          "localTarget": "app/static/assets/droids/MISTERBONES_Diamond.webp"
-        },
-        {
-          "filename": "MISTERBONES_Rainbow.webp",
-          "droid": "MISTER BONES",
-          "normName": "MISTERBONES",
-          "tier": "Rainbow",
-          "rarity": "Iconic",
-          "type": "Battle",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MISTERBONES_Rainbow.webp",
-          "localTarget": "app/static/assets/droids/MISTERBONES_Rainbow.webp"
-        },
-        {
-          "filename": "MISTERBONES_Beskar.webp",
-          "droid": "MISTER BONES",
-          "normName": "MISTERBONES",
-          "tier": "Beskar",
-          "rarity": "Iconic",
-          "type": "Battle",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MISTERBONES_Beskar.webp",
-          "localTarget": "app/static/assets/droids/MISTERBONES_Beskar.webp"
         },
         {
           "filename": "IG11MARSHAL_Default.webp",
@@ -3295,46 +3217,6 @@
           "localTarget": "app/static/assets/droids/IG11MARSHAL_Default.webp"
         },
         {
-          "filename": "IG11MARSHAL_Gold.webp",
-          "droid": "IG-11 MARSHAL",
-          "normName": "IG11MARSHAL",
-          "tier": "Gold",
-          "rarity": "Iconic",
-          "type": "Battle",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IG11MARSHAL_Gold.webp",
-          "localTarget": "app/static/assets/droids/IG11MARSHAL_Gold.webp"
-        },
-        {
-          "filename": "IG11MARSHAL_Diamond.webp",
-          "droid": "IG-11 MARSHAL",
-          "normName": "IG11MARSHAL",
-          "tier": "Diamond",
-          "rarity": "Iconic",
-          "type": "Battle",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IG11MARSHAL_Diamond.webp",
-          "localTarget": "app/static/assets/droids/IG11MARSHAL_Diamond.webp"
-        },
-        {
-          "filename": "IG11MARSHAL_Rainbow.webp",
-          "droid": "IG-11 MARSHAL",
-          "normName": "IG11MARSHAL",
-          "tier": "Rainbow",
-          "rarity": "Iconic",
-          "type": "Battle",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IG11MARSHAL_Rainbow.webp",
-          "localTarget": "app/static/assets/droids/IG11MARSHAL_Rainbow.webp"
-        },
-        {
-          "filename": "IG11MARSHAL_Beskar.webp",
-          "droid": "IG-11 MARSHAL",
-          "normName": "IG11MARSHAL",
-          "tier": "Beskar",
-          "rarity": "Iconic",
-          "type": "Battle",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IG11MARSHAL_Beskar.webp",
-          "localTarget": "app/static/assets/droids/IG11MARSHAL_Beskar.webp"
-        },
-        {
           "filename": "DJR3X_Default.webp",
           "droid": "DJ-R3X",
           "normName": "DJR3X",
@@ -3343,46 +3225,6 @@
           "type": "Worker",
           "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DJR3X_Default.webp",
           "localTarget": "app/static/assets/droids/DJR3X_Default.webp"
-        },
-        {
-          "filename": "DJR3X_Gold.webp",
-          "droid": "DJ-R3X",
-          "normName": "DJR3X",
-          "tier": "Gold",
-          "rarity": "Iconic",
-          "type": "Worker",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DJR3X_Gold.webp",
-          "localTarget": "app/static/assets/droids/DJR3X_Gold.webp"
-        },
-        {
-          "filename": "DJR3X_Diamond.webp",
-          "droid": "DJ-R3X",
-          "normName": "DJR3X",
-          "tier": "Diamond",
-          "rarity": "Iconic",
-          "type": "Worker",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DJR3X_Diamond.webp",
-          "localTarget": "app/static/assets/droids/DJR3X_Diamond.webp"
-        },
-        {
-          "filename": "DJR3X_Rainbow.webp",
-          "droid": "DJ-R3X",
-          "normName": "DJR3X",
-          "tier": "Rainbow",
-          "rarity": "Iconic",
-          "type": "Worker",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DJR3X_Rainbow.webp",
-          "localTarget": "app/static/assets/droids/DJR3X_Rainbow.webp"
-        },
-        {
-          "filename": "DJR3X_Beskar.webp",
-          "droid": "DJ-R3X",
-          "normName": "DJR3X",
-          "tier": "Beskar",
-          "rarity": "Iconic",
-          "type": "Worker",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DJR3X_Beskar.webp",
-          "localTarget": "app/static/assets/droids/DJR3X_Beskar.webp"
         },
         {
           "filename": "CB23_Default.webp",
@@ -3395,46 +3237,6 @@
           "localTarget": "app/static/assets/droids/CB23_Default.webp"
         },
         {
-          "filename": "CB23_Gold.webp",
-          "droid": "CB-23",
-          "normName": "CB23",
-          "tier": "Gold",
-          "rarity": "Iconic",
-          "type": "Astromech",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CB23_Gold.webp",
-          "localTarget": "app/static/assets/droids/CB23_Gold.webp"
-        },
-        {
-          "filename": "CB23_Diamond.webp",
-          "droid": "CB-23",
-          "normName": "CB23",
-          "tier": "Diamond",
-          "rarity": "Iconic",
-          "type": "Astromech",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CB23_Diamond.webp",
-          "localTarget": "app/static/assets/droids/CB23_Diamond.webp"
-        },
-        {
-          "filename": "CB23_Rainbow.webp",
-          "droid": "CB-23",
-          "normName": "CB23",
-          "tier": "Rainbow",
-          "rarity": "Iconic",
-          "type": "Astromech",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CB23_Rainbow.webp",
-          "localTarget": "app/static/assets/droids/CB23_Rainbow.webp"
-        },
-        {
-          "filename": "CB23_Beskar.webp",
-          "droid": "CB-23",
-          "normName": "CB23",
-          "tier": "Beskar",
-          "rarity": "Iconic",
-          "type": "Astromech",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CB23_Beskar.webp",
-          "localTarget": "app/static/assets/droids/CB23_Beskar.webp"
-        },
-        {
           "filename": "R2D2_Default.webp",
           "droid": "R2-D2",
           "normName": "R2D2",
@@ -3443,53 +3245,14 @@
           "type": "Astromech",
           "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2D2_Default.webp",
           "localTarget": "app/static/assets/droids/R2D2_Default.webp"
-        },
-        {
-          "filename": "R2D2_Gold.webp",
-          "droid": "R2-D2",
-          "normName": "R2D2",
-          "tier": "Gold",
-          "rarity": "Iconic",
-          "type": "Astromech",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2D2_Gold.webp",
-          "localTarget": "app/static/assets/droids/R2D2_Gold.webp"
-        },
-        {
-          "filename": "R2D2_Diamond.webp",
-          "droid": "R2-D2",
-          "normName": "R2D2",
-          "tier": "Diamond",
-          "rarity": "Iconic",
-          "type": "Astromech",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2D2_Diamond.webp",
-          "localTarget": "app/static/assets/droids/R2D2_Diamond.webp"
-        },
-        {
-          "filename": "R2D2_Rainbow.webp",
-          "droid": "R2-D2",
-          "normName": "R2D2",
-          "tier": "Rainbow",
-          "rarity": "Iconic",
-          "type": "Astromech",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2D2_Rainbow.webp",
-          "localTarget": "app/static/assets/droids/R2D2_Rainbow.webp"
-        },
-        {
-          "filename": "R2D2_Beskar.webp",
-          "droid": "R2-D2",
-          "normName": "R2D2",
-          "tier": "Beskar",
-          "rarity": "Iconic",
-          "type": "Astromech",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2D2_Beskar.webp",
-          "localTarget": "app/static/assets/droids/R2D2_Beskar.webp"
         }
       ],
       "verified": {
-        "date": "2026-07-09",
-        "method": "parallel HEAD sweep of all 340 filenames against droidtrakr remote base",
-        "result": "340/340 present, HTTP 200, content-type image/webp",
-        "approxTotalSize": "~13-15 MB (≈40 KB/file from samples)"
+        "date": "2026-07-15",
+        "note": "Supersedes the 2026-07-09 sweep. That HEAD sweep reported 340/340 HTTP 200 but some 200s were fallback responses, not real images — the fetch session found droidtrakr serves 293 real files. With the corrected 316-file universe (Iconics single-tier), main now self-hosts 315.",
+        "outstanding": [
+          "R2D2_Default.webp"
+        ]
       },
       "sources": [
         {
