@@ -1,0 +1,23 @@
+# Static file server for the standalone Droid Tycoon planner.
+#
+# Point `root` at the assembled dist/ folder (see assemble.sh). This block is a
+# plain HTTP site on :8080 — terminate TLS at your existing reverse proxy and
+# proxy to it, or replace `:8080` with your hostname to let Caddy manage certs.
+#
+# Run:  caddy run --config ./Caddyfile
+
+:8080 {
+	root * ./dist
+	file_server
+	encode gzip zstd
+
+	# Immutable art: content never changes for a given filename → cache hard.
+	@art path /assets/droids/*
+	header @art Cache-Control "public, max-age=31536000, immutable"
+
+	# The app shell may change between deploys → always revalidate.
+	header /planner.html Cache-Control "no-cache"
+
+	# .webp is in Caddy's default MIME table; set explicitly to be safe.
+	header /assets/droids/*.webp Content-Type "image/webp"
+}
