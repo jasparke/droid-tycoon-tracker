@@ -93,6 +93,39 @@ describe('completeOidcCallback', () => {
 		expect(claims).toEqual({ sub: 'goog-2', email: null, name: null });
 	});
 
+	it('ignores a non-string preferred_username and falls back to name', async () => {
+		m.discovery.mockResolvedValue({ id: 'config' });
+		m.authorizationCodeGrant.mockResolvedValue({
+			claims: () => ({ sub: 'goog-5', preferred_username: 12345, name: 'Ada' })
+		});
+		const claims = await completeOidcCallback(cfg, new URL('https://app.test/cb?code=c'), {
+			state: 's', nonce: 'n', codeVerifier: 'v'
+		});
+		expect(claims).toEqual({ sub: 'goog-5', email: null, name: 'Ada' });
+	});
+
+	it('ignores a non-string email claim instead of passing it through', async () => {
+		m.discovery.mockResolvedValue({ id: 'config' });
+		m.authorizationCodeGrant.mockResolvedValue({
+			claims: () => ({ sub: 'goog-6', email: { evil: true }, name: ['Ada'] })
+		});
+		const claims = await completeOidcCallback(cfg, new URL('https://app.test/cb?code=c'), {
+			state: 's', nonce: 'n', codeVerifier: 'v'
+		});
+		expect(claims).toEqual({ sub: 'goog-6', email: null, name: null });
+	});
+
+	it('normalizes empty-string claims to null', async () => {
+		m.discovery.mockResolvedValue({ id: 'config' });
+		m.authorizationCodeGrant.mockResolvedValue({
+			claims: () => ({ sub: 'goog-7', preferred_username: '', name: '', email: '' })
+		});
+		const claims = await completeOidcCallback(cfg, new URL('https://app.test/cb?code=c'), {
+			state: 's', nonce: 'n', codeVerifier: 'v'
+		});
+		expect(claims).toEqual({ sub: 'goog-7', email: null, name: null });
+	});
+
 	it('throws when the id_token has no claims', async () => {
 		m.discovery.mockResolvedValue({ id: 'config' });
 		m.authorizationCodeGrant.mockResolvedValue({ claims: () => undefined });

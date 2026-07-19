@@ -12,13 +12,23 @@ const PG_UNIQUE_VIOLATION = '23505';
 const pgCode = (e: unknown) =>
 	(e as { code?: string; cause?: { code?: string } }).cause?.code ?? (e as { code?: string }).code;
 
+// usernames are IdP-derived and unbounded at the schema level (text column),
+// so the length invariant lives here: base and deduped forms both fit the cap
+const USERNAME_MAX = 64;
+
 // derive a friendly, non-empty display handle from the IdP claims
 function baseUsername(input: { email?: string | null; name?: string | null }): string {
 	const fromName = input.name?.trim();
-	if (fromName) return fromName;
+	if (fromName) return fromName.slice(0, USERNAME_MAX);
 	const local = input.email?.split('@')[0]?.trim();
-	if (local) return local;
+	if (local) return local.slice(0, USERNAME_MAX);
 	return 'user';
+}
+
+// `${base}-${n}` truncated so the suffix survives and the whole stays ≤ USERNAME_MAX
+function suffixedUsername(base: string, n: number): string {
+	const suffix = `-${n}`;
+	return base.slice(0, USERNAME_MAX - suffix.length) + suffix;
 }
 
 /**
@@ -40,7 +50,7 @@ export async function findOrCreateOidcUser(
 
 	const base = baseUsername(input);
 	for (let attempt = 0; attempt < 100; attempt++) {
-		const username = attempt === 0 ? base : `${base}-${attempt + 1}`;
+		const username = attempt === 0 ? base : suffixedUsername(base, attempt + 1);
 		try {
 			const [u] = await db
 				.insert(users)

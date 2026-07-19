@@ -63,7 +63,9 @@ export async function completeOidcCallback(
 	});
 	const claims = tokens.claims();
 	if (!claims) throw new Error('OIDC callback: id_token had no claims');
-	const name = (claims.preferred_username as string | undefined) ?? (claims.name as string | undefined) ?? null;
-	const email = (claims.email as string | undefined) ?? null;
+	// claim values are IdP-controlled JSON — only accept non-empty strings
+	const str = (v: unknown): string | null => (typeof v === 'string' && v !== '' ? v : null);
+	const name = str(claims.preferred_username) ?? str(claims.name);
+	const email = str(claims.email);
 	return { sub: claims.sub, email, name };
 }

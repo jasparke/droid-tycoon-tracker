@@ -51,6 +51,21 @@ describe('findOrCreateOidcUser', () => {
 		const u = await findOrCreateOidcUser(db, { sub: 'goog-4' });
 		expect(u.username).toBe('user');
 	});
+
+	it('caps an oversized IdP-derived username at 64 chars', async () => {
+		const u = await findOrCreateOidcUser(db, { sub: 'goog-long', name: 'x'.repeat(200) });
+		expect(u.username).toBe('x'.repeat(64));
+	});
+
+	it('keeps collision-deduped usernames within the 64-char cap', async () => {
+		const long = 'y'.repeat(200);
+		const a = await findOrCreateOidcUser(db, { sub: 'goog-l1', name: long });
+		const b = await findOrCreateOidcUser(db, { sub: 'goog-l2', name: long });
+		expect(a.username).toBe('y'.repeat(64));
+		expect(b.username).not.toBe(a.username);
+		expect(b.username.length).toBeLessThanOrEqual(64);
+		expect(b.username.endsWith('-2')).toBe(true);
+	});
 });
 
 describe('sessions (unchanged behaviour, seeded via OIDC user)', () => {
