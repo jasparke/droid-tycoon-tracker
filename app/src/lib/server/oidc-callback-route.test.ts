@@ -23,6 +23,7 @@ vi.mock('$lib/server/services/users', () => ({
 	createSession: vi.fn()
 }));
 
+import { redirect } from '@sveltejs/kit';
 import { GET } from '../../routes/api/auth/oidc/callback/+server';
 import { completeOidcCallback } from '$lib/server/oidc';
 import { findOrCreateOidcUser, createSession } from '$lib/server/services/users';
@@ -80,6 +81,23 @@ describe('GET /api/auth/oidc/callback error handling', () => {
 			location: '/login?error=oidc_internal'
 		});
 		expect(errorSpy).toHaveBeenCalled();
+	});
+
+	it('a Redirect thrown inside the persistence block propagates instead of becoming oidc_internal', async () => {
+		// guards the catch against swallowing SvelteKit control flow if a future
+		// edit adds a redirect() inside the try
+		let thrownRedirect: unknown;
+		try {
+			redirect(303, '/somewhere-else');
+		} catch (e) {
+			thrownRedirect = e;
+		}
+		upsertUser.mockRejectedValue(thrownRedirect);
+		const { event } = makeEvent();
+		await expect(callGET(event)).rejects.toMatchObject({
+			status: 303,
+			location: '/somewhere-else'
+		});
 	});
 
 	it('a session-mint failure redirects to /login?error=oidc_internal instead of a raw 500', async () => {

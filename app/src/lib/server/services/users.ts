@@ -16,19 +16,25 @@ const pgCode = (e: unknown) =>
 // so the length invariant lives here: base and deduped forms both fit the cap
 const USERNAME_MAX = 64;
 
+// a cap cut can land mid-surrogate-pair or leave boundary whitespace — tidy both
+function cleanCut(s: string): string {
+	const last = s.charCodeAt(s.length - 1);
+	return (last >= 0xd800 && last <= 0xdbff ? s.slice(0, -1) : s).trim();
+}
+
 // derive a friendly, non-empty display handle from the IdP claims
 function baseUsername(input: { email?: string | null; name?: string | null }): string {
-	const fromName = input.name?.trim();
-	if (fromName) return fromName.slice(0, USERNAME_MAX);
-	const local = input.email?.split('@')[0]?.trim();
-	if (local) return local.slice(0, USERNAME_MAX);
+	const fromName = cleanCut((input.name ?? '').trim().slice(0, USERNAME_MAX));
+	if (fromName) return fromName;
+	const local = cleanCut((input.email?.split('@')[0] ?? '').trim().slice(0, USERNAME_MAX));
+	if (local) return local;
 	return 'user';
 }
 
 // `${base}-${n}` truncated so the suffix survives and the whole stays ≤ USERNAME_MAX
 function suffixedUsername(base: string, n: number): string {
 	const suffix = `-${n}`;
-	return base.slice(0, USERNAME_MAX - suffix.length) + suffix;
+	return cleanCut(base.slice(0, USERNAME_MAX - suffix.length)) + suffix;
 }
 
 /**

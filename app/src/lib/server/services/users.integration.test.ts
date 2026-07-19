@@ -57,6 +57,18 @@ describe('findOrCreateOidcUser', () => {
 		expect(u.username).toBe('x'.repeat(64));
 	});
 
+	it('trims whitespace left at the cap cut', async () => {
+		const u = await findOrCreateOidcUser(db, { sub: 'goog-sp', name: 'a'.repeat(63) + ' b' });
+		expect(u.username).toBe('a'.repeat(63));
+	});
+
+	it('never splits a surrogate pair at the cap cut', async () => {
+		// 'a' + 40 rockets = 81 UTF-16 units; a plain slice(0, 64) would cut the
+		// 32nd rocket in half, leaving a lone high surrogate at the end
+		const u = await findOrCreateOidcUser(db, { sub: 'goog-emoji', name: 'a' + '🚀'.repeat(40) });
+		expect(u.username).toBe('a' + '🚀'.repeat(31));
+	});
+
 	it('keeps collision-deduped usernames within the 64-char cap', async () => {
 		const long = 'y'.repeat(200);
 		const a = await findOrCreateOidcUser(db, { sub: 'goog-l1', name: long });

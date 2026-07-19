@@ -1,4 +1,4 @@
-import { error, redirect } from '@sveltejs/kit';
+import { error, isRedirect, redirect } from '@sveltejs/kit';
 import { dev } from '$app/environment';
 import { env } from '$env/dynamic/private';
 import { env as pub } from '$env/dynamic/public';
@@ -55,6 +55,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 			path: '/', httpOnly: true, sameSite: 'lax', secure: !dev, expires: expiresAt
 		});
 	} catch (e) {
+		if (isRedirect(e)) throw e;
 		console.error('OIDC callback: user upsert / session mint failed', e);
 		redirect(303, '/login?error=oidc_internal');
 	}
