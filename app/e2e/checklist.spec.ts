@@ -1,18 +1,8 @@
-import { test, expect, type Page } from '@playwright/test';
-
-async function registerWithProfile(page: Page, user: string) {
-	await page.goto('/register');
-	await page.getByLabel('Username').fill(user);
-	await page.getByLabel('Password').fill('password123');
-	await page.getByLabel('Invite code').fill('e2e-invite');
-	await page.getByRole('button', { name: 'Create account' }).click();
-	await expect(page).toHaveURL(/checklist/);
-	await page.request.post('/api/profiles', { data: { name: 'main' } });
-	await page.reload();
-}
+import { test, expect } from '@playwright/test';
+import { signInWithProfile } from './support/auth';
 
 test('chips, verdicts, ladder, hide-done, header controls', async ({ page }) => {
-	await registerWithProfile(page, `chk${Date.now()}`);
+	await signInWithProfile(page);
 
 	const firstRow = page.locator('.row').first();
 	const droid = (await firstRow.locator('.dname').textContent())!.trim();
@@ -75,8 +65,10 @@ test('chips, verdicts, ladder, hide-done, header controls', async ({ page }) => 
 });
 
 test('read-only profile disables controls', async ({ page }) => {
-	const owner = `own${Date.now()}`;
-	await registerWithProfile(page, owner);
+	await signInWithProfile(page);
+	// capture the owner's "<username>/main" label from the profile card (not the whole
+	// .pcard — that also concatenates the avatar initial and the caret glyph)
+	const owner = (await page.locator('.pname').innerText()).trim();
 
 	// log out via profile menu
 	await page.locator('.pcard').click();
@@ -84,9 +76,9 @@ test('read-only profile disables controls', async ({ page }) => {
 	await expect(page).toHaveURL(/login/);
 
 	// second user selects the owner's profile
-	await registerWithProfile(page, `view${Date.now()}`);
+	await signInWithProfile(page);
 	await page.locator('.pcard').click();
-	await page.getByRole('button', { name: new RegExp(`${owner}/main`) }).click();
+	await page.getByRole('button', { name: new RegExp(owner) }).click();
 
 	await expect(page.getByText('READ-ONLY')).toBeVisible();
 	await expect(page.locator('.row button.chip').first()).toBeDisabled();
@@ -94,7 +86,7 @@ test('read-only profile disables controls', async ({ page }) => {
 });
 
 test('old views render inside the shell', async ({ page }) => {
-	await registerWithProfile(page, `nav${Date.now()}`);
+	await signInWithProfile(page);
 	for (const [href, title] of [
 		['/planner', 'PLANNER'], ['/inventory', 'INVENTORY'], ['/droids', 'DROIDEX'],
 		['/keepers', 'KEEPERS'], ['/roi', 'ROI — PAYBACK TIME']
