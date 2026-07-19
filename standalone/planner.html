@@ -286,6 +286,9 @@
         <button id="impProf" title="Import a profile from a code">📥</button>
         <button id="syncBtn" title="Cloud sync (set up)">☁</button></label>
       <span id="cycleBtns" class="cyclebtns" role="group" aria-label="Cycle"></span>
+      <button id="superRebirthBtn" class="minibtn" title="Super rebirth: reset this cycle and advance to the next">Super Rebirth ⏭</button>
+      <button id="undoBtn" class="minibtn" title="Undo the last reset / super rebirth" disabled>Undo ↶</button>
+      <button id="resetOwnedBtn" class="minibtn danger" title="Wipe all owned marks for this cycle">Reset owned</button>
       <label>Rebirth: <select id="curSel"></select></label>
       <button id="rebirthBtn" class="minibtn" title="Advance one rebirth">Rebirth ▶</button>
     </div>
@@ -491,6 +494,11 @@ if(!DB) DB={active:"p1",seq:1,profiles:{p1:blankProfile("Player 1")}};
 Object.values(DB.profiles).forEach(normProfile);
 if(!DB.profiles[DB.active]) DB.active=Object.keys(DB.profiles)[0];
 let state=DB.profiles[DB.active];
+// single-level, in-memory undo for destructive actions (Super Rebirth, Reset owned)
+let undo=null;
+function snapshot(){ undo={profileId:DB.active, snap:JSON.parse(JSON.stringify(state))}; }
+function undoAvailable(){ return !!undo && undo.profileId===DB.active; }
+function doUndo(){ if(!undoAvailable())return; DB.profiles[DB.active]=undo.snap; state=DB.profiles[DB.active]; undo=null; save(); renderAll(); }
 // physical inventory = per-tier counts. counts key: cycle|DROID|Tier -> N
 const cKey=(cy,d,t)=>cy+'|'+String(d).toUpperCase()+'|'+t;
 function countAt(cy,d,t){return state.counts[cKey(cy,d,t)]||0;}
@@ -538,10 +546,10 @@ function setupSync(){ const c=syncCfg()||{};
 }
 function save(){ saveLocal(); if(syncReady&&syncCfg()){ clearTimeout(syncT); syncT=setTimeout(()=>pushSync().catch(()=>setSyncStatus('error')),1200); } }
 // ---- profile management ----
-function switchProfile(id){ if(DB.profiles[id]){ DB.active=id; state=DB.profiles[id]; save(); renderAll(); } }
-function addProfile(name){ DB.seq=(DB.seq||1)+1; const id="p"+DB.seq; DB.profiles[id]=blankProfile(name); DB.active=id; state=DB.profiles[id]; save(); renderAll(); }
+function switchProfile(id){ if(DB.profiles[id]){ undo=null; DB.active=id; state=DB.profiles[id]; save(); renderAll(); } }
+function addProfile(name){ DB.seq=(DB.seq||1)+1; const id="p"+DB.seq; DB.profiles[id]=blankProfile(name); undo=null; DB.active=id; state=DB.profiles[id]; save(); renderAll(); }
 function renameProfile(name){ if(name){ state.name=name; save(); renderControls(); } }
-function deleteProfile(){ if(Object.keys(DB.profiles).length<=1) return false; delete DB.profiles[DB.active]; DB.active=Object.keys(DB.profiles)[0]; state=DB.profiles[DB.active]; save(); renderAll(); return true; }
+function deleteProfile(){ if(Object.keys(DB.profiles).length<=1) return false; delete DB.profiles[DB.active]; undo=null; DB.active=Object.keys(DB.profiles)[0]; state=DB.profiles[DB.active]; save(); renderAll(); return true; }
 function exportProfile(){ try{ return btoa(unescape(encodeURIComponent(JSON.stringify({__dt:1,profile:state})))); }catch(e){ return ""; } }
 function importProfile(code){
   if(!code) return 0;
@@ -813,7 +821,6 @@ function renderPlanner(){
     <button id="planAdd" class="minibtn" title="Add a droid you're pulling early">＋ Add</button>
     <span class="plfindwrap"><input id="planFind" class="plfind" type="text" placeholder="🔍 find in plan…   ( / )" value="${planQuery.replace(/"/g,'&quot;')}"><button id="planFindX" class="plfindx" title="clear search" aria-label="clear search">×</button></span>
     <span id="planFindN" class="plfindn"></span>
-    <button id="planClear" class="minibtn danger spring" title="Wipe all owned marks for this cycle">Reset owned</button>
   </div>`;
   let body;
   if(!items.length){
@@ -881,9 +888,6 @@ function renderPlanner(){
   host.innerHTML=`<div class="plansum">${sum}</div>`;
   host.style.setProperty('--pcn', String(+state.planCols||6));   // max cards per row
   host.style.setProperty('--pcw', (PLAN_SIZES[state.planSize]||PLAN_SIZES.m)+'px');   // card size
-  const cl=document.getElementById('planClear'); if(cl) cl.onclick=(ev)=>{ev.preventDefault();
-    if(confirm('Clear all owned marks for '+CYCLE_LABEL[state.cycle]+'? This can\'t be undone.')){
-      Object.keys(state.counts).forEach(k=>{if(k.startsWith(state.cycle+'|'))delete state.counts[k];}); save(); renderPlanner(); }};
   const ss=document.getElementById('planSort'); if(ss) ss.onchange=(ev)=>{state.planSort=ev.target.value;save();renderPlanner();};
   const gg=document.getElementById('planGroup'); if(gg) gg.onchange=(ev)=>{state.planGroup=ev.target.value;save();renderPlanner();};
   const um=document.getElementById('planUnmerge'); if(um) um.onchange=(ev)=>{state.planUnmerge=ev.target.checked; if(ev.target.checked) state.planGroup='rb'; save(); renderPlanner();};
@@ -1036,6 +1040,7 @@ function renderControls(){
   const sel=document.getElementById('curSel');
   if(sel&&!sel.options.length)for(let i=0;i<=MAXRB;i++){const o=document.createElement('option');o.value=i;o.textContent="R"+i;sel.appendChild(o);}
   if(sel)sel.value=getProgress();
+  const ub=document.getElementById('undoBtn'); if(ub) ub.disabled=!undoAvailable();
 }
 function renderStats(){
   const active=getProgress()+1;   // current = your level (rebirths done); active = the one you're working toward
@@ -1165,6 +1170,13 @@ document.getElementById('delProf').addEventListener('click',()=>{if(Object.keys(
 document.getElementById('expProf').addEventListener('click',async()=>{const code=exportProfile();if(!code){alert("Export failed.");return;}try{await navigator.clipboard.writeText(code);alert(`Copied "${state.name}" to clipboard. Paste it into Import on another device/browser to restore.`);}catch(e){prompt(`Copy this code for "${state.name}":`,code);}});
 document.getElementById('impProf').addEventListener('click',()=>{const code=prompt("Paste a profile code (or an old URL # value) to import:");if(!code)return;const n=importProfile(code);alert(n?`Imported ${n} profile(s).`:"Couldn't read that code.");});
 document.getElementById('syncBtn').addEventListener('click',doSync);
+document.getElementById('undoBtn').addEventListener('click',doUndo);
+document.getElementById('resetOwnedBtn').addEventListener('click',()=>{
+  if(!confirm('Clear all owned marks for '+CYCLE_LABEL[state.cycle]+'?')) return;
+  snapshot();
+  Object.keys(state.counts).forEach(k=>{ if(k.startsWith(state.cycle+'|')) delete state.counts[k]; });
+  save(); renderAll();
+});
 document.getElementById('cycleBtns').addEventListener('click',e=>{const b=e.target.closest('[data-cycle]');if(!b)return;state.cycle=+b.dataset.cycle;save();renderAll();});
 document.getElementById('curSel').addEventListener('change',e=>{setProgress(+e.target.value);save();renderPlanner();});
 document.getElementById('rebirthBtn').addEventListener('click',()=>{if(getProgress()<MAXRB){setProgress(getProgress()+1);save();renderAll();}});
