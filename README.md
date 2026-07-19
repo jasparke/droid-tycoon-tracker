@@ -52,7 +52,7 @@ Use the same URL/key/sync code on another device to pull your profiles. Sync is 
 
 Game data is transcribed from the community/dev-maintained *Droid Tycoon* reference sheet, cross-checked against public guides (Insider Gaming Droidex).
 
-Droid images are self-hosted copies of the [droidtrakr.com](https://droidtrakr.com) art, fetched via `scripts/fetch-droid-art.mjs`; credit remains with droidtrakr.com. Higher-tier art for the LO droid was recovered from the [droidex project](https://github.com/erikpeik/droidex) and converted from PNG to webp. (The standalone prototype still loads images directly from droidtrakr.com and caches them in the browser.)
+Droid images are self-hosted copies of the [droidtrakr.com](https://droidtrakr.com) art, fetched via `scripts/fetch-droid-art.mjs`; credit remains with droidtrakr.com. Higher-tier art for the LO droid and R2-D2's base art were recovered from the [droidex project](https://github.com/erikpeik/droidex) (the latter from its [deployed site](https://droidex.web.app)). (The standalone prototype still loads images directly from droidtrakr.com and caches them in the browser.)
 
 This is a fan-made tool and is not affiliated with Epic Games or Lucasfilm.
 
