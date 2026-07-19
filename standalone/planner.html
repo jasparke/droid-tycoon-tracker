@@ -118,6 +118,10 @@
   .plctl label{font-size:11px;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
   .plctl select{padding:5px 9px;font-size:12px}
   .plctl .minibtn{padding:5px 11px;font-size:12px;font-weight:600}
+  .cyclebtns{display:inline-flex;gap:4px;flex-wrap:wrap}
+  .cyclebtns .cybtn{padding:4px 10px;border:1px solid var(--muted);border-radius:6px;background:transparent;color:inherit;cursor:pointer;font:inherit;line-height:1.2}
+  .cyclebtns .cybtn:hover{border-color:var(--accent)}
+  .cyclebtns .cybtn.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;color:var(--accent)}
   .plctl .spring{margin-left:auto}
   /* planner: mini-cards (icon-top, grouped by sellability) */
   .plctl{position:sticky;top:0;z-index:6;background:var(--panel);padding:6px 0;margin:2px 0 12px}
@@ -281,7 +285,7 @@
         <button id="expProf" title="Export active profile (backup / move)">📤</button>
         <button id="impProf" title="Import a profile from a code">📥</button>
         <button id="syncBtn" title="Cloud sync (set up)">☁</button></label>
-      <label>Cycle: <select id="cycleSel"></select></label>
+      <span id="cycleBtns" class="cyclebtns" role="group" aria-label="Cycle"></span>
       <label>Rebirth: <select id="curSel"></select></label>
       <button id="rebirthBtn" class="minibtn" title="Advance one rebirth">Rebirth ▶</button>
     </div>
@@ -458,7 +462,7 @@ const RAW={
 };
 const CYCLES={};
 Object.keys(RAW).forEach(cy=>{CYCLES[cy]=RAW[cy].map((r,i)=>({n:i+1,c:CR[i],r:r.map(([d,t])=>[d,T[t]])}));});
-const CYCLE_LABEL={1:"Cycle 1 (OG)",2:"Cycle 2 (SRB1)",3:"Cycle 3 (SRB2)",4:"Cycle 4 (SRB3)"};
+const CYCLE_LABEL={1:"Cycle 1",2:"Cycle 2",3:"Cycle 3",4:"Cycle 4"};
 const MAXRB=27;
 
 // ===================== STATE (multi-profile) =====================
@@ -1027,9 +1031,8 @@ document.addEventListener('mousemove',e=>{
 function renderControls(){
   const ps=document.getElementById('profileSel');
   ps.innerHTML=Object.entries(DB.profiles).map(([id,p])=>`<option value="${id}"${id===DB.active?' selected':''}>${p.name}</option>`).join("");
-  const cs=document.getElementById('cycleSel');
-  if(!cs.options.length)Object.keys(CYCLES).forEach(cy=>{const o=document.createElement('option');o.value=cy;o.textContent=CYCLE_LABEL[cy];cs.appendChild(o);});
-  cs.value=state.cycle;
+  const cb=document.getElementById('cycleBtns');
+  cb.innerHTML=Object.keys(CYCLES).map(cy=>`<button type="button" class="cybtn${(+cy===+state.cycle)?' active':''}" data-cycle="${cy}">${CYCLE_LABEL[cy]}</button>`).join("");
   const sel=document.getElementById('curSel');
   if(sel&&!sel.options.length)for(let i=0;i<=MAXRB;i++){const o=document.createElement('option');o.value=i;o.textContent="R"+i;sel.appendChild(o);}
   if(sel)sel.value=getProgress();
@@ -1162,7 +1165,7 @@ document.getElementById('delProf').addEventListener('click',()=>{if(Object.keys(
 document.getElementById('expProf').addEventListener('click',async()=>{const code=exportProfile();if(!code){alert("Export failed.");return;}try{await navigator.clipboard.writeText(code);alert(`Copied "${state.name}" to clipboard. Paste it into Import on another device/browser to restore.`);}catch(e){prompt(`Copy this code for "${state.name}":`,code);}});
 document.getElementById('impProf').addEventListener('click',()=>{const code=prompt("Paste a profile code (or an old URL # value) to import:");if(!code)return;const n=importProfile(code);alert(n?`Imported ${n} profile(s).`:"Couldn't read that code.");});
 document.getElementById('syncBtn').addEventListener('click',doSync);
-document.getElementById('cycleSel').addEventListener('change',e=>{state.cycle=+e.target.value;save();renderAll();});
+document.getElementById('cycleBtns').addEventListener('click',e=>{const b=e.target.closest('[data-cycle]');if(!b)return;state.cycle=+b.dataset.cycle;save();renderAll();});
 document.getElementById('curSel').addEventListener('change',e=>{setProgress(+e.target.value);save();renderPlanner();});
 document.getElementById('rebirthBtn').addEventListener('click',()=>{if(getProgress()<MAXRB){setProgress(getProgress()+1);save();renderAll();}});
 
