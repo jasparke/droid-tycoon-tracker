@@ -6,13 +6,24 @@
 
 ## Running the app (docker)
 
-    cp .env.example .env   # set POSTGRES_PASSWORD, INVITE_CODE, ORIGIN
+    cp .env.example .env   # set POSTGRES_PASSWORD, ORIGIN, PUBLIC_BASE_URL, OIDC_*
     docker compose up -d --build
     docker compose exec app node drizzle/seed.mjs   # first run only: load game reference data
 
 The app listens on port 3000 (HTTP) — front it with your reverse proxy for TLS.
-Register the first account with your INVITE_CODE. Import old tracker data via
-the export code from the prototype (☁ → Export) using POST /api/import or the UI.
+Import old tracker data via the export code from the prototype (☁ → Export) using
+POST /api/import or the UI.
+
+### Auth: Authentik OIDC
+
+The app authenticates via Authentik SSO ("Sign in with Google", brokered by Authentik) —
+there's no local username/password login or invite code. Set `OIDC_ISSUER_URL`,
+`OIDC_CLIENT_ID`, `OIDC_CLIENT_SECRET`, `OIDC_REDIRECT_URI`, and `PUBLIC_BASE_URL` in
+`.env` (see `.env.example`); the invariant `OIDC_REDIRECT_URI == PUBLIC_BASE_URL +
+"/api/auth/oidc/callback"` must hold. See
+[`docs/superpowers/specs/2026-07-17-authentik-oidc-sso-design.md`](docs/superpowers/specs/2026-07-17-authentik-oidc-sso-design.md)
+for the full design, and [`stacks/droid-tycoon/`](stacks/droid-tycoon/) for the homelab
+deploy stack.
 
 ## Prototype (frozen)
 

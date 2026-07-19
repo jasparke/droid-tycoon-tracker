@@ -30,7 +30,7 @@
 	<Shell user={data.user} reference={data.reference}>{@render children()}</Shell>
 	<SearchPopover />
 {:else}
-	<!-- logged-out pages (login/register) render outside Shell; restore the base
+	<!-- logged-out pages (login) render outside Shell; restore the base
 	     centering + padding that the app-wide reset otherwise leaves to Shell -->
 	<div class="auth">{@render children()}</div>
 {/if}
