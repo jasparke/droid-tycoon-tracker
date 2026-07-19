@@ -6,13 +6,24 @@
 
 ## Running the app (docker)
 
-    cp .env.example .env   # set POSTGRES_PASSWORD, INVITE_CODE, ORIGIN
+    cp .env.example .env   # set POSTGRES_PASSWORD, ORIGIN, PUBLIC_BASE_URL, OIDC_*
     docker compose up -d --build
     docker compose exec app node drizzle/seed.mjs   # first run only: load game reference data
 
 The app listens on port 3000 (HTTP) — front it with your reverse proxy for TLS.
-Register the first account with your INVITE_CODE. Import old tracker data via
-the export code from the prototype (☁ → Export) using POST /api/import or the UI.
+Import old tracker data via the export code from the prototype (☁ → Export) using
+POST /api/import or the UI.
+
+### Auth: Authentik OIDC
+
+The app authenticates via Authentik SSO ("Sign in with Google", brokered by Authentik) —
+there's no local username/password login or invite code. Set `OIDC_ISSUER_URL`,
+`OIDC_CLIENT_ID`, `OIDC_CLIENT_SECRET`, `OIDC_REDIRECT_URI`, and `PUBLIC_BASE_URL` in
+`.env` (see `.env.example`); the invariant `OIDC_REDIRECT_URI == PUBLIC_BASE_URL +
+"/api/auth/oidc/callback"` must hold. See
+[`docs/superpowers/specs/2026-07-17-authentik-oidc-sso-design.md`](docs/superpowers/specs/2026-07-17-authentik-oidc-sso-design.md)
+for the full design, and [`stacks/droid-tycoon/`](stacks/droid-tycoon/) for the homelab
+deploy stack.
 
 ## Prototype (frozen)
 
@@ -52,7 +63,7 @@ Use the same URL/key/sync code on another device to pull your profiles. Sync is 
 
 Game data is transcribed from the community/dev-maintained *Droid Tycoon* reference sheet, cross-checked against public guides (Insider Gaming Droidex).
 
-Droid images are self-hosted copies of the [droidtrakr.com](https://droidtrakr.com) art, fetched via `scripts/fetch-droid-art.mjs`; credit remains with droidtrakr.com. Higher-tier art for the LO droid was recovered from the [droidex project](https://github.com/erikpeik/droidex) and converted from PNG to webp. (The standalone prototype still loads images directly from droidtrakr.com and caches them in the browser.)
+Droid images are self-hosted copies of the [droidtrakr.com](https://droidtrakr.com) art, fetched via `scripts/fetch-droid-art.mjs`; credit remains with droidtrakr.com. Higher-tier art for the LO droid and R2-D2's base art were recovered from the [droidex project](https://github.com/erikpeik/droidex) (the latter from its [deployed site](https://droidex.web.app)). (The standalone prototype still loads images directly from droidtrakr.com and caches them in the browser.)
 
 This is a fan-made tool and is not affiliated with Epic Games or Lucasfilm.
 

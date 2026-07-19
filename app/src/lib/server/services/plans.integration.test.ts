@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { eq } from 'drizzle-orm';
-import { testDb, resetUserZone } from '../testing/db';
-import { register } from './users';
+import { testDb, resetUserZone, createTestUser } from '../testing/db';
 import { createProfile } from './profiles';
 import { replacePlan } from './plans';
 import { plans } from '../schema';
@@ -13,7 +12,7 @@ let uid: number, pid: number;
 beforeAll(async () => ({ db, sql } = await testDb()));
 beforeEach(async () => {
 	await resetUserZone(sql);
-	uid = (await register(db, { username: 'aa', password: 'password123', inviteCode: 'x' }, 'x')).id;
+	uid = (await createTestUser(db, 'aa')).id;
 	pid = (await createProfile(db, uid, { name: 'main' })).id;
 });
 

@@ -3,6 +3,7 @@
 	import { getTracker } from '$lib/client/tracker-context';
 	import { earliestReq } from '$lib/game/requirements';
 	import { RIDX, TIERS } from '$lib/game/tiers';
+	import { isSingleTier } from '$lib/game/art';
 	import { pad2 } from '$lib/client/format';
 
 	let { droid }: { droid: string } = $props();
@@ -12,8 +13,12 @@
 	const cycle = $derived(t.cycle());
 	const req = $derived(earliestReq(ref.rebirthReqs, cycle, t.rebirth(), droid));
 	const counts = $derived(t.countsFor(cycle, droid));
+	// Iconic droids are single-tier (see isSingleTier / art.ts): they have no
+	// Gold/Diamond/Rainbow/Beskar form, so show only the one tier that exists.
+	const single = $derived(isSingleTier(droid));
 	const rows = $derived(
-		TIERS.map((tier, i) => {
+		(single ? (['Base'] as const) : TIERS).map((tier) => {
+			const i = RIDX[tier];
 			let status = 'SELLABLE';
 			let needed = false;
 			if (req) {
@@ -29,7 +34,7 @@
 <div class="ladder">
 	{#each rows as r (r.tier)}
 		<div class="lrow" class:dim={!r.needed}>
-			<span class="tname tier-{r.tier}">{r.tier.toUpperCase()}</span>
+			<span class="tname tier-{r.tier}">{single ? 'OWNED' : r.tier.toUpperCase()}</span>
 			<span class="status" class:need={r.needed}>{r.status}</span>
 			<span class="step pill">
 				<button disabled={!t.editable()} aria-label="{droid} {r.tier} minus"

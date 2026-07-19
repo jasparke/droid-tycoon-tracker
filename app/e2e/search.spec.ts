@@ -1,18 +1,8 @@
-import { test, expect, type Page } from '@playwright/test';
-
-async function registerWithProfile(page: Page, user: string) {
-	await page.goto('/register');
-	await page.getByLabel('Username').fill(user);
-	await page.getByLabel('Password').fill('password123');
-	await page.getByLabel('Invite code').fill('e2e-invite');
-	await page.getByRole('button', { name: 'Create account' }).click();
-	await expect(page).toHaveURL(/checklist/);
-	await page.request.post('/api/profiles', { data: { name: 'main' } });
-	await page.reload();
-}
+import { test, expect } from '@playwright/test';
+import { signInWithProfile } from './support/auth';
 
 test('search popover: hotkeys, arrows, count edit persists', async ({ page }) => {
-	await registerWithProfile(page, `srch${Date.now()}`);
+	await signInWithProfile(page);
 
 	// a droid name guaranteed to exist: first checklist row
 	const droid = (await page.locator('.dname').first().textContent())!.trim();

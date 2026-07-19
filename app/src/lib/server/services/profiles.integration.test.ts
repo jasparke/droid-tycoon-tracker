@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
-import { testDb, resetUserZone } from '../testing/db';
-import { register } from './users';
+import { testDb, resetUserZone, createTestUser } from '../testing/db';
 import { listAllProfiles, createProfile, updateProfile, deleteProfile } from './profiles';
 
 let db: Awaited<ReturnType<typeof testDb>>['db'];
@@ -10,8 +9,8 @@ let alice: { id: number }, bob: { id: number };
 beforeAll(async () => ({ db, sql } = await testDb()));
 beforeEach(async () => {
 	await resetUserZone(sql);
-	alice = await register(db, { username: 'alice', password: 'password123', inviteCode: 'x' }, 'x');
-	bob = await register(db, { username: 'bob', password: 'password123', inviteCode: 'x' }, 'x');
+	alice = await createTestUser(db, 'alice');
+	bob = await createTestUser(db, 'bob');
 });
 
 describe('profiles', () => {

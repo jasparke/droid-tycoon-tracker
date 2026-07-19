@@ -1,0 +1,3579 @@
+{
+  "meta": {
+    "project": "droid-tycoon-tracker",
+    "title": "Asset acquisition manifest",
+    "generated": "2026-07-09",
+    "purpose": "Inventory of visual/media/font assets the rebuilt SvelteKit tracker needs to retrieve, self-host, or find. The dominant item (340 droid tier-art .webp files) is currently hot-linked from a third-party community site and must be self-hosted so the design isn't hostage to that host.",
+    "primarySources": {
+      "gameDataset": "app/drizzle/seed-data.json (canonical; upstream truth is a Google Sheet)",
+      "assetSpec": "docs/superpowers/specs/2026-07-04-frontend-design-handoff.md (§Assets)",
+      "loadingCode": "prototype/index.html:541-564 (droidImg / normName / IndexedDB cache)"
+    },
+    "conventions": {
+      "normName": "droid name uppercased with all non-alphanumerics stripped (e.g. 'IMPERIAL PROBE' -> 'IMPERIALPROBE', 'DRK-1 PROBE' -> 'DRK1PROBE')",
+      "droidArtFilename": "{normName}_{Tier}.webp where Base tier is written as _Default (e.g. MOUSE_Default.webp, CYCLOGRAV_Rainbow.webp)",
+      "tiers": [
+        "Base",
+        "Gold",
+        "Diamond",
+        "Rainbow",
+        "Beskar"
+      ],
+      "iconicException": "Iconic-rarity droids are single-tier: they have no tier grid and cannot be chip-upgraded. Art exists only as {normName}_Default.webp — never generate Gold/Diamond/Rainbow/Beskar filenames for them."
+    },
+    "sourceInvestigation": {
+      "date": "2026-07-09",
+      "note": "Droid Tycoon is a Fortnite/UEFN game by FOAD + Blzn Studios (not Roblox). FOAD develops in-editor and publishes NO public GitHub asset repo — that lead is a dead end. Two community sources carry the art; droidtrakr is complete, droidex is partial.",
+      "sourcesEvaluated": [
+        {
+          "name": "droidtrakr.com",
+          "result": "PRIMARY, mostly complete — serves 293 real image files (an earlier HEAD sweep claimed 340/340 but some 200s were fallback responses, not images). Exact webp format + normName filenames; the prototype's existing source. All 315 files now on main were pulled from here."
+        },
+        {
+          "name": "erikpeik/droidex (GitHub)",
+          "result": "PARTIAL — 258/340 as PNG in public/droids/. Covers 248 directly + MONO-WLKR/OPTI-STRK via name-map. MISSING all 11 Mythics + Iconic upper tiers (82 files). Different naming (AMP_WALKER_BESKAR.png) needs remap; PNG needs webp convert; NO LICENSE file (all-rights-reserved). Fallback/mirror only."
+        },
+        {
+          "name": "FOAD GitHub",
+          "result": "DOES NOT EXIST — UEFN game, no public asset repo. Do not re-investigate."
+        }
+      ],
+      "ipNote": "All sources are fan-extracted Star Wars / Fortnite art (© Lucasfilm/Epic/FOAD). Self-hosting for a private tracker is the same posture as the prototype's existing hot-link; keep droidtrakr attribution in README.",
+      "correction": "2026-07-15: Iconic droids are single-tier (user-confirmed; matches chipCosts having no Iconic row and game-domain reference §5.8). The 340-file target was wrong — true universe is 316."
+    }
+  },
+  "summary": {
+    "totalRequiredFiles": 316,
+    "categories": [
+      {
+        "id": "droid-art",
+        "need": 316,
+        "priority": "P0",
+        "status": "self-hosted 315/316 on main (PR #10); R2D2_Default.webp outstanding"
+      },
+      {
+        "id": "app-icons",
+        "need": 4,
+        "priority": "P1",
+        "status": "missing"
+      },
+      {
+        "id": "fonts",
+        "need": 2,
+        "priority": "P1",
+        "status": "not-vendored"
+      },
+      {
+        "id": "bespoke-icons",
+        "need": "~30 (optional)",
+        "priority": "P3",
+        "status": "designer's choice / create or source"
+      }
+    ]
+  },
+  "categories": [
+    {
+      "id": "droid-art",
+      "title": "Droid tier art",
+      "priority": "P0 — critical (bulk of the work)",
+      "status": "self-hosted on main (PR #10): 315/316; 1 outstanding",
+      "action": "retrieve + self-host",
+      "format": "webp",
+      "count": 316,
+      "grid": "62 tiered droids × 5 tiers + 6 Iconic droids × 1 (Iconics are single-tier)",
+      "remoteBaseUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/",
+      "localTargetDir": "app/static/assets/droids/",
+      "attribution": "Community site droidtrakr.com — keep credit in README when self-hosting.",
+      "notes": "Iconic droids (BB8, CB-23, DJ-R3X, IG-11 MARSHAL, MISTER BONES, R2-D2) have exactly ONE tier — no tier grid, no chip costs (see game-domain reference §5.8). Only their _Default art exists or is needed; earlier manifest revisions wrongly listed 68×5=340 files. PR #10 (main eeea1c8) self-hosts 315/316 under app/static/assets/droids/ via DroidImg.svelte + art.ts. Sole gap: R2D2_Default.webp (verify upstream when network allows).",
+      "files": [
+        {
+          "filename": "MOUSE_Default.webp",
+          "droid": "MOUSE",
+          "normName": "MOUSE",
+          "tier": "Base",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MOUSE_Default.webp",
+          "localTarget": "app/static/assets/droids/MOUSE_Default.webp"
+        },
+        {
+          "filename": "MOUSE_Gold.webp",
+          "droid": "MOUSE",
+          "normName": "MOUSE",
+          "tier": "Gold",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MOUSE_Gold.webp",
+          "localTarget": "app/static/assets/droids/MOUSE_Gold.webp"
+        },
+        {
+          "filename": "MOUSE_Diamond.webp",
+          "droid": "MOUSE",
+          "normName": "MOUSE",
+          "tier": "Diamond",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MOUSE_Diamond.webp",
+          "localTarget": "app/static/assets/droids/MOUSE_Diamond.webp"
+        },
+        {
+          "filename": "MOUSE_Rainbow.webp",
+          "droid": "MOUSE",
+          "normName": "MOUSE",
+          "tier": "Rainbow",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MOUSE_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/MOUSE_Rainbow.webp"
+        },
+        {
+          "filename": "MOUSE_Beskar.webp",
+          "droid": "MOUSE",
+          "normName": "MOUSE",
+          "tier": "Beskar",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MOUSE_Beskar.webp",
+          "localTarget": "app/static/assets/droids/MOUSE_Beskar.webp"
+        },
+        {
+          "filename": "PIT_Default.webp",
+          "droid": "PIT",
+          "normName": "PIT",
+          "tier": "Base",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/PIT_Default.webp",
+          "localTarget": "app/static/assets/droids/PIT_Default.webp"
+        },
+        {
+          "filename": "PIT_Gold.webp",
+          "droid": "PIT",
+          "normName": "PIT",
+          "tier": "Gold",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/PIT_Gold.webp",
+          "localTarget": "app/static/assets/droids/PIT_Gold.webp"
+        },
+        {
+          "filename": "PIT_Diamond.webp",
+          "droid": "PIT",
+          "normName": "PIT",
+          "tier": "Diamond",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/PIT_Diamond.webp",
+          "localTarget": "app/static/assets/droids/PIT_Diamond.webp"
+        },
+        {
+          "filename": "PIT_Rainbow.webp",
+          "droid": "PIT",
+          "normName": "PIT",
+          "tier": "Rainbow",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/PIT_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/PIT_Rainbow.webp"
+        },
+        {
+          "filename": "PIT_Beskar.webp",
+          "droid": "PIT",
+          "normName": "PIT",
+          "tier": "Beskar",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/PIT_Beskar.webp",
+          "localTarget": "app/static/assets/droids/PIT_Beskar.webp"
+        },
+        {
+          "filename": "GONK_Default.webp",
+          "droid": "GONK",
+          "normName": "GONK",
+          "tier": "Base",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GONK_Default.webp",
+          "localTarget": "app/static/assets/droids/GONK_Default.webp"
+        },
+        {
+          "filename": "GONK_Gold.webp",
+          "droid": "GONK",
+          "normName": "GONK",
+          "tier": "Gold",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GONK_Gold.webp",
+          "localTarget": "app/static/assets/droids/GONK_Gold.webp"
+        },
+        {
+          "filename": "GONK_Diamond.webp",
+          "droid": "GONK",
+          "normName": "GONK",
+          "tier": "Diamond",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GONK_Diamond.webp",
+          "localTarget": "app/static/assets/droids/GONK_Diamond.webp"
+        },
+        {
+          "filename": "GONK_Rainbow.webp",
+          "droid": "GONK",
+          "normName": "GONK",
+          "tier": "Rainbow",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GONK_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/GONK_Rainbow.webp"
+        },
+        {
+          "filename": "GONK_Beskar.webp",
+          "droid": "GONK",
+          "normName": "GONK",
+          "tier": "Beskar",
+          "rarity": "Common",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GONK_Beskar.webp",
+          "localTarget": "app/static/assets/droids/GONK_Beskar.webp"
+        },
+        {
+          "filename": "CB_Default.webp",
+          "droid": "CB",
+          "normName": "CB",
+          "tier": "Base",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CB_Default.webp",
+          "localTarget": "app/static/assets/droids/CB_Default.webp"
+        },
+        {
+          "filename": "CB_Gold.webp",
+          "droid": "CB",
+          "normName": "CB",
+          "tier": "Gold",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CB_Gold.webp",
+          "localTarget": "app/static/assets/droids/CB_Gold.webp"
+        },
+        {
+          "filename": "CB_Diamond.webp",
+          "droid": "CB",
+          "normName": "CB",
+          "tier": "Diamond",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CB_Diamond.webp",
+          "localTarget": "app/static/assets/droids/CB_Diamond.webp"
+        },
+        {
+          "filename": "CB_Rainbow.webp",
+          "droid": "CB",
+          "normName": "CB",
+          "tier": "Rainbow",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CB_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/CB_Rainbow.webp"
+        },
+        {
+          "filename": "CB_Beskar.webp",
+          "droid": "CB",
+          "normName": "CB",
+          "tier": "Beskar",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CB_Beskar.webp",
+          "localTarget": "app/static/assets/droids/CB_Beskar.webp"
+        },
+        {
+          "filename": "R3_Default.webp",
+          "droid": "R3",
+          "normName": "R3",
+          "tier": "Base",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R3_Default.webp",
+          "localTarget": "app/static/assets/droids/R3_Default.webp"
+        },
+        {
+          "filename": "R3_Gold.webp",
+          "droid": "R3",
+          "normName": "R3",
+          "tier": "Gold",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R3_Gold.webp",
+          "localTarget": "app/static/assets/droids/R3_Gold.webp"
+        },
+        {
+          "filename": "R3_Diamond.webp",
+          "droid": "R3",
+          "normName": "R3",
+          "tier": "Diamond",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R3_Diamond.webp",
+          "localTarget": "app/static/assets/droids/R3_Diamond.webp"
+        },
+        {
+          "filename": "R3_Rainbow.webp",
+          "droid": "R3",
+          "normName": "R3",
+          "tier": "Rainbow",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R3_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/R3_Rainbow.webp"
+        },
+        {
+          "filename": "R3_Beskar.webp",
+          "droid": "R3",
+          "normName": "R3",
+          "tier": "Beskar",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R3_Beskar.webp",
+          "localTarget": "app/static/assets/droids/R3_Beskar.webp"
+        },
+        {
+          "filename": "R5_Default.webp",
+          "droid": "R5",
+          "normName": "R5",
+          "tier": "Base",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R5_Default.webp",
+          "localTarget": "app/static/assets/droids/R5_Default.webp"
+        },
+        {
+          "filename": "R5_Gold.webp",
+          "droid": "R5",
+          "normName": "R5",
+          "tier": "Gold",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R5_Gold.webp",
+          "localTarget": "app/static/assets/droids/R5_Gold.webp"
+        },
+        {
+          "filename": "R5_Diamond.webp",
+          "droid": "R5",
+          "normName": "R5",
+          "tier": "Diamond",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R5_Diamond.webp",
+          "localTarget": "app/static/assets/droids/R5_Diamond.webp"
+        },
+        {
+          "filename": "R5_Rainbow.webp",
+          "droid": "R5",
+          "normName": "R5",
+          "tier": "Rainbow",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R5_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/R5_Rainbow.webp"
+        },
+        {
+          "filename": "R5_Beskar.webp",
+          "droid": "R5",
+          "normName": "R5",
+          "tier": "Beskar",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R5_Beskar.webp",
+          "localTarget": "app/static/assets/droids/R5_Beskar.webp"
+        },
+        {
+          "filename": "R8_Default.webp",
+          "droid": "R8",
+          "normName": "R8",
+          "tier": "Base",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R8_Default.webp",
+          "localTarget": "app/static/assets/droids/R8_Default.webp"
+        },
+        {
+          "filename": "R8_Gold.webp",
+          "droid": "R8",
+          "normName": "R8",
+          "tier": "Gold",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R8_Gold.webp",
+          "localTarget": "app/static/assets/droids/R8_Gold.webp"
+        },
+        {
+          "filename": "R8_Diamond.webp",
+          "droid": "R8",
+          "normName": "R8",
+          "tier": "Diamond",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R8_Diamond.webp",
+          "localTarget": "app/static/assets/droids/R8_Diamond.webp"
+        },
+        {
+          "filename": "R8_Rainbow.webp",
+          "droid": "R8",
+          "normName": "R8",
+          "tier": "Rainbow",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R8_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/R8_Rainbow.webp"
+        },
+        {
+          "filename": "R8_Beskar.webp",
+          "droid": "R8",
+          "normName": "R8",
+          "tier": "Beskar",
+          "rarity": "Common",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R8_Beskar.webp",
+          "localTarget": "app/static/assets/droids/R8_Beskar.webp"
+        },
+        {
+          "filename": "IMPERIALPROBE_Default.webp",
+          "droid": "IMPERIAL PROBE",
+          "normName": "IMPERIALPROBE",
+          "tier": "Base",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IMPERIALPROBE_Default.webp",
+          "localTarget": "app/static/assets/droids/IMPERIALPROBE_Default.webp"
+        },
+        {
+          "filename": "IMPERIALPROBE_Gold.webp",
+          "droid": "IMPERIAL PROBE",
+          "normName": "IMPERIALPROBE",
+          "tier": "Gold",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IMPERIALPROBE_Gold.webp",
+          "localTarget": "app/static/assets/droids/IMPERIALPROBE_Gold.webp"
+        },
+        {
+          "filename": "IMPERIALPROBE_Diamond.webp",
+          "droid": "IMPERIAL PROBE",
+          "normName": "IMPERIALPROBE",
+          "tier": "Diamond",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IMPERIALPROBE_Diamond.webp",
+          "localTarget": "app/static/assets/droids/IMPERIALPROBE_Diamond.webp"
+        },
+        {
+          "filename": "IMPERIALPROBE_Rainbow.webp",
+          "droid": "IMPERIAL PROBE",
+          "normName": "IMPERIALPROBE",
+          "tier": "Rainbow",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IMPERIALPROBE_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/IMPERIALPROBE_Rainbow.webp"
+        },
+        {
+          "filename": "IMPERIALPROBE_Beskar.webp",
+          "droid": "IMPERIAL PROBE",
+          "normName": "IMPERIALPROBE",
+          "tier": "Beskar",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IMPERIALPROBE_Beskar.webp",
+          "localTarget": "app/static/assets/droids/IMPERIALPROBE_Beskar.webp"
+        },
+        {
+          "filename": "B1BATTLE_Default.webp",
+          "droid": "B1 BATTLE",
+          "normName": "B1BATTLE",
+          "tier": "Base",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1BATTLE_Default.webp",
+          "localTarget": "app/static/assets/droids/B1BATTLE_Default.webp"
+        },
+        {
+          "filename": "B1BATTLE_Gold.webp",
+          "droid": "B1 BATTLE",
+          "normName": "B1BATTLE",
+          "tier": "Gold",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1BATTLE_Gold.webp",
+          "localTarget": "app/static/assets/droids/B1BATTLE_Gold.webp"
+        },
+        {
+          "filename": "B1BATTLE_Diamond.webp",
+          "droid": "B1 BATTLE",
+          "normName": "B1BATTLE",
+          "tier": "Diamond",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1BATTLE_Diamond.webp",
+          "localTarget": "app/static/assets/droids/B1BATTLE_Diamond.webp"
+        },
+        {
+          "filename": "B1BATTLE_Rainbow.webp",
+          "droid": "B1 BATTLE",
+          "normName": "B1BATTLE",
+          "tier": "Rainbow",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1BATTLE_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/B1BATTLE_Rainbow.webp"
+        },
+        {
+          "filename": "B1BATTLE_Beskar.webp",
+          "droid": "B1 BATTLE",
+          "normName": "B1BATTLE",
+          "tier": "Beskar",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1BATTLE_Beskar.webp",
+          "localTarget": "app/static/assets/droids/B1BATTLE_Beskar.webp"
+        },
+        {
+          "filename": "DRK1PROBE_Default.webp",
+          "droid": "DRK-1 PROBE",
+          "normName": "DRK1PROBE",
+          "tier": "Base",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DRK1PROBE_Default.webp",
+          "localTarget": "app/static/assets/droids/DRK1PROBE_Default.webp"
+        },
+        {
+          "filename": "DRK1PROBE_Gold.webp",
+          "droid": "DRK-1 PROBE",
+          "normName": "DRK1PROBE",
+          "tier": "Gold",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DRK1PROBE_Gold.webp",
+          "localTarget": "app/static/assets/droids/DRK1PROBE_Gold.webp"
+        },
+        {
+          "filename": "DRK1PROBE_Diamond.webp",
+          "droid": "DRK-1 PROBE",
+          "normName": "DRK1PROBE",
+          "tier": "Diamond",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DRK1PROBE_Diamond.webp",
+          "localTarget": "app/static/assets/droids/DRK1PROBE_Diamond.webp"
+        },
+        {
+          "filename": "DRK1PROBE_Rainbow.webp",
+          "droid": "DRK-1 PROBE",
+          "normName": "DRK1PROBE",
+          "tier": "Rainbow",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DRK1PROBE_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/DRK1PROBE_Rainbow.webp"
+        },
+        {
+          "filename": "DRK1PROBE_Beskar.webp",
+          "droid": "DRK-1 PROBE",
+          "normName": "DRK1PROBE",
+          "tier": "Beskar",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DRK1PROBE_Beskar.webp",
+          "localTarget": "app/static/assets/droids/DRK1PROBE_Beskar.webp"
+        },
+        {
+          "filename": "ID10_Default.webp",
+          "droid": "ID10",
+          "normName": "ID10",
+          "tier": "Base",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ID10_Default.webp",
+          "localTarget": "app/static/assets/droids/ID10_Default.webp"
+        },
+        {
+          "filename": "ID10_Gold.webp",
+          "droid": "ID10",
+          "normName": "ID10",
+          "tier": "Gold",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ID10_Gold.webp",
+          "localTarget": "app/static/assets/droids/ID10_Gold.webp"
+        },
+        {
+          "filename": "ID10_Diamond.webp",
+          "droid": "ID10",
+          "normName": "ID10",
+          "tier": "Diamond",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ID10_Diamond.webp",
+          "localTarget": "app/static/assets/droids/ID10_Diamond.webp"
+        },
+        {
+          "filename": "ID10_Rainbow.webp",
+          "droid": "ID10",
+          "normName": "ID10",
+          "tier": "Rainbow",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ID10_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/ID10_Rainbow.webp"
+        },
+        {
+          "filename": "ID10_Beskar.webp",
+          "droid": "ID10",
+          "normName": "ID10",
+          "tier": "Beskar",
+          "rarity": "Common",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ID10_Beskar.webp",
+          "localTarget": "app/static/assets/droids/ID10_Beskar.webp"
+        },
+        {
+          "filename": "BDXEXPLORER_Default.webp",
+          "droid": "BDX EXPLORER",
+          "normName": "BDXEXPLORER",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BDXEXPLORER_Default.webp",
+          "localTarget": "app/static/assets/droids/BDXEXPLORER_Default.webp"
+        },
+        {
+          "filename": "BDXEXPLORER_Gold.webp",
+          "droid": "BDX EXPLORER",
+          "normName": "BDXEXPLORER",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BDXEXPLORER_Gold.webp",
+          "localTarget": "app/static/assets/droids/BDXEXPLORER_Gold.webp"
+        },
+        {
+          "filename": "BDXEXPLORER_Diamond.webp",
+          "droid": "BDX EXPLORER",
+          "normName": "BDXEXPLORER",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BDXEXPLORER_Diamond.webp",
+          "localTarget": "app/static/assets/droids/BDXEXPLORER_Diamond.webp"
+        },
+        {
+          "filename": "BDXEXPLORER_Rainbow.webp",
+          "droid": "BDX EXPLORER",
+          "normName": "BDXEXPLORER",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BDXEXPLORER_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/BDXEXPLORER_Rainbow.webp"
+        },
+        {
+          "filename": "BDXEXPLORER_Beskar.webp",
+          "droid": "BDX EXPLORER",
+          "normName": "BDXEXPLORER",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BDXEXPLORER_Beskar.webp",
+          "localTarget": "app/static/assets/droids/BDXEXPLORER_Beskar.webp"
+        },
+        {
+          "filename": "ARG_Default.webp",
+          "droid": "ARG",
+          "normName": "ARG",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ARG_Default.webp",
+          "localTarget": "app/static/assets/droids/ARG_Default.webp"
+        },
+        {
+          "filename": "ARG_Gold.webp",
+          "droid": "ARG",
+          "normName": "ARG",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ARG_Gold.webp",
+          "localTarget": "app/static/assets/droids/ARG_Gold.webp"
+        },
+        {
+          "filename": "ARG_Diamond.webp",
+          "droid": "ARG",
+          "normName": "ARG",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ARG_Diamond.webp",
+          "localTarget": "app/static/assets/droids/ARG_Diamond.webp"
+        },
+        {
+          "filename": "ARG_Rainbow.webp",
+          "droid": "ARG",
+          "normName": "ARG",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ARG_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/ARG_Rainbow.webp"
+        },
+        {
+          "filename": "ARG_Beskar.webp",
+          "droid": "ARG",
+          "normName": "ARG",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ARG_Beskar.webp",
+          "localTarget": "app/static/assets/droids/ARG_Beskar.webp"
+        },
+        {
+          "filename": "SENATEHOVERCAM_Default.webp",
+          "droid": "SENATE HOVERCAM",
+          "normName": "SENATEHOVERCAM",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SENATEHOVERCAM_Default.webp",
+          "localTarget": "app/static/assets/droids/SENATEHOVERCAM_Default.webp"
+        },
+        {
+          "filename": "SENATEHOVERCAM_Gold.webp",
+          "droid": "SENATE HOVERCAM",
+          "normName": "SENATEHOVERCAM",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SENATEHOVERCAM_Gold.webp",
+          "localTarget": "app/static/assets/droids/SENATEHOVERCAM_Gold.webp"
+        },
+        {
+          "filename": "SENATEHOVERCAM_Diamond.webp",
+          "droid": "SENATE HOVERCAM",
+          "normName": "SENATEHOVERCAM",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SENATEHOVERCAM_Diamond.webp",
+          "localTarget": "app/static/assets/droids/SENATEHOVERCAM_Diamond.webp"
+        },
+        {
+          "filename": "SENATEHOVERCAM_Rainbow.webp",
+          "droid": "SENATE HOVERCAM",
+          "normName": "SENATEHOVERCAM",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SENATEHOVERCAM_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/SENATEHOVERCAM_Rainbow.webp"
+        },
+        {
+          "filename": "SENATEHOVERCAM_Beskar.webp",
+          "droid": "SENATE HOVERCAM",
+          "normName": "SENATEHOVERCAM",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SENATEHOVERCAM_Beskar.webp",
+          "localTarget": "app/static/assets/droids/SENATEHOVERCAM_Beskar.webp"
+        },
+        {
+          "filename": "BU4D_Default.webp",
+          "droid": "BU-4D",
+          "normName": "BU4D",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BU4D_Default.webp",
+          "localTarget": "app/static/assets/droids/BU4D_Default.webp"
+        },
+        {
+          "filename": "BU4D_Gold.webp",
+          "droid": "BU-4D",
+          "normName": "BU4D",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BU4D_Gold.webp",
+          "localTarget": "app/static/assets/droids/BU4D_Gold.webp"
+        },
+        {
+          "filename": "BU4D_Diamond.webp",
+          "droid": "BU-4D",
+          "normName": "BU4D",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BU4D_Diamond.webp",
+          "localTarget": "app/static/assets/droids/BU4D_Diamond.webp"
+        },
+        {
+          "filename": "BU4D_Rainbow.webp",
+          "droid": "BU-4D",
+          "normName": "BU4D",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BU4D_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/BU4D_Rainbow.webp"
+        },
+        {
+          "filename": "BU4D_Beskar.webp",
+          "droid": "BU-4D",
+          "normName": "BU4D",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BU4D_Beskar.webp",
+          "localTarget": "app/static/assets/droids/BU4D_Beskar.webp"
+        },
+        {
+          "filename": "BALCORE_Default.webp",
+          "droid": "BAL-CORE",
+          "normName": "BALCORE",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BALCORE_Default.webp",
+          "localTarget": "app/static/assets/droids/BALCORE_Default.webp"
+        },
+        {
+          "filename": "BALCORE_Gold.webp",
+          "droid": "BAL-CORE",
+          "normName": "BALCORE",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BALCORE_Gold.webp",
+          "localTarget": "app/static/assets/droids/BALCORE_Gold.webp"
+        },
+        {
+          "filename": "BALCORE_Diamond.webp",
+          "droid": "BAL-CORE",
+          "normName": "BALCORE",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BALCORE_Diamond.webp",
+          "localTarget": "app/static/assets/droids/BALCORE_Diamond.webp"
+        },
+        {
+          "filename": "BALCORE_Rainbow.webp",
+          "droid": "BAL-CORE",
+          "normName": "BALCORE",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BALCORE_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/BALCORE_Rainbow.webp"
+        },
+        {
+          "filename": "BALCORE_Beskar.webp",
+          "droid": "BAL-CORE",
+          "normName": "BALCORE",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BALCORE_Beskar.webp",
+          "localTarget": "app/static/assets/droids/BALCORE_Beskar.webp"
+        },
+        {
+          "filename": "ROLLR_Default.webp",
+          "droid": "ROLL-R",
+          "normName": "ROLLR",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ROLLR_Default.webp",
+          "localTarget": "app/static/assets/droids/ROLLR_Default.webp"
+        },
+        {
+          "filename": "ROLLR_Gold.webp",
+          "droid": "ROLL-R",
+          "normName": "ROLLR",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ROLLR_Gold.webp",
+          "localTarget": "app/static/assets/droids/ROLLR_Gold.webp"
+        },
+        {
+          "filename": "ROLLR_Diamond.webp",
+          "droid": "ROLL-R",
+          "normName": "ROLLR",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ROLLR_Diamond.webp",
+          "localTarget": "app/static/assets/droids/ROLLR_Diamond.webp"
+        },
+        {
+          "filename": "ROLLR_Rainbow.webp",
+          "droid": "ROLL-R",
+          "normName": "ROLLR",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ROLLR_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/ROLLR_Rainbow.webp"
+        },
+        {
+          "filename": "ROLLR_Beskar.webp",
+          "droid": "ROLL-R",
+          "normName": "ROLLR",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ROLLR_Beskar.webp",
+          "localTarget": "app/static/assets/droids/ROLLR_Beskar.webp"
+        },
+        {
+          "filename": "2BB_Default.webp",
+          "droid": "2BB",
+          "normName": "2BB",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/2BB_Default.webp",
+          "localTarget": "app/static/assets/droids/2BB_Default.webp"
+        },
+        {
+          "filename": "2BB_Gold.webp",
+          "droid": "2BB",
+          "normName": "2BB",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/2BB_Gold.webp",
+          "localTarget": "app/static/assets/droids/2BB_Gold.webp"
+        },
+        {
+          "filename": "2BB_Diamond.webp",
+          "droid": "2BB",
+          "normName": "2BB",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/2BB_Diamond.webp",
+          "localTarget": "app/static/assets/droids/2BB_Diamond.webp"
+        },
+        {
+          "filename": "2BB_Rainbow.webp",
+          "droid": "2BB",
+          "normName": "2BB",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/2BB_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/2BB_Rainbow.webp"
+        },
+        {
+          "filename": "2BB_Beskar.webp",
+          "droid": "2BB",
+          "normName": "2BB",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/2BB_Beskar.webp",
+          "localTarget": "app/static/assets/droids/2BB_Beskar.webp"
+        },
+        {
+          "filename": "ALT_Default.webp",
+          "droid": "A-LT",
+          "normName": "ALT",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ALT_Default.webp",
+          "localTarget": "app/static/assets/droids/ALT_Default.webp"
+        },
+        {
+          "filename": "ALT_Gold.webp",
+          "droid": "A-LT",
+          "normName": "ALT",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ALT_Gold.webp",
+          "localTarget": "app/static/assets/droids/ALT_Gold.webp"
+        },
+        {
+          "filename": "ALT_Diamond.webp",
+          "droid": "A-LT",
+          "normName": "ALT",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ALT_Diamond.webp",
+          "localTarget": "app/static/assets/droids/ALT_Diamond.webp"
+        },
+        {
+          "filename": "ALT_Rainbow.webp",
+          "droid": "A-LT",
+          "normName": "ALT",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ALT_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/ALT_Rainbow.webp"
+        },
+        {
+          "filename": "ALT_Beskar.webp",
+          "droid": "A-LT",
+          "normName": "ALT",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ALT_Beskar.webp",
+          "localTarget": "app/static/assets/droids/ALT_Beskar.webp"
+        },
+        {
+          "filename": "R4_Default.webp",
+          "droid": "R4",
+          "normName": "R4",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R4_Default.webp",
+          "localTarget": "app/static/assets/droids/R4_Default.webp"
+        },
+        {
+          "filename": "R4_Gold.webp",
+          "droid": "R4",
+          "normName": "R4",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R4_Gold.webp",
+          "localTarget": "app/static/assets/droids/R4_Gold.webp"
+        },
+        {
+          "filename": "R4_Diamond.webp",
+          "droid": "R4",
+          "normName": "R4",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R4_Diamond.webp",
+          "localTarget": "app/static/assets/droids/R4_Diamond.webp"
+        },
+        {
+          "filename": "R4_Rainbow.webp",
+          "droid": "R4",
+          "normName": "R4",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R4_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/R4_Rainbow.webp"
+        },
+        {
+          "filename": "R4_Beskar.webp",
+          "droid": "R4",
+          "normName": "R4",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R4_Beskar.webp",
+          "localTarget": "app/static/assets/droids/R4_Beskar.webp"
+        },
+        {
+          "filename": "R9_Default.webp",
+          "droid": "R9",
+          "normName": "R9",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R9_Default.webp",
+          "localTarget": "app/static/assets/droids/R9_Default.webp"
+        },
+        {
+          "filename": "R9_Gold.webp",
+          "droid": "R9",
+          "normName": "R9",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R9_Gold.webp",
+          "localTarget": "app/static/assets/droids/R9_Gold.webp"
+        },
+        {
+          "filename": "R9_Diamond.webp",
+          "droid": "R9",
+          "normName": "R9",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R9_Diamond.webp",
+          "localTarget": "app/static/assets/droids/R9_Diamond.webp"
+        },
+        {
+          "filename": "R9_Rainbow.webp",
+          "droid": "R9",
+          "normName": "R9",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R9_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/R9_Rainbow.webp"
+        },
+        {
+          "filename": "R9_Beskar.webp",
+          "droid": "R9",
+          "normName": "R9",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R9_Beskar.webp",
+          "localTarget": "app/static/assets/droids/R9_Beskar.webp"
+        },
+        {
+          "filename": "B1SECURITY_Default.webp",
+          "droid": "B1 SECURITY",
+          "normName": "B1SECURITY",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1SECURITY_Default.webp",
+          "localTarget": "app/static/assets/droids/B1SECURITY_Default.webp"
+        },
+        {
+          "filename": "B1SECURITY_Gold.webp",
+          "droid": "B1 SECURITY",
+          "normName": "B1SECURITY",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1SECURITY_Gold.webp",
+          "localTarget": "app/static/assets/droids/B1SECURITY_Gold.webp"
+        },
+        {
+          "filename": "B1SECURITY_Diamond.webp",
+          "droid": "B1 SECURITY",
+          "normName": "B1SECURITY",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1SECURITY_Diamond.webp",
+          "localTarget": "app/static/assets/droids/B1SECURITY_Diamond.webp"
+        },
+        {
+          "filename": "B1SECURITY_Rainbow.webp",
+          "droid": "B1 SECURITY",
+          "normName": "B1SECURITY",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1SECURITY_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/B1SECURITY_Rainbow.webp"
+        },
+        {
+          "filename": "B1SECURITY_Beskar.webp",
+          "droid": "B1 SECURITY",
+          "normName": "B1SECURITY",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1SECURITY_Beskar.webp",
+          "localTarget": "app/static/assets/droids/B1SECURITY_Beskar.webp"
+        },
+        {
+          "filename": "NAVEX_Default.webp",
+          "droid": "NAV-EX",
+          "normName": "NAVEX",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/NAVEX_Default.webp",
+          "localTarget": "app/static/assets/droids/NAVEX_Default.webp"
+        },
+        {
+          "filename": "NAVEX_Gold.webp",
+          "droid": "NAV-EX",
+          "normName": "NAVEX",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/NAVEX_Gold.webp",
+          "localTarget": "app/static/assets/droids/NAVEX_Gold.webp"
+        },
+        {
+          "filename": "NAVEX_Diamond.webp",
+          "droid": "NAV-EX",
+          "normName": "NAVEX",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/NAVEX_Diamond.webp",
+          "localTarget": "app/static/assets/droids/NAVEX_Diamond.webp"
+        },
+        {
+          "filename": "NAVEX_Rainbow.webp",
+          "droid": "NAV-EX",
+          "normName": "NAVEX",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/NAVEX_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/NAVEX_Rainbow.webp"
+        },
+        {
+          "filename": "NAVEX_Beskar.webp",
+          "droid": "NAV-EX",
+          "normName": "NAVEX",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/NAVEX_Beskar.webp",
+          "localTarget": "app/static/assets/droids/NAVEX_Beskar.webp"
+        },
+        {
+          "filename": "VECTARM_Default.webp",
+          "droid": "VECT-ARM",
+          "normName": "VECTARM",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/VECTARM_Default.webp",
+          "localTarget": "app/static/assets/droids/VECTARM_Default.webp"
+        },
+        {
+          "filename": "VECTARM_Gold.webp",
+          "droid": "VECT-ARM",
+          "normName": "VECTARM",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/VECTARM_Gold.webp",
+          "localTarget": "app/static/assets/droids/VECTARM_Gold.webp"
+        },
+        {
+          "filename": "VECTARM_Diamond.webp",
+          "droid": "VECT-ARM",
+          "normName": "VECTARM",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/VECTARM_Diamond.webp",
+          "localTarget": "app/static/assets/droids/VECTARM_Diamond.webp"
+        },
+        {
+          "filename": "VECTARM_Rainbow.webp",
+          "droid": "VECT-ARM",
+          "normName": "VECTARM",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/VECTARM_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/VECTARM_Rainbow.webp"
+        },
+        {
+          "filename": "VECTARM_Beskar.webp",
+          "droid": "VECT-ARM",
+          "normName": "VECTARM",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/VECTARM_Beskar.webp",
+          "localTarget": "app/static/assets/droids/VECTARM_Beskar.webp"
+        },
+        {
+          "filename": "HOVR_Default.webp",
+          "droid": "HOV-R",
+          "normName": "HOVR",
+          "tier": "Base",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/HOVR_Default.webp",
+          "localTarget": "app/static/assets/droids/HOVR_Default.webp"
+        },
+        {
+          "filename": "HOVR_Gold.webp",
+          "droid": "HOV-R",
+          "normName": "HOVR",
+          "tier": "Gold",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/HOVR_Gold.webp",
+          "localTarget": "app/static/assets/droids/HOVR_Gold.webp"
+        },
+        {
+          "filename": "HOVR_Diamond.webp",
+          "droid": "HOV-R",
+          "normName": "HOVR",
+          "tier": "Diamond",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/HOVR_Diamond.webp",
+          "localTarget": "app/static/assets/droids/HOVR_Diamond.webp"
+        },
+        {
+          "filename": "HOVR_Rainbow.webp",
+          "droid": "HOV-R",
+          "normName": "HOVR",
+          "tier": "Rainbow",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/HOVR_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/HOVR_Rainbow.webp"
+        },
+        {
+          "filename": "HOVR_Beskar.webp",
+          "droid": "HOV-R",
+          "normName": "HOVR",
+          "tier": "Beskar",
+          "rarity": "Rare",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/HOVR_Beskar.webp",
+          "localTarget": "app/static/assets/droids/HOVR_Beskar.webp"
+        },
+        {
+          "filename": "GROUNDMECH_Default.webp",
+          "droid": "GROUNDMECH",
+          "normName": "GROUNDMECH",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GROUNDMECH_Default.webp",
+          "localTarget": "app/static/assets/droids/GROUNDMECH_Default.webp"
+        },
+        {
+          "filename": "GROUNDMECH_Gold.webp",
+          "droid": "GROUNDMECH",
+          "normName": "GROUNDMECH",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GROUNDMECH_Gold.webp",
+          "localTarget": "app/static/assets/droids/GROUNDMECH_Gold.webp"
+        },
+        {
+          "filename": "GROUNDMECH_Diamond.webp",
+          "droid": "GROUNDMECH",
+          "normName": "GROUNDMECH",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GROUNDMECH_Diamond.webp",
+          "localTarget": "app/static/assets/droids/GROUNDMECH_Diamond.webp"
+        },
+        {
+          "filename": "GROUNDMECH_Rainbow.webp",
+          "droid": "GROUNDMECH",
+          "normName": "GROUNDMECH",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GROUNDMECH_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/GROUNDMECH_Rainbow.webp"
+        },
+        {
+          "filename": "GROUNDMECH_Beskar.webp",
+          "droid": "GROUNDMECH",
+          "normName": "GROUNDMECH",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GROUNDMECH_Beskar.webp",
+          "localTarget": "app/static/assets/droids/GROUNDMECH_Beskar.webp"
+        },
+        {
+          "filename": "LO_Default.webp",
+          "droid": "LO",
+          "normName": "LO",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LO_Default.webp",
+          "localTarget": "app/static/assets/droids/LO_Default.webp"
+        },
+        {
+          "filename": "LO_Gold.webp",
+          "droid": "LO",
+          "normName": "LO",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LO_Gold.webp",
+          "localTarget": "app/static/assets/droids/LO_Gold.webp"
+        },
+        {
+          "filename": "LO_Diamond.webp",
+          "droid": "LO",
+          "normName": "LO",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LO_Diamond.webp",
+          "localTarget": "app/static/assets/droids/LO_Diamond.webp"
+        },
+        {
+          "filename": "LO_Rainbow.webp",
+          "droid": "LO",
+          "normName": "LO",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LO_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/LO_Rainbow.webp"
+        },
+        {
+          "filename": "LO_Beskar.webp",
+          "droid": "LO",
+          "normName": "LO",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LO_Beskar.webp",
+          "localTarget": "app/static/assets/droids/LO_Beskar.webp"
+        },
+        {
+          "filename": "AMPWALKER_Default.webp",
+          "droid": "AMP WALKER",
+          "normName": "AMPWALKER",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/AMPWALKER_Default.webp",
+          "localTarget": "app/static/assets/droids/AMPWALKER_Default.webp"
+        },
+        {
+          "filename": "AMPWALKER_Gold.webp",
+          "droid": "AMP WALKER",
+          "normName": "AMPWALKER",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/AMPWALKER_Gold.webp",
+          "localTarget": "app/static/assets/droids/AMPWALKER_Gold.webp"
+        },
+        {
+          "filename": "AMPWALKER_Diamond.webp",
+          "droid": "AMP WALKER",
+          "normName": "AMPWALKER",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/AMPWALKER_Diamond.webp",
+          "localTarget": "app/static/assets/droids/AMPWALKER_Diamond.webp"
+        },
+        {
+          "filename": "AMPWALKER_Rainbow.webp",
+          "droid": "AMP WALKER",
+          "normName": "AMPWALKER",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/AMPWALKER_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/AMPWALKER_Rainbow.webp"
+        },
+        {
+          "filename": "AMPWALKER_Beskar.webp",
+          "droid": "AMP WALKER",
+          "normName": "AMPWALKER",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/AMPWALKER_Beskar.webp",
+          "localTarget": "app/static/assets/droids/AMPWALKER_Beskar.webp"
+        },
+        {
+          "filename": "SENTRI_Default.webp",
+          "droid": "SEN-TRI",
+          "normName": "SENTRI",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SENTRI_Default.webp",
+          "localTarget": "app/static/assets/droids/SENTRI_Default.webp"
+        },
+        {
+          "filename": "SENTRI_Gold.webp",
+          "droid": "SEN-TRI",
+          "normName": "SENTRI",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SENTRI_Gold.webp",
+          "localTarget": "app/static/assets/droids/SENTRI_Gold.webp"
+        },
+        {
+          "filename": "SENTRI_Diamond.webp",
+          "droid": "SEN-TRI",
+          "normName": "SENTRI",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SENTRI_Diamond.webp",
+          "localTarget": "app/static/assets/droids/SENTRI_Diamond.webp"
+        },
+        {
+          "filename": "SENTRI_Rainbow.webp",
+          "droid": "SEN-TRI",
+          "normName": "SENTRI",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SENTRI_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/SENTRI_Rainbow.webp"
+        },
+        {
+          "filename": "SENTRI_Beskar.webp",
+          "droid": "SEN-TRI",
+          "normName": "SENTRI",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SENTRI_Beskar.webp",
+          "localTarget": "app/static/assets/droids/SENTRI_Beskar.webp"
+        },
+        {
+          "filename": "OPTIPOD_Default.webp",
+          "droid": "OPTI-POD",
+          "normName": "OPTIPOD",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/OPTIPOD_Default.webp",
+          "localTarget": "app/static/assets/droids/OPTIPOD_Default.webp"
+        },
+        {
+          "filename": "OPTIPOD_Gold.webp",
+          "droid": "OPTI-POD",
+          "normName": "OPTIPOD",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/OPTIPOD_Gold.webp",
+          "localTarget": "app/static/assets/droids/OPTIPOD_Gold.webp"
+        },
+        {
+          "filename": "OPTIPOD_Diamond.webp",
+          "droid": "OPTI-POD",
+          "normName": "OPTIPOD",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/OPTIPOD_Diamond.webp",
+          "localTarget": "app/static/assets/droids/OPTIPOD_Diamond.webp"
+        },
+        {
+          "filename": "OPTIPOD_Rainbow.webp",
+          "droid": "OPTI-POD",
+          "normName": "OPTIPOD",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/OPTIPOD_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/OPTIPOD_Rainbow.webp"
+        },
+        {
+          "filename": "OPTIPOD_Beskar.webp",
+          "droid": "OPTI-POD",
+          "normName": "OPTIPOD",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/OPTIPOD_Beskar.webp",
+          "localTarget": "app/static/assets/droids/OPTIPOD_Beskar.webp"
+        },
+        {
+          "filename": "BB_Default.webp",
+          "droid": "BB",
+          "normName": "BB",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB_Default.webp",
+          "localTarget": "app/static/assets/droids/BB_Default.webp"
+        },
+        {
+          "filename": "BB_Gold.webp",
+          "droid": "BB",
+          "normName": "BB",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB_Gold.webp",
+          "localTarget": "app/static/assets/droids/BB_Gold.webp"
+        },
+        {
+          "filename": "BB_Diamond.webp",
+          "droid": "BB",
+          "normName": "BB",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB_Diamond.webp",
+          "localTarget": "app/static/assets/droids/BB_Diamond.webp"
+        },
+        {
+          "filename": "BB_Rainbow.webp",
+          "droid": "BB",
+          "normName": "BB",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/BB_Rainbow.webp"
+        },
+        {
+          "filename": "BB_Beskar.webp",
+          "droid": "BB",
+          "normName": "BB",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB_Beskar.webp",
+          "localTarget": "app/static/assets/droids/BB_Beskar.webp"
+        },
+        {
+          "filename": "R2_Default.webp",
+          "droid": "R2",
+          "normName": "R2",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2_Default.webp",
+          "localTarget": "app/static/assets/droids/R2_Default.webp"
+        },
+        {
+          "filename": "R2_Gold.webp",
+          "droid": "R2",
+          "normName": "R2",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2_Gold.webp",
+          "localTarget": "app/static/assets/droids/R2_Gold.webp"
+        },
+        {
+          "filename": "R2_Diamond.webp",
+          "droid": "R2",
+          "normName": "R2",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2_Diamond.webp",
+          "localTarget": "app/static/assets/droids/R2_Diamond.webp"
+        },
+        {
+          "filename": "R2_Rainbow.webp",
+          "droid": "R2",
+          "normName": "R2",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/R2_Rainbow.webp"
+        },
+        {
+          "filename": "R2_Beskar.webp",
+          "droid": "R2",
+          "normName": "R2",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2_Beskar.webp",
+          "localTarget": "app/static/assets/droids/R2_Beskar.webp"
+        },
+        {
+          "filename": "R6_Default.webp",
+          "droid": "R6",
+          "normName": "R6",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R6_Default.webp",
+          "localTarget": "app/static/assets/droids/R6_Default.webp"
+        },
+        {
+          "filename": "R6_Gold.webp",
+          "droid": "R6",
+          "normName": "R6",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R6_Gold.webp",
+          "localTarget": "app/static/assets/droids/R6_Gold.webp"
+        },
+        {
+          "filename": "R6_Diamond.webp",
+          "droid": "R6",
+          "normName": "R6",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R6_Diamond.webp",
+          "localTarget": "app/static/assets/droids/R6_Diamond.webp"
+        },
+        {
+          "filename": "R6_Rainbow.webp",
+          "droid": "R6",
+          "normName": "R6",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R6_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/R6_Rainbow.webp"
+        },
+        {
+          "filename": "R6_Beskar.webp",
+          "droid": "R6",
+          "normName": "R6",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R6_Beskar.webp",
+          "localTarget": "app/static/assets/droids/R6_Beskar.webp"
+        },
+        {
+          "filename": "TRAKR_Default.webp",
+          "droid": "TRAK-R",
+          "normName": "TRAKR",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/TRAKR_Default.webp",
+          "localTarget": "app/static/assets/droids/TRAKR_Default.webp"
+        },
+        {
+          "filename": "TRAKR_Gold.webp",
+          "droid": "TRAK-R",
+          "normName": "TRAKR",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/TRAKR_Gold.webp",
+          "localTarget": "app/static/assets/droids/TRAKR_Gold.webp"
+        },
+        {
+          "filename": "TRAKR_Diamond.webp",
+          "droid": "TRAK-R",
+          "normName": "TRAKR",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/TRAKR_Diamond.webp",
+          "localTarget": "app/static/assets/droids/TRAKR_Diamond.webp"
+        },
+        {
+          "filename": "TRAKR_Rainbow.webp",
+          "droid": "TRAK-R",
+          "normName": "TRAKR",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/TRAKR_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/TRAKR_Rainbow.webp"
+        },
+        {
+          "filename": "TRAKR_Beskar.webp",
+          "droid": "TRAK-R",
+          "normName": "TRAKR",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/TRAKR_Beskar.webp",
+          "localTarget": "app/static/assets/droids/TRAKR_Beskar.webp"
+        },
+        {
+          "filename": "ORBWALKER_Default.webp",
+          "droid": "ORB-WALKER",
+          "normName": "ORBWALKER",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ORBWALKER_Default.webp",
+          "localTarget": "app/static/assets/droids/ORBWALKER_Default.webp"
+        },
+        {
+          "filename": "ORBWALKER_Gold.webp",
+          "droid": "ORB-WALKER",
+          "normName": "ORBWALKER",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ORBWALKER_Gold.webp",
+          "localTarget": "app/static/assets/droids/ORBWALKER_Gold.webp"
+        },
+        {
+          "filename": "ORBWALKER_Diamond.webp",
+          "droid": "ORB-WALKER",
+          "normName": "ORBWALKER",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ORBWALKER_Diamond.webp",
+          "localTarget": "app/static/assets/droids/ORBWALKER_Diamond.webp"
+        },
+        {
+          "filename": "ORBWALKER_Rainbow.webp",
+          "droid": "ORB-WALKER",
+          "normName": "ORBWALKER",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ORBWALKER_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/ORBWALKER_Rainbow.webp"
+        },
+        {
+          "filename": "ORBWALKER_Beskar.webp",
+          "droid": "ORB-WALKER",
+          "normName": "ORBWALKER",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/ORBWALKER_Beskar.webp",
+          "localTarget": "app/static/assets/droids/ORBWALKER_Beskar.webp"
+        },
+        {
+          "filename": "GUNRUNNER_Default.webp",
+          "droid": "GUNRUNNER",
+          "normName": "GUNRUNNER",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GUNRUNNER_Default.webp",
+          "localTarget": "app/static/assets/droids/GUNRUNNER_Default.webp"
+        },
+        {
+          "filename": "GUNRUNNER_Gold.webp",
+          "droid": "GUNRUNNER",
+          "normName": "GUNRUNNER",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GUNRUNNER_Gold.webp",
+          "localTarget": "app/static/assets/droids/GUNRUNNER_Gold.webp"
+        },
+        {
+          "filename": "GUNRUNNER_Diamond.webp",
+          "droid": "GUNRUNNER",
+          "normName": "GUNRUNNER",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GUNRUNNER_Diamond.webp",
+          "localTarget": "app/static/assets/droids/GUNRUNNER_Diamond.webp"
+        },
+        {
+          "filename": "GUNRUNNER_Rainbow.webp",
+          "droid": "GUNRUNNER",
+          "normName": "GUNRUNNER",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GUNRUNNER_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/GUNRUNNER_Rainbow.webp"
+        },
+        {
+          "filename": "GUNRUNNER_Beskar.webp",
+          "droid": "GUNRUNNER",
+          "normName": "GUNRUNNER",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/GUNRUNNER_Beskar.webp",
+          "localTarget": "app/static/assets/droids/GUNRUNNER_Beskar.webp"
+        },
+        {
+          "filename": "UTILTEC_Default.webp",
+          "droid": "UTIL-TEC",
+          "normName": "UTILTEC",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/UTILTEC_Default.webp",
+          "localTarget": "app/static/assets/droids/UTILTEC_Default.webp"
+        },
+        {
+          "filename": "UTILTEC_Gold.webp",
+          "droid": "UTIL-TEC",
+          "normName": "UTILTEC",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/UTILTEC_Gold.webp",
+          "localTarget": "app/static/assets/droids/UTILTEC_Gold.webp"
+        },
+        {
+          "filename": "UTILTEC_Diamond.webp",
+          "droid": "UTIL-TEC",
+          "normName": "UTILTEC",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/UTILTEC_Diamond.webp",
+          "localTarget": "app/static/assets/droids/UTILTEC_Diamond.webp"
+        },
+        {
+          "filename": "UTILTEC_Rainbow.webp",
+          "droid": "UTIL-TEC",
+          "normName": "UTILTEC",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/UTILTEC_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/UTILTEC_Rainbow.webp"
+        },
+        {
+          "filename": "UTILTEC_Beskar.webp",
+          "droid": "UTIL-TEC",
+          "normName": "UTILTEC",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/UTILTEC_Beskar.webp",
+          "localTarget": "app/static/assets/droids/UTILTEC_Beskar.webp"
+        },
+        {
+          "filename": "B1HEAVY_Default.webp",
+          "droid": "B1 HEAVY",
+          "normName": "B1HEAVY",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1HEAVY_Default.webp",
+          "localTarget": "app/static/assets/droids/B1HEAVY_Default.webp"
+        },
+        {
+          "filename": "B1HEAVY_Gold.webp",
+          "droid": "B1 HEAVY",
+          "normName": "B1HEAVY",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1HEAVY_Gold.webp",
+          "localTarget": "app/static/assets/droids/B1HEAVY_Gold.webp"
+        },
+        {
+          "filename": "B1HEAVY_Diamond.webp",
+          "droid": "B1 HEAVY",
+          "normName": "B1HEAVY",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1HEAVY_Diamond.webp",
+          "localTarget": "app/static/assets/droids/B1HEAVY_Diamond.webp"
+        },
+        {
+          "filename": "B1HEAVY_Rainbow.webp",
+          "droid": "B1 HEAVY",
+          "normName": "B1HEAVY",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1HEAVY_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/B1HEAVY_Rainbow.webp"
+        },
+        {
+          "filename": "B1HEAVY_Beskar.webp",
+          "droid": "B1 HEAVY",
+          "normName": "B1HEAVY",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B1HEAVY_Beskar.webp",
+          "localTarget": "app/static/assets/droids/B1HEAVY_Beskar.webp"
+        },
+        {
+          "filename": "B2SUPER_Default.webp",
+          "droid": "B2 SUPER",
+          "normName": "B2SUPER",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2SUPER_Default.webp",
+          "localTarget": "app/static/assets/droids/B2SUPER_Default.webp"
+        },
+        {
+          "filename": "B2SUPER_Gold.webp",
+          "droid": "B2 SUPER",
+          "normName": "B2SUPER",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2SUPER_Gold.webp",
+          "localTarget": "app/static/assets/droids/B2SUPER_Gold.webp"
+        },
+        {
+          "filename": "B2SUPER_Diamond.webp",
+          "droid": "B2 SUPER",
+          "normName": "B2SUPER",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2SUPER_Diamond.webp",
+          "localTarget": "app/static/assets/droids/B2SUPER_Diamond.webp"
+        },
+        {
+          "filename": "B2SUPER_Rainbow.webp",
+          "droid": "B2 SUPER",
+          "normName": "B2SUPER",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2SUPER_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/B2SUPER_Rainbow.webp"
+        },
+        {
+          "filename": "B2SUPER_Beskar.webp",
+          "droid": "B2 SUPER",
+          "normName": "B2SUPER",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2SUPER_Beskar.webp",
+          "localTarget": "app/static/assets/droids/B2SUPER_Beskar.webp"
+        },
+        {
+          "filename": "B2HEAVY_Default.webp",
+          "droid": "B2 HEAVY",
+          "normName": "B2HEAVY",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2HEAVY_Default.webp",
+          "localTarget": "app/static/assets/droids/B2HEAVY_Default.webp"
+        },
+        {
+          "filename": "B2HEAVY_Gold.webp",
+          "droid": "B2 HEAVY",
+          "normName": "B2HEAVY",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2HEAVY_Gold.webp",
+          "localTarget": "app/static/assets/droids/B2HEAVY_Gold.webp"
+        },
+        {
+          "filename": "B2HEAVY_Diamond.webp",
+          "droid": "B2 HEAVY",
+          "normName": "B2HEAVY",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2HEAVY_Diamond.webp",
+          "localTarget": "app/static/assets/droids/B2HEAVY_Diamond.webp"
+        },
+        {
+          "filename": "B2HEAVY_Rainbow.webp",
+          "droid": "B2 HEAVY",
+          "normName": "B2HEAVY",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2HEAVY_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/B2HEAVY_Rainbow.webp"
+        },
+        {
+          "filename": "B2HEAVY_Beskar.webp",
+          "droid": "B2 HEAVY",
+          "normName": "B2HEAVY",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2HEAVY_Beskar.webp",
+          "localTarget": "app/static/assets/droids/B2HEAVY_Beskar.webp"
+        },
+        {
+          "filename": "STRIKEORB_Default.webp",
+          "droid": "STRIKE-ORB",
+          "normName": "STRIKEORB",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/STRIKEORB_Default.webp",
+          "localTarget": "app/static/assets/droids/STRIKEORB_Default.webp"
+        },
+        {
+          "filename": "STRIKEORB_Gold.webp",
+          "droid": "STRIKE-ORB",
+          "normName": "STRIKEORB",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/STRIKEORB_Gold.webp",
+          "localTarget": "app/static/assets/droids/STRIKEORB_Gold.webp"
+        },
+        {
+          "filename": "STRIKEORB_Diamond.webp",
+          "droid": "STRIKE-ORB",
+          "normName": "STRIKEORB",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/STRIKEORB_Diamond.webp",
+          "localTarget": "app/static/assets/droids/STRIKEORB_Diamond.webp"
+        },
+        {
+          "filename": "STRIKEORB_Rainbow.webp",
+          "droid": "STRIKE-ORB",
+          "normName": "STRIKEORB",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/STRIKEORB_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/STRIKEORB_Rainbow.webp"
+        },
+        {
+          "filename": "STRIKEORB_Beskar.webp",
+          "droid": "STRIKE-ORB",
+          "normName": "STRIKEORB",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/STRIKEORB_Beskar.webp",
+          "localTarget": "app/static/assets/droids/STRIKEORB_Beskar.webp"
+        },
+        {
+          "filename": "HAULR_Default.webp",
+          "droid": "HAUL-R",
+          "normName": "HAULR",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/HAULR_Default.webp",
+          "localTarget": "app/static/assets/droids/HAULR_Default.webp"
+        },
+        {
+          "filename": "HAULR_Gold.webp",
+          "droid": "HAUL-R",
+          "normName": "HAULR",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/HAULR_Gold.webp",
+          "localTarget": "app/static/assets/droids/HAULR_Gold.webp"
+        },
+        {
+          "filename": "HAULR_Diamond.webp",
+          "droid": "HAUL-R",
+          "normName": "HAULR",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/HAULR_Diamond.webp",
+          "localTarget": "app/static/assets/droids/HAULR_Diamond.webp"
+        },
+        {
+          "filename": "HAULR_Rainbow.webp",
+          "droid": "HAUL-R",
+          "normName": "HAULR",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/HAULR_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/HAULR_Rainbow.webp"
+        },
+        {
+          "filename": "HAULR_Beskar.webp",
+          "droid": "HAUL-R",
+          "normName": "HAULR",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/HAULR_Beskar.webp",
+          "localTarget": "app/static/assets/droids/HAULR_Beskar.webp"
+        },
+        {
+          "filename": "LNGSHOT_Default.webp",
+          "droid": "LNG-SHOT",
+          "normName": "LNGSHOT",
+          "tier": "Base",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LNGSHOT_Default.webp",
+          "localTarget": "app/static/assets/droids/LNGSHOT_Default.webp"
+        },
+        {
+          "filename": "LNGSHOT_Gold.webp",
+          "droid": "LNG-SHOT",
+          "normName": "LNGSHOT",
+          "tier": "Gold",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LNGSHOT_Gold.webp",
+          "localTarget": "app/static/assets/droids/LNGSHOT_Gold.webp"
+        },
+        {
+          "filename": "LNGSHOT_Diamond.webp",
+          "droid": "LNG-SHOT",
+          "normName": "LNGSHOT",
+          "tier": "Diamond",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LNGSHOT_Diamond.webp",
+          "localTarget": "app/static/assets/droids/LNGSHOT_Diamond.webp"
+        },
+        {
+          "filename": "LNGSHOT_Rainbow.webp",
+          "droid": "LNG-SHOT",
+          "normName": "LNGSHOT",
+          "tier": "Rainbow",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LNGSHOT_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/LNGSHOT_Rainbow.webp"
+        },
+        {
+          "filename": "LNGSHOT_Beskar.webp",
+          "droid": "LNG-SHOT",
+          "normName": "LNGSHOT",
+          "tier": "Beskar",
+          "rarity": "Epic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LNGSHOT_Beskar.webp",
+          "localTarget": "app/static/assets/droids/LNGSHOT_Beskar.webp"
+        },
+        {
+          "filename": "PROTOROLLER_Default.webp",
+          "droid": "PROTO-ROLLER",
+          "normName": "PROTOROLLER",
+          "tier": "Base",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/PROTOROLLER_Default.webp",
+          "localTarget": "app/static/assets/droids/PROTOROLLER_Default.webp"
+        },
+        {
+          "filename": "PROTOROLLER_Gold.webp",
+          "droid": "PROTO-ROLLER",
+          "normName": "PROTOROLLER",
+          "tier": "Gold",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/PROTOROLLER_Gold.webp",
+          "localTarget": "app/static/assets/droids/PROTOROLLER_Gold.webp"
+        },
+        {
+          "filename": "PROTOROLLER_Diamond.webp",
+          "droid": "PROTO-ROLLER",
+          "normName": "PROTOROLLER",
+          "tier": "Diamond",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/PROTOROLLER_Diamond.webp",
+          "localTarget": "app/static/assets/droids/PROTOROLLER_Diamond.webp"
+        },
+        {
+          "filename": "PROTOROLLER_Rainbow.webp",
+          "droid": "PROTO-ROLLER",
+          "normName": "PROTOROLLER",
+          "tier": "Rainbow",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/PROTOROLLER_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/PROTOROLLER_Rainbow.webp"
+        },
+        {
+          "filename": "PROTOROLLER_Beskar.webp",
+          "droid": "PROTO-ROLLER",
+          "normName": "PROTOROLLER",
+          "tier": "Beskar",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/PROTOROLLER_Beskar.webp",
+          "localTarget": "app/static/assets/droids/PROTOROLLER_Beskar.webp"
+        },
+        {
+          "filename": "MECHADROID_Default.webp",
+          "droid": "MECHA-DROID",
+          "normName": "MECHADROID",
+          "tier": "Base",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MECHADROID_Default.webp",
+          "localTarget": "app/static/assets/droids/MECHADROID_Default.webp"
+        },
+        {
+          "filename": "MECHADROID_Gold.webp",
+          "droid": "MECHA-DROID",
+          "normName": "MECHADROID",
+          "tier": "Gold",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MECHADROID_Gold.webp",
+          "localTarget": "app/static/assets/droids/MECHADROID_Gold.webp"
+        },
+        {
+          "filename": "MECHADROID_Diamond.webp",
+          "droid": "MECHA-DROID",
+          "normName": "MECHADROID",
+          "tier": "Diamond",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MECHADROID_Diamond.webp",
+          "localTarget": "app/static/assets/droids/MECHADROID_Diamond.webp"
+        },
+        {
+          "filename": "MECHADROID_Rainbow.webp",
+          "droid": "MECHA-DROID",
+          "normName": "MECHADROID",
+          "tier": "Rainbow",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MECHADROID_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/MECHADROID_Rainbow.webp"
+        },
+        {
+          "filename": "MECHADROID_Beskar.webp",
+          "droid": "MECHA-DROID",
+          "normName": "MECHADROID",
+          "tier": "Beskar",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MECHADROID_Beskar.webp",
+          "localTarget": "app/static/assets/droids/MECHADROID_Beskar.webp"
+        },
+        {
+          "filename": "MONOWLKR_Default.webp",
+          "droid": "MONO-WLKR",
+          "normName": "MONOWLKR",
+          "tier": "Base",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MONOWLKR_Default.webp",
+          "localTarget": "app/static/assets/droids/MONOWLKR_Default.webp"
+        },
+        {
+          "filename": "MONOWLKR_Gold.webp",
+          "droid": "MONO-WLKR",
+          "normName": "MONOWLKR",
+          "tier": "Gold",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MONOWLKR_Gold.webp",
+          "localTarget": "app/static/assets/droids/MONOWLKR_Gold.webp"
+        },
+        {
+          "filename": "MONOWLKR_Diamond.webp",
+          "droid": "MONO-WLKR",
+          "normName": "MONOWLKR",
+          "tier": "Diamond",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MONOWLKR_Diamond.webp",
+          "localTarget": "app/static/assets/droids/MONOWLKR_Diamond.webp"
+        },
+        {
+          "filename": "MONOWLKR_Rainbow.webp",
+          "droid": "MONO-WLKR",
+          "normName": "MONOWLKR",
+          "tier": "Rainbow",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MONOWLKR_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/MONOWLKR_Rainbow.webp"
+        },
+        {
+          "filename": "MONOWLKR_Beskar.webp",
+          "droid": "MONO-WLKR",
+          "normName": "MONOWLKR",
+          "tier": "Beskar",
+          "rarity": "Legendary",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MONOWLKR_Beskar.webp",
+          "localTarget": "app/static/assets/droids/MONOWLKR_Beskar.webp"
+        },
+        {
+          "filename": "BB9_Default.webp",
+          "droid": "BB9",
+          "normName": "BB9",
+          "tier": "Base",
+          "rarity": "Legendary",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB9_Default.webp",
+          "localTarget": "app/static/assets/droids/BB9_Default.webp"
+        },
+        {
+          "filename": "BB9_Gold.webp",
+          "droid": "BB9",
+          "normName": "BB9",
+          "tier": "Gold",
+          "rarity": "Legendary",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB9_Gold.webp",
+          "localTarget": "app/static/assets/droids/BB9_Gold.webp"
+        },
+        {
+          "filename": "BB9_Diamond.webp",
+          "droid": "BB9",
+          "normName": "BB9",
+          "tier": "Diamond",
+          "rarity": "Legendary",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB9_Diamond.webp",
+          "localTarget": "app/static/assets/droids/BB9_Diamond.webp"
+        },
+        {
+          "filename": "BB9_Rainbow.webp",
+          "droid": "BB9",
+          "normName": "BB9",
+          "tier": "Rainbow",
+          "rarity": "Legendary",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB9_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/BB9_Rainbow.webp"
+        },
+        {
+          "filename": "BB9_Beskar.webp",
+          "droid": "BB9",
+          "normName": "BB9",
+          "tier": "Beskar",
+          "rarity": "Legendary",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB9_Beskar.webp",
+          "localTarget": "app/static/assets/droids/BB9_Beskar.webp"
+        },
+        {
+          "filename": "R7_Default.webp",
+          "droid": "R7",
+          "normName": "R7",
+          "tier": "Base",
+          "rarity": "Legendary",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R7_Default.webp",
+          "localTarget": "app/static/assets/droids/R7_Default.webp"
+        },
+        {
+          "filename": "R7_Gold.webp",
+          "droid": "R7",
+          "normName": "R7",
+          "tier": "Gold",
+          "rarity": "Legendary",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R7_Gold.webp",
+          "localTarget": "app/static/assets/droids/R7_Gold.webp"
+        },
+        {
+          "filename": "R7_Diamond.webp",
+          "droid": "R7",
+          "normName": "R7",
+          "tier": "Diamond",
+          "rarity": "Legendary",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R7_Diamond.webp",
+          "localTarget": "app/static/assets/droids/R7_Diamond.webp"
+        },
+        {
+          "filename": "R7_Rainbow.webp",
+          "droid": "R7",
+          "normName": "R7",
+          "tier": "Rainbow",
+          "rarity": "Legendary",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R7_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/R7_Rainbow.webp"
+        },
+        {
+          "filename": "R7_Beskar.webp",
+          "droid": "R7",
+          "normName": "R7",
+          "tier": "Beskar",
+          "rarity": "Legendary",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R7_Beskar.webp",
+          "localTarget": "app/static/assets/droids/R7_Beskar.webp"
+        },
+        {
+          "filename": "B2RP_Default.webp",
+          "droid": "B2-RP",
+          "normName": "B2RP",
+          "tier": "Base",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2RP_Default.webp",
+          "localTarget": "app/static/assets/droids/B2RP_Default.webp"
+        },
+        {
+          "filename": "B2RP_Gold.webp",
+          "droid": "B2-RP",
+          "normName": "B2RP",
+          "tier": "Gold",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2RP_Gold.webp",
+          "localTarget": "app/static/assets/droids/B2RP_Gold.webp"
+        },
+        {
+          "filename": "B2RP_Diamond.webp",
+          "droid": "B2-RP",
+          "normName": "B2RP",
+          "tier": "Diamond",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2RP_Diamond.webp",
+          "localTarget": "app/static/assets/droids/B2RP_Diamond.webp"
+        },
+        {
+          "filename": "B2RP_Rainbow.webp",
+          "droid": "B2-RP",
+          "normName": "B2RP",
+          "tier": "Rainbow",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2RP_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/B2RP_Rainbow.webp"
+        },
+        {
+          "filename": "B2RP_Beskar.webp",
+          "droid": "B2-RP",
+          "normName": "B2RP",
+          "tier": "Beskar",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/B2RP_Beskar.webp",
+          "localTarget": "app/static/assets/droids/B2RP_Beskar.webp"
+        },
+        {
+          "filename": "CYCLOGRAV_Default.webp",
+          "droid": "CYCLO-GRAV",
+          "normName": "CYCLOGRAV",
+          "tier": "Base",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CYCLOGRAV_Default.webp",
+          "localTarget": "app/static/assets/droids/CYCLOGRAV_Default.webp"
+        },
+        {
+          "filename": "CYCLOGRAV_Gold.webp",
+          "droid": "CYCLO-GRAV",
+          "normName": "CYCLOGRAV",
+          "tier": "Gold",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CYCLOGRAV_Gold.webp",
+          "localTarget": "app/static/assets/droids/CYCLOGRAV_Gold.webp"
+        },
+        {
+          "filename": "CYCLOGRAV_Diamond.webp",
+          "droid": "CYCLO-GRAV",
+          "normName": "CYCLOGRAV",
+          "tier": "Diamond",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CYCLOGRAV_Diamond.webp",
+          "localTarget": "app/static/assets/droids/CYCLOGRAV_Diamond.webp"
+        },
+        {
+          "filename": "CYCLOGRAV_Rainbow.webp",
+          "droid": "CYCLO-GRAV",
+          "normName": "CYCLOGRAV",
+          "tier": "Rainbow",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CYCLOGRAV_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/CYCLOGRAV_Rainbow.webp"
+        },
+        {
+          "filename": "CYCLOGRAV_Beskar.webp",
+          "droid": "CYCLO-GRAV",
+          "normName": "CYCLOGRAV",
+          "tier": "Beskar",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CYCLOGRAV_Beskar.webp",
+          "localTarget": "app/static/assets/droids/CYCLOGRAV_Beskar.webp"
+        },
+        {
+          "filename": "OPTISTRK_Default.webp",
+          "droid": "OPTI-STRK",
+          "normName": "OPTISTRK",
+          "tier": "Base",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/OPTISTRK_Default.webp",
+          "localTarget": "app/static/assets/droids/OPTISTRK_Default.webp"
+        },
+        {
+          "filename": "OPTISTRK_Gold.webp",
+          "droid": "OPTI-STRK",
+          "normName": "OPTISTRK",
+          "tier": "Gold",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/OPTISTRK_Gold.webp",
+          "localTarget": "app/static/assets/droids/OPTISTRK_Gold.webp"
+        },
+        {
+          "filename": "OPTISTRK_Diamond.webp",
+          "droid": "OPTI-STRK",
+          "normName": "OPTISTRK",
+          "tier": "Diamond",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/OPTISTRK_Diamond.webp",
+          "localTarget": "app/static/assets/droids/OPTISTRK_Diamond.webp"
+        },
+        {
+          "filename": "OPTISTRK_Rainbow.webp",
+          "droid": "OPTI-STRK",
+          "normName": "OPTISTRK",
+          "tier": "Rainbow",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/OPTISTRK_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/OPTISTRK_Rainbow.webp"
+        },
+        {
+          "filename": "OPTISTRK_Beskar.webp",
+          "droid": "OPTI-STRK",
+          "normName": "OPTISTRK",
+          "tier": "Beskar",
+          "rarity": "Legendary",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/OPTISTRK_Beskar.webp",
+          "localTarget": "app/static/assets/droids/OPTISTRK_Beskar.webp"
+        },
+        {
+          "filename": "SNOWMOUSE_Default.webp",
+          "droid": "SNOW MOUSE",
+          "normName": "SNOWMOUSE",
+          "tier": "Base",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SNOWMOUSE_Default.webp",
+          "localTarget": "app/static/assets/droids/SNOWMOUSE_Default.webp"
+        },
+        {
+          "filename": "SNOWMOUSE_Gold.webp",
+          "droid": "SNOW MOUSE",
+          "normName": "SNOWMOUSE",
+          "tier": "Gold",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SNOWMOUSE_Gold.webp",
+          "localTarget": "app/static/assets/droids/SNOWMOUSE_Gold.webp"
+        },
+        {
+          "filename": "SNOWMOUSE_Diamond.webp",
+          "droid": "SNOW MOUSE",
+          "normName": "SNOWMOUSE",
+          "tier": "Diamond",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SNOWMOUSE_Diamond.webp",
+          "localTarget": "app/static/assets/droids/SNOWMOUSE_Diamond.webp"
+        },
+        {
+          "filename": "SNOWMOUSE_Rainbow.webp",
+          "droid": "SNOW MOUSE",
+          "normName": "SNOWMOUSE",
+          "tier": "Rainbow",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SNOWMOUSE_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/SNOWMOUSE_Rainbow.webp"
+        },
+        {
+          "filename": "SNOWMOUSE_Beskar.webp",
+          "droid": "SNOW MOUSE",
+          "normName": "SNOWMOUSE",
+          "tier": "Beskar",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/SNOWMOUSE_Beskar.webp",
+          "localTarget": "app/static/assets/droids/SNOWMOUSE_Beskar.webp"
+        },
+        {
+          "filename": "RIC_Default.webp",
+          "droid": "RIC",
+          "normName": "RIC",
+          "tier": "Base",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/RIC_Default.webp",
+          "localTarget": "app/static/assets/droids/RIC_Default.webp"
+        },
+        {
+          "filename": "RIC_Gold.webp",
+          "droid": "RIC",
+          "normName": "RIC",
+          "tier": "Gold",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/RIC_Gold.webp",
+          "localTarget": "app/static/assets/droids/RIC_Gold.webp"
+        },
+        {
+          "filename": "RIC_Diamond.webp",
+          "droid": "RIC",
+          "normName": "RIC",
+          "tier": "Diamond",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/RIC_Diamond.webp",
+          "localTarget": "app/static/assets/droids/RIC_Diamond.webp"
+        },
+        {
+          "filename": "RIC_Rainbow.webp",
+          "droid": "RIC",
+          "normName": "RIC",
+          "tier": "Rainbow",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/RIC_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/RIC_Rainbow.webp"
+        },
+        {
+          "filename": "RIC_Beskar.webp",
+          "droid": "RIC",
+          "normName": "RIC",
+          "tier": "Beskar",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/RIC_Beskar.webp",
+          "localTarget": "app/static/assets/droids/RIC_Beskar.webp"
+        },
+        {
+          "filename": "LOADLIFTER_Default.webp",
+          "droid": "LOADLIFTER",
+          "normName": "LOADLIFTER",
+          "tier": "Base",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LOADLIFTER_Default.webp",
+          "localTarget": "app/static/assets/droids/LOADLIFTER_Default.webp"
+        },
+        {
+          "filename": "LOADLIFTER_Gold.webp",
+          "droid": "LOADLIFTER",
+          "normName": "LOADLIFTER",
+          "tier": "Gold",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LOADLIFTER_Gold.webp",
+          "localTarget": "app/static/assets/droids/LOADLIFTER_Gold.webp"
+        },
+        {
+          "filename": "LOADLIFTER_Diamond.webp",
+          "droid": "LOADLIFTER",
+          "normName": "LOADLIFTER",
+          "tier": "Diamond",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LOADLIFTER_Diamond.webp",
+          "localTarget": "app/static/assets/droids/LOADLIFTER_Diamond.webp"
+        },
+        {
+          "filename": "LOADLIFTER_Rainbow.webp",
+          "droid": "LOADLIFTER",
+          "normName": "LOADLIFTER",
+          "tier": "Rainbow",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LOADLIFTER_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/LOADLIFTER_Rainbow.webp"
+        },
+        {
+          "filename": "LOADLIFTER_Beskar.webp",
+          "droid": "LOADLIFTER",
+          "normName": "LOADLIFTER",
+          "tier": "Beskar",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LOADLIFTER_Beskar.webp",
+          "localTarget": "app/static/assets/droids/LOADLIFTER_Beskar.webp"
+        },
+        {
+          "filename": "LEP_Default.webp",
+          "droid": "LEP",
+          "normName": "LEP",
+          "tier": "Base",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LEP_Default.webp",
+          "localTarget": "app/static/assets/droids/LEP_Default.webp"
+        },
+        {
+          "filename": "LEP_Gold.webp",
+          "droid": "LEP",
+          "normName": "LEP",
+          "tier": "Gold",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LEP_Gold.webp",
+          "localTarget": "app/static/assets/droids/LEP_Gold.webp"
+        },
+        {
+          "filename": "LEP_Diamond.webp",
+          "droid": "LEP",
+          "normName": "LEP",
+          "tier": "Diamond",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LEP_Diamond.webp",
+          "localTarget": "app/static/assets/droids/LEP_Diamond.webp"
+        },
+        {
+          "filename": "LEP_Rainbow.webp",
+          "droid": "LEP",
+          "normName": "LEP",
+          "tier": "Rainbow",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LEP_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/LEP_Rainbow.webp"
+        },
+        {
+          "filename": "LEP_Beskar.webp",
+          "droid": "LEP",
+          "normName": "LEP",
+          "tier": "Beskar",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/LEP_Beskar.webp",
+          "localTarget": "app/static/assets/droids/LEP_Beskar.webp"
+        },
+        {
+          "filename": "RIC1200_Default.webp",
+          "droid": "RIC-1200",
+          "normName": "RIC1200",
+          "tier": "Base",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/RIC1200_Default.webp",
+          "localTarget": "app/static/assets/droids/RIC1200_Default.webp"
+        },
+        {
+          "filename": "RIC1200_Gold.webp",
+          "droid": "RIC-1200",
+          "normName": "RIC1200",
+          "tier": "Gold",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/RIC1200_Gold.webp",
+          "localTarget": "app/static/assets/droids/RIC1200_Gold.webp"
+        },
+        {
+          "filename": "RIC1200_Diamond.webp",
+          "droid": "RIC-1200",
+          "normName": "RIC1200",
+          "tier": "Diamond",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/RIC1200_Diamond.webp",
+          "localTarget": "app/static/assets/droids/RIC1200_Diamond.webp"
+        },
+        {
+          "filename": "RIC1200_Rainbow.webp",
+          "droid": "RIC-1200",
+          "normName": "RIC1200",
+          "tier": "Rainbow",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/RIC1200_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/RIC1200_Rainbow.webp"
+        },
+        {
+          "filename": "RIC1200_Beskar.webp",
+          "droid": "RIC-1200",
+          "normName": "RIC1200",
+          "tier": "Beskar",
+          "rarity": "Mythic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/RIC1200_Beskar.webp",
+          "localTarget": "app/static/assets/droids/RIC1200_Beskar.webp"
+        },
+        {
+          "filename": "DRFTR_Default.webp",
+          "droid": "DRFT-R",
+          "normName": "DRFTR",
+          "tier": "Base",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DRFTR_Default.webp",
+          "localTarget": "app/static/assets/droids/DRFTR_Default.webp"
+        },
+        {
+          "filename": "DRFTR_Gold.webp",
+          "droid": "DRFT-R",
+          "normName": "DRFTR",
+          "tier": "Gold",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DRFTR_Gold.webp",
+          "localTarget": "app/static/assets/droids/DRFTR_Gold.webp"
+        },
+        {
+          "filename": "DRFTR_Diamond.webp",
+          "droid": "DRFT-R",
+          "normName": "DRFTR",
+          "tier": "Diamond",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DRFTR_Diamond.webp",
+          "localTarget": "app/static/assets/droids/DRFTR_Diamond.webp"
+        },
+        {
+          "filename": "DRFTR_Rainbow.webp",
+          "droid": "DRFT-R",
+          "normName": "DRFTR",
+          "tier": "Rainbow",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DRFTR_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/DRFTR_Rainbow.webp"
+        },
+        {
+          "filename": "DRFTR_Beskar.webp",
+          "droid": "DRFT-R",
+          "normName": "DRFTR",
+          "tier": "Beskar",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DRFTR_Beskar.webp",
+          "localTarget": "app/static/assets/droids/DRFTR_Beskar.webp"
+        },
+        {
+          "filename": "CYCLENS_Default.webp",
+          "droid": "CYCLENS",
+          "normName": "CYCLENS",
+          "tier": "Base",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CYCLENS_Default.webp",
+          "localTarget": "app/static/assets/droids/CYCLENS_Default.webp"
+        },
+        {
+          "filename": "CYCLENS_Gold.webp",
+          "droid": "CYCLENS",
+          "normName": "CYCLENS",
+          "tier": "Gold",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CYCLENS_Gold.webp",
+          "localTarget": "app/static/assets/droids/CYCLENS_Gold.webp"
+        },
+        {
+          "filename": "CYCLENS_Diamond.webp",
+          "droid": "CYCLENS",
+          "normName": "CYCLENS",
+          "tier": "Diamond",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CYCLENS_Diamond.webp",
+          "localTarget": "app/static/assets/droids/CYCLENS_Diamond.webp"
+        },
+        {
+          "filename": "CYCLENS_Rainbow.webp",
+          "droid": "CYCLENS",
+          "normName": "CYCLENS",
+          "tier": "Rainbow",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CYCLENS_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/CYCLENS_Rainbow.webp"
+        },
+        {
+          "filename": "CYCLENS_Beskar.webp",
+          "droid": "CYCLENS",
+          "normName": "CYCLENS",
+          "tier": "Beskar",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CYCLENS_Beskar.webp",
+          "localTarget": "app/static/assets/droids/CYCLENS_Beskar.webp"
+        },
+        {
+          "filename": "MOTRAK_Default.webp",
+          "droid": "MO-TRAK",
+          "normName": "MOTRAK",
+          "tier": "Base",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MOTRAK_Default.webp",
+          "localTarget": "app/static/assets/droids/MOTRAK_Default.webp"
+        },
+        {
+          "filename": "MOTRAK_Gold.webp",
+          "droid": "MO-TRAK",
+          "normName": "MOTRAK",
+          "tier": "Gold",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MOTRAK_Gold.webp",
+          "localTarget": "app/static/assets/droids/MOTRAK_Gold.webp"
+        },
+        {
+          "filename": "MOTRAK_Diamond.webp",
+          "droid": "MO-TRAK",
+          "normName": "MOTRAK",
+          "tier": "Diamond",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MOTRAK_Diamond.webp",
+          "localTarget": "app/static/assets/droids/MOTRAK_Diamond.webp"
+        },
+        {
+          "filename": "MOTRAK_Rainbow.webp",
+          "droid": "MO-TRAK",
+          "normName": "MOTRAK",
+          "tier": "Rainbow",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MOTRAK_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/MOTRAK_Rainbow.webp"
+        },
+        {
+          "filename": "MOTRAK_Beskar.webp",
+          "droid": "MO-TRAK",
+          "normName": "MOTRAK",
+          "tier": "Beskar",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MOTRAK_Beskar.webp",
+          "localTarget": "app/static/assets/droids/MOTRAK_Beskar.webp"
+        },
+        {
+          "filename": "TRITEK_Default.webp",
+          "droid": "TRI-TEK",
+          "normName": "TRITEK",
+          "tier": "Base",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/TRITEK_Default.webp",
+          "localTarget": "app/static/assets/droids/TRITEK_Default.webp"
+        },
+        {
+          "filename": "TRITEK_Gold.webp",
+          "droid": "TRI-TEK",
+          "normName": "TRITEK",
+          "tier": "Gold",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/TRITEK_Gold.webp",
+          "localTarget": "app/static/assets/droids/TRITEK_Gold.webp"
+        },
+        {
+          "filename": "TRITEK_Diamond.webp",
+          "droid": "TRI-TEK",
+          "normName": "TRITEK",
+          "tier": "Diamond",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/TRITEK_Diamond.webp",
+          "localTarget": "app/static/assets/droids/TRITEK_Diamond.webp"
+        },
+        {
+          "filename": "TRITEK_Rainbow.webp",
+          "droid": "TRI-TEK",
+          "normName": "TRITEK",
+          "tier": "Rainbow",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/TRITEK_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/TRITEK_Rainbow.webp"
+        },
+        {
+          "filename": "TRITEK_Beskar.webp",
+          "droid": "TRI-TEK",
+          "normName": "TRITEK",
+          "tier": "Beskar",
+          "rarity": "Mythic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/TRITEK_Beskar.webp",
+          "localTarget": "app/static/assets/droids/TRITEK_Beskar.webp"
+        },
+        {
+          "filename": "IG_Default.webp",
+          "droid": "IG",
+          "normName": "IG",
+          "tier": "Base",
+          "rarity": "Mythic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IG_Default.webp",
+          "localTarget": "app/static/assets/droids/IG_Default.webp"
+        },
+        {
+          "filename": "IG_Gold.webp",
+          "droid": "IG",
+          "normName": "IG",
+          "tier": "Gold",
+          "rarity": "Mythic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IG_Gold.webp",
+          "localTarget": "app/static/assets/droids/IG_Gold.webp"
+        },
+        {
+          "filename": "IG_Diamond.webp",
+          "droid": "IG",
+          "normName": "IG",
+          "tier": "Diamond",
+          "rarity": "Mythic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IG_Diamond.webp",
+          "localTarget": "app/static/assets/droids/IG_Diamond.webp"
+        },
+        {
+          "filename": "IG_Rainbow.webp",
+          "droid": "IG",
+          "normName": "IG",
+          "tier": "Rainbow",
+          "rarity": "Mythic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IG_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/IG_Rainbow.webp"
+        },
+        {
+          "filename": "IG_Beskar.webp",
+          "droid": "IG",
+          "normName": "IG",
+          "tier": "Beskar",
+          "rarity": "Mythic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IG_Beskar.webp",
+          "localTarget": "app/static/assets/droids/IG_Beskar.webp"
+        },
+        {
+          "filename": "KX_Default.webp",
+          "droid": "KX",
+          "normName": "KX",
+          "tier": "Base",
+          "rarity": "Mythic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/KX_Default.webp",
+          "localTarget": "app/static/assets/droids/KX_Default.webp"
+        },
+        {
+          "filename": "KX_Gold.webp",
+          "droid": "KX",
+          "normName": "KX",
+          "tier": "Gold",
+          "rarity": "Mythic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/KX_Gold.webp",
+          "localTarget": "app/static/assets/droids/KX_Gold.webp"
+        },
+        {
+          "filename": "KX_Diamond.webp",
+          "droid": "KX",
+          "normName": "KX",
+          "tier": "Diamond",
+          "rarity": "Mythic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/KX_Diamond.webp",
+          "localTarget": "app/static/assets/droids/KX_Diamond.webp"
+        },
+        {
+          "filename": "KX_Rainbow.webp",
+          "droid": "KX",
+          "normName": "KX",
+          "tier": "Rainbow",
+          "rarity": "Mythic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/KX_Rainbow.webp",
+          "localTarget": "app/static/assets/droids/KX_Rainbow.webp"
+        },
+        {
+          "filename": "KX_Beskar.webp",
+          "droid": "KX",
+          "normName": "KX",
+          "tier": "Beskar",
+          "rarity": "Mythic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/KX_Beskar.webp",
+          "localTarget": "app/static/assets/droids/KX_Beskar.webp"
+        },
+        {
+          "filename": "BB8_Default.webp",
+          "droid": "BB8",
+          "normName": "BB8",
+          "tier": "Base",
+          "rarity": "Iconic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/BB8_Default.webp",
+          "localTarget": "app/static/assets/droids/BB8_Default.webp"
+        },
+        {
+          "filename": "MISTERBONES_Default.webp",
+          "droid": "MISTER BONES",
+          "normName": "MISTERBONES",
+          "tier": "Base",
+          "rarity": "Iconic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/MISTERBONES_Default.webp",
+          "localTarget": "app/static/assets/droids/MISTERBONES_Default.webp"
+        },
+        {
+          "filename": "IG11MARSHAL_Default.webp",
+          "droid": "IG-11 MARSHAL",
+          "normName": "IG11MARSHAL",
+          "tier": "Base",
+          "rarity": "Iconic",
+          "type": "Battle",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/IG11MARSHAL_Default.webp",
+          "localTarget": "app/static/assets/droids/IG11MARSHAL_Default.webp"
+        },
+        {
+          "filename": "DJR3X_Default.webp",
+          "droid": "DJ-R3X",
+          "normName": "DJR3X",
+          "tier": "Base",
+          "rarity": "Iconic",
+          "type": "Worker",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/DJR3X_Default.webp",
+          "localTarget": "app/static/assets/droids/DJR3X_Default.webp"
+        },
+        {
+          "filename": "CB23_Default.webp",
+          "droid": "CB-23",
+          "normName": "CB23",
+          "tier": "Base",
+          "rarity": "Iconic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/CB23_Default.webp",
+          "localTarget": "app/static/assets/droids/CB23_Default.webp"
+        },
+        {
+          "filename": "R2D2_Default.webp",
+          "droid": "R2-D2",
+          "normName": "R2D2",
+          "tier": "Base",
+          "rarity": "Iconic",
+          "type": "Astromech",
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2D2_Default.webp",
+          "localTarget": "app/static/assets/droids/R2D2_Default.webp"
+        }
+      ],
+      "verified": {
+        "date": "2026-07-15",
+        "note": "Supersedes the 2026-07-09 sweep. That HEAD sweep reported 340/340 HTTP 200 but some 200s were fallback responses, not real images — the fetch session found droidtrakr serves 293 real files. With the corrected 316-file universe (Iconics single-tier), main now self-hosts 315.",
+        "outstanding": [
+          "R2D2_Default.webp"
+        ]
+      },
+      "sources": [
+        {
+          "name": "droidtrakr.com",
+          "role": "primary",
+          "baseUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/",
+          "format": "webp",
+          "naming": "matches this manifest's filenames exactly (normName + Title-case tier, Base->_Default)",
+          "coverage": "340/340 (verified 2026-07-09)",
+          "howToPull": "download each files[].remoteUrl to files[].localTarget; no rename needed",
+          "attribution": "required — credit droidtrakr.com in README"
+        },
+        {
+          "name": "erikpeik/droidex",
+          "role": "fallback-mirror",
+          "repo": "https://github.com/erikpeik/droidex",
+          "path": "public/droids/",
+          "format": "png",
+          "naming": "UPPERCASE tier + underscores-for-spaces, keeps hyphens (e.g. AMP_WALKER_BESKAR.png, A-LT_DEFAULT.png); map to ours via normName=strip-non-alphanumerics and Title-case the tier (DEFAULT->Base)",
+          "coverage": "258/340 — missing all 11 Mythics + Iconic upper tiers (~82 files)",
+          "nameAliases": {
+            "MONO-WLKR": "MONO_WALKER (droidex normName MONOWALKER)",
+            "OPTI-STRK": "OPTI_STRIKE (droidex normName OPTISTRIKE)"
+          },
+          "caveats": [
+            "no LICENSE file (all-rights-reserved)",
+            "PNG not webp (convert if webp desired)",
+            "incomplete for Mythic/Iconic — use droidtrakr for those"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "app-icons",
+      "title": "App icons & social share images",
+      "priority": "P1",
+      "status": "missing",
+      "action": "find or create",
+      "notes": "Only app/src/lib/assets/favicon.svg exists and it is NOT linked in app/src/app.html.",
+      "items": [
+        {
+          "name": "favicon.svg link",
+          "need": "wire existing favicon.svg into app.html head",
+          "have": true
+        },
+        {
+          "name": "favicon.ico",
+          "need": "fallback for older browsers",
+          "have": false
+        },
+        {
+          "name": "apple-touch-icon.png",
+          "need": "180×180 PNG for iOS home screen",
+          "have": false
+        },
+        {
+          "name": "og-image.png",
+          "need": "~1200×630 social/Open Graph share image",
+          "have": false
+        }
+      ]
+    },
+    {
+      "id": "fonts",
+      "title": "Web fonts (self-hosted)",
+      "priority": "P1",
+      "status": "not-vendored-in-main",
+      "action": "vendor via @fontsource (woff2)",
+      "notes": "Redesign uses these; woff2 files were only seen in a worktree build output, not committed to main source.",
+      "items": [
+        {
+          "family": "Chakra Petch",
+          "use": "display / headings",
+          "source": "@fontsource/chakra-petch",
+          "format": "woff2"
+        },
+        {
+          "family": "JetBrains Mono",
+          "use": "numeric / tabular data",
+          "source": "@fontsource/jetbrains-mono",
+          "format": "woff2"
+        }
+      ]
+    },
+    {
+      "id": "bespoke-icons",
+      "title": "Bespoke game iconography (optional)",
+      "priority": "P3 — designer's choice",
+      "status": "create-or-source",
+      "action": "optional — handoff says icon set choice is the designer's; today everything non-droid is text/emoji plus one inline SVG (CHIPICON upgrade-chip glyph in prototype).",
+      "groups": [
+        {
+          "group": "currencies",
+          "count": 3,
+          "items": [
+            {
+              "name": "Credits",
+              "have": false
+            },
+            {
+              "name": "Upgrade Chips",
+              "have": "inline SVG CHIPICON exists in prototype"
+            },
+            {
+              "name": "Nova Crystals",
+              "have": false
+            }
+          ]
+        },
+        {
+          "group": "droid-type-slot-icons",
+          "count": 3,
+          "items": [
+            "Worker",
+            "Astromech",
+            "Battle"
+          ]
+        },
+        {
+          "group": "rarity-badges",
+          "count": 6,
+          "items": [
+            "Common",
+            "Rare",
+            "Epic",
+            "Legendary",
+            "Mythic",
+            "Iconic"
+          ]
+        },
+        {
+          "group": "tier-badges",
+          "count": 5,
+          "items": [
+            "Base",
+            "Gold",
+            "Diamond",
+            "Rainbow",
+            "Beskar"
+          ]
+        },
+        {
+          "group": "nova-shop-upgrades",
+          "count": 18,
+          "note": "one glyph per distinct upgrade if desired",
+          "items": [
+            {
+              "category": "Core upgrades",
+              "item": "Credits",
+              "suggestedFilename": "credits.svg"
+            },
+            {
+              "category": "Core upgrades",
+              "item": "Damage",
+              "suggestedFilename": "damage.svg"
+            },
+            {
+              "category": "Core upgrades",
+              "item": "Double Daily Quests",
+              "suggestedFilename": "doubledailyquests.svg"
+            },
+            {
+              "category": "Core upgrades",
+              "item": "Flawless Charm",
+              "suggestedFilename": "flawlesscharm.svg"
+            },
+            {
+              "category": "Core upgrades",
+              "item": "Jawa Bartering",
+              "suggestedFilename": "jawabartering.svg"
+            },
+            {
+              "category": "Core upgrades",
+              "item": "Max Health",
+              "suggestedFilename": "maxhealth.svg"
+            },
+            {
+              "category": "Core upgrades",
+              "item": "Movement Speed",
+              "suggestedFilename": "movementspeed.svg"
+            },
+            {
+              "category": "Core upgrades",
+              "item": "Pickaxe Mastery",
+              "suggestedFilename": "pickaxemastery.svg"
+            },
+            {
+              "category": "Core upgrades",
+              "item": "Super Crates",
+              "suggestedFilename": "supercrates.svg"
+            },
+            {
+              "category": "Workshop upgrades",
+              "item": "Blueprint Scrap",
+              "suggestedFilename": "blueprintscrap.svg"
+            },
+            {
+              "category": "Workshop upgrades",
+              "item": "Blueprint Storage",
+              "suggestedFilename": "blueprintstorage.svg"
+            },
+            {
+              "category": "Workshop upgrades",
+              "item": "Blueprint Vendor",
+              "suggestedFilename": "blueprintvendor.svg"
+            },
+            {
+              "category": "Workshop upgrades",
+              "item": "Collect All",
+              "suggestedFilename": "collectall.svg"
+            },
+            {
+              "category": "Workshop upgrades",
+              "item": "Crafting Speed",
+              "suggestedFilename": "craftingspeed.svg"
+            },
+            {
+              "category": "Workshop upgrades",
+              "item": "Lounge Slot",
+              "suggestedFilename": "loungeslot.svg"
+            },
+            {
+              "category": "Workshop upgrades",
+              "item": "Rebirth Droid Alert",
+              "suggestedFilename": "rebirthdroidalert.svg"
+            },
+            {
+              "category": "Workshop upgrades",
+              "item": "Scrap Value",
+              "suggestedFilename": "scrapvalue.svg"
+            },
+            {
+              "category": "Workshop upgrades",
+              "item": "Upgrade Chip Scrap",
+              "suggestedFilename": "upgradechipscrap.svg"
+            }
+          ]
+        },
+        {
+          "group": "cosmetics",
+          "count": 15,
+          "note": "paints/hats/rings — mostly color swatches, likely no art needed",
+          "items": [
+            {
+              "name": "Blue Paint",
+              "category": "general",
+              "requirement": "Rebirth 1 time"
+            },
+            {
+              "name": "Gold Paint",
+              "category": "general",
+              "requirement": "Rebirth 5 times"
+            },
+            {
+              "name": "Diamond Paint",
+              "category": "general",
+              "requirement": "Rebirth 10 times"
+            },
+            {
+              "name": "Rainbow Paint",
+              "category": "general",
+              "requirement": "Rebirth 15 times"
+            },
+            {
+              "name": "Worker Green",
+              "category": "general",
+              "requirement": "Craft 100 droids"
+            },
+            {
+              "name": "Battle Orange",
+              "category": "general",
+              "requirement": "Craft 250 droids"
+            },
+            {
+              "name": "Astromech Purple",
+              "category": "general",
+              "requirement": "Craft 500 droids"
+            },
+            {
+              "name": "Flawless Paint",
+              "category": "general",
+              "requirement": "Craft 15 flawless droids"
+            },
+            {
+              "name": "Super Flawless",
+              "category": "general",
+              "requirement": "Craft 50 flawless droids"
+            },
+            {
+              "name": "Beskar Paint",
+              "category": "general",
+              "requirement": "Collect 25 different Beskar droids"
+            },
+            {
+              "name": "Super Beskar",
+              "category": "general",
+              "requirement": "Collect 50 different Beskar droids"
+            },
+            {
+              "name": "Nova Stage 1/2/3",
+              "category": "general",
+              "requirement": "30 / +120 / +400 nova crystals"
+            },
+            {
+              "name": "Ringmaster",
+              "category": "general",
+              "requirement": "Fly through every yellow ring"
+            },
+            {
+              "name": "Adv. Ringmaster",
+              "category": "general",
+              "requirement": "Fly through every orange ring"
+            },
+            {
+              "name": "Hats (16)",
+              "category": "general",
+              "requirement": "Find in world / events"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -51,12 +51,19 @@
  *   same way (`cwebp -q 90`, native 195x178). droidex covers only LO's
  *   Gold/Diamond/Rainbow of our gaps.
  *
- * After both fallbacks, 25 files remain genuinely unavailable anywhere public:
- * R2-D2 x5 (droidtrakr serves UnknownBlueprint for it) plus the Mythics'
- * (BB8 / MISTER BONES / IG-11 MARSHAL / DJ-R3X / CB-23) Gold/Diamond/Rainbow/
- * Beskar. Those stay graceful gaps: DroidImg degrades to the text name.
+ * After both fallbacks, 25 filenames remained unfetched. 24 of them turned out
+ * not to exist at all: Iconic droids (BB8 / MISTER BONES / IG-11 MARSHAL /
+ * DJ-R3X / CB-23 / R2-D2) are single-tier — no tier grid, no chip costs — so
+ * their Gold/Diamond/Rainbow/Beskar art was never real (this loop still probes
+ * those names and logs skips; harmless). The one real gap, R2D2_Default.webp
+ * (droidtrakr serves UnknownBlueprint for R2-D2), was recovered manually on
+ * 2026-07-15 from droidex's *deployed* site — which hosts files absent from
+ * its GitHub repo — at https://droidex.web.app/droids/R2-D2_DEFAULT.webp,
+ * saved as-is (already webp; 128x145 vs the set's native 195x178) and renamed
+ * to the normName convention. It is committed, so this script skips it.
  * Provenance is fully reconstructible from this file: the manifest URL, the
- * droidex repo + DROIDEX_SHA, the name remap rules, and the cwebp command.
+ * droidex repo + DROIDEX_SHA, the deployed-site URL above, the name remap
+ * rules, and the cwebp command.
  *
  * Idempotent: files already on disk are skipped without any network call, so a
  * re-run against the committed set exits 0 and re-downloads nothing. cwebp is

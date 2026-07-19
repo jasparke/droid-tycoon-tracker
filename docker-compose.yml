@@ -5,8 +5,12 @@ services:
     restart: unless-stopped
     environment:
       DATABASE_URL: postgres://dtt:${POSTGRES_PASSWORD:?set in .env}@db:5432/dtt
-      INVITE_CODE: ${INVITE_CODE:?set in .env}
       ORIGIN: ${ORIGIN:?set in .env} # e.g. https://droids.example.lan — required by adapter-node for form origin checks
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:?set in .env} # externally-visible base URL; must match ORIGIN
+      OIDC_ISSUER_URL: ${OIDC_ISSUER_URL:?set in .env}
+      OIDC_CLIENT_ID: ${OIDC_CLIENT_ID:?set in .env}
+      OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET:?set in .env}
+      OIDC_REDIRECT_URI: ${OIDC_REDIRECT_URI:?set in .env} # must equal PUBLIC_BASE_URL + /api/auth/oidc/callback
     ports: ["3000:3000"]
     depends_on:
       db: { condition: service_healthy }

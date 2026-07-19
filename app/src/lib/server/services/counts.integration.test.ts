@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { eq } from 'drizzle-orm';
-import { testDb, resetUserZone, seedMinimalReference } from '../testing/db';
-import { register } from './users';
+import { testDb, resetUserZone, seedMinimalReference, createTestUser } from '../testing/db';
 import { createProfile } from './profiles';
 import { setCount } from './counts';
 import { counts } from '../schema';
@@ -16,7 +15,7 @@ beforeAll(async () => {
 });
 beforeEach(async () => {
 	await resetUserZone(sql);
-	uid = (await register(db, { username: 'aa', password: 'password123', inviteCode: 'x' }, 'x')).id;
+	uid = (await createTestUser(db, 'aa')).id;
 	pid = (await createProfile(db, uid, { name: 'main' })).id;
 });
 
@@ -44,7 +43,7 @@ describe('setCount', () => {
 		});
 	});
 	it('stranger cannot write (403)', async () => {
-		const other = (await register(db, { username: 'bb', password: 'password123', inviteCode: 'x' }, 'x')).id;
+		const other = (await createTestUser(db, 'bb')).id;
 		await expect(setCount(db, other, pid, 1, 'MOUSE', 'Gold', 1)).rejects.toMatchObject({ status: 403 });
 	});
 });
