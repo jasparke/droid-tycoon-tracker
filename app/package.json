@@ -35,6 +35,7 @@
 		"@fontsource/chakra-petch": "^5.2.7",
 		"@fontsource/jetbrains-mono": "^5.2.8",
 		"drizzle-orm": "^0.45.2",
+		"openid-client": "^6.8.4",
 		"postgres": "^3.4.9"
 	}
 }
