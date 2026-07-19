@@ -12,6 +12,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test:unit": "vitest run src/lib/game src/lib/client",
 		"test:int": "vitest run src/lib/server --no-file-parallelism",
+		"test:routes": "vitest run src/routes",
 		"test:e2e": "playwright test",
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "node drizzle/migrate.mjs",
@@ -35,6 +36,7 @@
 	"dependencies": {
 		"@fontsource/chakra-petch": "^5.2.7",
 		"@fontsource/jetbrains-mono": "^5.2.8",
+		"csv-parse": "^7.0.1",
 		"drizzle-orm": "^0.45.2",
 		"openid-client": "^6.8.4",
 		"postgres": "^3.4.9"
