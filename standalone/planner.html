@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Droid Tycoon — Rebirth Tracker</title>
+<style>
+  :root{
+    --bg:#05080f; --panel:#0d1422; --panel2:#111c30; --line:#1e2c44;
+    --txt:#e7eefb; --muted:#8095b3; --accent:#22b3ff; --accent2:#1488d6;
+    --base:#cfd8e6; --gold:#ffcf3f; --diamond:#4fd0ff; --rainbow:#ff6ad5; --beskar:#b3aa9c;
+    --good:#37d67a; --nova:#7b8cff;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:radial-gradient(1200px 700px at 50% -200px,#10243f 0%,var(--bg) 60%);
+    color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding:10px;height:100vh;overflow:hidden}
+  .wrap{max-width:1100px;margin:0 auto;height:100%;display:flex;flex-direction:column;gap:10px}
+  .top{flex:0 0 auto;display:flex;flex-direction:column;gap:8px}
+  /* collapsible panels */
+  .pane{background:var(--panel);border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+  .pane-main{flex:1 1 auto}
+  .pane-chips{flex:0 0 auto}
+  .pane.collapsed{flex:0 0 auto}
+  .pane.collapsed .pane-b{display:none}
+  .pane-h{display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer;flex:0 0 auto}
+  .pane:not(.collapsed) .pane-h{border-bottom:1px solid var(--line)}
+  .pane-h .tabs{margin:0}
+  .pane-b{overflow-y:auto;padding:12px 14px;min-height:0}
+  .pane-title{font-weight:700;font-size:14px;color:var(--accent)}
+  .caret{margin-left:auto;color:var(--muted);font-size:12px;transition:transform .15s}
+  .pane.collapsed .caret{transform:rotate(-90deg)}
+  h1{font-size:18px;letter-spacing:1px;margin:0;text-align:center;text-transform:uppercase}
+  .sub{display:none}
+  .searchwrap{position:relative;max-width:460px;margin:0 auto;width:100%}
+  #search{width:100%;padding:11px 14px;font-size:14px;background:var(--panel2);color:var(--txt);
+    border:1px solid var(--line);border-radius:8px}
+  #search:focus{outline:none;border-color:var(--accent)}
+  .panel{position:absolute;top:46px;left:0;right:0;background:var(--panel2);border:1px solid var(--accent);
+    border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.6);z-index:50;overflow:hidden;max-height:62vh;overflow-y:auto}
+  .hovercard{position:fixed;z-index:200;width:440px;max-width:92vw;background:var(--panel2);
+    border:1px solid var(--accent);border-radius:10px;box-shadow:0 14px 44px rgba(0,0,0,.7);overflow:hidden}
+  [data-droid]{cursor:help}
+  .pitem{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-bottom:10px}
+  .pitem:last-child{border-bottom:none}
+  .pitem .ptop{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .pname{font-weight:700;font-size:15px;white-space:nowrap}
+  .pstatus{margin-left:auto;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:999px}
+  .pstatus.need{background:#0f2a1c;color:var(--good)}
+  .pstatus.done{background:#2a1010;color:#ff8d8d}
+  .pstatus.other{background:#1b2233;color:#9fb0cc}
+  .pother{margin-top:8px;font-size:11px;color:var(--muted)}
+  .pcyc{margin-top:6px;display:flex;flex-wrap:wrap;gap:5px;align-items:center;font-size:11px}
+  .pcyc b{color:var(--txt);font-weight:700;margin-right:4px}
+  .pchips{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;align-items:flex-start}
+  .pcol{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:76px}
+  .pcol.checkable{cursor:pointer;border-radius:8px}
+  .pcol.checkable:hover .pchip{outline:2px solid var(--accent)}
+  .pcol.got .pchip{box-shadow:0 0 0 2px var(--good) inset}
+  .pcol.got .rtag{color:var(--good)!important;text-decoration:none!important;opacity:1!important}
+  .pcol.past{opacity:.4}
+  .pcol.future .pchip{outline:1px solid var(--good)}
+  .pchip{display:inline-block;min-width:66px;text-align:center;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:3px 8px;border-radius:999px;white-space:nowrap}
+  .pchip .lv{opacity:.65;font-weight:600;margin-left:3px}
+  .rtag{font-size:10px;font-weight:800;letter-spacing:.3px;line-height:1}
+  .rtag.need{color:var(--good)}
+  .rtag.past{color:var(--muted);text-decoration:line-through;opacity:.7}
+  .rtag.none{color:#33405c}
+  .rtag.have{color:var(--good)}
+  .dimg{width:30px;height:30px;object-fit:contain;border-radius:5px;background:#0a1322;flex:0 0 auto}
+  .req .dimg{width:24px;height:24px}
+  .kcard .dimg{width:28px;height:28px}
+  .have{font-size:10px;font-weight:800;letter-spacing:.3px;color:var(--good);background:#0f2a1c;padding:2px 8px;border-radius:999px;white-space:nowrap}
+  .qpill{display:inline-flex;align-items:center;gap:2px;margin-top:5px;background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:1px 2px}
+  .qbtn{width:20px;height:20px;border-radius:50%;border:none;background:transparent;color:var(--txt);font-size:14px;font-weight:800;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .qbtn:hover{color:var(--accent)}
+  .qn{min-width:16px;text-align:center;font-size:12px;font-weight:800;color:#33405c}
+  .qn.pos{color:var(--good)}
+  .pcol.hascnt .qpill{border-color:var(--good)}
+  .cmeta{font-size:10px;font-weight:800;letter-spacing:.3px;padding:2px 7px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+  .cmeta.Common{background:#26303f;color:#cfd8e6}
+  .cmeta.Rare{background:#0a2236;color:#5cc8ff}
+  .cmeta.Epic{background:#241033;color:#c89bff}
+  .cmeta.Legendary{background:#332806;color:#ffcf3f}
+  .cmeta.Mythic{background:#330a18;color:#ff6a8a}
+  .cmeta.Iconic{background:#10231a;color:#7fffd4}
+  .unlk{color:#7fd9c0}
+  .refsec{margin-bottom:14px}
+  .refh{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--accent);margin:0 0 6px}
+  .refrow{display:flex;gap:10px;font-size:11px;padding:3px 0;border-top:1px solid var(--line)}
+  .refrow:first-of-type{border-top:none}
+  .refrow.flw{flex-wrap:wrap;gap:14px;border:none}
+  .refn{min-width:160px;font-weight:600;color:var(--txt)}
+  .refv{color:var(--muted)}
+  /* planner */
+  .plansum{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px}
+  .npill.owned{opacity:.45}
+  .planrow{display:flex;align-items:center;gap:10px;padding:7px 10px;border:1px solid var(--line);border-radius:9px;margin-bottom:6px;cursor:pointer;font-size:12px}
+  .planrow:hover{border-color:var(--accent)}
+  .planrow.on{background:#0f2033;border-color:var(--accent2)}
+  .planrow input{width:16px;height:16px;flex:0 0 auto;cursor:pointer}
+  .planlv{font-weight:800;min-width:34px}
+  .plancr{color:var(--muted);min-width:70px}
+  .plandr{color:var(--txt);opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cost1{font-size:11px;font-weight:800;line-height:1.2;display:inline-flex;align-items:center}
+  .cost1.dim{color:#33405c}
+  .cost1 .chipi{margin-left:2px;opacity:.9}
+  .earn{font-size:10px;font-weight:700;color:#bfe9d2;white-space:nowrap}
+  .earn.dim{color:#33405c;font-weight:600}
+  .cost{font-size:10px;font-weight:700;line-height:1.45;text-align:center}
+  .cost div{white-space:nowrap}
+  .cost .ctgt{font-size:9px;letter-spacing:.5px;text-transform:uppercase;opacity:.9;margin-bottom:2px}
+  .cost span{opacity:.55;font-weight:600;margin-right:2px}
+  .pempty{padding:14px;color:var(--muted);font-size:13px;text-align:center}
+  /* planner: sort + view controls */
+  .plctl{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:2px 0 12px}
+  .plctl label{font-size:11px;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+  .plctl select{padding:5px 9px;font-size:12px}
+  .plctl .minibtn{padding:5px 11px;font-size:12px;font-weight:600}
+  .plctl .spring{margin-left:auto}
+  /* planner: mini-cards (icon-top, grouped by sellability) */
+  .plctl{position:sticky;top:0;z-index:6;background:var(--panel);padding:6px 0;margin:2px 0 12px}
+  .plfind{flex:1 1 auto;min-width:120px;max-width:260px;padding:6px 10px;font-size:12px;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:7px}
+  .plfind:focus{outline:none;border-color:var(--accent)}
+  .plfind.nomatch{border-color:#ff8d8d;color:#ff8d8d}
+  .plfind.nomatch::placeholder{color:#ff8d8d;opacity:.8}
+  .plfindn{font-size:11px;color:var(--muted);white-space:nowrap}
+  .plfindn.nomatch{color:#ff8d8d}
+  .plfindwrap{position:relative;display:inline-flex;flex:1 1 auto;min-width:120px;max-width:260px}
+  .plfindwrap .plfind{flex:1 1 auto;min-width:0;max-width:none;width:100%;padding-right:26px}
+  .plfindx{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:17px;height:17px;padding:0;border:none;background:transparent;color:var(--muted);font-size:15px;line-height:1;cursor:pointer;align-items:center;justify-content:center}
+  .plfindx:hover{color:var(--txt)}
+  .plctl .danger{color:var(--muted)}
+  .plctl .danger:hover{border-color:#ff8d8d;color:#ff8d8d}
+  .pl-group{margin:0 0 16px}
+  .pl-gh{position:sticky;top:44px;z-index:4;background:var(--panel);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);
+    margin:0 0 8px;padding:6px 0 5px;border-bottom:1px solid var(--line)}
+  .pl-gc{color:var(--accent);margin-left:6px}
+  .pl-sellh{color:#ff8d8d;border-bottom-color:rgba(255,107,107,.45)}
+  .pl-sellh .pl-gc{color:#ff8d8d}
+  .pl-sellbtn{margin-left:10px;font-size:10px;font-weight:700;text-transform:none;letter-spacing:0;color:#ff8d8d;background:transparent;border:1px solid rgba(255,107,107,.5);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .pl-sellbtn:hover{background:rgba(255,107,107,.12)}
+  #planner .pl-sell .plcard{border-color:#ff6b6b!important;box-shadow:0 0 0 1px #ff6b6b}   /* sellable: full red border */
+  .pl-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--pcw,136px),1fr));max-width:calc(var(--pcn,6) * (var(--pcw,136px) + 8px));gap:8px}
+  .plcard{position:relative;border:1px solid var(--line);border-radius:10px;padding:9px 7px;cursor:pointer;text-align:center;
+    background:linear-gradient(180deg,var(--panel2),var(--panel));
+    display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .08s}
+  .plcard:hover{transform:translateY(-1px)}
+  .plcard.owned{opacity:.82;border-color:var(--line)!important;background:linear-gradient(180deg,var(--panel2),var(--panel))!important}   /* owned: neutral frame, name stays coloured */
+  .plcard.added{border-style:dashed}
+  .pc-rm{position:absolute;top:2px;right:4px;width:15px;height:15px;line-height:13px;text-align:center;border-radius:50%;
+    background:rgba(255,141,141,.15);color:#ff8d8d;font-size:12px;font-weight:800;cursor:pointer;z-index:2}
+  .pc-rm:hover{background:#ff8d8d;color:#05080f}
+  .npill.added{border:1px dashed currentColor}
+  .npill .pc-rm{position:static;display:inline-flex;align-items:center;justify-content:center;margin-left:4px}
+  /* planner popovers */
+  .planpop{position:fixed;z-index:300;background:var(--panel2);border:1px solid var(--accent);border-radius:10px;
+    box-shadow:0 14px 44px rgba(0,0,0,.7);padding:10px}
+  .pp-h{font-size:11px;font-weight:700;color:var(--muted);margin:0 0 8px;text-transform:uppercase;letter-spacing:.4px}
+  .tpick-row{display:flex;gap:6px}
+  .tpick-b{min-width:36px;padding:6px 4px;border:1px solid;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:2px}
+  .tpick-c{font-size:9px;font-weight:700;opacity:.85;min-height:11px}
+  .apick-in{width:230px;max-width:62vw;padding:6px 10px;font-size:12px;background:var(--panel);color:var(--txt);border:1px solid var(--line);border-radius:7px;margin-bottom:8px}
+  .apick-in:focus{outline:none;border-color:var(--accent)}
+  .apick-list{max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:2px;min-width:230px}
+  .apick-b{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 9px;background:transparent;border:1px solid transparent;border-radius:6px;color:var(--txt);font-size:12px;font-weight:600;cursor:pointer;text-align:left}
+  .apick-b:hover{background:var(--panel);border-color:var(--line)}
+  .apick-x{font-size:9px;color:var(--muted);font-weight:600}
+  .apick-empty{color:var(--muted);font-size:12px;padding:6px 9px}
+  .plcard.dim{opacity:.2;filter:saturate(.5)}
+  .plcard.hit{box-shadow:0 0 0 2px var(--accent),0 0 16px -2px rgba(34,179,255,.5)}
+  .pc-icon{display:flex;justify-content:center;width:100%}
+  .pc-iwrap{display:inline-flex;border:2px solid;border-radius:9px}   /* border-color = class colour (set inline), kept subtle */
+  .pc-icon .dimg{width:82%;aspect-ratio:1;height:auto;display:block;border-radius:8px;margin:0 auto}   /* icon scales with card width */
+  .pc-name{font-weight:700;font-size:11px;line-height:1.15;max-width:100%;overflow-wrap:anywhere}   /* wrap, never truncate */
+  .pc-rbs{display:flex;flex-wrap:nowrap;gap:3px;max-width:100%;overflow-x:auto;justify-content:center}
+  .pc-rbs::-webkit-scrollbar{height:0}
+  .pc-rb{font-size:9px;font-weight:600;border:1px solid;border-radius:6px;padding:1px 4px;cursor:pointer;line-height:1.35;flex:0 0 auto}
+  .pc-rb.met{font-weight:800}   /* bold only when owned/marked */
+  .pc-rb.bk{box-shadow:0 0 6px -1px var(--beskar)}   /* Beskar chips pop */
+  .pc-rb.none{background:transparent!important;color:var(--muted)!important;opacity:.5;cursor:default;box-shadow:none}   /* tier not needed */
+  .pc-rb:hover{filter:brightness(1.18)}
+  .npill.dim{opacity:.2}
+  .npill.hit{outline:2px solid var(--accent)}
+  /* planner full-view: hide checklist-only chrome while the Planner tab is active */
+  body.planfocus .searchwrap,body.planfocus #stats,body.planfocus #curLbl,body.planfocus #hideLbl,body.planfocus #resetBtn{display:none}
+  .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 16px;margin:0}
+  .controls label{font-size:13px;color:var(--muted)}
+  .profgrp{display:inline-flex;align-items:center;gap:4px;padding-right:10px;border-right:1px solid var(--line)}
+  .profgrp button{padding:6px 9px;font-size:12px;line-height:1}
+  .profgrp select{font-weight:700;color:var(--txt)}
+  #syncBtn.synced{border-color:var(--good);color:var(--good)}
+  #syncBtn.syncerr{border-color:#ff8d8d;color:#ff8d8d}
+  select,button{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13px;cursor:pointer}
+  button:hover,select:hover{border-color:var(--accent)}
+  .tabs{display:flex;gap:8px;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
+  .tab{padding:8px 16px;border-radius:999px;background:var(--panel);border:1px solid var(--line);color:var(--muted);cursor:pointer;font-size:13px;font-weight:600}
+  .tab.active{background:var(--accent2);color:#fff;border-color:var(--accent)}
+  .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:0}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}
+  .stat.btn{cursor:pointer;border-color:var(--accent2);background:linear-gradient(180deg,#10243f,var(--panel));user-select:none}
+  .stat.btn:hover{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+  .stat.btn:active{transform:translateY(1px)}
+  .stat .num{font-size:22px;font-weight:700;color:var(--accent)}
+  .stat .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+  .bar{height:8px;background:#0a1322;border-radius:99px;overflow:hidden;margin-top:8px}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));width:0}
+  .legend{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:0 0 10px;font-size:11px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:5px}
+  .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .rb{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+  .rb.done{border-color:#1d6b41;background:linear-gradient(180deg,#0c1b15,var(--panel))}
+  .rb.current{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+  .gap{text-align:center;color:var(--good);font-size:11px;font-weight:600;letter-spacing:.3px;
+    margin:2px 0 12px;padding:6px;border:1px dashed #1d6b41;border-radius:8px;opacity:.75}
+  .gap-hd{cursor:pointer;user-select:none}
+  .gap:hover{opacity:1;border-color:var(--good)}
+  .gap.open{opacity:1;margin-bottom:8px}
+  .gap-title{font-weight:800;font-size:12px}
+  .gap-sub{font-size:9px;color:var(--muted);font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.6px}
+  .gap-grid{margin-top:10px;display:flex;flex-direction:column;gap:6px;text-align:left}
+  .gap-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+  .gap-lv{font-size:10px;font-weight:800;color:var(--muted);min-width:34px}
+  .npill{font-size:10px;font-weight:700;padding:2px 8px 2px 3px;border-radius:999px;white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
+  .dimg.pimg{width:16px;height:16px;border-radius:4px}
+  .dimg.nameimg{width:22px;height:22px}
+  .rb-head{display:flex;align-items:center;gap:14px;padding:12px 16px}
+  .rb-num{font-size:20px;font-weight:800;min-width:50px}
+  .rb-num small{display:block;font-size:9px;color:var(--muted);letter-spacing:1px}
+  .rb-meta{font-size:12px;color:var(--muted);line-height:1.5}
+  .rb-meta b{color:var(--txt);font-weight:600}
+  .rb-meta .nova{color:var(--nova)} .rb-meta .cr{color:var(--gold)} .rb-meta .xp{color:var(--good)}
+  .rb-prog{margin-left:auto;font-size:12px;color:var(--muted);min-width:42px;text-align:right}
+  .rb-check{color:var(--good);font-size:18px;width:18px}
+  .reqs{padding:4px 16px 14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}
+  .req{display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer;user-select:none}
+  .req:hover{border-color:var(--accent)}
+  .req.on{background:#0f2a1c;border-color:#2c8d57}
+  .box{width:18px;height:18px;border-radius:5px;border:2px solid var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+  .req.on .box{background:var(--good);border-color:var(--good)}
+  .dname{font-weight:600;font-size:14px;white-space:nowrap}
+  .tag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:999px;margin-left:auto}
+  .tag.havepill{opacity:.85}                       /* highest tier owned; no border = below requirement */
+  .tag.havepill.met{opacity:1;border:1.5px solid currentColor}   /* meets/exceeds requirement */
+  .Base{background:#26303f;color:var(--base)}
+  .Gold{background:#3a2f08;color:var(--gold)}
+  .Diamond{background:#0a2c3a;color:var(--diamond)}
+  .Rainbow{background:#3a0a2c;color:var(--rainbow)}
+  .Beskar{background:#222a35;color:var(--beskar)}
+  .kcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+  .ktop{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .kname{font-size:17px;font-weight:700;white-space:nowrap}
+  .knext{font-size:11px;color:var(--muted);margin-left:auto}
+  .pips{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+  .pip{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:4px 9px;border-radius:999px;cursor:pointer}
+  .pip .lv{opacity:.6;font-weight:600}
+  .pip.on{outline:2px solid var(--good)}
+  .priority{display:inline-block;font-size:10px;font-weight:800;color:#05080f;background:var(--gold);padding:2px 7px;border-radius:999px;text-transform:uppercase;letter-spacing:.5px}
+  /* chip reference table */
+  #chipTable{width:100%;border-collapse:collapse;font-size:12px}
+  #chipTable th,#chipTable td{padding:7px 10px;text-align:center;border-top:1px solid var(--line)}
+  #chipTable th{color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;font-size:10px}
+  #chipTable td.cls{text-align:left;font-weight:700}
+  #chipTable td.tot{color:var(--accent);font-weight:700}
+  .foot{text-align:center;color:var(--muted);font-size:11px;margin-top:12px;line-height:1.6}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Droid Tycoon · Rebirth Planner</h1>
+    <div class="controls">
+      <label class="profgrp">👤 <select id="profileSel"></select>
+        <button id="newProf" title="New profile">＋</button>
+        <button id="renProf" title="Rename profile">✎</button>
+        <button id="delProf" title="Delete profile">🗑</button>
+        <button id="expProf" title="Export active profile (backup / move)">📤</button>
+        <button id="impProf" title="Import a profile from a code">📥</button>
+        <button id="syncBtn" title="Cloud sync (set up)">☁</button></label>
+      <label>Cycle: <select id="cycleSel"></select></label>
+      <label>Rebirth: <select id="curSel"></select></label>
+      <button id="rebirthBtn" class="minibtn" title="Advance one rebirth">Rebirth ▶</button>
+    </div>
+  </div>
+
+  <section class="pane pane-main" id="paneMain">
+    <div class="pane-b">
+      <div class="legend">
+        <span><i class="dot" style="background:#cfd8e6"></i>Base</span>
+        <span><i class="dot" style="background:#ffcf3f"></i>Gold</span>
+        <span><i class="dot" style="background:#4fd0ff"></i>Diamond</span>
+        <span><i class="dot" style="background:#ff6ad5"></i>Rainbow</span>
+        <span><i class="dot" style="background:#b3aa9c"></i>Beskar</span>
+      </div>
+      <div id="planner"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+// ===================== METADATA =====================
+const CR=["10,000","150,000","975,000","2.95M","5.35M","9.85M","14.5M","36M","89M","220M","550M",
+  "1.36B","3.4B","8.45B","21B","52B","130B","325B","810B","2T","3T","4.5T","6T","9T","13.5T","21T","32T"];
+// per-rebirth Nova crystals / credit% / xp% (index by RB number; only 12+ defined)
+const NOVA={12:11,13:16,14:22,15:29,16:37,17:46,18:56,19:67,20:79,21:92,22:106,23:121,24:137,25:154,26:172,27:191};
+const CRED={12:22,13:32,14:44,15:58,16:74,17:92,18:112,19:134,20:158,21:184,22:212,23:242,24:274,25:308,26:344,27:382};
+const XP={12:110,13:160,14:220,15:290,16:370,17:460,18:560,19:670,20:790,21:920,22:1060,23:1210,24:1370,25:1540,26:1720,27:1910};
+// per-step upgrade chips [→Gold,→Diamond,→Rainbow,→Beskar] by droid class
+// (Gold/Diamond/Rainbow per Insider Gaming Droidex; Beskar/Mythic per community sheet)
+const CHIPCLASS={Common:[5,25,40,80],Rare:[30,60,100,250],Epic:[120,180,240,5000],Legendary:[400,1200,4000,12000],Mythic:[8000,15000,40000,80000]};
+const CHIPS=Object.entries(CHIPCLASS).map(([c,a])=>[c,a,a.reduce((x,y)=>x+y,0)]);
+const FLAWLESS=["1/1000","1/500","1/250","1/125","1/100"];   // flawless spawn odds by tier Base..Beskar
+const CHIP_REFUND={Common:[4,7,10,13],Rare:[6,9,12,15],Epic:[30,33,36,39],Legendary:[84,87,90,93],Mythic:[192,195,198,201]}; // chips returned when selling Gold/Diamond/Rainbow/Beskar
+function refundAt(name,idx){const m=dmeta(name);if(!m||idx<1)return null;const a=CHIP_REFUND[m.cls];return a?a[idx-1]:null;}
+const UNLOCKS=["Worker Slot","Astromech Slot","Battle Slot","Worker Slot","Astromech Slot","Battle Slot","Worker Slot","Astromech Slot","Battle Slot","Worker Slot","Astromech Slot","Worker Slot","Astromech Slot","Worker Slot","Astromech Slot","Worker Slot","Lounge Slot","Lounge Slot","Lounge Slot","Lounge Slot"];
+const CHIPICON='<svg class="chipi" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true"><rect x="6.5" y="6.5" width="11" height="11" rx="2.5" fill="currentColor"/><g stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9 3.5v3M15 3.5v3M9 17.5v3M15 17.5v3M3.5 9h3M3.5 15h3M17.5 9h3M17.5 15h3"/></g></svg>';
+// Nova Shop upgrade costs (nova crystals per level) + cosmetics, from dev sheet
+const NOVASHOP={"Core upgrades":[["Max Health",[1,6,13,19,25,31,37,43]],["Damage",[1,13,25,37,49,61,73,85]],["Credits",[2,6,10,14,18,22,26,30,34,38,42,46,50,54,58,62,66,70]],["Flawless Charm",[500]],["Movement Speed",[1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34]],["Double Daily Quests",[75]],["Pickaxe Mastery",[5,10,15,20,25,30,35,40,45,50,55]],["Jawa Bartering",[5,15,30,45,60]],["Super Crates",[10,25]]],"Workshop upgrades":[["Lounge Slot",[1,30,60]],["Upgrade Chip Scrap",[2,5,10,15,20,25,30,35,40,45]],["Scrap Value",[25,55,85,115,145,175,205,235,265,295]],["Blueprint Scrap",[1,12,24,36]],["Crafting Speed",[3,18,33,48,63,78,93,108,123,138]],["Blueprint Storage",[10,75,150]],["Collect All",[3,25,100]],["Rebirth Droid Alert",[10]],["Blueprint Vendor",[10]]]};
+const COSMETICS=[["Blue Paint","Rebirth 1 time"],["Gold Paint","Rebirth 5 times"],["Diamond Paint","Rebirth 10 times"],["Rainbow Paint","Rebirth 15 times"],["Worker Green","Craft 100 droids"],["Battle Orange","Craft 250 droids"],["Astromech Purple","Craft 500 droids"],["Flawless Paint","Craft 15 flawless droids"],["Super Flawless","Craft 50 flawless droids"],["Beskar Paint","Collect 25 different Beskar droids"],["Super Beskar","Collect 50 different Beskar droids"],["Nova Stage 1/2/3","30 / +120 / +400 nova crystals"],["Ringmaster","Fly through every yellow ring"],["Adv. Ringmaster","Fly through every orange ring"],["Hats (16)","Find in world / events"]];
+const RIDX={Base:0,Gold:1,Diamond:2,Rainbow:3,Beskar:4};
+const TIERS=["Base","Gold","Diamond","Rainbow","Beskar"];
+const RC={Base:"var(--base)",Gold:"var(--gold)",Diamond:"var(--diamond)",Rainbow:"var(--rainbow)",Beskar:"var(--beskar)"};
+// short tier tag: Base shows nothing (was an ambiguous "B"); Beskar shows "BK"
+const TABBR={Base:"",Gold:"G",Diamond:"D",Rainbow:"R",Beskar:"BK"};
+function tierAbbr(t){return TABBR[t]!=null?TABBR[t]:"";}
+// rarity → hex colour (mirrors the .cmeta text colours) for card tint/border
+const RARCOL={Common:"#cfd8e6",Rare:"#5cc8ff",Epic:"#c89bff",Legendary:"#ffcf3f",Mythic:"#ff6a8a",Iconic:"#7fffd4"};
+const TIERHEX={Base:"#cfd8e6",Gold:"#ffcf3f",Diamond:"#4fd0ff",Rainbow:"#ff6ad5",Beskar:"#b3aa9c"};   // tier colours as hex (mirror the --tier CSS vars)
+const RARRANK={Common:0,Rare:1,Epic:2,Legendary:3,Mythic:4,Iconic:5};
+function hexA(hex,a){const m=/^#?([0-9a-f]{6})$/i.exec(hex||"");if(!m)return hex;const n=parseInt(m[1],16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;}
+const CHIP_ABBR={Common:"Com",Rare:"Rare",Epic:"Epic",Legendary:"Leg",Mythic:"Myth"};
+function cumCost(steps,tgt){let c=0;for(let i=0;i<tgt;i++)c+=steps[i];return c;} // chips Base→target rarity
+
+// ===================== CYCLE DATA (RB1-27) =====================
+// rarity tokens: B=Base G=Gold D=Diamond R=Rainbow K=Beskar
+const T={B:"Base",G:"Gold",D:"Diamond",R:"Rainbow",K:"Beskar"};
+const RAW={
+ 1:[
+  [["CB","B"],["PIT","B"],["DRK-1 PROBE","B"]],
+  [["BDX EXPLORER","B"],["2BB","B"],["BAL-CORE","B"]],
+  [["A-LT","B"],["BU-4D","B"],["R9","G"]],
+  [["ARG","G"],["B1 SECURITY","G"],["GROUNDMECH","B"]],
+  [["BU-4D","G"],["HOV-R","G"],["R9","D"]],
+  [["A-LT","D"],["ARG","D"],["GROUNDMECH","G"]],
+  [["BU-4D","D"],["B1 SECURITY","D"],["BB","G"]],
+  [["HOV-R","D"],["LO","G"],["UTIL-TEC","G"]],
+  [["TRAK-R","G"],["R6","G"],["GROUNDMECH","R"]],
+  [["STRIKE-ORB","G"],["HAUL-R","R"],["LO","R"]],
+  [["AMP WALKER","R"],["B1 HEAVY","R"],["BB9","B"]],
+  [["PROTO-ROLLER","G"],["MECHA-DROID","B"],["MONO-WLKR","B"]],
+  [["R7","B"],["CYCLO-GRAV","B"],["B2-RP","B"]],
+  [["OPTI-STRK","B"],["MONO-WLKR","G"],["MECHA-DROID","G"]],
+  [["B2-RP","G"],["BB9","G"],["R7","G"]],
+  [["OPTI-STRK","G"],["MONO-WLKR","D"],["PROTO-ROLLER","D"]],
+  [["B2-RP","D"],["CYCLO-GRAV","D"],["MECHA-DROID","D"]],
+  [["BB9","D"],["R7","D"],["MONO-WLKR","R"]],
+  [["B2-RP","R"],["CYCLO-GRAV","R"],["PROTO-ROLLER","R"]],
+  [["R7","R"],["OPTI-STRK","R"],["MECHA-DROID","R"]],
+  [["BB","K"],["ORB-WALKER","K"],["GROUNDMECH","K"]],
+  [["AMP WALKER","K"],["B1 HEAVY","K"],["PROTO-ROLLER","K"]],
+  [["OPTI-STRK","K"],["MONO-WLKR","K"],["R7","K"]],
+  [["BB9","K"],["CYCLO-GRAV","K"],["MO-TRAK","B"]],
+  [["B2-RP","K"],["IG","B"],["DRFT-R","G"]],
+  [["CYCLENS","G"],["LOADLIFTER","D"],["RIC-1200","R"]],
+  [["KX","D"],["TRI-TEK","R"],["SNOW MOUSE","K"]],
+ ],
+ 2:[
+  [["ID10","B"],["MOUSE","B"],["GONK","B"]],
+  [["ROLL-R","B"],["SENATE HOVERCAM","B"],["NAV-EX","B"]],
+  [["R4","B"],["VECT-ARM","B"],["BDX EXPLORER","G"]],
+  [["2BB","G"],["BAL-CORE","G"],["ORB-WALKER","B"]],
+  [["R4","G"],["VECT-ARM","G"],["NAV-EX","G"]],
+  [["GUNRUNNER","B"],["2BB","D"],["BAL-CORE","D"]],
+  [["ROLL-R","D"],["BDX EXPLORER","D"],["R2","G"]],
+  [["R4","D"],["B2 SUPER","G"],["GUNRUNNER","G"]],
+  [["NAV-EX","R"],["STRIKE-ORB","G"],["AMP WALKER","G"]],
+  [["VECT-ARM","R"],["R2","D"],["B2 SUPER","D"]],
+  [["STRIKE-ORB","D"],["B2 HEAVY","D"],["BAL-CORE","R"]],
+  [["ORB-WALKER","R"],["R2","R"],["BB9","B"]],
+  [["B2 SUPER","R"],["MECHA-DROID","B"],["PROTO-ROLLER","B"]],
+  [["B2 HEAVY","R"],["B2-RP","B"],["R7","G"]],
+  [["STRIKE-ORB","R"],["BB9","G"],["PROTO-ROLLER","G"]],
+  [["AMP WALKER","R"],["MECHA-DROID","G"],["B2-RP","D"]],
+  [["OPTI-POD","R"],["MONO-WLKR","G"],["R7","D"]],
+  [["UTIL-TEC","R"],["BB9","D"],["PROTO-ROLLER","D"]],
+  [["MECHA-DROID","D"],["R7","R"],["B2-RP","R"]],
+  [["MONO-WLKR","R"],["OPTI-STRK","R"],["CYCLO-GRAV","R"]],
+  [["LO","K"],["R6","K"],["HAUL-R","K"]],
+  [["SEN-TRI","K"],["STRIKE-ORB","K"],["PROTO-ROLLER","K"]],
+  [["BB9","K"],["CYCLO-GRAV","K"],["B2-RP","K"]],
+  [["OPTI-STRK","K"],["B2-RP","K"],["SNOW MOUSE","B"]],
+  [["MONO-WLKR","K"],["TRI-TEK","G"],["RIC-1200","B"]],
+  [["KX","G"],["DRFT-R","D"],["IG","R"]],
+  [["LEP","D"],["LOADLIFTER","R"],["MO-TRAK","K"]],
+ ],
+ 3:[
+  [["MOUSE","B"],["PIT","B"],["GONK","B"]],
+  [["R3","B"],["2BB","B"],["SENATE HOVERCAM","B"]],
+  [["R8","B"],["R5","B"],["R4","B"]],
+  [["B1 BATTLE","G"],["R9","G"],["B1 SECURITY","G"]],
+  [["R3","G"],["2BB","G"],["SENATE HOVERCAM","G"]],
+  [["R5","D"],["R4","D"],["BDX EXPLORER","D"]],
+  [["R8","D"],["B1 BATTLE","D"],["R9","D"]],
+  [["R3","R"],["B1 SECURITY","R"],["2BB","R"]],
+  [["R5","R"],["R4","R"],["BDX EXPLORER","R"]],
+  [["SENATE HOVERCAM","R"],["GROUNDMECH","B"],["TRAK-R","B"]],
+  [["B2 HEAVY","B"],["B2 SUPER","B"],["UTIL-TEC","B"]],
+  [["BAL-CORE","R"],["GROUNDMECH","G"],["TRAK-R","G"]],
+  [["B2 SUPER","R"],["MECHA-DROID","B"],["PROTO-ROLLER","B"]],
+  [["B2 HEAVY","R"],["B2-RP","B"],["R7","G"]],
+  [["STRIKE-ORB","R"],["BB9","G"],["PROTO-ROLLER","G"]],
+  [["AMP WALKER","R"],["MECHA-DROID","G"],["B2-RP","D"]],
+  [["OPTI-POD","R"],["MONO-WLKR","G"],["R7","D"]],
+  [["UTIL-TEC","R"],["BB9","D"],["PROTO-ROLLER","D"]],
+  [["MECHA-DROID","D"],["R7","R"],["B2-RP","R"]],
+  [["MONO-WLKR","R"],["OPTI-STRK","R"],["CYCLO-GRAV","R"]],
+  [["B2 SUPER","K"],["OPTI-POD","K"],["R2","K"]],
+  [["GUNRUNNER","K"],["LNG-SHOT","K"],["B2-RP","K"]],
+  [["MONO-WLKR","K"],["CYCLO-GRAV","K"],["MECHA-DROID","K"]],
+  [["BB9","K"],["B2-RP","K"],["RIC","B"]],
+  [["PROTO-ROLLER","K"],["LOADLIFTER","B"],["MO-TRAK","G"]],
+  [["LEP","G"],["TRI-TEK","D"],["SNOW MOUSE","R"]],
+  [["RIC-1200","D"],["IG","R"],["DRFT-R","K"]],
+ ],
+ 4:[
+  [["ID10","B"],["PIT","B"],["DRK-1 PROBE","B"]],
+  [["R3","B"],["2BB","B"],["SENATE HOVERCAM","B"]],
+  [["R5","G"],["R8","G"],["R4","B"]],
+  [["B1 BATTLE","G"],["R9","G"],["B1 SECURITY","G"]],
+  [["R3","G"],["2BB","G"],["SENATE HOVERCAM","G"]],
+  [["R5","D"],["R4","D"],["BDX EXPLORER","D"]],
+  [["R8","D"],["B1 BATTLE","D"],["R9","D"]],
+  [["R3","R"],["B1 SECURITY","R"],["2BB","R"]],
+  [["R5","R"],["R4","R"],["BDX EXPLORER","R"]],
+  [["SENATE HOVERCAM","R"],["GROUNDMECH","B"],["TRAK-R","B"]],
+  [["B2 HEAVY","B"],["B2 SUPER","B"],["UTIL-TEC","B"]],
+  [["BAL-CORE","R"],["GROUNDMECH","G"],["TRAK-R","G"]],
+  [["B2 SUPER","R"],["MECHA-DROID","B"],["PROTO-ROLLER","B"]],
+  [["BAL-CORE","D"],["GROUNDMECH","D"],["TRAK-R","R"]],
+  [["B2 HEAVY","D"],["B2 SUPER","R"],["B2-RP","B"]],
+  [["UTIL-TEC","R"],["BB9","B"],["R7","G"]],
+  [["OPTI-STRK","B"],["CYCLO-GRAV","G"],["MECHA-DROID","G"]],
+  [["B2-RP","G"],["BB9","G"],["R7","D"]],
+  [["MECHA-DROID","D"],["R7","R"],["B2-RP","R"]],
+  [["MONO-WLKR","R"],["OPTI-STRK","R"],["CYCLO-GRAV","R"]],
+  [["AMP WALKER","K"],["GROUNDMECH","K"],["HAUL-R","K"]],
+  [["GUNRUNNER","K"],["STRIKE-ORB","K"],["B2 SUPER","K"]],
+  [["MONO-WLKR","K"],["CYCLO-GRAV","K"],["B2-RP","K"]],
+  [["MECHA-DROID","K"],["PROTO-ROLLER","K"],["MO-TRAK","B"]],
+  [["OPTI-STRK","K"],["TRI-TEK","B"],["DRFT-R","G"]],
+  [["CYCLENS","G"],["LEP","D"],["MO-TRAK","R"]],
+  [["RIC-1200","D"],["SNOW MOUSE","R"],["LOADLIFTER","K"]],
+ ],
+};
+const CYCLES={};
+Object.keys(RAW).forEach(cy=>{CYCLES[cy]=RAW[cy].map((r,i)=>({n:i+1,c:CR[i],r:r.map(([d,t])=>[d,T[t]])}));});
+const CYCLE_LABEL={1:"Cycle 1 (OG)",2:"Cycle 2 (SRB1)",3:"Cycle 3 (SRB2)",4:"Cycle 4 (SRB3)"};
+const MAXRB=27;
+
+// ===================== STATE (multi-profile) =====================
+const LS_KEY="droidTycoonTracker_v3";
+function encodeDB(){try{return btoa(unescape(encodeURIComponent(JSON.stringify(DB))));}catch(e){return"";}}
+function decodeAny(s){try{return JSON.parse(decodeURIComponent(escape(atob(s))));}catch(e){return null;}}
+function blankProfile(name){return {name:name||"Player",current:9,cycle:1,view:"rebirths",hidePast:true,_hideDefault:true,counts:{},plan:{},gapsOpen:{}};}
+function normProfile(p){
+  if(!p.counts)p.counts={}; if(!p.plan)p.plan={}; if(!p.gapsOpen)p.gapsOpen={};
+  if(p.current==null)p.current=9; if(p.cycle==null)p.cycle=1; if(!p.view)p.view="rebirths"; if(!p.name)p.name="Player";
+  // legacy per-requirement checks → owned map (old format)
+  if(p.checked){ if(!p.owned)p.owned={}; for(const k in p.checked){ if(!p.checked[k])continue; const q=k.split('|'); if(q.length===4&&RIDX[q[3]]!=null){const ok=q[0]+'|'+q[2].toUpperCase(); p.owned[ok]=Math.max(p.owned[ok]??-1,RIDX[q[3]]);}} delete p.checked; }
+  // legacy owned(highest idx)+qty(count) → per-tier counts (one stack at that tier)
+  if(p.owned){ for(const k in p.owned){ const idx=p.owned[k]; if(idx==null||idx<0)continue; const t=TIERS[idx]; const n=(p.qty&&p.qty[k])||1; p.counts[k+'|'+t]=(p.counts[k+'|'+t]||0)+n; } delete p.owned; delete p.qty; }
+  if(!p._hideDefault){p.hidePast=true;p._hideDefault=true;}
+  return p;
+}
+let DB=null;
+if(location.hash.length>1) DB=decodeAny(location.hash.slice(1));
+if(!DB){ try{DB=JSON.parse(localStorage.getItem(LS_KEY)||"null");}catch(e){} }
+if(DB && !DB.profiles) DB={active:"p1",seq:1,profiles:{p1:normProfile(DB)}};   // migrate legacy single state → one profile
+if(!DB) DB={active:"p1",seq:1,profiles:{p1:blankProfile("Player 1")}};
+Object.values(DB.profiles).forEach(normProfile);
+if(!DB.profiles[DB.active]) DB.active=Object.keys(DB.profiles)[0];
+let state=DB.profiles[DB.active];
+// physical inventory = per-tier counts. counts key: cycle|DROID|Tier -> N
+const cKey=(cy,d,t)=>cy+'|'+String(d).toUpperCase()+'|'+t;
+function countAt(cy,d,t){return state.counts[cKey(cy,d,t)]||0;}
+function ownedIdx(cy,d){ let mx=-1; for(let i=0;i<TIERS.length;i++) if(countAt(cy,d,TIERS[i])>0) mx=i; return mx; }   // highest tier physically owned
+function totalOf(cy,d){ let s=0; for(const t of TIERS) s+=countAt(cy,d,t); return s; }
+function isMet(cy,d,rar){return ownedIdx(cy,d)>=RIDX[rar];}            // a higher-tier copy satisfies lower requirements (counts-as, no phantom stacks)
+function setCount(cy,d,t,n){ const k=cKey(cy,d,t); if(n<=0) delete state.counts[k]; else state.counts[k]=n; }
+function toggleTier(cy,d,rar){ setCount(cy,d,rar, countAt(cy,d,rar)>0?0:1); }   // toggle presence of one copy at exactly this tier
+function addAt(cy,d,t){ setCount(cy,d,t, countAt(cy,d,t)+1); }
+function subAt(cy,d,t){ setCount(cy,d,t, countAt(cy,d,t)-1); }
+function saveLocal(){
+  try{localStorage.setItem(LS_KEY,JSON.stringify(DB));}catch(e){}
+  try{history.replaceState(null,"","#"+encodeDB());}catch(e){}   // mirror the whole profile set into the URL
+}
+// ---- cloud sync (Supabase REST) ----
+let syncReady=false, syncT=null;
+function syncCfg(){ const s=DB._sync; return (s&&s.url&&s.key&&s.code)?s:null; }
+function setSyncStatus(t){ const b=document.getElementById('syncBtn'); if(b){ b.title="Sync — "+t; b.classList.toggle('synced',t==='synced'||t==='pushed'||t==='pulled'); b.classList.toggle('syncerr',/error|failed/i.test(t)); } }
+async function api(path,opts){ const c=syncCfg(); if(!c) throw "no config";
+  const r=await fetch(c.url.replace(/\/+$/,'')+'/rest/v1/'+path, Object.assign({},opts,{headers:Object.assign({apikey:c.key,Authorization:'Bearer '+c.key,'Content-Type':'application/json'},(opts&&opts.headers)||{})}));
+  if(!r.ok) throw 'HTTP '+r.status; return r; }
+async function pushSync(){ const c=syncCfg(); if(!c) return;
+  const now=new Date().toISOString();
+  await api('players',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({sync_code:c.code,data:{active:DB.active,seq:DB.seq,profiles:DB.profiles},updated_at:now})});
+  DB._syncedAt=now; saveLocal(); setSyncStatus('pushed'); }
+function adoptRemote(row,c){ DB=Object.assign({},row.data,{_sync:c,_syncedAt:row.updated_at}); Object.values(DB.profiles).forEach(normProfile); if(!DB.profiles[DB.active])DB.active=Object.keys(DB.profiles)[0]; state=DB.profiles[DB.active]; saveLocal(); renderAll(); }
+async function doSync(){ const c=syncCfg(); if(!c){ setupSync(); return; }
+  setSyncStatus('syncing…');
+  try{
+    const rows=await (await api('players?sync_code=eq.'+encodeURIComponent(c.code)+'&select=data,updated_at')).json();
+    const remote=rows[0];
+    if(remote&&remote.data&&remote.data.profiles&&(!DB._syncedAt||remote.updated_at>DB._syncedAt)){ adoptRemote(remote,c); setSyncStatus('pulled'); }
+    else { await pushSync(); }
+    syncReady=true;
+  }catch(e){ setSyncStatus('error'); }
+}
+function setupSync(){ const c=syncCfg()||{};
+  const url=prompt("Supabase project URL (https://xxxx.supabase.co):", c.url||""); if(url==null) return;
+  const key=prompt("Supabase anon (public) key:", c.key||""); if(key==null) return;
+  const code=prompt("Sync code — a secret you reuse on every device:", c.code||""); if(code==null) return;
+  DB._sync={url:url.trim(),key:key.trim(),code:code.trim()}; saveLocal(); doSync();
+}
+function save(){ saveLocal(); if(syncReady&&syncCfg()){ clearTimeout(syncT); syncT=setTimeout(()=>pushSync().catch(()=>setSyncStatus('error')),1200); } }
+// ---- profile management ----
+function switchProfile(id){ if(DB.profiles[id]){ DB.active=id; state=DB.profiles[id]; save(); renderAll(); } }
+function addProfile(name){ DB.seq=(DB.seq||1)+1; const id="p"+DB.seq; DB.profiles[id]=blankProfile(name); DB.active=id; state=DB.profiles[id]; save(); renderAll(); }
+function renameProfile(name){ if(name){ state.name=name; save(); renderControls(); } }
+function deleteProfile(){ if(Object.keys(DB.profiles).length<=1) return false; delete DB.profiles[DB.active]; DB.active=Object.keys(DB.profiles)[0]; state=DB.profiles[DB.active]; save(); renderAll(); return true; }
+function exportProfile(){ try{ return btoa(unescape(encodeURIComponent(JSON.stringify({__dt:1,profile:state})))); }catch(e){ return ""; } }
+function importProfile(code){
+  if(!code) return 0;
+  code=String(code).trim().replace(/^#/,'');
+  let obj=null; try{obj=JSON.parse(decodeURIComponent(escape(atob(code))));}catch(e){ return 0; }
+  let profs=[];
+  if(obj&&obj.profile) profs=[obj.profile];                 // single-profile export
+  else if(obj&&obj.profiles) profs=Object.values(obj.profiles); // full DB / old-hash DB
+  else if(obj&&(obj.owned||obj.current!=null)) profs=[obj];  // legacy flat state (old URL hash)
+  else return 0;
+  profs.forEach(p=>{ DB.seq=(DB.seq||1)+1; const id="p"+DB.seq; const np=normProfile(Object.assign(blankProfile(p.name||"Imported"),p)); DB.profiles[id]=np; DB.active=id; state=np; });
+  save(); renderAll(); return profs.length;
+}
+function doRebirth(){ if(state.current<MAXRB){state.current++;save();renderAll();} }
+const key=(cy,n,d,r)=>`${cy}|${n}|${d}|${r}`;
+const cur=()=>CYCLES[state.cycle];
+
+function droidMap(cy){
+  const map={};
+  CYCLES[cy].forEach(rb=>rb.r.forEach(([d,rar])=>{
+    const id=d.toUpperCase();
+    if(!map[id]) map[id]={name:d,reqs:[]};
+    map[id].reqs.push({lv:rb.n,rar,d});
+  }));
+  Object.values(map).forEach(m=>{m.reqs.sort((a,b)=>a.lv-b.lv);
+    m.future=m.reqs.filter(q=>q.lv>state.current); m.nextLv=m.future.length?m.future[0].lv:Infinity;});
+  return map;
+}
+
+// global index of every droid across all 4 cycles
+let GMAP=null;
+function gmap(){
+  if(GMAP) return GMAP;
+  GMAP={};
+  [1,2,3,4].forEach(cy=>CYCLES[cy].forEach(rb=>rb.r.forEach(([d,rar])=>{
+    const id=d.toUpperCase();
+    (GMAP[id]=GMAP[id]||{name:d,byCycle:{}});
+    (GMAP[id].byCycle[cy]=GMAP[id].byCycle[cy]||[]).push({lv:rb.n,rar,d});
+  })));
+  Object.values(GMAP).forEach(m=>Object.values(m.byCycle).forEach(a=>a.sort((x,y)=>x.lv-y.lv)));
+  return GMAP;
+}
+
+// ===================== SEARCH =====================
+const searchEl={value:"",addEventListener(){},focus(){}};   // global search stripped in the standalone planner
+const panelEl={classList:{contains(){return true},add(){},remove(){}},innerHTML:""};
+const normName=n=>String(n).toUpperCase().replace(/[^A-Z0-9]/g,'');
+// ---- image cache: pulls each droid image once, stores bytes in IndexedDB, serves offline thereafter ----
+const IMG_REMOTE="https://droidtrakr.com/droid-tycoon/assets/droids/";
+const imgMem={};                 // file -> blob objectURL (this session)
+let imgDB=null; const imgQ=new Set(); let imgBusy=false, imgT=null;
+function imgOpen(){return new Promise(res=>{try{const rq=indexedDB.open('dt_imgs',1);
+  rq.onupgradeneeded=()=>rq.result.createObjectStore('imgs'); rq.onsuccess=()=>res(rq.result); rq.onerror=()=>res(null);}catch(e){res(null);}});}
+function idbGet(f){return new Promise(res=>{if(!imgDB)return res(null);try{const t=imgDB.transaction('imgs').objectStore('imgs').get(f);t.onsuccess=()=>res(t.result||null);t.onerror=()=>res(null);}catch(e){res(null);}});}
+function idbPut(f,b){try{imgDB.transaction('imgs','readwrite').objectStore('imgs').put(b,f);}catch(e){}}
+async function imgPump(){
+  if(imgBusy||!imgDB)return; imgBusy=true;
+  for(const f of [...imgQ]){ imgQ.delete(f); if(imgMem[f])continue;
+    let b=await idbGet(f);
+    if(!b){ try{const r=await fetch(IMG_REMOTE+f,{mode:'cors'}); if(r.ok){b=await r.blob(); idbPut(f,b);} }catch(e){} }
+    if(b){ const u=URL.createObjectURL(b); imgMem[f]=u;
+      document.querySelectorAll('img[data-file="'+f+'"]').forEach(el=>{el.src=u;el.removeAttribute('data-fb');}); }
+  }
+  imgBusy=false;
+}
+function imgWant(f){ if(!imgMem[f]){ imgQ.add(f); clearTimeout(imgT); imgT=setTimeout(imgPump,250); } }
+imgOpen().then(db=>{imgDB=db; if(db)imgPump();});
+function droidImg(name,rar,cls){const tf=rar==='Base'?'Default':rar; const f=normName(name)+"_"+tf+".webp"; imgWant(f);   // base art is named _Default.webp
+  const src=imgMem[f]||("assets/droids/"+f);   // cached blob → local folder → remote (onerror)
+  return `<img class="dimg ${cls||''}" data-file="${f}" src="${src}" alt="" loading="lazy" data-fb="${IMG_REMOTE}${f}" onerror="if(this.dataset.fb){this.src=this.dataset.fb;this.removeAttribute('data-fb');}else{this.style.visibility='hidden';}">`;}
+// Base credits/sec at normal rate (no correct-spot bonus); doubles each tier. Only the RB24-27 droids have published values.
+// droid metadata: class (Common→Mythic), type (W/A/B), base credits/sec at Default. Source: Insider Gaming Droidex + Mythic list.
+const DM_FULL=[
+["MOUSE","Worker","Common",[2, 4, 8, 16, 24],[950, 3800, 7600, 11400, 15200],[665, 2660, 5320, 7980, 10640]],
+["PIT","Worker","Common",[2, 4, 8, 16, 24],[1100, 4400, 8800, 13200, 17600],[770, 3080, 6160, 9240, 12320]],
+["GONK","Worker","Common",[4, 8, 16, 32, 48],[3000, 12000, 24000, 36000, 48000],[2100, 8400, 16800, 25200, 33600]],
+["CB","Astromech","Common",[3, 6, 12, 24, 36],[2000, 8000, 16000, 24000, 32000],[1400, 5600, 11200, 16800, 22400]],
+["R3","Astromech","Common",[3, 6, 12, 24, 36],[2000, 8000, 16000, 24000, 32000],[1400, 5600, 11200, 16800, 22400]],
+["R5","Astromech","Common",[3, 6, 12, 24, 36],[2000, 8000, 16000, 24000, 32000],[1400, 5600, 11200, 16800, 22400]],
+["R8","Astromech","Common",[4, 8, 16, 32, 48],[3000, 12000, 24000, 36000, 48000],[2100, 8400, 16800, 25200, 33600]],
+["IMPERIAL PROBE","Battle","Common",[6, 12, 24, 48, 72],[5000, 20000, 40000, 60000, 80000],[3500, 14000, 28000, 42000, 56000]],
+["B1 BATTLE","Battle","Common",[5, 10, 20, 40, 60],[4000, 16000, 32000, 48000, 64000],[2800, 11200, 22400, 33600, 44800]],
+["DRK-1 PROBE","Battle","Common",[3, 6, 12, 24, 36],[3000, 12000, 24000, 36000, 48000],[2100, 8400, 16800, 25200, 33600]],
+["ID10","Battle","Common",[4, 8, 16, 32, 48],[4000, 16000, 32000, 48000, 64000],[2800, 11200, 22400, 33600, 44800]],
+["BDX EXPLORER","Worker","Rare",[15, 30, 60, 120, 180],[25000, 100000, 200000, 300000, 400000],[17500, 70000, 140000, 210000, 280000]],
+["ARG","Worker","Rare",[42, 84, 168, 336, 504],[88000, 352000, 704000, 1060000, 1410000],[61600, 246400, 492800, 739200, 985600]],
+["SENATE HOVERCAM","Worker","Rare",[46, 92, 184, 368, 552],[100000, 400000, 800000, 1200000, 1600000],[70000, 280000, 560000, 840000, 1120000]],
+["BU-4D","Worker","Rare",[58, 116, 232, 464, 696],[130000, 520000, 1040000, 1560000, 2080000],[91000, 364000, 728000, 1100000, 1450000]],
+["BAL-CORE","Worker","Rare",[23, 46, 92, 184, 276],[43000, 172000, 344000, 516000, 688000],[30100, 120400, 240800, 361200, 481600]],
+["ROLL-R","Worker","Rare",[31, 62, 124, 248, 372],[62000, 248000, 496000, 744000, 992000],[43400, 173600, 347200, 520800, 694400]],
+["2BB","Astromech","Rare",[17, 34, 68, 136, 204],[30000, 120000, 240000, 360000, 480000],[21000, 84000, 168000, 252000, 336000]],
+["A-LT","Astromech","Rare",[36, 72, 144, 288, 432],[74000, 296000, 592000, 885000, 1180000],[51800, 207200, 414400, 621600, 828800]],
+["R4","Astromech","Rare",[50, 100, 200, 400, 600],[110000, 440000, 880000, 1320000, 1760000],[77000, 308000, 616000, 922500, 1230000]],
+["R9","Astromech","Rare",[54, 108, 216, 432, 648],[120000, 480000, 960000, 1440000, 1920000],[84000, 336000, 672000, 1000000, 1340000]],
+["B1 SECURITY","Battle","Rare",[66, 132, 264, 528, 792],[150000, 600000, 1200000, 1800000, 2400000],[105000, 420000, 840000, 1260000, 1680000]],
+["NAV-EX","Battle","Rare",[18, 36, 72, 144, 216],[36000, 144000, 288000, 432000, 576000],[25200, 100800, 201600, 302400, 403200]],
+["VECT-ARM","Battle","Rare",[27, 54, 108, 216, 324],[52000, 208000, 416000, 624000, 832000],[36400, 145600, 291200, 436800, 582400]],
+["HOV-R","Battle","Rare",[62, 124, 248, 496, 774],[140000, 560000, 1120000, 1680000, 2240000],[98000, 392000, 784000, 1180000, 1560000]],
+["GROUNDMECH","Worker","Epic",[120, 240, 480, 960, 4080],[900000, 3600000, 7200000, 10800000, 112500000],[630000, 2520000, 5040000, 7560000, 78750000]],
+["LO","Worker","Epic",[240, 480, 960, 1920, 8160],[2100000, 8400000, 16800000, 25200000, 262500000],[1470000, 5880000, 11760000, 17640000, 183750000]],
+["AMP WALKER","Worker","Epic",[570, 1140, 2280, 4560, 19380],[5400000, 21600000, 43200000, 64800000, 675000000],[3780000, 15120000, 30240000, 45360000, 472500000]],
+["SEN-TRI","Worker","Epic",[510, 1020, 2040, 4080, 17340],[4800000, 19200000, 38400000, 57600000, 600000000],[3360000, 13440000, 26880000, 40320000, 420000000]],
+["OPTI-POD","Worker","Epic",[390, 780, 1560, 3120, 13260],[3600000, 14400000, 28800000, 43200000, 450000000],[2520000, 10080000, 20160000, 30240000, 315000000]],
+["BB","Astromech","Epic",[150, 300, 600, 1200, 5100],[1200000, 4800000, 9600000, 14400000, 150000000],[840000, 3360000, 6720000, 10080000, 105000000]],
+["R2","Astromech","Epic",[360, 720, 1440, 2880, 12240],[3300000, 13200000, 26400000, 39600000, 412500000],[2310000, 9240000, 18480000, 27720000, 288750000]],
+["R6","Astromech","Epic",[300, 600, 1200, 2400, 10200],[2700000, 10800000, 21600000, 32400000, 337500000],[1890000, 7560000, 15120000, 22680000, 236250000]],
+["TRAK-R","Astromech","Epic",[330, 660, 1320, 2640, 11220],[3000000, 12000000, 24000000, 36000000, 375000000],[2100000, 8400000, 16800000, 25200000, 262500000]],
+["ORB-WALKER","Astromech","Epic",[180, 360, 720, 1440, 6120],[1500000, 6000000, 12000000, 18000000, 187500000],[1050000, 4200000, 8400000, 12600000, 131250000]],
+["GUNRUNNER","Worker","Epic",[660, 1320, 2640, 5280, 22440],[6300000, 25200000, 50400000, 75600000, 787500000],[4410000, 17640000, 35280000, 52920000, 551250000]],
+["UTIL-TEC","Astromech","Epic",[210, 420, 840, 1680, 7140],[1800000, 7200000, 14400000, 21600000, 225000000],[1260000, 5040000, 10080000, 15120000, 157500000]],
+["B1 HEAVY","Battle","Epic",[630, 1260, 2520, 4800, 20400],[6000000, 24000000, 48000000, 72000000, 750000000],[4200000, 16800000, 33600000, 50400000, 525000000]],
+["B2 SUPER","Battle","Epic",[420, 840, 1680, 3360, 14280],[3900000, 15600000, 31200000, 46800000, 487500000],[2730000, 10920000, 21840000, 32760000, 341250000]],
+["B2 HEAVY","Battle","Epic",[480, 960, 1920, 3840, 16320],[4500000, 18000000, 36000000, 54000000, 562500000],[3150000, 12600000, 25200000, 37800000, 393750000]],
+["STRIKE-ORB","Battle","Epic",[540, 1080, 2160, 4320, 18360],[5100000, 20400000, 40800000, 61200000, 637500000],[3570000, 14280000, 28560000, 42840000, 446250000]],
+["HAUL-R","Battle","Epic",[270, 540, 1080, 2160, 9180],[2400000, 9600000, 19200000, 28800000, 300000000],[1680000, 6720000, 13440000, 20160000, 210000000]],
+["LNG-SHOT","Battle","Epic",[450, 900, 1800, 3600, 15300],[4200000, 16800000, 33600000, 50400000, 525000000],[2940000, 11760000, 23520000, 35280000, 367500000]],
+["PROTO-ROLLER","Worker","Legendary",[972, 1940, 3890, 7780, 23330],[22000000, 88000000, 176000000, 264000000, 8800000000],[15400000, 61600000, 123200000, 184800000, 6160000000]],
+["MECHA-DROID","Worker","Legendary",[1240, 2490, 4970, 9950, 29860],[29000000, 116000000, 232000000, 348000000, 11600000000],[20300000, 81200000, 162400000, 243600000, 8120000000]],
+["MONO-WLKR","Worker","Legendary",[1500, 3000, 6000, 12000, 36000],[37000000, 148000000, 296000000, 444000000, 14800000000],[25900000, 103600000, 207200000, 310800000, 10360000000]],
+["BB9","Astromech","Legendary",[1300, 2600, 5200, 10400, 31200],[28000000, 112000000, 224000000, 336000000, 11200000000],[19600000, 78400000, 156800000, 235200000, 7840000000]],
+["R7","Astromech","Legendary",[1500, 3000, 6000, 12000, 36000],[37000000, 148000000, 296000000, 444000000, 14800000000],[25900000, 103600000, 207200000, 310800000, 10360000000]],
+["B2-RP","Battle","Legendary",[1300, 2600, 5210, 10430, 31300],[31000000, 124000000, 248000000, 372000000, 12400000000],[21700000, 86800000, 173600000, 260400000, 8680000000]],
+["CYCLO-GRAV","Battle","Legendary",[1260, 2520, 5040, 10080, 30240],[30000000, 120000000, 240000000, 360000000, 12000000000],[21000000, 84000000, 168000000, 252000000, 8400000000]],
+["OPTI-STRK","Battle","Legendary",[1500, 3000, 6000, 12000, 36000],[37000000, 148000000, 296000000, 444000000, 14800000000],[25900000, 103600000, 207200000, 310800000, 10360000000]],
+["SNOW MOUSE","Worker","Mythic",[4400, 8800, 17600, 35200, 70400],[180000000, 720000000, 1420000000, 4320000000, 144000000000],[126000000, 504000000, 1000000000, 3020000000, 100800000000]],
+["RIC","Worker","Mythic",[5100, 11600, 20400, 40800, 81600],[204000000, 912000000, 1630000000, 4900000000, 163200000000],[142800000, 638400000, 1140000000, 3430000000, 114240000000]],
+["LOADLIFTER","Worker","Mythic",[7200, 14400, 28800, 57600, 115200],[300000000, 1200000000, 2400000000, 7200000000, 240000000000],[210000000, 840000000, 1680000000, 5040000000, 168000000000]],
+["LEP","Worker","Mythic",[6500, 13000, 26000, 52000, 104000],[252000000, 1010000000, 2020000000, 6050000000, 201600000000],[176400000, 705600000, 1410000000, 4230000000, 141120000000]],
+["RIC-1200","Worker","Mythic",[5800, 11600, 23200, 46400, 92800],[228000000, 912000000, 1810000000, 5470000000, 182400000000],[159600000, 638400000, 1270000000, 3820000000, 127680000000]],
+["DRFT-R","Astromech","Mythic",[5800, 11600, 23200, 46400, 92800],[228000000, 912000000, 1810000000, 5470000000, 182400000000],[159600000, 638400000, 1270000000, 3820000000, 127680000000]],
+["CYCLENS","Astromech","Mythic",[4400, 8800, 17600, 35200, 70400],[180000000, 720000000, 1420000000, 4320000000, 144000000000],[126000000, 504000000, 1000000000, 3020000000, 100800000000]],
+["MO-TRAK","Astromech","Mythic",[7200, 14400, 28800, 57600, 115200],[300000000, 1200000000, 2400000000, 7200000000, 240000000000],[210000000, 840000000, 1680000000, 5040000000, 168000000000]],
+["TRI-TEK","Astromech","Mythic",[6500, 13000, 26000, 52000, 104000],[252000000, 1010000000, 2020000000, 6050000000, 201600000000],[176400000, 705600000, 1410000000, 4230000000, 141120000000]],
+["IG","Battle","Mythic",[6700, 17400, 34800, 46400, 139000],[342000000, 1370000000, 2740000000, 5470000000, 273600000000],[239400000, 959000000, 1910000000, 3820000000, 191520000000]],
+["KX","Battle","Mythic",[7200, 14400, 28800, 57600, 115200],[300000000, 1200000000, 2400000000, 7200000000, 240000000000],[210000000, 840000000, 1680000000, 5040000000, 168000000000]],
+["BB8","Astromech","Iconic",[null, null, null, null, null],[null, null, null, null, null],[null, null, null, null, null]],
+["MISTER BONES","Battle","Iconic",[null, null, null, null, null],[null, null, null, null, null],[null, null, null, null, null]],
+["IG-11 MARSHAL","Battle","Iconic",[null, null, null, null, null],[null, null, null, null, null],[null, null, null, null, null]],
+["DJ-R3X","Worker","Iconic",[null, null, null, null, null],[null, null, null, null, null],[null, null, null, null, null]],
+["CB-23","Astromech","Iconic",[null, null, null, null, null],[null, null, null, null, null],[null, null, null, null, null]],
+["R2-D2","Astromech","Iconic",[null, null, null, null, null],[null, null, null, null, null],[null, null, null, null, null]]
+];
+const DMETA={};
+DM_FULL.forEach(([n,type,cls,inc,cost,val])=>{DMETA[n.toUpperCase().replace(/[^A-Z0-9]/g,"")]={name:n,type,cls,inc,cost,val};});
+function dmeta(name){return DMETA[String(name).toUpperCase().replace(/[^A-Z0-9]/g,"")]||null;}
+function fmtBig(n){if(n==null)return null;const a=Math.abs(n),f=(v,s)=>(+v.toFixed(2))+s; if(a>=1e12)return f(n/1e12,"t"); if(a>=1e9)return f(n/1e9,"b"); if(a>=1e6)return f(n/1e6,"m"); if(a>=1e3)return f(n/1e3,"k"); return ""+n;}
+function earnAt(name,idx){const m=dmeta(name); if(!m||m.inc[idx]==null)return null; return fmtBig(m.inc[idx])+"/s";}
+function chipAt(name,idx){const m=dmeta(name); if(!m||idx>=4)return null; const a=CHIPCLASS[m.cls]; return a?a[idx]:null;}
+function sellAt(name,idx){const m=dmeta(name); return m?m.val[idx]:null;}
+function buyAt(name,idx){const m=dmeta(name); return m?m.cost[idx]:null;}
+function costStack(idx){            // per-step chips to upgrade OUT of this tier, colored as the next tier
+  if(idx>=4) return "";            // Beskar is max; nothing to upgrade to
+  return `<div class="cost" style="color:${RC[TIERS[idx+1]]}">${CHIPS.map(([cls,steps])=>`<div><span>${CHIP_ABBR[cls]}</span> ${steps[idx].toLocaleString()}</div>`).join("")}</div>`;
+}
+const SLBL={need:'Needed',done:'Done — sellable',other:'Not this cycle'};
+const ORD={need:0,done:1,other:2};
+function droidInfo(m){
+  const cyReqs=m.byCycle[state.cycle]||[];
+  const future=cyReqs.filter(x=>x.lv>state.current);
+  const cls=future.length?'need':(cyReqs.length?'done':'other');
+  return {cyReqs,cls,nextLv:future.length?Math.min(...future.map(x=>x.lv)):Infinity};
+}
+function tierCols(name,cyReqs){
+  return TIERS.map((tier,idx)=>{
+    const atTier=cyReqs.filter(x=>x.rar===tier).map(x=>x.lv).sort((a,b)=>a-b);
+    let reqLv=null,needed=false;
+    if(atTier.length){const fut=atTier.filter(l=>l>state.current); if(fut.length){reqLv=fut[0];needed=true;} else {reqLv=atTier[atTier.length-1];}}
+    const met=isMet(state.cycle,name,tier), cnt=countAt(state.cycle,name,tier);
+    let tag;
+    if(reqLv!=null) tag=`<span class="rtag ${needed?'need':'past'}">${met?'✓ ':''}R${reqLv}</span>`;
+    else tag=`<span class="rtag ${met?'have':'none'}">${met?'✓':'·'}</span>`;
+    const cls="pcol"+(met?" got":"")+(cnt>0?" hascnt":"");
+    const buy=buyAt(name,idx), sell=sellAt(name,idx), rf=refundAt(name,idx);
+    const tip=`${name} · ${tier}${buy!=null?' · buy '+fmtBig(buy):''}${sell!=null?' · sell '+fmtBig(sell):''}${rf!=null?' · '+rf+' chips back':''} · spawn ${FLAWLESS[idx]}`;
+    const e=earnAt(name,idx);
+    const earn=e?`<div class="earn">${e}</div>`:`<div class="earn dim">—</div>`;
+    const c=chipAt(name,idx);   // chips to upgrade OUT of this tier (droid's own class); null at Beskar/unknown
+    const cost=c!=null?`<div class="cost1" style="color:${RC[TIERS[idx+1]]}">${c.toLocaleString()}${CHIPICON}</div>`:`<div class="cost1 dim">—</div>`;
+    const qpill=`<span class="qpill"><button class="qbtn" data-qt="-|${state.cycle}|${name}|${tier}" title="Remove one ${tier}">−</button><span class="qn${cnt>0?' pos':''}">${cnt}</span><button class="qbtn" data-qt="+|${state.cycle}|${name}|${tier}" title="Add one ${tier}">+</button></span>`;
+    return `<div class="${cls}" title="${tip}">${droidImg(name,tier,'')}<span class="pchip ${tier}">${tier}</span>${tag}${earn}${cost}${qpill}</div>`;
+  }).join("");
+}
+function droidCard(m){
+  const {cyReqs,cls,nextLv}=droidInfo(m);
+  const sub=cls==='need'?` · next R${nextLv}`:'';
+  const oi=ownedIdx(state.cycle,m.name), tot=totalOf(state.cycle,m.name);
+  const md=dmeta(m.name);
+  const meta=md?`<span class="cmeta ${md.cls}">${md.cls}${md.type?' · '+md.type:''}</span>`:'';
+  const headRar=(cyReqs[0]&&cyReqs[0].rar)||(oi>=0?TIERS[oi]:'Default');
+  const have=oi>=0?`<span class="have">have ${TIERS[oi]}${tot>1?' · '+tot+' total':''}</span>`:'';
+  return `<div class="pitem"><div class="ptop">${droidImg(m.name,headRar,'nameimg')}<span class="pname">${m.name}</span>${meta}${have}
+    <span class="pstatus ${cls}">${SLBL[cls]}${sub}</span></div>
+    <div class="pchips">${tierCols(m.name,cyReqs)}</div></div>`;
+}
+function renderSearch(){
+  const q=searchEl.value.trim().toUpperCase();
+  if(!q){panelEl.classList.add('hidden');panelEl.innerHTML="";return;}
+  let items=Object.values(gmap()).filter(m=>m.name.toUpperCase().includes(q)).map(m=>({m,...droidInfo(m)}));
+  if(!items.length){panelEl.innerHTML=`<div class="pempty">No droid matching “${searchEl.value}” in any cycle.</div>`;panelEl.classList.remove('hidden');return;}
+  items.sort((a,b)=>{const sa=a.m.name.toUpperCase().startsWith(q)?0:1,sb=b.m.name.toUpperCase().startsWith(q)?0:1;return ORD[a.cls]-ORD[b.cls]||sa-sb||a.nextLv-b.nextLv||a.m.name.localeCompare(b.m.name);});
+  panelEl.innerHTML=items.slice(0,10).map(it=>droidCard(it.m)).join("");
+  panelEl.classList.remove('hidden');
+}
+function renderAllDroids(){
+  const host=document.getElementById('alldroids');
+  let items=Object.values(gmap()).map(m=>({m,...droidInfo(m)}));
+  items.sort((a,b)=>ORD[a.cls]-ORD[b.cls]||a.nextLv-b.nextLv||a.m.name.localeCompare(b.m.name));
+  host.innerHTML=`<div class="sub" style="display:block;margin:0 0 12px">${items.length} droids · ${CYCLE_LABEL[state.cycle]} · needed-first</div>`+
+    items.map(it=>droidCard(it.m)).join("");
+}
+function renderInventory(){
+  const host=document.getElementById('inventory');
+  const owned=Object.values(gmap()).filter(m=>ownedIdx(state.cycle,m.name)>=0)
+    .sort((a,b)=>ownedIdx(state.cycle,b.name)-ownedIdx(state.cycle,a.name)||a.name.localeCompare(b.name));
+  if(!owned.length){host.innerHTML=`<div class="pempty">No droids owned yet in ${CYCLE_LABEL[state.cycle]}. Click any rarity in <b>All Droids</b> or search to add it here.</div>`;return;}
+  const total=owned.reduce((s,m)=>s+totalOf(state.cycle,m.name),0);
+  const byCls={}; let worth=0;
+  owned.forEach(m=>{const md=dmeta(m.name); const tt=totalOf(state.cycle,m.name);
+    if(md) byCls[md.cls]=(byCls[md.cls]||0)+tt;
+    TIERS.forEach((t,ti)=>{const c=countAt(state.cycle,m.name,t); if(c){const sv=sellAt(m.name,ti); if(sv!=null) worth+=sv*c;}});});
+  const order=["Common","Rare","Epic","Legendary","Mythic","Iconic"];
+  const brk=order.filter(c=>byCls[c]).map(c=>`${byCls[c]} ${c}`).join(' · ');
+  host.innerHTML=`<div class="sub" style="display:block;margin:0 0 12px">${owned.length} droids · ${total} copies${worth?' · sell worth '+fmtBig(worth):''}${brk?' — '+brk:''} · use −/+ per tier</div>`+
+    owned.map(m=>droidCard(m)).join("");
+}
+const PLAN_SORTS={tier:"Tier / rarity",rb:"Order needed",alpha:"Alphabetical"};
+const PLAN_GROUPS={sell:"Sellability",tier:"Tier",rb:"Rebirth level",none:"None"};
+const PLAN_COLS=[3,4,5,6,7,8,10];   // max cards per row
+const PLAN_SIZES={s:104,m:136,l:176};   // card min width (px) → also scales the icon
+let planQuery="";   // in-planner search text (not persisted)
+function renderPlanner(){
+  const host=document.getElementById('planner');
+  closePlanPop();
+  if(!state.plan) state.plan={};
+  const sel=new Set(cur().map(rb=>rb.n));   // planner always covers ALL droids for the cycle
+  const sortMode=PLAN_SORTS[state.planSort]?state.planSort:'tier';
+  const groupMode=PLAN_GROUPS[state.planGroup]?state.planGroup:'sell';
+  const cardView=true;   // pill view removed — planner is always cards
+  // combine droids across selected rebirths, keeping the highest rarity of each;
+  // also record the first ticked rebirth each droid appears in + every ticked R# it's needed at
+  const need={}, firstRB={}, rbsOf={};
+  cur().forEach(rb=>{ if(sel.has(rb.n)) rb.r.forEach(([d,r])=>{
+    const i=RIDX[r]; if(need[d]==null||i>need[d]) need[d]=i;
+    if(firstRB[d]==null||rb.n<firstRB[d]) firstRB[d]=rb.n;
+    (rbsOf[d]=rbsOf[d]||[]).push([rb.n,i]);   // [rebirth #, tier idx needed there]
+  }); });
+  // pre-pulled droids you've added by hand (not required by the ticked rebirths) — show their full cycle timeline
+  const added=new Set((state.planAdd&&state.planAdd[state.cycle])||[]);
+  added.forEach(d=>{
+    if(need[d]!=null) return;   // already shown via a ticked rebirth
+    const reqs=[]; cur().forEach(rb=>rb.r.forEach(([dd,r])=>{ if(dd===d) reqs.push([rb.n,RIDX[r]]); }));
+    if(reqs.length){ let mx=-1; reqs.forEach(([n,ti])=>{ if(ti>mx)mx=ti; if(firstRB[d]==null||n<firstRB[d])firstRB[d]=n; }); need[d]=mx; rbsOf[d]=reqs.sort((a,b)=>a[0]-b[0]); }
+    else { need[d]=Math.max(0,ownedIdx(state.cycle,d)); rbsOf[d]=[]; firstRB[d]=999; }   // not in this cycle at all
+  });
+  const rank=d=>RARRANK[(dmeta(d)||{}).cls]??-1;
+  const items=Object.entries(need).sort((a,b)=>{
+    const [da,ia]=a,[db,ib]=b;
+    if(sortMode==='alpha') return da.localeCompare(db);
+    if(sortMode==='rb')    return (firstRB[da]-firstRB[db])||da.localeCompare(db);
+    return (ib-ia)||(rank(db)-rank(da))||da.localeCompare(db);   // tier: highest tier, then rarity, then name
+  });
+  const haveN=items.filter(([d,i])=>ownedIdx(state.cycle,d)>=i).length;
+  const ctl=`<div class="plctl">
+    ${cardView?`<label>Group <select id="planGroup">${Object.entries(PLAN_GROUPS).map(([v,l])=>`<option value="${v}"${v===groupMode?' selected':''}>${l}</option>`).join("")}</select></label>`:''}
+    ${cardView?`<label title="Split multi-rebirth droids — one card per rebirth (switches to Rebirth-level grouping)"><input type="checkbox" id="planUnmerge"${state.planUnmerge?' checked':''} style="vertical-align:-2px"> Unmerge</label>`:''}
+    ${cardView?`<label>Per row <select id="planCols">${PLAN_COLS.map(n=>`<option value="${n}"${n===(+state.planCols||6)?' selected':''}>${n}</option>`).join("")}</select></label>`:''}
+    ${cardView?`<label>Size <select id="planSize">${['s','m','l'].map(v=>`<option value="${v}"${v===(PLAN_SIZES[state.planSize]?state.planSize:'m')?' selected':''}>${v.toUpperCase()}</option>`).join("")}</select></label>`:''}
+    ${cardView?`<label>Sell list <select id="sellPos"><option value="top"${state.sellPos!=='bottom'?' selected':''}>Top</option><option value="bottom"${state.sellPos==='bottom'?' selected':''}>Bottom</option></select></label>`:''}
+    <button id="planAdd" class="minibtn" title="Add a droid you're pulling early">＋ Add</button>
+    <span class="plfindwrap"><input id="planFind" class="plfind" type="text" placeholder="🔍 find in plan…   ( / )" value="${planQuery.replace(/"/g,'&quot;')}"><button id="planFindX" class="plfindx" title="clear search" aria-label="clear search">×</button></span>
+    <span id="planFindN" class="plfindn"></span>
+    <button id="planClear" class="minibtn danger spring" title="Wipe all owned marks for this cycle">Reset owned</button>
+  </div>`;
+  let body;
+  if(!items.length){
+    body=`<div class="pempty">No droids in this cycle.</div>`;
+  }else if(cardView){
+    // Group by when a droid becomes sellable: bucket by its LAST needed rebirth (fully sellable by then).
+    const BUCKETS=['Sellable after RB10','Sellable after RB15','Sellable after RB20','Keep · needed past RB20'];
+    const bucketOf=n=>n<=10?0:n<=15?1:n<=20?2:3;
+    const chipStyle=(ti,met)=>{const c=RC[TIERS[ti]];return met?`color:#05080f;background:${c};border-color:${c}`:`color:${c};border-color:${c};background:transparent`;};
+    const makeCard=([d,i,onlyRb])=>{
+      const tier=TIERS[i], tcol=TIERHEX[tier]||'#8095b3', isAdded=added.has(d);   // tier owns every colour on the card
+      const have=ownedIdx(state.cycle,d)>=i;
+      const chip=(txt,ti)=>{const m=isMet(state.cycle,d,TIERS[ti]);
+        return `<span class="pc-rb${m?' met':''}${ti===4?' bk':''}" data-own="${state.cycle}|${d}|${TIERS[ti]}" style="${chipStyle(ti,m)}" title="R${txt}: ${TIERS[ti]}${m?' · owned':' · click to mark owned'}">${txt}</span>`;};
+      let rbChips;
+      if(onlyRb!=null){ rbChips=chip(onlyRb,i); }   // unmerged: just this rebirth
+      else{                                          // merged: a slot per tier (Base→Beskar), "-" when that tier isn't needed
+        const byTier={}; (rbsOf[d]||[]).forEach(([n,ti])=>{(byTier[ti]=byTier[ti]||[]).push(n);});
+        rbChips=TIERS.map((t,ti)=> byTier[ti] ? chip(byTier[ti].sort((a,b)=>a-b).join('/'),ti)
+          : `<span class="pc-rb none" style="border-color:${RC[t]}" title="${t}: not needed">-</span>`).join("");
+      }
+      return `<div class="plcard${have?' owned':''}${isAdded?' added':''}" data-own="${state.cycle}|${d}|${tier}" title="${d} · ${tier}${have?' · owned':''}${isAdded?' · added early':''}"
+          style="border-color:${tcol};background:linear-gradient(180deg,${hexA(tcol,.13)},var(--panel))">
+        ${isAdded?`<span class="pc-rm" data-rm="${state.cycle}|${d}" title="remove from plan">×</span>`:''}
+        <div class="pc-name" style="color:${tcol}">${d}</div>
+        <div class="pc-icon">${droidImg(d,tier,'cardimg')}</div>
+        <div class="pc-rbs">${rbChips}</div>
+      </div>`;};
+    const maxRbOf=d=>{const a=rbsOf[d]&&rbsOf[d].length?rbsOf[d]:[[0]];return Math.max(...a.map(c=>c[0]));};
+    const curR=state.current||0;
+    const sellNow=[], act=[];                                 // split off droids past their last needed rebirth
+    items.forEach(it=>{ (maxRbOf(it[0])<=curR ? sellNow : act).push(it); });
+    let grouped;
+    if(groupMode==='tier'){                                   // group by top tier needed (Beskar → Base)
+      const gs=[[],[],[],[],[]]; act.forEach(([d,i])=>gs[i].push([d,i]));
+      grouped=TIERS.map((t,ti)=>({label:t,arr:gs[ti]})).reverse();
+    }else if(groupMode==='rb'){                               // one group per rebirth level
+      const byRb={};
+      if(state.planUnmerge){ act.forEach(([d])=>(rbsOf[d]||[]).forEach(([n,ti])=>{ if(!isMet(state.cycle,d,TIERS[ti])) (byRb[n]=byRb[n]||[]).push([d,ti,n]); })); }   // hide requirements you already own
+      else { act.forEach(([d,i])=>{const n=firstRB[d];(byRb[n]=byRb[n]||[]).push([d,i]);}); }
+      grouped=Object.keys(byRb).map(Number).sort((a,b)=>a-b).map(n=>({label:'Rebirth '+n+' · '+CR[n-1],arr:byRb[n]}));
+    }else if(groupMode==='none'){                             // flat, no headers
+      grouped=[{label:null,arr:act.slice()}];
+    }else{                                                    // sellability buckets (default)
+      const gs=[[],[],[],[]]; act.forEach(([d,i])=>gs[bucketOf(maxRbOf(d))].push([d,i]));
+      grouped=BUCKETS.map((label,gi)=>({label,arr:gs[gi]}));
+    }
+    const bySort=(a,b)=>(firstRB[a[0]]-firstRB[b[0]])||a[0].localeCompare(b[0]);
+    grouped.forEach(g=>g.arr.sort(bySort));   // order needed within each group
+    const groupsHtml=grouped.map(g=>g.arr.length?`<div class="pl-group">${g.label?`<div class="pl-gh">${g.label}<span class="pl-gc">${g.arr.length}</span></div>`:''}<div class="pl-cards">${g.arr.map(makeCard).join("")}</div></div>`:'').join("");
+    let sellHtml='';
+    if(sellNow.length){
+      const sellOwned=sellNow.filter(([d])=>ownedIdx(state.cycle,d)>=0);   // still hold a copy → sell it
+      const hiddenN=sellNow.length-sellOwned.length;                        // unowned/sold → hidden
+      const shown=(state.sellShowHidden?sellNow:sellOwned).slice().sort(bySort);
+      const toggle=hiddenN?`<button id="sellToggle" class="pl-sellbtn">${state.sellShowHidden?'hide sold':'show hidden ('+hiddenN+')'}</button>`:'';
+      sellHtml=`<div class="pl-group pl-sell"><div class="pl-gh pl-sellh">Sellable now · past R${curR}<span class="pl-gc">${shown.length}</span>${toggle}</div><div class="pl-cards">${shown.map(makeCard).join("")}</div></div>`;
+    }
+    body=(state.sellPos==='bottom')?groupsHtml+sellHtml:sellHtml+groupsHtml;
+  }else{
+    body=`<div class="pchips" style="gap:8px">`+items.map(([d,i])=>{const tier=TIERS[i];const have=ownedIdx(state.cycle,d)>=i;const isAdded=added.has(d);
+      return `<span class="npill ${tier}${have?' owned':''}${isAdded?' added':''}" data-own="${state.cycle}|${d}|${tier}" title="${have?'owned — click to unmark':'needed — click to mark owned'}">${droidImg(d,tier,'pimg')}${d}<span class="pk">${have?' ✓':''}</span>${isAdded?`<span class="pc-rm" data-rm="${state.cycle}|${d}" title="remove">×</span>`:''}</span>`;}).join("")+`</div>`;
+  }
+  const sum=`<div id="planCount" class="sub" style="display:block;margin:0 0 8px">${items.length} droid${items.length===1?'':'s'} this cycle · ${haveN} owned · ${items.length-haveN} to get</div>${ctl}${body}`;
+  host.innerHTML=`<div class="plansum">${sum}</div>`;
+  host.style.setProperty('--pcn', String(+state.planCols||6));   // max cards per row
+  host.style.setProperty('--pcw', (PLAN_SIZES[state.planSize]||PLAN_SIZES.m)+'px');   // card size
+  const cl=document.getElementById('planClear'); if(cl) cl.onclick=(ev)=>{ev.preventDefault();
+    if(confirm('Clear all owned marks for '+CYCLE_LABEL[state.cycle]+'? This can\'t be undone.')){
+      Object.keys(state.counts).forEach(k=>{if(k.startsWith(state.cycle+'|'))delete state.counts[k];}); save(); renderPlanner(); }};
+  const ss=document.getElementById('planSort'); if(ss) ss.onchange=(ev)=>{state.planSort=ev.target.value;save();renderPlanner();};
+  const gg=document.getElementById('planGroup'); if(gg) gg.onchange=(ev)=>{state.planGroup=ev.target.value;save();renderPlanner();};
+  const um=document.getElementById('planUnmerge'); if(um) um.onchange=(ev)=>{state.planUnmerge=ev.target.checked; if(ev.target.checked) state.planGroup='rb'; save(); renderPlanner();};
+  const zz=document.getElementById('planCols'); if(zz) zz.onchange=(ev)=>{state.planCols=+ev.target.value;save();renderPlanner();};
+  const sp=document.getElementById('sellPos'); if(sp) sp.onchange=(ev)=>{state.sellPos=ev.target.value;save();renderPlanner();};
+  const st=document.getElementById('sellToggle'); if(st) st.onclick=()=>{state.sellShowHidden=!state.sellShowHidden;save();renderPlanner();};
+  const yy=document.getElementById('planSize'); if(yy) yy.onchange=(ev)=>{state.planSize=ev.target.value;save();renderPlanner();};
+  const vb=document.getElementById('planView'); if(vb) vb.onclick=()=>{state.planCards=!state.planCards;save();renderPlanner();};
+  const pf=document.getElementById('planFind'), fx=document.getElementById('planFindX');
+  const updX=()=>{ if(fx) fx.style.display=planQuery?'flex':'none'; };
+  if(pf) pf.oninput=(ev)=>{planQuery=ev.target.value;applyPlanFilter();updX();};
+  if(fx) fx.onclick=()=>{planQuery='';if(pf){pf.value='';pf.focus();}applyPlanFilter();updX();};
+  updX();
+  const ab=document.getElementById('planAdd'); if(ab) ab.onclick=(ev)=>{ev.stopPropagation();openAddPicker(ab);};
+  applyPlanFilter();
+}
+// live filter within the planner: matches light up (.hit), the rest fade (.dim); no re-render, so typing keeps focus
+function applyPlanFilter(){
+  const host=document.getElementById('planner'); if(!host) return;
+  const q=planQuery.trim().toUpperCase();
+  let hits=0;
+  host.querySelectorAll('.plcard,.npill').forEach(el=>{
+    const d=((el.getAttribute('data-own')||'').split('|')[1]||'').toUpperCase();
+    const match=!q || d.includes(q);
+    el.style.display=match?'':'none';        // hide non-matches while filtering
+    el.classList.remove('dim','hit');
+    if(q&&match) hits++;
+  });
+  host.querySelectorAll('.pl-group').forEach(g=>{                       // hide a group when none of its cards match
+    const any=[...g.querySelectorAll('.plcard')].some(c=>c.style.display!=='none');
+    g.style.display=any?'':'none';
+  });
+  const noMatch=!!q && hits===0;
+  const n=document.getElementById('planFindN'); if(n){ n.textContent=q?`${hits} match${hits===1?'':'es'}`:''; n.classList.toggle('nomatch',noMatch); }
+  const pf=document.getElementById('planFind'); if(pf) pf.classList.toggle('nomatch',noMatch);
+}
+// mark owned WITHOUT re-rendering — updates chips/cards/pills in place so the droid images never reload
+function refreshPlanOwned(){
+  const host=document.getElementById('planner'); if(!host) return;
+  const chipStyle=(t,met)=>{const c=RC[t];return met?`color:#05080f;background:${c};border-color:${c}`:`color:${c};border-color:${c};background:transparent`;};
+  host.querySelectorAll('.pc-rb[data-own]').forEach(ch=>{   // skip the muted "-" ladder slots (no data-own)
+    const [cy,d,t]=ch.getAttribute('data-own').split('|'); const met=isMet(+cy,d,t);
+    ch.setAttribute('style',chipStyle(t,met)); ch.classList.toggle('met',met);
+    ch.title=`R${ch.textContent.replace(/^R/,'')}: ${t}${met?' · owned':' · click to mark owned'}`;
+  });
+  host.querySelectorAll('.plcard').forEach(card=>{
+    const [cy,d,t]=card.getAttribute('data-own').split('|');
+    card.classList.toggle('owned', ownedIdx(+cy,d)>=RIDX[t]);
+  });
+  host.querySelectorAll('.npill').forEach(p=>{
+    const [cy,d,t]=p.getAttribute('data-own').split('|'); const have=ownedIdx(+cy,d)>=RIDX[t];
+    p.classList.toggle('owned',have); const k=p.querySelector('.pk'); if(k) k.textContent=have?' ✓':'';
+  });
+  const el=document.getElementById('planCount');
+  if(el){ const cards=host.querySelectorAll('.plcard,.npill'); const total=cards.length,
+    owned=[...cards].filter(c=>c.classList.contains('owned')).length;
+    el.textContent=`${total} droid${total===1?'':'s'} this cycle · ${owned} owned · ${total-owned} to get`; }
+}
+// ---- planner popovers: long-press tier picker + "＋ Add" droid picker ----
+function planPopOutside(e){ const p=document.getElementById('planPop'); if(p&&!p.contains(e.target)) closePlanPop(); }
+function planPopEsc(e){ if(e.key==='Escape') closePlanPop(); }
+function closePlanPop(){ const p=document.getElementById('planPop'); if(p) p.remove();
+  document.removeEventListener('mousedown',planPopOutside,true); document.removeEventListener('keydown',planPopEsc); }
+function placePlanPop(pop,x,y){ const w=pop.offsetWidth,h=pop.offsetHeight,pad=10;
+  let left=x-w/2; if(left+w>innerWidth-pad)left=innerWidth-w-pad; if(left<pad)left=pad;
+  let top=y+14; if(top+h>innerHeight-pad)top=y-h-14; if(top<pad)top=pad;
+  pop.style.left=left+'px'; pop.style.top=top+'px'; }
+function armPlanPop(){ setTimeout(()=>{document.addEventListener('mousedown',planPopOutside,true);document.addEventListener('keydown',planPopEsc);},0); }
+// long-press a card → pick ANY tier you own (including tiers the plan doesn't require)
+function openTierPicker(card,x,y){
+  closePlanPop();
+  const [cy,d]=card.dataset.own.split('|');
+  const pop=document.createElement('div'); pop.className='planpop'; pop.id='planPop';
+  pop.innerHTML=`<div class="pp-h">${d} — own which tier?</div><div class="tpick-row">`+
+    TIERS.map(t=>{const c=countAt(+cy,d,t),on=c>0,col=RC[t];
+      return `<button class="tpick-b" data-tp="${cy}|${d}|${t}" style="color:${on?'#05080f':col};background:${on?col:'transparent'};border-color:${col}">${tierAbbr(t)||'B'}<span class="tpick-c">${c||''}</span></button>`;}).join("")+`</div>`;
+  document.body.appendChild(pop); placePlanPop(pop,x,y);
+  pop.addEventListener('click',ev=>{const b=ev.target.closest('[data-tp]'); if(!b)return; ev.stopPropagation();
+    const [c2,d2,t2]=b.dataset.tp.split('|'); toggleTier(+c2,d2,t2); save(); if(state.planUnmerge) renderPlanner(); else refreshPlanOwned();
+    b.blur();
+    pop.querySelectorAll('[data-tp]').forEach(x=>{const t=x.dataset.tp.split('|')[2],c=countAt(+c2,d2,t),on=c>0,col=RC[t];
+      x.style.color=on?'#05080f':col; x.style.background=on?col:'transparent'; x.querySelector('.tpick-c').textContent=c||'';});});
+  armPlanPop();
+}
+// "＋ Add" → search every droid in the cycle (or beyond) and track it early
+function openAddPicker(btn){
+  closePlanPop();
+  const cy=state.cycle;
+  const shown=new Set(); document.querySelectorAll('#planner .plcard,#planner .npill').forEach(el=>shown.add((el.dataset.own||'').split('|')[1]));
+  const inCycle=new Set(); cur().forEach(rb=>rb.r.forEach(([d])=>inCycle.add(d)));
+  const cands=Object.values(gmap()).map(m=>m.name).filter(d=>!shown.has(d)).sort((a,b)=>a.localeCompare(b));
+  const pop=document.createElement('div'); pop.className='planpop apick'; pop.id='planPop';
+  pop.innerHTML=`<div class="pp-h">Add a droid you're pulling early</div><input class="apick-in" placeholder="type a droid…"><div class="apick-list"></div>`;
+  document.body.appendChild(pop);
+  const r=btn.getBoundingClientRect(); placePlanPop(pop,r.left+r.width/2,r.bottom);
+  const inp=pop.querySelector('.apick-in'), listEl=pop.querySelector('.apick-list');
+  const draw=q=>{const Q=q.trim().toUpperCase(); const rows=cands.filter(d=>d.toUpperCase().includes(Q)).slice(0,50);
+    listEl.innerHTML=rows.length?rows.map(d=>`<button class="apick-b" data-add="${d}">${d}${inCycle.has(d)?'':'<span class="apick-x">not in cycle</span>'}</button>`).join(""):`<div class="apick-empty">no match</div>`;};
+  draw('');
+  inp.oninput=()=>draw(inp.value);
+  pop.addEventListener('click',ev=>{const b=ev.target.closest('[data-add]'); if(!b)return; ev.stopPropagation();
+    const d=b.dataset.add; if(!state.planAdd)state.planAdd={}; const arr=state.planAdd[cy]||(state.planAdd[cy]=[]); if(!arr.includes(d))arr.push(d); save(); closePlanPop(); renderPlanner();});
+  armPlanPop(); setTimeout(()=>inp.focus(),0);
+}
+searchEl.addEventListener('input',renderSearch);
+searchEl.addEventListener('focus',renderSearch);
+document.addEventListener('mousedown',e=>{if(!e.target.closest('.searchwrap'))panelEl.classList.add('hidden');});
+
+// ===================== HOVER CARD (checklist / keepers) =====================
+const hover=document.createElement('div'); hover.className='hovercard'; hover.style.display='none'; document.body.appendChild(hover);
+function placeHover(x,y){
+  const w=hover.offsetWidth,h=hover.offsetHeight,pad=12;
+  let left=x+16; if(left+w>window.innerWidth-pad) left=x-w-16; if(left<pad) left=pad;
+  let top=y+16;  if(top+h>window.innerHeight-pad) top=y-h-16; if(top<pad) top=pad;
+  hover.style.left=left+'px'; hover.style.top=top+'px';
+}
+function showHover(name,x,y){
+  const m=gmap()[String(name).toUpperCase()];
+  if(!m){hideHover();return;}
+  hover.innerHTML=droidCard(m);
+  hover.style.display='block';
+  placeHover(x,y);
+}
+function hideHover(){hover.style.display='none';}
+let hoverTimer=null, hideTimer=null, hoverName=null, hx=0, hy=0;
+const HOVER_DELAY=500, HIDE_GRACE=250;   // grace lets the pointer cross the gap onto the card
+function scheduleHover(name,x,y){
+  hx=x; hy=y;
+  if(name===hoverName){ clearTimeout(hideTimer); return; }   // same droid: card stays where it appeared
+  clearTimeout(hoverTimer); clearTimeout(hideTimer); hoverName=name; hideHover();
+  hoverTimer=setTimeout(()=>{ showHover(hoverName,hx,hy); }, HOVER_DELAY);
+}
+function cancelHover(){ clearTimeout(hoverTimer); clearTimeout(hideTimer); hoverTimer=null; hoverName=null; hideHover(); }
+function refreshHover(){ if(hover.style.display==='block'&&hoverName){ const m=gmap()[String(hoverName).toUpperCase()]; if(m) hover.innerHTML=droidCard(m); } }
+document.addEventListener('mouseover',e=>{const el=e.target.closest('[data-droid]'); if(el) scheduleHover(el.dataset.droid,e.clientX,e.clientY);});
+document.addEventListener('mousemove',e=>{
+  if(e.target.closest('.hovercard')){ clearTimeout(hideTimer); clearTimeout(hoverTimer); return; }  // interacting with the card: keep it
+  const el=e.target.closest('[data-droid]');
+  if(!el){ clearTimeout(hoverTimer); clearTimeout(hideTimer); hideTimer=setTimeout(cancelHover,HIDE_GRACE); return; }
+  clearTimeout(hideTimer);
+  hx=e.clientX; hy=e.clientY;   // card is placed once at show time; it no longer follows the cursor
+});
+
+// ===================== RENDER =====================
+function renderControls(){
+  const ps=document.getElementById('profileSel');
+  ps.innerHTML=Object.entries(DB.profiles).map(([id,p])=>`<option value="${id}"${id===DB.active?' selected':''}>${p.name}</option>`).join("");
+  const cs=document.getElementById('cycleSel');
+  if(!cs.options.length)Object.keys(CYCLES).forEach(cy=>{const o=document.createElement('option');o.value=cy;o.textContent=CYCLE_LABEL[cy];cs.appendChild(o);});
+  cs.value=state.cycle;
+  const sel=document.getElementById('curSel');
+  if(sel&&!sel.options.length)for(let i=0;i<=MAXRB;i++){const o=document.createElement('option');o.value=i;o.textContent="R"+i;sel.appendChild(o);}
+  if(sel)sel.value=state.current;
+}
+function renderStats(){
+  const active=state.current+1;   // current = your level (rebirths done); active = the one you're working toward
+  let fTot=0,fDone=0,aTot=0,aDone=0,n2Tot=0,n2Done=0;
+  cur().forEach(rb=>rb.r.forEach(([d,r])=>{
+    const on=isMet(state.cycle,d,r);
+    if(rb.n>state.current){fTot++;if(on)fDone++;}
+    if(rb.n===active){aTot++;if(on)aDone++;}
+    if(rb.n===active+1||rb.n===active+2){n2Tot++;if(on)n2Done++;}
+  }));
+  const atMax=state.current>=MAXRB;
+  document.getElementById('stats').innerHTML=`
+    <div class="stat btn" id="rbBtn" title="${atMax?'At max rebirth':'Advance to the next rebirth'}">
+      <div class="num">R${state.current}${atMax?'':' ▶'}</div>
+      <div class="lbl">${atMax?'Max rebirth':'Tap to Rebirth → R'+(state.current+1)}</div>
+      <div class="bar"><i style="width:${state.current/MAXRB*100}%"></i></div></div>
+    <div class="stat"><div class="num">${aDone}/${aTot}</div><div class="lbl">Next (R${active})</div><div class="bar"><i style="width:${aTot?aDone/aTot*100:0}%"></i></div></div>
+    <div class="stat"><div class="num">${n2Done}/${n2Tot}</div><div class="lbl">Then${n2Tot?` (R${active+1}–${Math.min(active+2,MAXRB)})`:''}</div><div class="bar"><i style="width:${n2Tot?n2Done/n2Tot*100:0}%"></i></div></div>
+    <div class="stat"><div class="num">${fDone}/${fTot}</div><div class="lbl">Ahead (R${active}+)</div><div class="bar"><i style="width:${fTot?fDone/fTot*100:0}%"></i></div></div>`;
+  const b=document.getElementById('rbBtn'); if(b&&!atMax) b.onclick=doRebirth;
+}
+function metaLine(n){
+  let bits=[`<b>${CR[n-1]}</b> credits`];
+  if(NOVA[n]) bits.push(`<span class="nova">${NOVA[n]} nova</span>`);
+  if(CRED[n]) bits.push(`<span class="cr">+${CRED[n]}% cr</span>`);
+  if(XP[n]) bits.push(`<span class="xp">+${XP[n]}% xp</span>`);
+  if(UNLOCKS[n-1]) bits.push(`<span class="unlk">unlocks ${UNLOCKS[n-1]}</span>`);
+  return bits.join(" · ");
+}
+function rbCardEl(rb){
+  const active=state.current+1, reached=rb.n<=state.current;
+  const cnt=rb.r.filter(([d,r])=>isMet(state.cycle,d,r)).length;
+  const done=reached||cnt===rb.r.length;
+  const isActive=rb.n===active, isThen=rb.n===active+1;
+  const label=isActive?'<div style="color:var(--accent)">Next rebirth · you are here</div>':(isThen?'<div style="color:var(--muted)">Then</div>':(reached?'<div style="color:var(--muted)">Reached</div>':''));
+  const el=document.createElement('div');
+  el.className="rb"+(done?" done":"")+(isActive?" current":"");
+  el.innerHTML=`
+    <div class="rb-head">
+      <div class="rb-num">${rb.n}<small>REBIRTH</small></div>
+      <div class="rb-meta">${metaLine(rb.n)}${label}</div>
+      <div class="rb-prog">${reached?'':cnt+'/3'}</div><div class="rb-check">${done?'✓':''}</div>
+    </div>
+    <div class="reqs">${rb.r.map(([d,r])=>{const oi=ownedIdx(state.cycle,d),ri=RIDX[r],on=oi>=ri;
+      const pill=`<span class="tag ${r} havepill${on?' met':''}">${r}</span>`;   // right pill = REQUIRED tier (never flips on click)
+      return `<div class="req${on?' on':''}" data-own="${state.cycle}|${d}|${r}" data-droid="${d}"><div class="box">${on?'✓':''}</div>${droidImg(d,r,'')}<span class="dname" style="color:${oi>=0?RC[TIERS[oi]]:'var(--txt)'}" title="requires ${r}${oi>=0?' · have '+TIERS[oi]:''}">${d}</span>${pill}</div>`;}).join("")}</div>`;
+  return el;
+}
+function renderRebirths(){
+  const host=document.getElementById('rebirths');host.innerHTML="";
+  if(!state.gapsOpen) state.gapsOpen={};
+  let run=[];
+  const flushRun=()=>{
+    if(!run.length)return;
+    const gF=run[0].n, gL=run[run.length-1].n, rng=gF===gL?'R'+gF:'R'+gF+'–R'+gL, open=!!state.gapsOpen[gF];
+    const word=gF>state.current?'ready':'complete';   // ahead but fully owned = ready; at/before current = complete
+    if(open){
+      const rows=run.map(rb=>`<div class="gap-row"><span class="gap-lv">R${rb.n}</span>${rb.r.map(([d,r])=>`<span class="npill ${r}" data-own="${state.cycle}|${d}|${r}" title="click to toggle owned">${droidImg(d,r,'pimg')}${d}</span>`).join("")}</div>`).join("");
+      host.insertAdjacentHTML('beforeend',`<div class="gap open"><div class="gap-hd" data-gap="${gF}"><div class="gap-title">▾ ${rng} ${word}</div><div class="gap-sub">don't sell these · click to collapse</div></div><div class="gap-grid">${rows}</div></div>`);
+    }else{
+      host.insertAdjacentHTML('beforeend',`<div class="gap"><div class="gap-hd" data-gap="${gF}"><div class="gap-title">▸ ${rng} ${word}</div><div class="gap-sub">don't sell these · click to view</div></div></div>`);
+    }
+    run=[];
+  };
+  const active=state.current+1;
+  cur().forEach(rb=>{
+    const reached=rb.n<=state.current;
+    const cnt=rb.r.filter(([d,r])=>isMet(state.cycle,d,r)).length;
+    const done=reached||cnt===rb.r.length;
+    if(state.hidePast&&done&&rb.n!==active){ run.push(rb); return; }   // reached history + ready future → collapsible gap; active always shown
+    flushRun();
+    host.appendChild(rbCardEl(rb));
+  });
+  flushRun();
+  if(!host.children.length) host.innerHTML=`<div class="pempty">Nothing left in this cycle. 🎉</div>`;
+}
+function renderKeepers(){
+  const host=document.getElementById('keepers');host.innerHTML="";
+  const intro=document.createElement('div');intro.className="sub";intro.style.margin="0 0 14px";
+  intro.textContent=`Droids still needed in ${CYCLE_LABEL[state.cycle]} from Rebirth ${state.current+1} onward, ordered by when they're next required. Gold badge = needed 4+ times.`;
+  host.appendChild(intro);
+  const model=Object.values(droidMap(state.cycle)).filter(m=>m.future.length>0).sort((a,b)=>a.nextLv-b.nextLv||a.name.localeCompare(b.name));
+  if(!model.length){const e=document.createElement('div');e.className="pempty";e.textContent="Nothing left in this cycle. 🎉";host.appendChild(e);return;}
+  model.forEach(m=>{
+    const priority=m.future.length>=4;
+    const card=document.createElement('div');card.className="kcard";card.dataset.droid=m.name;
+    const headRar=(m.future[0]||m.reqs[0]).rar;
+    card.innerHTML=`<div class="ktop">${droidImg(m.name,headRar,'kimg')}<span class="kname">${m.name}</span>${priority?'<span class="priority">High value</span>':''}<span class="knext">next: Rebirth ${m.nextLv}</span></div>
+      <div class="pips">${m.reqs.map(q=>{const on=isMet(state.cycle,q.d,q.rar);const past=q.lv<=state.current;
+        return `<span class="pip ${q.rar}${on?' on':''}" style="${past?'opacity:.4':''}" data-own="${state.cycle}|${q.d}|${q.rar}">${on?'✓ ':''}${q.rar} <span class="lv">R${q.lv}</span></span>`;}).join("")}</div>`;
+    host.appendChild(card);
+  });
+}
+function renderChips(){
+  const t=document.getElementById('chipTable');
+  t.innerHTML=`<tr><th>Class</th><th>→Gold</th><th>→Diamond</th><th>→Rainbow</th><th>→Beskar</th><th>Total</th></tr>`+
+    CHIPS.map(([cls,a,tot])=>`<tr><td class="cls">${cls}</td>${a.map(x=>`<td>${x.toLocaleString()}</td>`).join("")}<td class="tot">${tot.toLocaleString()}</td></tr>`).join("");
+}
+function renderRef(){
+  let h=`<div class="refsec"><div class="refh">Flawless spawn odds</div><div class="refrow flw">${TIERS.map((t,i)=>`<span>${t} <b>${FLAWLESS[i]}</b></span>`).join("")}</div></div>`;
+  for(const grp in NOVASHOP){
+    h+=`<div class="refsec"><div class="refh">Nova shop — ${grp} <span style="color:var(--muted);font-weight:600">(crystals per level)</span></div>`;
+    h+=NOVASHOP[grp].map(([n,arr])=>`<div class="refrow"><span class="refn">${n}</span><span class="refv">${arr.join(" · ")}</span></div>`).join("");
+    h+=`</div>`;
+  }
+  h+=`<div class="refsec"><div class="refh">Cosmetics — unlock requirements</div>`+
+    COSMETICS.map(([n,r])=>`<div class="refrow"><span class="refn">${n}</span><span class="refv">${r}</span></div>`).join("")+`</div>`;
+  document.getElementById('refBody').innerHTML=h;
+}
+function renderActiveView(){
+  if(state.view==='rebirths')renderRebirths();
+  else if(state.view==='keepers')renderKeepers();
+  else if(state.view==='inv')renderInventory();
+  else if(state.view==='plan')renderPlanner();
+  else renderAllDroids();
+}
+function renderAll(){
+  renderControls();
+  renderPlanner();
+}
+
+// ===================== EVENTS =====================
+document.getElementById('profileSel').addEventListener('change',e=>switchProfile(e.target.value));
+document.getElementById('newProf').addEventListener('click',()=>{const n=prompt("New profile name:","Player "+(Object.keys(DB.profiles).length+1));if(n)addProfile(n.trim()||"Player");});
+document.getElementById('renProf').addEventListener('click',()=>{const n=prompt("Rename profile:",state.name);if(n)renameProfile(n.trim());});
+document.getElementById('delProf').addEventListener('click',()=>{if(Object.keys(DB.profiles).length<=1){alert("Can't delete your only profile.");return;} if(confirm(`Delete profile "${state.name}" and all its progress?`)) deleteProfile();});
+document.getElementById('expProf').addEventListener('click',async()=>{const code=exportProfile();if(!code){alert("Export failed.");return;}try{await navigator.clipboard.writeText(code);alert(`Copied "${state.name}" to clipboard. Paste it into Import on another device/browser to restore.`);}catch(e){prompt(`Copy this code for "${state.name}":`,code);}});
+document.getElementById('impProf').addEventListener('click',()=>{const code=prompt("Paste a profile code (or an old URL # value) to import:");if(!code)return;const n=importProfile(code);alert(n?`Imported ${n} profile(s).`:"Couldn't read that code.");});
+document.getElementById('syncBtn').addEventListener('click',doSync);
+document.getElementById('cycleSel').addEventListener('change',e=>{state.cycle=+e.target.value;save();renderAll();});
+document.getElementById('curSel').addEventListener('change',e=>{state.current=+e.target.value;save();renderPlanner();});
+document.getElementById('rebirthBtn').addEventListener('click',()=>{if(state.current<MAXRB){state.current++;save();renderAll();}});
+
+// −/+ per tier : adjust how many copies you own at that exact tier (search / all / inventory)
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-qt]');
+  if(!b) return;
+  e.stopPropagation();
+  const [op,cy,d,t]=b.dataset.qt.split('|');
+  if(op==='+') addAt(+cy,d,t); else subAt(+cy,d,t);
+  save(); renderStats(); renderActiveView(); refreshHover();
+  if(searchEl.value.trim() && !panelEl.classList.contains('hidden')) renderSearch();
+});
+// Planner: tick rebirth levels to include in the combined-needs summary
+document.addEventListener('change',e=>{
+  const c=e.target.closest('[data-plan]');
+  if(!c) return;
+  const n=+c.dataset.plan;
+  if(!state.plan) state.plan={};
+  const arr=state.plan[state.cycle]||(state.plan[state.cycle]=[]);
+  const i=arr.indexOf(n); if(i>=0)arr.splice(i,1); else arr.push(n);
+  save(); renderPlanner();
+});
+// click a completed-gap marker to expand/collapse the hidden levels inline
+document.addEventListener('click',e=>{
+  const g=e.target.closest('[data-gap]');
+  if(!g) return;
+  const id=+g.dataset.gap;
+  if(!state.gapsOpen) state.gapsOpen={};
+  if(state.gapsOpen[id]) delete state.gapsOpen[id]; else state.gapsOpen[id]=true;
+  save(); renderRebirths();
+});
+// click any rarity (checklist req, search panel, All Droids, Inventory, keeper pip) to toggle owning that droid at that rarity
+document.addEventListener('click',e=>{
+  if(e.target.closest('[data-qt]')) return;   // −/+ buttons handle their own clicks
+  if(e.target.closest('[data-rm]')) return;   // remove-from-plan × handles itself
+  const el=e.target.closest('[data-own]');
+  if(!el) return;
+  const inSell=!!e.target.closest('.pl-sell');   // marking in the sellable list re-splits (unmark → hides)
+  const [cy,d,rar]=el.dataset.own.split('|');
+  toggleTier(+cy,d,rar);
+  save();
+  if(state.planUnmerge||inSell) renderPlanner(); else refreshPlanOwned();   // else in-place (no image reload)
+});
+// remove a manually-added (pre-pulled) droid from the plan
+document.addEventListener('click',e=>{
+  const r=e.target.closest('[data-rm]'); if(!r) return;
+  e.stopPropagation();
+  const [cy,d]=r.dataset.rm.split('|');
+  const arr=(state.planAdd&&state.planAdd[cy])||[]; const i=arr.indexOf(d); if(i>=0) arr.splice(i,1);
+  save(); renderPlanner();
+});
+// long-press a planner card → tier picker (mark a tier you have but the plan doesn't need)
+let plLP=false, plLPtimer=null, plLPstart=null;
+document.addEventListener('mousedown',e=>{
+  if(e.target.closest('[data-rm]')) return;
+  const card=e.target.closest('#planner .plcard'); if(!card) return;
+  plLP=false; plLPstart={x:e.clientX,y:e.clientY};
+  const cx=e.clientX, cy=e.clientY;
+  clearTimeout(plLPtimer);
+  plLPtimer=setTimeout(()=>{ plLP=true; openTierPicker(card,cx,cy); }, 380);
+});
+document.addEventListener('mousemove',e=>{ if(plLPstart&&(Math.abs(e.clientX-plLPstart.x)>16||Math.abs(e.clientY-plLPstart.y)>16)) clearTimeout(plLPtimer); });
+document.addEventListener('mouseup',()=>{ clearTimeout(plLPtimer); plLPstart=null; });
+document.addEventListener('click',e=>{ if(plLP){ plLP=false; e.stopPropagation(); e.preventDefault(); } }, true);   // swallow the click that ends a long-press
+// right-click a card → tier picker (reliable alternative to press-and-hold)
+document.addEventListener('contextmenu',e=>{
+  const card=e.target.closest('#planner .plcard'); if(!card) return;
+  e.preventDefault();
+  openTierPicker(card, e.clientX, e.clientY);
+});
+
+// keyboard: "/" jumps to the in-plan search; Esc clears + blurs it
+document.addEventListener('keydown',e=>{
+  const t=e.target, tag=t.tagName||'';
+  const typing=tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||t.isContentEditable;
+  if(e.key==='/'&&!typing&&!e.metaKey&&!e.ctrlKey&&!e.altKey){ const f=document.getElementById('planFind'); if(f){ e.preventDefault(); f.focus(); f.select(); } }
+  else if(e.key==='Escape'&&t.id==='planFind'){ planQuery=''; t.value=''; applyPlanFilter(); const fx=document.getElementById('planFindX'); if(fx) fx.style.display='none'; t.blur(); }
+});
+
+renderAll();saveLocal();   // persist locally immediately (writes hash + storage)
+if(syncCfg()){ setSyncStatus('syncing…'); doSync(); } else { syncReady=true; }   // pull-then-push on load if configured
+</script>
+</body>
+</html>

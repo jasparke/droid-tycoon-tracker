@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { eq } from 'drizzle-orm';
-import { testDb, resetUserZone, seedMinimalReference } from '../testing/db';
-import { register } from './users';
+import { testDb, resetUserZone, seedMinimalReference, createTestUser } from '../testing/db';
 import { importCode } from './importer';
 import { counts, plans, profiles } from '../schema';
 
@@ -18,7 +17,7 @@ beforeAll(async () => {
 });
 beforeEach(async () => {
 	await resetUserZone(sql);
-	uid = (await register(db, { username: 'aa', password: 'password123', inviteCode: 'x' }, 'x')).id;
+	uid = (await createTestUser(db, 'aa')).id;
 });
 
 describe('importCode', () => {

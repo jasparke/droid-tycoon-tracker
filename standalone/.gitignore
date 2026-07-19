@@ -1,0 +1,3 @@
+# Assembled output — regenerate with ./assemble.sh, never commit.
+# The droid art is single-sourced from app/static/assets/droids.
+dist/

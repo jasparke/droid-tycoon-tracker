@@ -1,5 +1,5 @@
 {
-  "id": "bfcecf2b-26a2-4c2b-822d-dbb752f1ddee",
+  "id": "81ce9abd-f616-46a7-83a6-3d5082db866b",
   "prevId": "3ecff9e3-e224-4c8b-b234-bf602d2d967d",
   "version": "7",
   "dialect": "postgresql",
@@ -18,25 +18,25 @@
           "name": "to_gold",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "to_diamond": {
           "name": "to_diamond",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "to_rainbow": {
           "name": "to_rainbow",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "to_beskar": {
           "name": "to_beskar",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
@@ -181,56 +181,11 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "payload": {
-          "name": "payload",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.droid_sell_values": {
-      "name": "droid_sell_values",
-      "schema": "",
-      "columns": {
-        "rarity": {
-          "name": "rarity",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "tier": {
-          "name": "tier",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "multiplier": {
-          "name": "multiplier",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "droid_sell_values_rarity_tier_pk": {
-          "name": "droid_sell_values_rarity_tier_pk",
-          "columns": [
-            "rarity",
-            "tier"
-          ]
-        }
-      },
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
@@ -306,68 +261,6 @@
         "type": {
           "name": "type",
           "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "income_pct": {
-          "name": "income_pct",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "buy_nc": {
-          "name": "buy_nc",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.flawless_spawn": {
-      "name": "flawless_spawn",
-      "schema": "",
-      "columns": {
-        "tier": {
-          "name": "tier",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "one_in": {
-          "name": "one_in",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.nova_paint_stages": {
-      "name": "nova_paint_stages",
-      "schema": "",
-      "columns": {
-        "stage": {
-          "name": "stage",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "crystal_cost": {
-          "name": "crystal_cost",
-          "type": "integer",
           "primaryKey": false,
           "notNull": true
         }
@@ -687,50 +580,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.sync_previews": {
-      "name": "sync_previews",
-      "schema": "",
-      "columns": {
-        "checksum": {
-          "name": "checksum",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "base_version_id": {
-          "name": "base_version_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "payload": {
-          "name": "payload",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "flags": {
-          "name": "flags",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "built_at": {
-          "name": "built_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.users": {
       "name": "users",
       "schema": "",
@@ -741,17 +590,23 @@
           "primaryKey": true,
           "notNull": true
         },
+        "oidc_sub": {
+          "name": "oidc_sub",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "username": {
           "name": "username",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "pw_hash": {
-          "name": "pw_hash",
+        "email": {
+          "name": "email",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -765,6 +620,13 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "users_oidc_sub_unique": {
+          "name": "users_oidc_sub_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "oidc_sub"
+          ]
+        },
         "users_username_unique": {
           "name": "users_username_unique",
           "nullsNotDistinct": false,

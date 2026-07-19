@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { makeTracker } from '$lib/client/tracker.svelte';
+	import { getTracker } from '$lib/client/tracker-context';
 	import { isMet } from '$lib/game/inventory';
 	import type { Tier } from '$lib/game/tiers';
-	const t = makeTracker(page.data as never);
+	import DroidImg from '$lib/components/DroidImg.svelte';
+	const t = getTracker()!;
 	const ref = page.data.reference!; // guaranteed present: this route is auth-gated by the root layout
 	const cycle = $derived(t.active()?.cycle ?? 1);
 	const current = $derived(t.active()?.currentRebirth ?? 0);
@@ -32,7 +33,7 @@
 	<tbody>
 		{#each future as [droid, e]}
 			<tr>
-				<td>{droid}{e.needs.length >= 4 ? ' ★' : ''}</td>
+				<td><DroidImg name={droid} size={20} /> {droid}{e.needs.length >= 4 ? ' ★' : ''}</td>
 				<td>R{e.nextRb}</td>
 				<td>{#each e.needs as n}<span class="tier-{n.tier}">{n.met ? '✓' : ''}{n.tier} R{n.rebirth}</span>{' '}{/each}</td>
 			</tr>

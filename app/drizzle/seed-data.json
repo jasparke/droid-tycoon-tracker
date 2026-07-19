@@ -5348,10 +5348,10 @@
   },
   {
    "rarity": "Mythic",
-   "toGold": 8000,
-   "toDiamond": 15000,
-   "toRainbow": 40000,
-   "toBeskar": 80000
+   "toGold": 6000,
+   "toDiamond": 13000,
+   "toRainbow": 30000,
+   "toBeskar": 75000
   }
  ],
  "rebirthMeta": [

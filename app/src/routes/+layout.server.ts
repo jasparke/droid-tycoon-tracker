@@ -5,7 +5,7 @@ import { getReference } from '$lib/server/services/reference';
 import { listAllProfiles } from '$lib/server/services/profiles';
 import { counts, plans } from '$lib/server/schema';
 
-const PUBLIC = new Set(['/login', '/register']);
+const PUBLIC = new Set(['/login']);
 
 export const load: LayoutServerLoad = async ({ locals, url }) => {
 	// track the URL so every client-side navigation reruns this load — pages seed per-page tracker state from it
