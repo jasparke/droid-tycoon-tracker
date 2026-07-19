@@ -69,6 +69,7 @@ test('read-only profile disables controls', async ({ page }) => {
 	// capture the owner's "<username>/main" label from the profile card (not the whole
 	// .pcard — that also concatenates the avatar initial and the caret glyph)
 	const owner = (await page.locator('.pname').innerText()).trim();
+	const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 	// log out via profile menu
 	await page.locator('.pcard').click();
@@ -78,7 +79,7 @@ test('read-only profile disables controls', async ({ page }) => {
 	// second user selects the owner's profile
 	await signInWithProfile(page);
 	await page.locator('.pcard').click();
-	await page.getByRole('button', { name: new RegExp(owner) }).click();
+	await page.getByRole('button', { name: new RegExp(esc(owner)) }).click();
 
 	await expect(page.getByText('READ-ONLY')).toBeVisible();
 	await expect(page.locator('.row button.chip').first()).toBeDisabled();

@@ -13,6 +13,7 @@ const jwk = { ...(await exportJWK(publicKey)), kid: 'test-key', alg: 'RS256', us
 
 // code -> { nonce, sub, email, name } stashed at /authorize, consumed at /token
 const codes = new Map();
+let seq = 0; // monotonic counter for friendly usernames
 
 const send = (res, status, body, type = 'application/json') => {
 	res.writeHead(status, { 'content-type': type });
@@ -42,10 +43,11 @@ const server = createServer(async (req, res) => {
 	if (url.pathname === '/authorize') {
 		// Auto-approve: mint a fresh identity and redirect straight back with a code.
 		const redirectUri = url.searchParams.get('redirect_uri');
+		if (!redirectUri) return send(res, 400, { error: 'invalid_request' });
 		const state = url.searchParams.get('state');
 		const nonce = url.searchParams.get('nonce');
 		const code = randomUUID();
-		const n = codes.size + 1;
+		const n = ++seq;
 		codes.set(code, {
 			nonce,
 			sub: `stub-${randomUUID()}`,
