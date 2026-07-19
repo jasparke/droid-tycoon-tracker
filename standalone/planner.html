@@ -122,7 +122,6 @@
   .cyclebtns .cybtn{padding:4px 10px;border:1px solid var(--muted);border-radius:6px;background:transparent;color:inherit;cursor:pointer;font:inherit;line-height:1.2}
   .cyclebtns .cybtn:hover{border-color:var(--accent)}
   .cyclebtns .cybtn.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;color:var(--accent)}
-  .plctl .spring{margin-left:auto}
   /* planner: mini-cards (icon-top, grouped by sellability) */
   .plctl{position:sticky;top:0;z-index:6;background:var(--panel);padding:6px 0;margin:2px 0 12px}
   .plfind{flex:1 1 auto;min-width:120px;max-width:260px;padding:6px 10px;font-size:12px;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:7px}
@@ -534,7 +533,7 @@ async function pushSync(){ const c=syncCfg(); if(!c) return;
   const now=new Date().toISOString();
   await api('players',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({sync_code:c.code,data:{active:DB.active,seq:DB.seq,profiles:DB.profiles},updated_at:now})});
   DB._syncedAt=now; saveLocal(); setSyncStatus('pushed'); }
-function adoptRemote(row,c){ DB=Object.assign({},row.data,{_sync:c,_syncedAt:row.updated_at}); Object.values(DB.profiles).forEach(normProfile); if(!DB.profiles[DB.active])DB.active=Object.keys(DB.profiles)[0]; state=DB.profiles[DB.active]; saveLocal(); renderAll(); }
+function adoptRemote(row,c){ undo=null; DB=Object.assign({},row.data,{_sync:c,_syncedAt:row.updated_at}); Object.values(DB.profiles).forEach(normProfile); if(!DB.profiles[DB.active])DB.active=Object.keys(DB.profiles)[0]; state=DB.profiles[DB.active]; saveLocal(); renderAll(); }
 async function doSync(){ const c=syncCfg(); if(!c){ setupSync(); return; }
   setSyncStatus('syncing…');
   try{
