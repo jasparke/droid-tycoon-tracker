@@ -219,9 +219,26 @@ source pxe/.secrets.env   # provides AUTHENTIK_TOKEN (or whatever it's named the
 AK=https://auth.pkfd.net/api/v3
 AUTH_HDR=(-H "Authorization: Bearer $AUTHENTIK_TOKEN" -H "Content-Type: application/json")
 
+# 0. Look up the required PKs before creating the provider.
+# Scope property mappings (openid, email, profile).
+# The managed__in values are the built-in Authentik scope identifiers — verify against
+# Authentik v2026.5 if the endpoint 404s.
+curl -s "${AUTH_HDR[@]}" "$AK/propertymappings/provider/scope/?managed__in=goauthentik.io/providers/oauth2/scope-openid,goauthentik.io/providers/oauth2/scope-email,goauthentik.io/providers/oauth2/scope-profile" | jq '.results[] | {name, pk}'
+# Capture the three pk values for openid, email, and profile (in order).
+
+# Authorization flow.
+# Verify the slug value against Authentik v2026.5 if the endpoint 404s.
+curl -s "${AUTH_HDR[@]}" "$AK/flows/instances/?slug=default-provider-authorization-implicit-consent" | jq '.results[] | {name, slug, pk}'
+# Capture the pk value.
+
+# Invalidation flow (required by Authentik v2024+).
+# Verify the slug value against Authentik v2026.5 if the endpoint 404s.
+curl -s "${AUTH_HDR[@]}" "$AK/flows/instances/?slug=default-provider-authorization-implicit-consent-invalidation" | jq '.results[] | {name, slug, pk}'
+# Capture the pk value.
+
 # 1. Create the OAuth2/OpenID Provider.
-#    (You'll need the PK of the default signing certificate and the default authorization
-#    flow — GET /api/v3/crypto/certificatekeypairs/ and /api/v3/flows/instances/?slug=...
+#    Use the PKs captured in step 0 for authorization_flow, invalidation_flow, and property_mappings.
+#    (You'll also need the PK of the default signing certificate — GET /api/v3/crypto/certificatekeypairs/
 #    first if you're scripting end-to-end rather than filling in known-good values.)
 curl -s "${AUTH_HDR[@]}" -X POST "$AK/providers/oauth2/" -d '{
   "name": "droid-tycoon",
@@ -232,7 +249,9 @@ curl -s "${AUTH_HDR[@]}" -X POST "$AK/providers/oauth2/" -d '{
   ],
   "sub_mode": "hashed_user_id",
   "include_claims_in_id_token": true,
-  "property_mappings": []
+  "authorization_flow": "<authorization-flow-pk>",
+  "invalidation_flow": "<invalidation-flow-pk>",
+  "property_mappings": ["<openid-mapping-pk>", "<email-mapping-pk>", "<profile-mapping-pk>"]
 }'
 # Capture the returned "pk" (provider id) and "client_secret" from the response —
 # client_secret is only ever returned in full on create/regenerate.
