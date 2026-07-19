@@ -5,8 +5,9 @@ import {
 // ---------- user zone ----------
 export const users = pgTable('users', {
 	id: serial('id').primaryKey(),
+	oidcSub: text('oidc_sub').notNull().unique(),
 	username: text('username').notNull().unique(),
-	pwHash: text('pw_hash').notNull(),
+	email: text('email'),
 	createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
 });
 
