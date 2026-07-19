@@ -14,7 +14,8 @@
 - **No save-format break:** never change the `counts` key format (`cKey=(cy,d,t)=>cy+'|'+String(d).toUpperCase()+'|'+t`). Migration is additive and idempotent; `LS_KEY` stays `"droidTycoonTracker_v3"`.
 - **Source of truth:** the design spec `docs/superpowers/specs/2026-07-18-planner-per-cycle-inventory-design.md`. Locked decisions: plain `Cycle 1–4` buttons; untouched cycles start at R0; Super Rebirth full-resets the leaving cycle (owned + progress→R0 + plan) and wraps 4→1; single-level in-memory Undo of destructive actions only; Super Rebirth has **no confirm** (Undo is the catch); Reset owned keeps its confirm.
 - **Manual verification tool:** serve the file over http (localStorage needs http, not `file://`). From `standalone/`: `./assemble.sh` then serve `dist/` (or any static server rooted so `planner.html` loads with its assets). Open in a browser; use DevTools console + Application→Local Storage to inspect state.
-- **Verify no stragglers:** after the accessor sweep, `grep -n "state\.current" standalone/planner.html` must show only the intentional legacy-detection site (see Task 1).
+- **Verify no stragglers:** after the accessor sweep, `grep -n "state\.current" standalone/planner.html` must show **no matches** (the line ~543 legacy detector reads `obj.current`, a different token; see Task 1).
+- **Rollout note (from review):** while any device still runs the OLD app against the same cloud sync code, its `normProfile` re-adds `current:9` and pushes; the new app's migration then seeds the active cycle to R9 only if that slot is empty. Transient — resolves once all devices update; harmless for single-device use.
 
 ---
 
@@ -75,6 +76,7 @@ Known sites (not exhaustive — some share a line with `//…current` comments, 
 - (836): `const curR=state.current||0;` → `const curR=getProgress();`
 - `renderControls` (1029): `if(sel)sel.value=state.current;` → `if(sel)sel.value=getProgress();`
 - `renderStats` (1032,1036,1040,1043,1044,1045): every `state.current` → `getProgress()`
+- `renderRebirths`/`flushRun` (1085): `gF>state.current` → `gF>getProgress()` — **live in the default rebirths view; easy to miss because the line has an inline `//…current` comment**
 - `rbCardEl` (1060) + planner rows (1094,1096,1109,1118): every `state.current` → `getProgress()`
 - `#curSel` change (1160): `state.current=+e.target.value;` → `setProgress(+e.target.value);`
 - `#rebirthBtn` click (1161): `if(state.current<MAXRB){state.current++;...}` → `if(getProgress()<MAXRB){setProgress(getProgress()+1);...}`
@@ -84,14 +86,14 @@ Known sites (not exhaustive — some share a line with `//…current` comments, 
 - [ ] **Step 5: Verify no stray `state.current` reads remain**
 
 Run: `grep -n "state\.current" standalone/planner.html`
-Expected: exactly one match — line ~543 (`obj.current!=null`, the legacy-import detector). Any other match is a missed site; fix it.
+Expected: **no matches** — every site is now `getProgress()`/`setProgress()`. (Line ~543's legacy-import detector reads `obj.current`, which this pattern does NOT match and which must stay unchanged.) Any match here is a missed site — most likely line 1085 — so fix it and re-run.
 
 - [ ] **Step 6: Manual verification in the browser**
 
 Serve and open the planner. Then:
 1. **Migration/back-compat:** with an existing pre-change save present (or paste an old shared `#…` URL), reload → the previously-active cycle shows the same rebirth level it had; no inventory lost. In DevTools console: `JSON.parse(localStorage.droidTycoonTracker_v3).profiles` shows `currentByCycle` and no `current` field.
 2. **Per-cycle progress:** on the active cycle set the Rebirth dropdown to R25. Switch cycle (via the still-present dropdown) to a different cycle → its rebirth marker reads R0 and the full ladder shows. Switch back → R25 preserved. Inventory differs per cycle as before.
-3. Both the big rebirth card (tap to Rebirth) and the `Rebirth ▶` button advance only the active cycle's level.
+3. The `Rebirth ▶` button and the `Rebirth:` dropdown advance only the active cycle's level. (The standalone has no `#stats` "big rebirth card" — `renderStats()` is effectively dead here — so there is nothing to check there.)
 
 - [ ] **Step 7: Commit**
 
@@ -208,7 +210,7 @@ function undoAvailable(){ return !!undo && undo.profileId===DB.active; }
 function doUndo(){ if(!undoAvailable())return; DB.profiles[DB.active]=undo.snap; state=DB.profiles[DB.active]; undo=null; save(); renderAll(); }
 ```
 
-Undo is auto-scoped to the active profile: after switching profiles the guard fails and the button (Step 4) disables, so no per-switch cleanup is needed.
+Also clear the snapshot when the active profile changes, per spec §3.4: in `switchProfile`, `addProfile`, and `deleteProfile` (lines ~531/532/534) add `undo=null;` at the top. (The `undoAvailable()` guard already disables the button while another profile is active, but nulling prevents a stale snapshot from reverting later edits after switching back to the original profile.)
 
 - [ ] **Step 2: Relocate the Reset-owned button into the controls cluster**
 
@@ -337,7 +339,9 @@ git commit -m "feat(planner): Super Rebirth — full-reset leaving cycle, wrap 4
 
 - [ ] **Step 1: Full manual regression pass**
 
-Serve/reload and run the complete spec §4 checklist end-to-end in one session: migration/back-compat, per-cycle progress, cycle buttons, Super Rebirth (+ wrap), Undo (both actions + profile scoping), persistence across reload and a fresh URL-hash load. Also confirm the pre-existing planner features still work (search, inventory/keepers/ROI views, hover cards, long-press picker, cloud sync setup) — the accessor sweep touched shared render code.
+Serve/reload and run the complete spec §4 checklist end-to-end in one session: migration/back-compat, per-cycle progress, cycle buttons, Super Rebirth (+ wrap), Undo (both actions + profile scoping), persistence across reload and a fresh URL-hash load. Also confirm the pre-existing planner features still work (rebirth ladder, inventory + keepers + plan views, hover cards, long-press picker, cloud sync setup) — the accessor sweep touched shared render code.
+
+**Pre-existing bug (do not attribute to this change):** the `data-qt` `−/+` handler (line 1170) calls `renderStats()`, but the standalone has no `#stats` element, so `renderStats()` throws — a `−/+` quantity tap saves the count but then errors before the view refreshes. This is broken on `main` today, independent of this change. Optional one-line drive-by (out of spec, Jason's call): delete the dead `renderStats();` call at line 1170.
 
 - [ ] **Step 2: Sanity grep**
 
@@ -363,6 +367,8 @@ Do not merge — Jason merges. Note the branch is based on PR #12's `worktree-st
 **Spec coverage:** §1 cycle buttons → Task 2; per-cycle progress + R0 default → Task 1; Super Rebirth full-reset + wrap → Task 4; single-level Undo → Task 3; Reset-owned relocation + Undo wiring → Task 3; no-confirm Super Rebirth → Task 4 Step 2; `CYCLE_LABEL` simplification → Task 2 Step 1. §2 data model/migration → Task 1. §3 components → Tasks 2–4. §4 testing → each task's manual verification + Task 5. §5 risks (state reassignment on undo, migration idempotency) → handled in Task 3 Step 1 / Task 1 Step 3.
 
 **Placeholder scan:** every edit shows the exact current code and its replacement; the one deliberately non-enumerated edit (the `state.current` sweep, Task 1 Step 4) is bounded by a global-find instruction + a verifying grep (Step 5) because some sites share a line with comments. No TBD/TODO.
+
+**Review fixes applied (Fable, 2026-07-18):** added the missed live site line 1085 to the accessor sweep; corrected both verifying-grep expectations to "no matches" (the pattern never matches line 543's `obj.current`); trimmed verification of the non-existent `#stats` card and ROI/global-search views; added undo-clear on profile switch (spec §3.4); flagged the pre-existing `renderStats()`/`−/+` crash and the mixed-version cloud-sync R9 rollout note. Verified-clean by the review: all quoted snippets match char-for-char; `state` reassignment on Undo is safe (no stale module-level caches); `fullResetCycle` key coercions + wrap arithmetic + migration idempotency + export/import/Supabase round-trip all correct.
 
 **Type/name consistency:** `getProgress`/`setProgress`, `snapshot`/`doUndo`/`undoAvailable`/`undo`, `fullResetCycle`, `#cycleBtns`/`.cybtn`, `#superRebirthBtn`/`#undoBtn`/`#resetOwnedBtn` are used identically across the tasks that define and consume them. `cur()` (cycle's rebirth data) is left untouched and is deliberately distinct from `getProgress()` (the level) to avoid the existing naming overlap.
 
