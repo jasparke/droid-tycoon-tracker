@@ -1,0 +1,64 @@
+name: droid-tycoon
+
+# Droid Tycoon rebirth tracker — SvelteKit + Postgres. Public web-app class
+# (cloudflared -> Traefik at droid-tycoon.pkfd.net). Auth: Authentik OIDC
+# ("Sign in with Google"), see the droid-tycoon-tracker repo spec
+# docs/superpowers/specs/2026-07-17-authentik-oidc-sso-design.md.
+#
+# Image is built + pushed from the droid-tycoon-tracker repo (app/Dockerfile);
+# no CI yet, so publish manually (see README.md). The app runs
+# `node drizzle/migrate.mjs` on start, then serves adapter-node on :3000.
+#
+# Secrets (pxe/.secrets.env -> .env at deploy):
+#   DROID_TYCOON_PG_PASSWORD, OIDC_CLIENT_SECRET
+# OIDC provider/client are configured in Authentik (slug droid-tycoon).
+
+services:
+  app:
+    image: ${DROID_TYCOON_IMAGE:-ghcr.io/jasparke/droid-tycoon:latest}
+    container_name: droid-tycoon
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      TZ: ${TZ:-America/Vancouver}
+      DATABASE_URL: postgres://droid:${DROID_TYCOON_PG_PASSWORD:?set in .env (from pxe/.secrets.env)}@db:5432/droid_tycoon
+      ORIGIN: https://droid-tycoon.pkfd.net
+      PUBLIC_BASE_URL: https://droid-tycoon.pkfd.net
+      OIDC_ISSUER_URL: https://auth.pkfd.net/application/o/droid-tycoon/
+      OIDC_CLIENT_ID: droid-tycoon
+      OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET:?set in .env (from pxe/.secrets.env)}
+      OIDC_REDIRECT_URI: https://droid-tycoon.pkfd.net/api/auth/oidc/callback
+    networks:
+      - droid-tycoon-internal
+      - proxy
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.droid-tycoon.rule: Host(`droid-tycoon.pkfd.net`)
+      traefik.http.routers.droid-tycoon.entrypoints: websecure
+      traefik.http.services.droid-tycoon.loadbalancer.server.port: "3000"
+      traefik.docker.network: proxy
+
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: droid_tycoon
+      POSTGRES_USER: droid
+      POSTGRES_PASSWORD: ${DROID_TYCOON_PG_PASSWORD:?set in .env (from pxe/.secrets.env)}
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    networks:
+      - droid-tycoon-internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d droid_tycoon -U droid"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+networks:
+  droid-tycoon-internal:
+    driver: bridge
+  proxy:
+    external: true
