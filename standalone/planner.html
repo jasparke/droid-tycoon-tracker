@@ -512,6 +512,13 @@ function subAt(cy,d,t){ setCount(cy,d,t, countAt(cy,d,t)-1); }
 // per-cycle rebirth progress (level 0..MAXRB). Untouched cycles default to R0 (full ladder).
 function getProgress(){ return state.currentByCycle[state.cycle] ?? 0; }
 function setProgress(n){ state.currentByCycle[state.cycle] = Math.max(0, Math.min(MAXRB, n|0)); }
+// full reset of one cycle: owned droids + progress (->R0) + plan ticks
+function fullResetCycle(cy){
+  Object.keys(state.counts).forEach(k=>{ if(k.startsWith(cy+'|')) delete state.counts[k]; });
+  delete state.currentByCycle[cy];
+  if(state.plan) delete state.plan[cy];
+  if(state.planAdd) delete state.planAdd[cy];
+}
 function saveLocal(){
   try{localStorage.setItem(LS_KEY,JSON.stringify(DB));}catch(e){}
   try{history.replaceState(null,"","#"+encodeDB());}catch(e){}   // mirror the whole profile set into the URL
@@ -1175,6 +1182,14 @@ document.getElementById('resetOwnedBtn').addEventListener('click',()=>{
   if(!confirm('Clear all owned marks for '+CYCLE_LABEL[state.cycle]+'?')) return;
   snapshot();
   Object.keys(state.counts).forEach(k=>{ if(k.startsWith(state.cycle+'|')) delete state.counts[k]; });
+  save(); renderAll();
+});
+document.getElementById('superRebirthBtn').addEventListener('click',()=>{
+  snapshot();
+  const leaving=state.cycle;
+  fullResetCycle(leaving);
+  const n=Object.keys(CYCLES).length;      // 4 requirement sets
+  state.cycle=(leaving % n)+1;             // wrap 4 -> 1
   save(); renderAll();
 });
 document.getElementById('cycleBtns').addEventListener('click',e=>{const b=e.target.closest('[data-cycle]');if(!b)return;state.cycle=+b.dataset.cycle;save();renderAll();});
