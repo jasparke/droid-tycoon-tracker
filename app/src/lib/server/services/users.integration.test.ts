@@ -51,6 +51,33 @@ describe('findOrCreateOidcUser', () => {
 		const u = await findOrCreateOidcUser(db, { sub: 'goog-4' });
 		expect(u.username).toBe('user');
 	});
+
+	it('caps an oversized IdP-derived username at 64 chars', async () => {
+		const u = await findOrCreateOidcUser(db, { sub: 'goog-long', name: 'x'.repeat(200) });
+		expect(u.username).toBe('x'.repeat(64));
+	});
+
+	it('trims whitespace left at the cap cut', async () => {
+		const u = await findOrCreateOidcUser(db, { sub: 'goog-sp', name: 'a'.repeat(63) + ' b' });
+		expect(u.username).toBe('a'.repeat(63));
+	});
+
+	it('never splits a surrogate pair at the cap cut', async () => {
+		// 'a' + 40 rockets = 81 UTF-16 units; a plain slice(0, 64) would cut the
+		// 32nd rocket in half, leaving a lone high surrogate at the end
+		const u = await findOrCreateOidcUser(db, { sub: 'goog-emoji', name: 'a' + '🚀'.repeat(40) });
+		expect(u.username).toBe('a' + '🚀'.repeat(31));
+	});
+
+	it('keeps collision-deduped usernames within the 64-char cap', async () => {
+		const long = 'y'.repeat(200);
+		const a = await findOrCreateOidcUser(db, { sub: 'goog-l1', name: long });
+		const b = await findOrCreateOidcUser(db, { sub: 'goog-l2', name: long });
+		expect(a.username).toBe('y'.repeat(64));
+		expect(b.username).not.toBe(a.username);
+		expect(b.username.length).toBeLessThanOrEqual(64);
+		expect(b.username.endsWith('-2')).toBe(true);
+	});
 });
 
 describe('sessions (unchanged behaviour, seeded via OIDC user)', () => {
