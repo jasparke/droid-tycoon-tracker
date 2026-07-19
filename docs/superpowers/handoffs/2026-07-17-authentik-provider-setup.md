@@ -233,7 +233,7 @@ curl -s "${AUTH_HDR[@]}" "$AK/flows/instances/?slug=default-provider-authorizati
 
 # Invalidation flow (required by Authentik v2024+).
 # Verify the slug value against Authentik v2026.5 if the endpoint 404s.
-curl -s "${AUTH_HDR[@]}" "$AK/flows/instances/?slug=default-provider-authorization-implicit-consent-invalidation" | jq '.results[] | {name, slug, pk}'
+curl -s "${AUTH_HDR[@]}" "$AK/flows/instances/?slug=default-provider-invalidation-flow" | jq '.results[] | {name, slug, pk}'
 # Capture the pk value.
 
 # 1. Create the OAuth2/OpenID Provider.
