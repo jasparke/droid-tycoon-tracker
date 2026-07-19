@@ -1,20 +1,20 @@
 <script lang="ts">
-	import { apiFetch } from '$lib/client/api';
-	import { toast } from '$lib/client/toast.svelte';
-	let username = $state(''), password = $state('');
-	async function submit(e: SubmitEvent) {
-		e.preventDefault();
-		try {
-			await apiFetch('/api/auth/login', { method: 'POST', body: JSON.stringify({ username, password }) });
-			location.assign('/checklist'); // full reload so the layout re-inits the shared tracker
-		} catch (err) { toast((err as Error).message); }
-	}
+	// SSO-only: a single link that starts the Authentik OIDC flow.
+	// A full navigation (not fetch) so the browser follows the 302 to the IdP.
 </script>
 
 <h1>Log in</h1>
-<form onsubmit={submit}>
-	<label>Username <input bind:value={username} autocomplete="username" /></label>
-	<label>Password <input type="password" bind:value={password} autocomplete="current-password" /></label>
-	<button>Log in</button>
-</form>
-<p>No account? <a href="/register">Register with an invite code</a>.</p>
+<p>Sign in with your Google account to sync your progress.</p>
+<a class="sso" href="/api/auth/oidc/start" data-testid="sso-login">Sign in with Google</a>
+
+<style>
+	.sso {
+		display: inline-block;
+		margin-top: 1rem;
+		padding: 0.6rem 1.1rem;
+		border: 1px solid currentColor;
+		border-radius: 6px;
+		text-decoration: none;
+		font: inherit;
+	}
+</style>
