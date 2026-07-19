@@ -465,10 +465,13 @@ const MAXRB=27;
 const LS_KEY="droidTycoonTracker_v3";
 function encodeDB(){try{return btoa(unescape(encodeURIComponent(JSON.stringify(DB))));}catch(e){return"";}}
 function decodeAny(s){try{return JSON.parse(decodeURIComponent(escape(atob(s))));}catch(e){return null;}}
-function blankProfile(name){return {name:name||"Player",current:9,cycle:1,view:"rebirths",hidePast:true,_hideDefault:true,counts:{},plan:{},gapsOpen:{}};}
+function blankProfile(name){return {name:name||"Player",currentByCycle:{},cycle:1,view:"rebirths",hidePast:true,_hideDefault:true,counts:{},plan:{},gapsOpen:{}};}
 function normProfile(p){
   if(!p.counts)p.counts={}; if(!p.plan)p.plan={}; if(!p.gapsOpen)p.gapsOpen={};
-  if(p.current==null)p.current=9; if(p.cycle==null)p.cycle=1; if(!p.view)p.view="rebirths"; if(!p.name)p.name="Player";
+  if(p.cycle==null)p.cycle=1; if(!p.view)p.view="rebirths"; if(!p.name)p.name="Player";
+  // migrate the old shared scalar progress into the active cycle's slot (idempotent)
+  if(!p.currentByCycle)p.currentByCycle={};
+  if(p.current!=null){ if(p.currentByCycle[p.cycle]==null)p.currentByCycle[p.cycle]=p.current; delete p.current; }
   // legacy per-requirement checks → owned map (old format)
   if(p.checked){ if(!p.owned)p.owned={}; for(const k in p.checked){ if(!p.checked[k])continue; const q=k.split('|'); if(q.length===4&&RIDX[q[3]]!=null){const ok=q[0]+'|'+q[2].toUpperCase(); p.owned[ok]=Math.max(p.owned[ok]??-1,RIDX[q[3]]);}} delete p.checked; }
   // legacy owned(highest idx)+qty(count) → per-tier counts (one stack at that tier)
@@ -494,6 +497,9 @@ function setCount(cy,d,t,n){ const k=cKey(cy,d,t); if(n<=0) delete state.counts[
 function toggleTier(cy,d,rar){ setCount(cy,d,rar, countAt(cy,d,rar)>0?0:1); }   // toggle presence of one copy at exactly this tier
 function addAt(cy,d,t){ setCount(cy,d,t, countAt(cy,d,t)+1); }
 function subAt(cy,d,t){ setCount(cy,d,t, countAt(cy,d,t)-1); }
+// per-cycle rebirth progress (level 0..MAXRB). Untouched cycles default to R0 (full ladder).
+function getProgress(){ return state.currentByCycle[state.cycle] ?? 0; }
+function setProgress(n){ state.currentByCycle[state.cycle] = Math.max(0, Math.min(MAXRB, n|0)); }
 function saveLocal(){
   try{localStorage.setItem(LS_KEY,JSON.stringify(DB));}catch(e){}
   try{history.replaceState(null,"","#"+encodeDB());}catch(e){}   // mirror the whole profile set into the URL
@@ -545,7 +551,7 @@ function importProfile(code){
   profs.forEach(p=>{ DB.seq=(DB.seq||1)+1; const id="p"+DB.seq; const np=normProfile(Object.assign(blankProfile(p.name||"Imported"),p)); DB.profiles[id]=np; DB.active=id; state=np; });
   save(); renderAll(); return profs.length;
 }
-function doRebirth(){ if(state.current<MAXRB){state.current++;save();renderAll();} }
+function doRebirth(){ if(getProgress()<MAXRB){setProgress(getProgress()+1);save();renderAll();} }
 const key=(cy,n,d,r)=>`${cy}|${n}|${d}|${r}`;
 const cur=()=>CYCLES[state.cycle];
 
@@ -557,7 +563,7 @@ function droidMap(cy){
     map[id].reqs.push({lv:rb.n,rar,d});
   }));
   Object.values(map).forEach(m=>{m.reqs.sort((a,b)=>a.lv-b.lv);
-    m.future=m.reqs.filter(q=>q.lv>state.current); m.nextLv=m.future.length?m.future[0].lv:Infinity;});
+    m.future=m.reqs.filter(q=>q.lv>getProgress()); m.nextLv=m.future.length?m.future[0].lv:Infinity;});
   return map;
 }
 
@@ -690,7 +696,7 @@ const SLBL={need:'Needed',done:'Done — sellable',other:'Not this cycle'};
 const ORD={need:0,done:1,other:2};
 function droidInfo(m){
   const cyReqs=m.byCycle[state.cycle]||[];
-  const future=cyReqs.filter(x=>x.lv>state.current);
+  const future=cyReqs.filter(x=>x.lv>getProgress());
   const cls=future.length?'need':(cyReqs.length?'done':'other');
   return {cyReqs,cls,nextLv:future.length?Math.min(...future.map(x=>x.lv)):Infinity};
 }
@@ -698,7 +704,7 @@ function tierCols(name,cyReqs){
   return TIERS.map((tier,idx)=>{
     const atTier=cyReqs.filter(x=>x.rar===tier).map(x=>x.lv).sort((a,b)=>a-b);
     let reqLv=null,needed=false;
-    if(atTier.length){const fut=atTier.filter(l=>l>state.current); if(fut.length){reqLv=fut[0];needed=true;} else {reqLv=atTier[atTier.length-1];}}
+    if(atTier.length){const fut=atTier.filter(l=>l>getProgress()); if(fut.length){reqLv=fut[0];needed=true;} else {reqLv=atTier[atTier.length-1];}}
     const met=isMet(state.cycle,name,tier), cnt=countAt(state.cycle,name,tier);
     let tag;
     if(reqLv!=null) tag=`<span class="rtag ${needed?'need':'past'}">${met?'✓ ':''}R${reqLv}</span>`;
@@ -833,7 +839,7 @@ function renderPlanner(){
         <div class="pc-rbs">${rbChips}</div>
       </div>`;};
     const maxRbOf=d=>{const a=rbsOf[d]&&rbsOf[d].length?rbsOf[d]:[[0]];return Math.max(...a.map(c=>c[0]));};
-    const curR=state.current||0;
+    const curR=getProgress();
     const sellNow=[], act=[];                                 // split off droids past their last needed rebirth
     items.forEach(it=>{ (maxRbOf(it[0])<=curR ? sellNow : act).push(it); });
     let grouped;
@@ -1026,23 +1032,23 @@ function renderControls(){
   cs.value=state.cycle;
   const sel=document.getElementById('curSel');
   if(sel&&!sel.options.length)for(let i=0;i<=MAXRB;i++){const o=document.createElement('option');o.value=i;o.textContent="R"+i;sel.appendChild(o);}
-  if(sel)sel.value=state.current;
+  if(sel)sel.value=getProgress();
 }
 function renderStats(){
-  const active=state.current+1;   // current = your level (rebirths done); active = the one you're working toward
+  const active=getProgress()+1;   // current = your level (rebirths done); active = the one you're working toward
   let fTot=0,fDone=0,aTot=0,aDone=0,n2Tot=0,n2Done=0;
   cur().forEach(rb=>rb.r.forEach(([d,r])=>{
     const on=isMet(state.cycle,d,r);
-    if(rb.n>state.current){fTot++;if(on)fDone++;}
+    if(rb.n>getProgress()){fTot++;if(on)fDone++;}
     if(rb.n===active){aTot++;if(on)aDone++;}
     if(rb.n===active+1||rb.n===active+2){n2Tot++;if(on)n2Done++;}
   }));
-  const atMax=state.current>=MAXRB;
+  const atMax=getProgress()>=MAXRB;
   document.getElementById('stats').innerHTML=`
     <div class="stat btn" id="rbBtn" title="${atMax?'At max rebirth':'Advance to the next rebirth'}">
-      <div class="num">R${state.current}${atMax?'':' ▶'}</div>
-      <div class="lbl">${atMax?'Max rebirth':'Tap to Rebirth → R'+(state.current+1)}</div>
-      <div class="bar"><i style="width:${state.current/MAXRB*100}%"></i></div></div>
+      <div class="num">R${getProgress()}${atMax?'':' ▶'}</div>
+      <div class="lbl">${atMax?'Max rebirth':'Tap to Rebirth → R'+(getProgress()+1)}</div>
+      <div class="bar"><i style="width:${getProgress()/MAXRB*100}%"></i></div></div>
     <div class="stat"><div class="num">${aDone}/${aTot}</div><div class="lbl">Next (R${active})</div><div class="bar"><i style="width:${aTot?aDone/aTot*100:0}%"></i></div></div>
     <div class="stat"><div class="num">${n2Done}/${n2Tot}</div><div class="lbl">Then${n2Tot?` (R${active+1}–${Math.min(active+2,MAXRB)})`:''}</div><div class="bar"><i style="width:${n2Tot?n2Done/n2Tot*100:0}%"></i></div></div>
     <div class="stat"><div class="num">${fDone}/${fTot}</div><div class="lbl">Ahead (R${active}+)</div><div class="bar"><i style="width:${fTot?fDone/fTot*100:0}%"></i></div></div>`;
@@ -1057,7 +1063,7 @@ function metaLine(n){
   return bits.join(" · ");
 }
 function rbCardEl(rb){
-  const active=state.current+1, reached=rb.n<=state.current;
+  const active=getProgress()+1, reached=rb.n<=getProgress();
   const cnt=rb.r.filter(([d,r])=>isMet(state.cycle,d,r)).length;
   const done=reached||cnt===rb.r.length;
   const isActive=rb.n===active, isThen=rb.n===active+1;
@@ -1082,7 +1088,7 @@ function renderRebirths(){
   const flushRun=()=>{
     if(!run.length)return;
     const gF=run[0].n, gL=run[run.length-1].n, rng=gF===gL?'R'+gF:'R'+gF+'–R'+gL, open=!!state.gapsOpen[gF];
-    const word=gF>state.current?'ready':'complete';   // ahead but fully owned = ready; at/before current = complete
+    const word=gF>getProgress()?'ready':'complete';   // ahead but fully owned = ready; at/before current = complete
     if(open){
       const rows=run.map(rb=>`<div class="gap-row"><span class="gap-lv">R${rb.n}</span>${rb.r.map(([d,r])=>`<span class="npill ${r}" data-own="${state.cycle}|${d}|${r}" title="click to toggle owned">${droidImg(d,r,'pimg')}${d}</span>`).join("")}</div>`).join("");
       host.insertAdjacentHTML('beforeend',`<div class="gap open"><div class="gap-hd" data-gap="${gF}"><div class="gap-title">▾ ${rng} ${word}</div><div class="gap-sub">don't sell these · click to collapse</div></div><div class="gap-grid">${rows}</div></div>`);
@@ -1091,9 +1097,9 @@ function renderRebirths(){
     }
     run=[];
   };
-  const active=state.current+1;
+  const active=getProgress()+1;
   cur().forEach(rb=>{
-    const reached=rb.n<=state.current;
+    const reached=rb.n<=getProgress();
     const cnt=rb.r.filter(([d,r])=>isMet(state.cycle,d,r)).length;
     const done=reached||cnt===rb.r.length;
     if(state.hidePast&&done&&rb.n!==active){ run.push(rb); return; }   // reached history + ready future → collapsible gap; active always shown
@@ -1106,7 +1112,7 @@ function renderRebirths(){
 function renderKeepers(){
   const host=document.getElementById('keepers');host.innerHTML="";
   const intro=document.createElement('div');intro.className="sub";intro.style.margin="0 0 14px";
-  intro.textContent=`Droids still needed in ${CYCLE_LABEL[state.cycle]} from Rebirth ${state.current+1} onward, ordered by when they're next required. Gold badge = needed 4+ times.`;
+  intro.textContent=`Droids still needed in ${CYCLE_LABEL[state.cycle]} from Rebirth ${getProgress()+1} onward, ordered by when they're next required. Gold badge = needed 4+ times.`;
   host.appendChild(intro);
   const model=Object.values(droidMap(state.cycle)).filter(m=>m.future.length>0).sort((a,b)=>a.nextLv-b.nextLv||a.name.localeCompare(b.name));
   if(!model.length){const e=document.createElement('div');e.className="pempty";e.textContent="Nothing left in this cycle. 🎉";host.appendChild(e);return;}
@@ -1115,7 +1121,7 @@ function renderKeepers(){
     const card=document.createElement('div');card.className="kcard";card.dataset.droid=m.name;
     const headRar=(m.future[0]||m.reqs[0]).rar;
     card.innerHTML=`<div class="ktop">${droidImg(m.name,headRar,'kimg')}<span class="kname">${m.name}</span>${priority?'<span class="priority">High value</span>':''}<span class="knext">next: Rebirth ${m.nextLv}</span></div>
-      <div class="pips">${m.reqs.map(q=>{const on=isMet(state.cycle,q.d,q.rar);const past=q.lv<=state.current;
+      <div class="pips">${m.reqs.map(q=>{const on=isMet(state.cycle,q.d,q.rar);const past=q.lv<=getProgress();
         return `<span class="pip ${q.rar}${on?' on':''}" style="${past?'opacity:.4':''}" data-own="${state.cycle}|${q.d}|${q.rar}">${on?'✓ ':''}${q.rar} <span class="lv">R${q.lv}</span></span>`;}).join("")}</div>`;
     host.appendChild(card);
   });
@@ -1157,8 +1163,8 @@ document.getElementById('expProf').addEventListener('click',async()=>{const code
 document.getElementById('impProf').addEventListener('click',()=>{const code=prompt("Paste a profile code (or an old URL # value) to import:");if(!code)return;const n=importProfile(code);alert(n?`Imported ${n} profile(s).`:"Couldn't read that code.");});
 document.getElementById('syncBtn').addEventListener('click',doSync);
 document.getElementById('cycleSel').addEventListener('change',e=>{state.cycle=+e.target.value;save();renderAll();});
-document.getElementById('curSel').addEventListener('change',e=>{state.current=+e.target.value;save();renderPlanner();});
-document.getElementById('rebirthBtn').addEventListener('click',()=>{if(state.current<MAXRB){state.current++;save();renderAll();}});
+document.getElementById('curSel').addEventListener('change',e=>{setProgress(+e.target.value);save();renderPlanner();});
+document.getElementById('rebirthBtn').addEventListener('click',()=>{if(getProgress()<MAXRB){setProgress(getProgress()+1);save();renderAll();}});
 
 // −/+ per tier : adjust how many copies you own at that exact tier (search / all / inventory)
 document.addEventListener('click',e=>{
