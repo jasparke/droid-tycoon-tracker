@@ -2,6 +2,7 @@ import postgres from 'postgres';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import * as schema from '../schema';
+import { findOrCreateOidcUser } from '../services/users';
 
 const url = process.env.DATABASE_URL_TEST ?? 'postgres://dtt:dtt@localhost:5432/dtt_test';
 let cached: { db: ReturnType<typeof drizzle<typeof schema>>; sql: postgres.Sql } | null = null;
@@ -17,6 +18,14 @@ export async function testDb() {
 
 export async function resetUserZone(sql: postgres.Sql) {
 	await sql`truncate users, sessions, profiles, counts, plans restart identity cascade`;
+}
+
+// tests that only need "some user" create one keyed by a readable sub
+export async function createTestUser(
+	db: Awaited<ReturnType<typeof testDb>>['db'],
+	name: string
+) {
+	return findOrCreateOidcUser(db, { sub: `test-${name}`, email: `${name}@test.local`, name });
 }
 
 export async function seedMinimalReference(sql: postgres.Sql) {
