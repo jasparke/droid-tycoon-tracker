@@ -12,9 +12,17 @@ export function validate(t: PayloadTables, existingCountKeys: { droid: string; t
 		if (!TYPES.has(d.type)) flags.push({ kind: 'reject', code: 'bad_type', message: `${d.name}: ${d.type}`, table: 'droids', key: d.name });
 	}
 
+	const known = new Set(t.droids.map((d) => d.name));
+
 	// tier-grid ratio check (non-Iconic): value ≈ 0.7×cost (±15%). HOLD (this catches IG).
 	const iconic = new Set(t.droids.filter((d) => d.rarity === 'Iconic').map((d) => d.name));
 	for (const row of t.droidTiers) {
+		// no FK backs droid_tiers.droid → droids.name, so an unparsed/renamed droid would land as
+		// silent dead rows; HOLD so an admin either fixes the sheet/aliases or knowingly accepts.
+		if (!known.has(row.droid)) flags.push({ kind: 'hold', code: 'unknown_droid', message: `${row.droid}/${row.tier}: tier row for a droid missing from the reference tab`, table: 'droidTiers', key: `${row.droid}/${row.tier}` });
+		for (const [field, v] of [['buy', row.buy], ['income', row.income], ['sell', row.sell]] as const) {
+			if (v != null && v < 0) flags.push({ kind: 'reject', code: 'negative_value', message: `${row.droid}/${row.tier}: ${field}=${v}`, table: 'droidTiers', key: `${row.droid}/${row.tier}` });
+		}
 		if (iconic.has(row.droid) || row.buy == null || row.sell == null) continue;
 		const ratio = row.sell / row.buy;
 		if (ratio < 0.55 || ratio > 0.85) {
@@ -34,7 +42,6 @@ export function validate(t: PayloadTables, existingCountKeys: { droid: string; t
 	}
 
 	// orphan report
-	const known = new Set(t.droids.map((d) => d.name));
 	for (const c of existingCountKeys) {
 		if (!known.has(c.droid)) flags.push({ kind: 'report', code: 'orphan_count', message: `count references removed droid "${c.droid}" (profile ${c.profileId})`, table: 'counts', key: `${c.droid}/${c.tier}` });
 	}
