@@ -28,8 +28,9 @@ describe('replacePlan', () => {
 		await replacePlan(db, uid, pid, 2, []);
 		expect(await db.select().from(plans).where(eq(plans.profileId, pid))).toHaveLength(0);
 	});
-	it('rejects out-of-range rebirths with 422', async () => {
+	it('accepts the new top rebirth (30) and rejects out-of-range with 422', async () => {
+		await replacePlan(db, uid, pid, 2, [28, 30]);
 		await expect(replacePlan(db, uid, pid, 2, [0])).rejects.toMatchObject({ status: 422 });
-		await expect(replacePlan(db, uid, pid, 2, [28])).rejects.toMatchObject({ status: 422 });
+		await expect(replacePlan(db, uid, pid, 2, [31])).rejects.toMatchObject({ status: 422 });
 	});
 });

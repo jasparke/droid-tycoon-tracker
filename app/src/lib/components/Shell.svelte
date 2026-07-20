@@ -4,6 +4,7 @@
 	import { getTracker } from '$lib/client/tracker-context';
 	import { search } from '$lib/client/search.svelte';
 	import { pad2 } from '$lib/client/format';
+	import { MAX_REBIRTH } from '$lib/game/requirements';
 
 	let { user, reference, children }: {
 		user: { id: number; username: string };
@@ -98,7 +99,7 @@
 			</div>
 			<div class="rb notch">
 				<span class="rlabel">REBIRTH</span>
-				<span class="rval">{pad2(t.rebirth())}<span>/27</span></span>
+				<span class="rval">{pad2(t.rebirth())}<span>/{MAX_REBIRTH}</span></span>
 				<span class="steps">
 					<button disabled={!t.editable()} aria-label="rebirth minus" onclick={() => t.setRebirth(t.rebirth() - 1)}>−</button>
 					<button class="plus" disabled={!t.editable()} aria-label="rebirth plus" onclick={() => t.setRebirth(t.rebirth() + 1)}>+</button>

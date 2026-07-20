@@ -1,5 +1,8 @@
 import { isTier, RIDX, type Tier } from './tiers';
 
+// Highest rebirth in the game (29->30 transition; galactic update).
+export const MAX_REBIRTH = 30;
+
 export type ReqRow = { cycle: number; rebirth: number; droid: string; tier: string };
 
 // Earliest rebirth at or after fromRb (same cycle) that requires this droid.

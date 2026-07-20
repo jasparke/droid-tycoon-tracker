@@ -15,6 +15,7 @@ export function normName(name: string): string {
 // roster, so this fails loudly if the two ever diverge.
 export const SINGLE_TIER_DROIDS: ReadonlySet<string> = new Set([
 	'BB8',
+	'C3P0',
 	'CB23',
 	'DJR3X',
 	'IG11MARSHAL',

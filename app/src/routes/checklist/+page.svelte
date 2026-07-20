@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import { getTracker } from '$lib/client/tracker-context';
 	import { satisfyingIdxOf } from '$lib/game/inventory';
+	import { MAX_REBIRTH } from '$lib/game/requirements';
 	import { RIDX, TIERS, type Tier } from '$lib/game/tiers';
 	import { pad2 } from '$lib/client/format';
 	import TierChip from '$lib/components/TierChip.svelte';
@@ -72,7 +73,7 @@
 	const stats = $derived([
 		{ label: 'THIS REBIRTH COST', value: curBlock?.credits || '—', color: 'var(--warn)' },
 		{ label: 'DROIDS MET', value: curBlock ? `${curBlock.met}/${curBlock.total}` : '—', color: 'var(--good)' },
-		{ label: 'CYCLE PROGRESS', value: `${Math.round(((fromRb - 1) / 27) * 100)}%`, color: 'var(--txt)' },
+		{ label: 'CYCLE PROGRESS', value: `${Math.round(((fromRb - 1) / MAX_REBIRTH) * 100)}%`, color: 'var(--txt)' },
 		{ label: 'NOVA @ THIS RB', value: nova ? `${nova} ✦` : '—', color: 'var(--nova)' }
 	]);
 </script>

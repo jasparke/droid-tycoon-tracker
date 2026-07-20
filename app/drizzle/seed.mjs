@@ -10,17 +10,24 @@ const sql = postgres(url, { max: 1 });
 await sql.begin(async (tx) => {
 	// replace-all semantics: reference zone is owned by the seeder (later: sync worker)
 	await tx`truncate droids, droid_tiers, rebirth_reqs, chip_costs, rebirth_meta, nova_shop, cosmetics, droid_sell_values, flawless_spawn, nova_paint_stages`;
-	for (const r of d.droids) await tx`insert into droids ${tx(r)}`;
+	for (const r of d.droids)
+		await tx`insert into droids ${tx({ name: r.name, rarity: r.rarity, type: r.type, income_pct: r.incomePct ?? null, buy_nc: r.buyNc ?? null })}`;
 	for (const r of d.droidTiers)
 		await tx`insert into droid_tiers ${tx({ droid: r.droid, tier: r.tier, buy: r.buy, income: r.income, sell: r.sell })}`;
 	for (const r of d.rebirthReqs)
 		await tx`insert into rebirth_reqs ${tx({ cycle: r.cycle, rebirth: r.rebirth, droid: r.droid, tier: r.tier, credits: r.credits, unlock: r.unlock })}`;
 	for (const r of d.chipCosts)
-		await tx`insert into chip_costs ${tx({ rarity: r.rarity, to_gold: r.toGold, to_diamond: r.toDiamond, to_rainbow: r.toRainbow, to_beskar: r.toBeskar })}`;
+		await tx`insert into chip_costs ${tx({ rarity: r.rarity, to_gold: r.toGold, to_diamond: r.toDiamond, to_rainbow: r.toRainbow, to_beskar: r.toBeskar, to_galactic: r.toGalactic ?? null })}`;
 	for (const r of d.rebirthMeta)
 		await tx`insert into rebirth_meta ${tx({ rebirth: r.rebirth, nova: r.nova, credit_mult: r.creditMult, xp_mult: r.xpMult })}`;
 	for (const r of d.novaShop) await tx`insert into nova_shop ${tx(r)}`;
 	for (const r of d.cosmetics) await tx`insert into cosmetics ${tx(r)}`;
+	for (const r of d.droidSellValues ?? [])
+		await tx`insert into droid_sell_values ${tx({ rarity: r.rarity, tier: r.tier, multiplier: r.multiplier })}`;
+	for (const r of d.flawlessSpawn ?? [])
+		await tx`insert into flawless_spawn ${tx({ tier: r.tier, one_in: r.oneIn })}`;
+	for (const r of d.novaPaintStages ?? [])
+		await tx`insert into nova_paint_stages ${tx({ stage: r.stage, crystal_cost: r.crystalCost })}`;
 
 	const tables = {
 		droids: d.droids, droidTiers: d.droidTiers, rebirthReqs: d.rebirthReqs, chipCosts: d.chipCosts,
@@ -29,7 +36,7 @@ await sql.begin(async (tx) => {
 	};
 	const payload = {
 		meta: {
-			source: 'prototype-constants',
+			source: 'seed-data.json',
 			fetchedAt: new Date().toISOString(),
 			tabChecksums: {},
 			rowCounts: Object.fromEntries(Object.entries(tables).map(([k, v]) => [k, v.length])),
@@ -39,7 +46,7 @@ await sql.begin(async (tx) => {
 	};
 	// raw postgres client (no drizzle wrapping) → normal jsonb serializer stringifies for us; pass the object.
 	await tx`insert into data_versions (source, checksum, payload)
-		values ('prototype-constants', ${checksumOf(tables)}, ${tx.json(payload)})`;
+		values ('seed-data.json', ${checksumOf(tables)}, ${tx.json(payload)})`;
 });
 await sql.end();
 console.log('seeded');

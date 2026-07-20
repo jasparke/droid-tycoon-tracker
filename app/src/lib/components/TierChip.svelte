@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Tier } from '$lib/game/tiers';
 
-	const LETTER: Record<Tier, string> = { Base: 'B', Gold: 'G', Diamond: 'D', Rainbow: 'R', Beskar: 'BK' };
+	const LETTER: Record<Tier, string> = { Base: 'B', Gold: 'G', Diamond: 'D', Rainbow: 'R', Beskar: 'BK', Galactic: 'GA' };
 
 	let { name, tier, count, satisfying = false, disabled = false, onInc, onDec }: {
 		name: string; tier: Tier; count: number; satisfying?: boolean; disabled?: boolean;

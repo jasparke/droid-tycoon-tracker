@@ -1,11 +1,14 @@
 import { toRows, cell } from '../csv';
 import { magnitude, income, chips, oneIn, rarity as normRarity, dtype } from '../normalize';
+import { resolveDroid } from '../aliases';
 import { TIERS, type Tier } from '$lib/game/tiers';
 import type { DroidRow, DroidTierRow, ChipCostRow, SellValueRow, FlawlessRow } from '../types';
 
 const TIER_COLS: Record<Tier, [number, number, number]> = {
-	Base: [3, 4, 5], Gold: [6, 7, 8], Diamond: [9, 10, 11], Rainbow: [12, 13, 14], Beskar: [15, 16, 17]
+	Base: [3, 4, 5], Gold: [6, 7, 8], Diamond: [9, 10, 11], Rainbow: [12, 13, 14], Beskar: [15, 16, 17], Galactic: [18, 19, 20]
 };
+// Right-stack geometry: labels in LABEL_COL, values in the 5 columns after it.
+const LABEL_COL = 22;
 
 function assertHeader(cond: boolean, what: string): void {
 	if (!cond) throw new Error(`droid-reference header anchor failed: ${what}`);
@@ -25,7 +28,7 @@ export function parseDroidReference(csv: string) {
 	let curRarity = '';
 	for (let i = 3; i < r.length; i++) {
 		const row = r[i];
-		const name = cell(row, 1).trim();
+		const name = resolveDroid(cell(row, 1).trim());
 		if (!name) continue;               // separator / right-stack-only row
 		if (cell(row, 0).trim()) curRarity = normRarity(cell(row, 0));
 		const inc = income(cell(row, 4));
@@ -52,32 +55,39 @@ export function parseDroidReference(csv: string) {
 	const chipCosts: ChipCostRow[] = [];
 	const droidSellValues: SellValueRow[] = [];
 	const flawlessSpawn: FlawlessRow[] = [];
-	const label = (i: number) => cell(r[i] ?? [], 19).trim();
+	const label = (i: number) => cell(r[i] ?? [], LABEL_COL).trim();
 	for (let i = 0; i < r.length; i++) {
-		if (label(i) === 'RARITY' && cell(r[i], 20) === 'BASE -> GOLD') {
-			for (let j = i + 1; j < r.length && cell(r[j], 19).trim(); j++) {
-				const rar = normRarity(cell(r[j], 19));
-				chipCosts.push({ rarity: rar, toGold: chips(cell(r[j], 20)), toDiamond: chips(cell(r[j], 21)), toRainbow: chips(cell(r[j], 22)), toBeskar: chips(cell(r[j], 23)) });
+		if (label(i) === 'RARITY' && cell(r[i], LABEL_COL + 1) === 'BASE -> GOLD') {
+			for (let j = i + 1; j < r.length && cell(r[j], LABEL_COL).trim(); j++) {
+				const rar = normRarity(cell(r[j], LABEL_COL));
+				chipCosts.push({
+					rarity: rar,
+					toGold: chips(cell(r[j], LABEL_COL + 1)), toDiamond: chips(cell(r[j], LABEL_COL + 2)),
+					toRainbow: chips(cell(r[j], LABEL_COL + 3)), toBeskar: chips(cell(r[j], LABEL_COL + 4)),
+					toGalactic: chips(cell(r[j], LABEL_COL + 5))
+				});
 			}
 		}
-		if (label(i) === 'RARITY' && cell(r[i], 20) === 'GOLD') {
-			const tiers: Tier[] = ['Gold', 'Diamond', 'Rainbow', 'Beskar'];
-			for (let j = i + 1; j < r.length && cell(r[j], 19).trim(); j++) {
-				const rar = normRarity(cell(r[j], 19));
+		if (label(i) === 'RARITY' && cell(r[i], LABEL_COL + 1) === 'GOLD') {
+			const tiers = TIERS.slice(1); // Gold..Galactic — sell values have no Base column
+			for (let j = i + 1; j < r.length && cell(r[j], LABEL_COL).trim(); j++) {
+				const rar = normRarity(cell(r[j], LABEL_COL));
 				tiers.forEach((tier, k) => {
-					const v = chips(cell(r[j], 20 + k)); // reuse N/A→null + int parse (no CHIPS suffix here, plain ints)
+					const v = chips(cell(r[j], LABEL_COL + 1 + k)); // reuse N/A→null + int parse (no CHIPS suffix here, plain ints)
 					if (v !== null) droidSellValues.push({ rarity: rar, tier, multiplier: v });
 				});
 			}
 		}
-		if (label(i) === 'DEFAULT' && cell(r[i], 20) === 'GOLD') {
-			const tiers: Tier[] = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar'];
+		if (label(i) === 'DEFAULT' && cell(r[i], LABEL_COL + 1) === 'GOLD') {
 			const vals = r[i + 1];
-			tiers.forEach((tier, k) => flawlessSpawn.push({ tier, oneIn: oneIn(cell(vals, 19 + k)) }));
+			TIERS.forEach((tier, k) => {
+				const raw = cell(vals, LABEL_COL + k).trim();
+				if (raw) flawlessSpawn.push({ tier, oneIn: oneIn(raw) }); // Galactic odds unpublished → cell blank
+			});
 		}
 	}
 	assertHeader(chipCosts.length > 0, 'UPGRADE COSTS block found');
 	assertHeader(droidSellValues.length > 0, 'DROID SELL VALUE block found');
-	assertHeader(flawlessSpawn.length === 5, 'FLAWLESS SPAWN block found');
+	assertHeader(flawlessSpawn.length >= 5, 'FLAWLESS SPAWN block found');
 	return { droids, droidTiers, chipCosts, droidSellValues, flawlessSpawn };
 }

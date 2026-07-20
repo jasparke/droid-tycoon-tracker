@@ -25,6 +25,7 @@ describe('droidArtFile / droidArtUrl', () => {
 		expect(droidArtFile('MOUSE', 'Rainbow')).toBe('MOUSE_Rainbow.webp');
 		expect(droidArtFile('A-LT', 'Gold')).toBe('ALT_Gold.webp');
 		expect(droidArtFile('DRK-1 PROBE', 'Base')).toBe('DRK1PROBE_Default.webp');
+		expect(droidArtFile('PROTO-ROLLER', 'Galactic')).toBe('PROTOROLLER_Galactic.webp');
 	});
 	it('prefixes the static asset path', () => {
 		expect(droidArtUrl('CB', 'Base')).toBe('/assets/droids/CB_Default.webp');
@@ -39,6 +40,7 @@ describe('single-tier (Iconic) art guard', () => {
 		expect(droidArtFile('BB8', 'Beskar')).toBe('BB8_Default.webp');
 		expect(droidArtFile('IG-11 MARSHAL', 'Rainbow')).toBe('IG11MARSHAL_Default.webp');
 		expect(droidArtUrl('MISTER BONES', 'Diamond')).toBe('/assets/droids/MISTERBONES_Default.webp');
+		expect(droidArtFile('C-3P0', 'Galactic')).toBe('C3P0_Default.webp');
 	});
 	it('leaves Base and non-single-tier droids untouched', () => {
 		expect(droidArtFile('R2-D2', 'Base')).toBe('R2D2_Default.webp');

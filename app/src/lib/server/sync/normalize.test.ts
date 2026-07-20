@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { magnitude, income, chips, oneIn, nc, tierWord, rarity, dtype } from './normalize';
+import { magnitude, income, chips, oneIn, nc, tierWord, unlockLabel, rarity, dtype } from './normalize';
 import { resolveDroid } from './aliases';
 
 describe('normalize', () => {
@@ -26,12 +26,20 @@ describe('normalize', () => {
 		expect(tierWord('DEFAULT')).toBe('Base');
 		expect(tierWord('BASIC')).toBe('Base');
 		expect(tierWord('BESKAR')).toBe('Beskar');
+		expect(tierWord('GALACTIC')).toBe('Galactic');
 		expect(rarity('ICONIC ')).toBe('Iconic');
 		expect(dtype('BATTLE')).toBe('Battle');
 	});
-	it('resolveDroid maps the five known misspellings', () => {
+	it('unlockLabel title-cases the ALL-CAPS unlock cells', () => {
+		expect(unlockLabel(' WORKER SLOT')).toBe('Worker Slot');
+		expect(unlockLabel('LOUNGE SLOT')).toBe('Lounge Slot');
+		expect(unlockLabel('NONE')).toBe('None');
+		expect(unlockLabel('Worker Slot')).toBe('Worker Slot');
+	});
+	it('resolveDroid maps the known misspellings/renames', () => {
 		expect(resolveDroid('MONO-WALKER')).toBe('MONO-WLKR');
 		expect(resolveDroid('BB-9')).toBe('BB9');
+		expect(resolveDroid('BB-8')).toBe('BB8');
 		expect(resolveDroid('MOUSE')).toBe('MOUSE');
 	});
 });

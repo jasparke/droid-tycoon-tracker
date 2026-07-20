@@ -1,7 +1,8 @@
 import { apiFetch } from './api';
 import { toast } from './toast.svelte';
 import type { CountRow } from '$lib/game/inventory';
-import { RIDX, type Tier } from '$lib/game/tiers';
+import { RIDX, TIERS, type Tier } from '$lib/game/tiers';
+import { MAX_REBIRTH } from '$lib/game/requirements';
 
 type ProfileRow = {
 	id: number; userId: number; owner: string; name: string;
@@ -110,7 +111,7 @@ export function makeTracker(data: TrackerData) {
 			}
 		},
 		cycle: () => active()?.cycle ?? 1,
-		rebirth: () => Math.min(27, Math.max(1, active()?.currentRebirth ?? 1)),
+		rebirth: () => Math.min(MAX_REBIRTH, Math.max(1, active()?.currentRebirth ?? 1)),
 		hideDone(): boolean {
 			if (!editable() && state.hideDoneOverride !== null) return state.hideDoneOverride;
 			return ((active()?.prefs ?? {}) as { hideDone?: boolean }).hideDone ?? false;
@@ -130,7 +131,7 @@ export function makeTracker(data: TrackerData) {
 		setRebirth(n: number) {
 			const p = active();
 			if (!p || !editable()) return;
-			const v = Math.min(27, Math.max(1, Math.round(n)));
+			const v = Math.min(MAX_REBIRTH, Math.max(1, Math.round(n)));
 			if (v === p.currentRebirth && rbPrev === null) return;
 			if (rbPrev === null) { rbPrev = p.currentRebirth; rbProfile = p; }
 			p.currentRebirth = v;
@@ -157,7 +158,7 @@ export function makeTracker(data: TrackerData) {
 			}
 		},
 		countsFor(cycle: number, droid: string): number[] {
-			const out = [0, 0, 0, 0, 0];
+			const out = Array<number>(TIERS.length).fill(0);
 			for (const r of state.counts[state.activeId ?? -1] ?? [])
 				if (r.cycle === cycle && r.droid === droid) out[RIDX[r.tier]] += r.n;
 			return out;

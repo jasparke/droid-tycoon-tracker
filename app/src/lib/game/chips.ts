@@ -1,6 +1,6 @@
 import { RIDX, type Tier } from './tiers';
 
-export type ChipSteps = [number, number, number, number];
+export type ChipSteps = [number, number, number, number, number];
 
 export function cumChips(steps: ChipSteps, targetTier: Tier): number {
 	let c = 0;

@@ -27,9 +27,9 @@ export function buildPayload(
 
 	const flags = validate(tables, existingCountKeys);
 
-	// cross-parser rebirth-shape assert
-	if (tables.rebirthReqs.length !== 324) {
-		flags.push({ kind: 'reject', code: 'rebirth_count', message: `expected 324 rebirth reqs, got ${tables.rebirthReqs.length}`, table: 'rebirthReqs' });
+	// cross-parser rebirth-shape assert: 30 rebirths × 4 cycles × 3 reqs
+	if (tables.rebirthReqs.length !== 360) {
+		flags.push({ kind: 'reject', code: 'rebirth_count', message: `expected 360 rebirth reqs, got ${tables.rebirthReqs.length}`, table: 'rebirthReqs' });
 	}
 	const roster = new Set(tables.droids.map((d) => d.name));
 	for (const req of tables.rebirthReqs) {

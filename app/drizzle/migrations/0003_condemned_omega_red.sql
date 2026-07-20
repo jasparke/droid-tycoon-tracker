@@ -1,0 +1,1 @@
+ALTER TABLE "chip_costs" ADD COLUMN "to_galactic" integer;
