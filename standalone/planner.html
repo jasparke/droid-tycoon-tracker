@@ -317,7 +317,7 @@ const CRED={12:22,13:32,14:44,15:58,16:74,17:92,18:112,19:134,20:158,21:184,22:2
 const XP={12:110,13:160,14:220,15:290,16:370,17:460,18:560,19:670,20:790,21:920,22:1060,23:1210,24:1370,25:1540,26:1720,27:1910};
 // per-step upgrade chips [→Gold,→Diamond,→Rainbow,→Beskar] by droid class
 // (Gold/Diamond/Rainbow per Insider Gaming Droidex; Beskar/Mythic per community sheet)
-const CHIPCLASS={Common:[5,25,40,80],Rare:[30,60,100,250],Epic:[120,180,240,5000],Legendary:[400,1200,4000,12000],Mythic:[8000,15000,40000,80000]};
+const CHIPCLASS={Common:[5,25,40,80],Rare:[30,60,100,250],Epic:[120,180,240,5000],Legendary:[400,1200,4000,12000],Mythic:[6000,13000,30000,75000]};
 const CHIPS=Object.entries(CHIPCLASS).map(([c,a])=>[c,a,a.reduce((x,y)=>x+y,0)]);
 const FLAWLESS=["1/1000","1/500","1/250","1/125","1/100"];   // flawless spawn odds by tier Base..Beskar
 const CHIP_REFUND={Common:[4,7,10,13],Rare:[6,9,12,15],Epic:[30,33,36,39],Legendary:[84,87,90,93],Mythic:[192,195,198,201]}; // chips returned when selling Gold/Diamond/Rainbow/Beskar
