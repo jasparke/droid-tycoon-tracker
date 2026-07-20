@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, beforeAll, afterAll } from 'vitest';
 
 // hoisted mock of the functional openid-client API
 const m = vi.hoisted(() => ({
@@ -14,7 +14,7 @@ const m = vi.hoisted(() => ({
 }));
 vi.mock('openid-client', () => m);
 
-import { buildOidcStart, completeOidcCallback } from './oidc';
+import { buildOidcStart, completeOidcCallback, OIDC_DISCOVERY_TTL_MS } from './oidc';
 
 const cfg = {
 	issuerUrl: 'https://idp.test/app/o/x/',
@@ -23,7 +23,13 @@ const cfg = {
 	redirectUri: 'https://app.test/api/auth/oidc/callback'
 };
 
-beforeEach(() => vi.clearAllMocks());
+// the discovery cache is module state; start each test past the TTL so tests stay isolated
+beforeAll(() => vi.useFakeTimers());
+afterAll(() => vi.useRealTimers());
+beforeEach(() => {
+	vi.clearAllMocks();
+	vi.advanceTimersByTime(OIDC_DISCOVERY_TTL_MS + 1);
+});
 
 describe('buildOidcStart', () => {
 	it('discovers, builds a PKCE+state+nonce authorize URL, and returns the checks', async () => {
@@ -132,5 +138,41 @@ describe('completeOidcCallback', () => {
 		await expect(
 			completeOidcCallback(cfg, new URL('https://app.test/cb?code=c'), { state: 's', nonce: 'n', codeVerifier: 'v' })
 		).rejects.toThrow(/claims/i);
+	});
+});
+
+describe('discovery caching', () => {
+	const doCallback = () =>
+		completeOidcCallback(cfg, new URL('https://app.test/cb?code=c'), { state: 's', nonce: 'n', codeVerifier: 'v' });
+	beforeEach(() => {
+		m.discovery.mockResolvedValue({ id: 'config' });
+		m.buildAuthorizationUrl.mockReturnValue(new URL('https://idp.test/authorize'));
+		m.authorizationCodeGrant.mockResolvedValue({ claims: () => ({ sub: 'goog-1' }) });
+	});
+
+	it('reuses one discovered configuration across start and callback within the TTL', async () => {
+		await buildOidcStart(cfg);
+		await doCallback();
+		expect(m.discovery).toHaveBeenCalledTimes(1);
+	});
+
+	it('re-discovers after the TTL elapses', async () => {
+		await buildOidcStart(cfg);
+		vi.advanceTimersByTime(OIDC_DISCOVERY_TTL_MS + 1);
+		await buildOidcStart(cfg);
+		expect(m.discovery).toHaveBeenCalledTimes(2);
+	});
+
+	it('does not cache a failed discovery', async () => {
+		m.discovery.mockRejectedValueOnce(new Error('idp down'));
+		await expect(buildOidcStart(cfg)).rejects.toThrow('idp down');
+		await buildOidcStart(cfg);
+		expect(m.discovery).toHaveBeenCalledTimes(2);
+	});
+
+	it('a different client config gets its own cache entry', async () => {
+		await buildOidcStart(cfg);
+		await buildOidcStart({ ...cfg, clientId: 'other' });
+		expect(m.discovery).toHaveBeenCalledTimes(2);
 	});
 });
