@@ -99,4 +99,10 @@ describe('rollback / listVersions', () => {
 		expect(versions.length).toBeGreaterThanOrEqual(3); // fixture v1 + v2 + rollback
 		expect(versions.find((v) => v.id === v2.versionId)?.rowCounts).toBeDefined();
 	});
+
+	it('rollback to a legacy null-payload version is a clean 422, not an uncaught 500', async () => {
+		await sql`insert into data_versions (source, checksum, payload) values ('legacy-import', ${'cafe'.repeat(16)}, null)`;
+		const legacy = await sql`select max(id)::int as id from data_versions`;
+		await expect(rollback(sql, legacy[0].id)).rejects.toMatchObject({ status: 422, code: 'no_payload' });
+	});
 });

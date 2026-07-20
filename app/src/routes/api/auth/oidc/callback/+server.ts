@@ -5,6 +5,7 @@ import { env as pub } from '$env/dynamic/public';
 import type { RequestHandler } from './$types';
 import { db } from '$lib/server/db';
 import { completeOidcCallback, type OidcConfig } from '$lib/server/oidc';
+import { oidcTempCookieNames } from '$lib/server/oidc-cookies';
 import { findOrCreateOidcUser, createSession } from '$lib/server/services/users';
 
 function oidcConfig(): OidcConfig {
@@ -20,12 +21,13 @@ function oidcConfig(): OidcConfig {
 const clearTemp = { path: '/' };
 
 export const GET: RequestHandler = async ({ url, cookies }) => {
-	const state = cookies.get('oidc_state');
-	const nonce = cookies.get('oidc_nonce');
-	const codeVerifier = cookies.get('oidc_verifier');
-	cookies.delete('oidc_state', clearTemp);
-	cookies.delete('oidc_nonce', clearTemp);
-	cookies.delete('oidc_verifier', clearTemp);
+	const names = oidcTempCookieNames();
+	const state = cookies.get(names.state);
+	const nonce = cookies.get(names.nonce);
+	const codeVerifier = cookies.get(names.verifier);
+	cookies.delete(names.state, clearTemp);
+	cookies.delete(names.nonce, clearTemp);
+	cookies.delete(names.verifier, clearTemp);
 
 	if (!state || !nonce || !codeVerifier) redirect(303, '/login?error=oidc_state');
 

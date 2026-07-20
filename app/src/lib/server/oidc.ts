@@ -20,14 +20,30 @@ export type OidcClaims = { sub: string; email: string | null; name: string | nul
 
 const SCOPE = 'openid email profile';
 
-async function discover(cfg: OidcConfig): Promise<client.Configuration> {
-	return client.discovery(
+export const OIDC_DISCOVERY_TTL_MS = 10 * 60_000;
+
+// discovery() fetches the issuer metadata (and, transitively, JWKS) on every call; one
+// Configuration per client config is reusable across requests, so cache the in-flight
+// promise. TTL'd so an IdP metadata change is picked up without a restart.
+const discoveryCache = new Map<string, { at: number; config: Promise<client.Configuration> }>();
+
+function discover(cfg: OidcConfig): Promise<client.Configuration> {
+	const key = `${cfg.issuerUrl}|${cfg.clientId}|${cfg.clientSecret}|${cfg.allowInsecure ? 1 : 0}`;
+	const hit = discoveryCache.get(key);
+	if (hit && Date.now() - hit.at < OIDC_DISCOVERY_TTL_MS) return hit.config;
+	const config = client.discovery(
 		new URL(cfg.issuerUrl),
 		cfg.clientId,
 		undefined,
 		client.ClientSecretPost(cfg.clientSecret),
 		cfg.allowInsecure ? { execute: [client.allowInsecureRequests] } : undefined
 	);
+	discoveryCache.set(key, { at: Date.now(), config });
+	// never cache a failure; guard against evicting a newer entry for the same key
+	config.catch(() => {
+		if (discoveryCache.get(key)?.config === config) discoveryCache.delete(key);
+	});
+	return config;
 }
 
 /** Discover + build a PKCE + state + nonce authorize URL. Caller stashes the checks in cookies. */

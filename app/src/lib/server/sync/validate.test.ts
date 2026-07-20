@@ -37,6 +37,22 @@ describe('validate', () => {
 		const t = base(); t.droids[0].rarity = 'Ultra';
 		expect(rejectsOf(validate(t, [])).length).toBeGreaterThan(0);
 	});
+	it('holds a droidTiers row that references a droid missing from the reference tab', () => {
+		const t = base();
+		t.droidTiers.push({ droid: 'PHANTOM', tier: 'Base', buy: 1000, income: 2, sell: 700 });
+		const flags = validate(t, []);
+		expect(flags.some((f) => f.kind === 'hold' && f.code === 'unknown_droid' && f.key === 'PHANTOM/Base')).toBe(true);
+	});
+	it('does not flag known droids as unknown', () => {
+		expect(validate(base(), []).some((f) => f.code === 'unknown_droid')).toBe(false);
+	});
+	it('rejects negative buy/income/sell values in the tier grid', () => {
+		const t = base();
+		t.droidTiers[0].buy = -5;        // KX/Base
+		t.droidTiers[2].income = -1;     // IG/Base
+		const negs = rejectsOf(validate(t, [])).filter((f) => f.code === 'negative_value');
+		expect(negs.map((f) => f.key).sort()).toEqual(['IG/Base', 'KX/Base']);
+	});
 	it('reports orphaned counts when a referenced droid is absent', () => {
 		const flags = validate(base(), [{ droid: 'GONE', tier: 'Base', profileId: 7 }]);
 		expect(flags.some((f) => f.kind === 'report' && f.code === 'orphan_count' && f.message.includes('GONE'))).toBe(true);

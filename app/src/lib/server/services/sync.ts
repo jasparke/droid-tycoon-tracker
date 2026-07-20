@@ -101,7 +101,10 @@ export async function applyPayload(sql: Sql, input: { baseVersionId: number; pay
 export async function rollback(sql: Sql, versionId: number): Promise<{ versionId: number }> {
 	const rows = await sql`select payload, source from data_versions where id = ${versionId}`;
 	if (!rows[0]) throw new ApiError(404, 'not_found', `No version ${versionId}`);
-	const payload = rows[0].payload as Payload;
+	// legacy pre-autosync rows have payload NULL (the column is nullable; the invariant is
+	// code-only) — drizzle/backfill-payload.mjs exists to repair them.
+	const payload = rows[0].payload as Payload | null;
+	if (!payload?.tables) throw new ApiError(422, 'no_payload', `Version ${versionId} has no stored payload (legacy row) — run drizzle/backfill-payload.mjs, then retry`);
 	const checksum = checksumOf(payload.tables as unknown as Record<string, unknown[]>);
 	const active = await sql`select id from data_versions order by id desc limit 1`;
 	const baseVersionId = active[0]?.id ?? 0;
