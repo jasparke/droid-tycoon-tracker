@@ -38,12 +38,18 @@ export function nc(s: string): number {
 
 const TIER_WORDS: Record<string, Tier> = {
 	BASE: 'Base', BASIC: 'Base', DEFAULT: 'Base',
-	GOLD: 'Gold', DIAMOND: 'Diamond', RAINBOW: 'Rainbow', BESKAR: 'Beskar'
+	GOLD: 'Gold', DIAMOND: 'Diamond', RAINBOW: 'Rainbow', BESKAR: 'Beskar', GALACTIC: 'Galactic'
 };
 export function tierWord(s: string): Tier {
 	const t = TIER_WORDS[s.trim().toUpperCase()];
 	if (!t) throw new Error(`unknown tier word: ${s}`);
 	return t;
+}
+
+// The sheet writes unlock cells in ALL CAPS ("WORKER SLOT", "NONE"); the DB and
+// UI use title case ("Worker Slot", "None").
+export function unlockLabel(s: string): string {
+	return s.trim().toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 export function rarity(s: string): string {

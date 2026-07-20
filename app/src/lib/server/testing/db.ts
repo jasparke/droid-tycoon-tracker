@@ -40,8 +40,8 @@ export async function seedMinimalReference(sql: postgres.Sql) {
 		('R2-D2','Base',null,null,null), ('CB-23','Base',null,null,null)`;
 	await sql`insert into rebirth_reqs (cycle, rebirth, droid, tier, credits, unlock) values
 		(1,1,'CB','Base','10K','Worker Slot'), (1,2,'MOUSE','Gold','150K',null)`;
-	await sql`insert into chip_costs (rarity, to_gold, to_diamond, to_rainbow, to_beskar) values
-		('Common',5,25,40,80), ('Iconic',null,null,null,null)`;
+	await sql`insert into chip_costs (rarity, to_gold, to_diamond, to_rainbow, to_beskar, to_galactic) values
+		('Common',5,25,40,80,120), ('Iconic',null,null,null,null,null)`;
 	await sql`insert into rebirth_meta (rebirth, nova, credit_mult, xp_mult) values (12,11,22,110)`;
 	await sql`insert into droid_sell_values (rarity, tier, multiplier) values ('Common','Gold',4), ('Common','Beskar',13)`;
 	await sql`insert into flawless_spawn (tier, one_in) values ('Base',1000), ('Beskar',100)`;

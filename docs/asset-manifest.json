@@ -17,7 +17,8 @@
         "Gold",
         "Diamond",
         "Rainbow",
-        "Beskar"
+        "Beskar",
+        "Galactic"
       ],
       "iconicException": "Iconic-rarity droids are single-tier: they have no tier grid and cannot be chip-upgraded. Art exists only as {normName}_Default.webp — never generate Gold/Diamond/Rainbow/Beskar filenames for them."
     },
@@ -43,13 +44,13 @@
     }
   },
   "summary": {
-    "totalRequiredFiles": 316,
+    "totalRequiredFiles": 379,
     "categories": [
       {
         "id": "droid-art",
-        "need": 316,
+        "need": 379,
         "priority": "P0",
-        "status": "self-hosted 315/316 on main (PR #10); R2D2_Default.webp outstanding"
+        "status": "self-hosted 317/379; 62 Galactic-tier files outstanding (no source publishes them yet)"
       },
       {
         "id": "app-icons",
@@ -76,11 +77,11 @@
       "id": "droid-art",
       "title": "Droid tier art",
       "priority": "P0 — critical (bulk of the work)",
-      "status": "self-hosted on main (PR #10): 315/316; 1 outstanding",
+      "status": "self-hosted 317/379: 310 tiered (Base->Beskar) + 7 Iconic present. Galactic tier (62 files) added to the required universe but outstanding - no self-hostable source has galactic art yet. New Iconic C-3P0 added from erikpeik/droidex; R2-D2 was already present (stale outstanding flag cleared).",
       "action": "retrieve + self-host",
       "format": "webp",
-      "count": 316,
-      "grid": "62 tiered droids × 5 tiers + 6 Iconic droids × 1 (Iconics are single-tier)",
+      "count": 379,
+      "grid": "62 tiered droids x 6 tiers (Base, Gold, Diamond, Rainbow, Beskar, Galactic) + 7 Iconic droids x 1 (Iconics are single-tier)",
       "remoteBaseUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/",
       "localTargetDir": "app/static/assets/droids/",
       "attribution": "Community site droidtrakr.com — keep credit in README when self-hosting.",
@@ -3245,13 +3246,90 @@
           "type": "Astromech",
           "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2D2_Default.webp",
           "localTarget": "app/static/assets/droids/R2D2_Default.webp"
+        },
+        {
+          "filename": "C3P0_Default.webp",
+          "droid": "C-3P0",
+          "normName": "C3P0",
+          "tier": "Base",
+          "rarity": "Iconic",
+          "type": "Worker",
+          "remoteUrl": "https://raw.githubusercontent.com/erikpeik/droidex/main/public/droids/C-3P0_DEFAULT.png",
+          "localTarget": "app/static/assets/droids/C3P0_Default.webp"
         }
       ],
       "verified": {
-        "date": "2026-07-15",
-        "note": "Supersedes the 2026-07-09 sweep. That HEAD sweep reported 340/340 HTTP 200 but some 200s were fallback responses, not real images — the fetch session found droidtrakr serves 293 real files. With the corrected 316-file universe (Iconics single-tier), main now self-hosts 315.",
+        "date": "2026-07-19",
+        "note": "Galactic sweep. The GALACTIC variant tier is brand-new; NO self-hostable source publishes galactic droid art yet. droidtrakr.com returns HTTP 200 with an identical 13085-byte HTML fallback (sha256 81f61d6c...) for every *_Galactic.webp - verified across all 62 galactic names; droidex's authoritative GitHub repo (erikpeik/droidex, public/droids/) carries only Beskar/Default/Diamond/Gold/Rainbow PNGs, no galactic; hosted apps (droidex.web.app, droid-tycoon.pages.dev) return SPA shells for asset paths. New Iconic C3P0_Default.webp was obtained from erikpeik/droidex (C-3P0_DEFAULT.png), converted PNG->webp with cwebp -q90. R2D2_Default.webp was found already present on disk as real (low-res) art - the prior manifest's outstanding flag was stale; file left untouched, flag cleared. CAVEAT: both C-3P0 and the existing R2-D2 art are low-res (~130px) vs droidtrakr's 512x512 tiered art - quality-inferior; replace with 512px art when a source publishes it. C-3P0's 'type' field here is provisional (Worker) pending seed-data.json's canonical entry. Best lead for the 62 galactic files: re-poll the droidtrakr primary URL (https://droidtrakr.com/assets/droids/{normName}_Galactic.webp) - droidtrakr already shows a 'Galactic droid spawn' timer in-app, so it is expected to publish galactic art at the existing naming convention. Galactic files[] entries intentionally omitted until a real source exists (listing them now with dead remoteUrls would plant fallback landmines).",
+        "obtained": [
+          "C3P0_Default.webp (new Iconic, from erikpeik/droidex)"
+        ],
+        "alreadyPresent": [
+          "R2D2_Default.webp (stale outstanding flag cleared)"
+        ],
         "outstanding": [
-          "R2D2_Default.webp"
+          "2BB_Galactic.webp",
+          "ALT_Galactic.webp",
+          "AMPWALKER_Galactic.webp",
+          "ARG_Galactic.webp",
+          "B1BATTLE_Galactic.webp",
+          "B1HEAVY_Galactic.webp",
+          "B1SECURITY_Galactic.webp",
+          "B2HEAVY_Galactic.webp",
+          "B2RP_Galactic.webp",
+          "B2SUPER_Galactic.webp",
+          "BALCORE_Galactic.webp",
+          "BB9_Galactic.webp",
+          "BB_Galactic.webp",
+          "BDXEXPLORER_Galactic.webp",
+          "BU4D_Galactic.webp",
+          "CB_Galactic.webp",
+          "CYCLENS_Galactic.webp",
+          "CYCLOGRAV_Galactic.webp",
+          "DRFTR_Galactic.webp",
+          "DRK1PROBE_Galactic.webp",
+          "GONK_Galactic.webp",
+          "GROUNDMECH_Galactic.webp",
+          "GUNRUNNER_Galactic.webp",
+          "HAULR_Galactic.webp",
+          "HOVR_Galactic.webp",
+          "ID10_Galactic.webp",
+          "IG_Galactic.webp",
+          "IMPERIALPROBE_Galactic.webp",
+          "KX_Galactic.webp",
+          "LEP_Galactic.webp",
+          "LNGSHOT_Galactic.webp",
+          "LOADLIFTER_Galactic.webp",
+          "LO_Galactic.webp",
+          "MECHADROID_Galactic.webp",
+          "MONOWLKR_Galactic.webp",
+          "MOTRAK_Galactic.webp",
+          "MOUSE_Galactic.webp",
+          "NAVEX_Galactic.webp",
+          "OPTIPOD_Galactic.webp",
+          "OPTISTRK_Galactic.webp",
+          "ORBWALKER_Galactic.webp",
+          "PIT_Galactic.webp",
+          "PROTOROLLER_Galactic.webp",
+          "R2_Galactic.webp",
+          "R3_Galactic.webp",
+          "R4_Galactic.webp",
+          "R5_Galactic.webp",
+          "R6_Galactic.webp",
+          "R7_Galactic.webp",
+          "R8_Galactic.webp",
+          "R9_Galactic.webp",
+          "RIC1200_Galactic.webp",
+          "RIC_Galactic.webp",
+          "ROLLR_Galactic.webp",
+          "SENATEHOVERCAM_Galactic.webp",
+          "SENTRI_Galactic.webp",
+          "SNOWMOUSE_Galactic.webp",
+          "STRIKEORB_Galactic.webp",
+          "TRAKR_Galactic.webp",
+          "TRITEK_Galactic.webp",
+          "UTILTEC_Galactic.webp",
+          "VECTARM_Galactic.webp"
         ]
       },
       "sources": [

@@ -4,7 +4,7 @@ export type { Tier } from '$lib/game/tiers';   // re-export so sync modules impo
 export interface DroidRow { name: string; rarity: string; type: string; incomePct: number | null; buyNc: number | null; }
 export interface DroidTierRow { droid: string; tier: Tier; buy: number | null; income: number | null; sell: number | null; }
 export interface RebirthReqRow { cycle: number; rebirth: number; droid: string; tier: Tier; credits: string; unlock: string | null; }
-export interface ChipCostRow { rarity: string; toGold: number | null; toDiamond: number | null; toRainbow: number | null; toBeskar: number | null; }
+export interface ChipCostRow { rarity: string; toGold: number | null; toDiamond: number | null; toRainbow: number | null; toBeskar: number | null; toGalactic: number | null; }
 export interface RebirthMetaRow { rebirth: number; nova: number; creditMult: number; xpMult: number; }
 export interface NovaShopRow { category: string; item: string; level: number; cost: number; }
 export interface CosmeticRow { category: string; name: string; requirement: string; }

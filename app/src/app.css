@@ -22,6 +22,7 @@
 	--diamond: #4fd4ff; --diamond-bg: #082a38;
 	--rainbow: #ff6ad5; --rainbow-bg: #3a0a2c;
 	--beskar: #b8c4d4;  --beskar-bg: #242c38;
+	--galactic: #a06bff; --galactic-bg: #221040;
 	/* rarity — ROI-scoped exception, text-only elsewhere */
 	--rar-common: #c6d3e6; --rar-rare: #35c8ff; --rar-epic: #b07aff;
 	--rar-legendary: #ffc93f; --rar-mythic: #ff5c5c;
@@ -45,13 +46,14 @@ a:hover { color: #7fd9ff; }
 /* tier color language — legacy color-only classes (pre-redesign views) */
 .tier-Base { color: var(--base); } .tier-Gold { color: var(--gold); }
 .tier-Diamond { color: var(--diamond); } .tier-Rainbow { color: var(--rainbow); }
-.tier-Beskar { color: var(--beskar); }
+.tier-Beskar { color: var(--beskar); } .tier-Galactic { color: var(--galactic); }
 /* tier fg+bg pill pairs */
 .t-Base { color: var(--base); background: var(--base-bg); }
 .t-Gold { color: var(--gold); background: var(--gold-bg); }
 .t-Diamond { color: var(--diamond); background: var(--diamond-bg); }
 .t-Rainbow { color: var(--rainbow); background: var(--rainbow-bg); }
 .t-Beskar { color: var(--beskar); background: var(--beskar-bg); }
+.t-Galactic { color: var(--galactic); background: var(--galactic-bg); }
 
 .pill { border-radius: 99px; border: 1px solid currentColor; }
 .notch { clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }

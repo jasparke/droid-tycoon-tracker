@@ -12,6 +12,7 @@ describe('ownedIdx', () => {
 	it('returns highest owned tier index in the right cycle', () => {
 		expect(ownedIdx(counts, 1, 'CYCLO-GRAV')).toBe(3); // Rainbow
 		expect(ownedIdx(counts, 2, 'MOUSE')).toBe(4); // Beskar
+		expect(ownedIdx([{ cycle: 1, droid: 'R7', tier: 'Galactic', n: 1 }], 1, 'R7')).toBe(5); // Galactic
 	});
 	it('returns -1 when unowned in that cycle', () => {
 		expect(ownedIdx(counts, 2, 'CYCLO-GRAV')).toBe(-1);
@@ -62,15 +63,18 @@ describe('satisfyingIdx', () => {
 });
 
 describe('satisfyingIdxOf (per-tier array form)', () => {
-	// per = [Base, Gold, Diamond, Rainbow, Beskar]
+	// per = [Base, Gold, Diamond, Rainbow, Beskar, Galactic]
 	it('returns the lowest owned tier index at or above the requirement', () => {
-		expect(satisfyingIdxOf([1, 0, 2, 0, 0], 'Base')).toBe(0); // exact
-		expect(satisfyingIdxOf([1, 0, 2, 0, 0], 'Gold')).toBe(2); // no Gold, Diamond counts-as
-		expect(satisfyingIdxOf([0, 0, 0, 0, 1], 'Base')).toBe(4); // only Beskar
+		expect(satisfyingIdxOf([1, 0, 2, 0, 0, 0], 'Base')).toBe(0); // exact
+		expect(satisfyingIdxOf([1, 0, 2, 0, 0, 0], 'Gold')).toBe(2); // no Gold, Diamond counts-as
+		expect(satisfyingIdxOf([0, 0, 0, 0, 1, 0], 'Base')).toBe(4); // only Beskar
+		expect(satisfyingIdxOf([0, 0, 0, 0, 0, 1], 'Base')).toBe(5); // only Galactic
+		expect(satisfyingIdxOf([0, 0, 0, 0, 0, 2], 'Galactic')).toBe(5); // exact top tier
 	});
 	it('returns -1 when nothing at or above the requirement is owned', () => {
-		expect(satisfyingIdxOf([1, 0, 2, 0, 0], 'Rainbow')).toBe(-1);
-		expect(satisfyingIdxOf([0, 0, 0, 0, 0], 'Base')).toBe(-1);
+		expect(satisfyingIdxOf([1, 0, 2, 0, 0, 0], 'Rainbow')).toBe(-1);
+		expect(satisfyingIdxOf([0, 0, 0, 0, 0, 0], 'Base')).toBe(-1);
+		expect(satisfyingIdxOf([1, 1, 1, 1, 1, 0], 'Galactic')).toBe(-1); // Beskar does not satisfy Galactic
 	});
 	it('agrees with satisfyingIdx on the same data', () => {
 		const mouseRows: CountRow[] = [

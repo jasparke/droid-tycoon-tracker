@@ -71,7 +71,8 @@ export const chipCosts = pgTable('chip_costs', {
 	toGold: integer('to_gold'),             // nullable now: Iconic row is all-N/A
 	toDiamond: integer('to_diamond'),
 	toRainbow: integer('to_rainbow'),
-	toBeskar: integer('to_beskar')
+	toBeskar: integer('to_beskar'),
+	toGalactic: integer('to_galactic')
 });
 
 export const rebirthMeta = pgTable('rebirth_meta', {
@@ -104,12 +105,12 @@ export const dataVersions = pgTable('data_versions', {
 
 export const droidSellValues = pgTable('droid_sell_values', {
 	rarity: text('rarity').notNull(),
-	tier: text('tier').notNull(),           // Gold|Diamond|Rainbow|Beskar (no Base column in sheet)
+	tier: text('tier').notNull(),           // Gold|Diamond|Rainbow|Beskar|Galactic (no Base column in sheet)
 	multiplier: integer('multiplier').notNull()
 }, (t) => [primaryKey({ columns: [t.rarity, t.tier] })]);
 
 export const flawlessSpawn = pgTable('flawless_spawn', {
-	tier: text('tier').primaryKey(),        // Base|Gold|Diamond|Rainbow|Beskar
+	tier: text('tier').primaryKey(),        // Base|Gold|Diamond|Rainbow|Beskar (Galactic once the sheet publishes its odds)
 	oneIn: integer('one_in').notNull()      // probability = 1/oneIn
 });
 

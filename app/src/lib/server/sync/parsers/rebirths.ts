@@ -1,14 +1,14 @@
 import { toRows, cell } from '../csv';
-import { tierWord } from '../normalize';
+import { tierWord, unlockLabel } from '../normalize';
 import { resolveDroid } from '../aliases';
 import type { RebirthReqRow, Tier } from '../types';
 
 interface CycleCols { cycle: number; trans: number; credits: number; req: number; unlock: number | null; }
 const CYCLES: CycleCols[] = [
-	{ cycle: 1, trans: 10, credits: 11, req: 12, unlock: 14 },
-	{ cycle: 2, trans: 17, credits: 18, req: 19, unlock: null },
-	{ cycle: 3, trans: 23, credits: 24, req: 25, unlock: null },
-	{ cycle: 4, trans: 29, credits: 30, req: 31, unlock: null }
+	{ cycle: 1, trans: 11, credits: 12, req: 13, unlock: 15 },
+	{ cycle: 2, trans: 19, credits: 20, req: 21, unlock: null },
+	{ cycle: 3, trans: 26, credits: 27, req: 28, unlock: null },
+	{ cycle: 4, trans: 33, credits: 34, req: 35, unlock: null }
 ];
 
 function splitReq(s: string): { tier: Tier; droid: string } {
@@ -28,11 +28,12 @@ export function parseRebirths(csv: string): { rebirthReqs: RebirthReqRow[] } {
 		let rebirth = 0;
 		for (let i = 2; i < r.length; i++) {
 			const trans = cell(r[i], c.trans).trim();
-			const m = /^(\d+)->(\d+)$/.exec(trans);
+			const m = /^(\d+)\s*->\s*(\d+)$/.exec(trans); // sheet writes "1 ->2" (stray space)
 			if (m) {
 				rebirth = parseInt(m[2], 10);
 				const credits = stripCredits(cell(r[i], c.credits));
-				const unlock = c.unlock !== null ? (cell(r[i], c.unlock).trim() || null) : null;
+				const rawUnlock = c.unlock !== null ? cell(r[i], c.unlock).trim() : '';
+				const unlock = rawUnlock ? unlockLabel(rawUnlock) : null;
 				// group of exactly 3: this row + next 2
 				for (let g = 0; g < 3; g++) {
 					const reqCell = cell(r[i + g], c.req).trim();

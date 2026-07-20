@@ -2,6 +2,7 @@ import type { Db } from '../db';
 import { counts, droids, plans, profiles } from '../schema';
 import { ApiError } from '../api-error';
 import { isTier } from '$lib/game/tiers';
+import { MAX_REBIRTH } from '$lib/game/requirements';
 
 type PrototypeProfile = {
 	name?: string; cycle?: number; current?: number;
@@ -48,7 +49,7 @@ export async function importCode(db: Db, userId: number, code: string) {
 			const cycle = Number(cy);
 			if (!Number.isInteger(cycle)) return [];
 			return (Array.isArray(arr) ? arr : [])
-				.filter((r) => Number.isInteger(r) && r >= 1 && r <= 27)
+				.filter((r) => Number.isInteger(r) && r >= 1 && r <= MAX_REBIRTH)
 				.map((rebirth) => ({ profileId: p.id, cycle, rebirth }));
 		});
 		if (planRows.length) await tx.insert(plans).values(planRows);
