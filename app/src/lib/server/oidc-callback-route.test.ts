@@ -34,11 +34,14 @@ const mintSession = vi.mocked(createSession);
 
 const CLAIMS = { sub: 'goog-1', email: 'a@example.com', name: 'Ada' };
 
+// prod uses __Host- names (dev can't: the prefix requires https); jar keys follow envState.dev
+const cookieName = (base: string) => (envState.dev ? base : `__Host-${base}`);
+
 function makeEvent(url = 'http://localhost:4173/api/auth/oidc/callback?code=c&state=state-abc') {
 	const jar = new Map([
-		['oidc_state', 'state-abc'],
-		['oidc_nonce', 'nonce-def'],
-		['oidc_verifier', 'verifier-xyz']
+		[cookieName('oidc_state'), 'state-abc'],
+		[cookieName('oidc_nonce'), 'nonce-def'],
+		[cookieName('oidc_verifier'), 'verifier-xyz']
 	]);
 	const setCalls: Array<{ name: string; value: string; opts: Record<string, unknown> }> = [];
 	const cookies = {
@@ -47,7 +50,7 @@ function makeEvent(url = 'http://localhost:4173/api/auth/oidc/callback?code=c&st
 		set: (n: string, value: string, opts: Record<string, unknown>) =>
 			void setCalls.push({ name: n, value, opts })
 	};
-	return { event: { url: new URL(url), cookies }, setCalls };
+	return { event: { url: new URL(url), cookies }, setCalls, jar };
 }
 
 const callGET = (event: unknown) => GET(event as Parameters<typeof GET>[0]);
@@ -71,6 +74,13 @@ describe('GET /api/auth/oidc/callback error handling', () => {
 		await expect(callGET(event)).rejects.toMatchObject({ status: 303, location: '/checklist' });
 		expect(setCalls).toHaveLength(1);
 		expect(setCalls[0]).toMatchObject({ name: 'session', value: 'tok' });
+	});
+
+	it('in production the temp cookies are read and cleared under their __Host- names', async () => {
+		const { event, jar } = makeEvent();
+		await expect(callGET(event)).rejects.toMatchObject({ status: 303, location: '/checklist' });
+		expect(exchange.mock.calls[0][2]).toEqual({ state: 'state-abc', nonce: 'nonce-def', codeVerifier: 'verifier-xyz' });
+		expect([...jar.keys()]).toHaveLength(0); // all three deleted under the prefixed names
 	});
 
 	it('a user-upsert failure redirects to /login?error=oidc_internal instead of a raw 500', async () => {
