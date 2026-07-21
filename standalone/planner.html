@@ -321,7 +321,6 @@ const CHIPCLASS={Common:[5,25,40,80],Rare:[30,60,100,250],Epic:[120,180,240,5000
 const CHIPS=Object.entries(CHIPCLASS).map(([c,a])=>[c,a,a.reduce((x,y)=>x+y,0)]);
 const FLAWLESS=["1/1000","1/500","1/250","1/125","1/100"];   // flawless spawn odds by tier Base..Beskar
 const CHIP_REFUND={Common:[4,7,10,13],Rare:[6,9,12,15],Epic:[30,33,36,39],Legendary:[84,87,90,93],Mythic:[192,195,198,201]}; // chips returned when selling Gold/Diamond/Rainbow/Beskar
-function refundAt(name,idx){const m=dmeta(name);if(!m||idx<1)return null;const a=CHIP_REFUND[m.cls];return a?a[idx-1]:null;}
 const UNLOCKS=["Worker Slot","Astromech Slot","Battle Slot","Worker Slot","Astromech Slot","Battle Slot","Worker Slot","Astromech Slot","Battle Slot","Worker Slot","Astromech Slot","Worker Slot","Astromech Slot","Worker Slot","Astromech Slot","Worker Slot","Lounge Slot","Lounge Slot","Lounge Slot","Lounge Slot"];
 const CHIPICON='<svg class="chipi" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true"><rect x="6.5" y="6.5" width="11" height="11" rx="2.5" fill="currentColor"/><g stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9 3.5v3M15 3.5v3M9 17.5v3M15 17.5v3M3.5 9h3M3.5 15h3M17.5 9h3M17.5 15h3"/></g></svg>';
 // Nova Shop upgrade costs (nova crystals per level) + cosmetics, from dev sheet
@@ -339,7 +338,6 @@ const TIERHEX={Base:"#cfd8e6",Gold:"#ffcf3f",Diamond:"#4fd0ff",Rainbow:"#ff6ad5"
 const RARRANK={Common:0,Rare:1,Epic:2,Legendary:3,Mythic:4,Iconic:5};
 function hexA(hex,a){const m=/^#?([0-9a-f]{6})$/i.exec(hex||"");if(!m)return hex;const n=parseInt(m[1],16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;}
 const CHIP_ABBR={Common:"Com",Rare:"Rare",Epic:"Epic",Legendary:"Leg",Mythic:"Myth"};
-function cumCost(steps,tgt){let c=0;for(let i=0;i<tgt;i++)c+=steps[i];return c;} // chips Base→target rarity
 
 // ===================== CYCLE DATA (RB1-27) =====================
 // rarity tokens: B=Base G=Gold D=Diamond R=Rainbow K=Beskar
@@ -569,21 +567,8 @@ function importProfile(code){
   profs.forEach(p=>{ DB.seq=(DB.seq||1)+1; const id="p"+DB.seq; const np=normProfile(Object.assign(blankProfile(p.name||"Imported"),p)); DB.profiles[id]=np; DB.active=id; state=np; });
   save(); renderAll(); return profs.length;
 }
-function doRebirth(){ if(getProgress()<MAXRB){setProgress(getProgress()+1);save();renderAll();} }
-const key=(cy,n,d,r)=>`${cy}|${n}|${d}|${r}`;
 const cur=()=>CYCLES[state.cycle];
 
-function droidMap(cy){
-  const map={};
-  CYCLES[cy].forEach(rb=>rb.r.forEach(([d,rar])=>{
-    const id=d.toUpperCase();
-    if(!map[id]) map[id]={name:d,reqs:[]};
-    map[id].reqs.push({lv:rb.n,rar,d});
-  }));
-  Object.values(map).forEach(m=>{m.reqs.sort((a,b)=>a.lv-b.lv);
-    m.future=m.reqs.filter(q=>q.lv>getProgress()); m.nextLv=m.future.length?m.future[0].lv:Infinity;});
-  return map;
-}
 
 // global index of every droid across all 4 cycles
 let GMAP=null;
@@ -599,9 +584,6 @@ function gmap(){
   return GMAP;
 }
 
-// ===================== SEARCH =====================
-const searchEl={value:"",addEventListener(){},focus(){}};   // global search stripped in the standalone planner
-const panelEl={classList:{contains(){return true},add(){},remove(){}},innerHTML:""};
 const normName=n=>String(n).toUpperCase().replace(/[^A-Z0-9]/g,'');
 // ---- image cache: pulls each droid image once, stores bytes in IndexedDB, serves offline thereafter ----
 const IMG_REMOTE="https://droidtrakr.com/droid-tycoon/assets/droids/";
@@ -701,86 +683,6 @@ const DM_FULL=[
 const DMETA={};
 DM_FULL.forEach(([n,type,cls,inc,cost,val])=>{DMETA[n.toUpperCase().replace(/[^A-Z0-9]/g,"")]={name:n,type,cls,inc,cost,val};});
 function dmeta(name){return DMETA[String(name).toUpperCase().replace(/[^A-Z0-9]/g,"")]||null;}
-function fmtBig(n){if(n==null)return null;const a=Math.abs(n),f=(v,s)=>(+v.toFixed(2))+s; if(a>=1e12)return f(n/1e12,"t"); if(a>=1e9)return f(n/1e9,"b"); if(a>=1e6)return f(n/1e6,"m"); if(a>=1e3)return f(n/1e3,"k"); return ""+n;}
-function earnAt(name,idx){const m=dmeta(name); if(!m||m.inc[idx]==null)return null; return fmtBig(m.inc[idx])+"/s";}
-function chipAt(name,idx){const m=dmeta(name); if(!m||idx>=4)return null; const a=CHIPCLASS[m.cls]; return a?a[idx]:null;}
-function sellAt(name,idx){const m=dmeta(name); return m?m.val[idx]:null;}
-function buyAt(name,idx){const m=dmeta(name); return m?m.cost[idx]:null;}
-function costStack(idx){            // per-step chips to upgrade OUT of this tier, colored as the next tier
-  if(idx>=4) return "";            // Beskar is max; nothing to upgrade to
-  return `<div class="cost" style="color:${RC[TIERS[idx+1]]}">${CHIPS.map(([cls,steps])=>`<div><span>${CHIP_ABBR[cls]}</span> ${steps[idx].toLocaleString()}</div>`).join("")}</div>`;
-}
-const SLBL={need:'Needed',done:'Done — sellable',other:'Not this cycle'};
-const ORD={need:0,done:1,other:2};
-function droidInfo(m){
-  const cyReqs=m.byCycle[state.cycle]||[];
-  const future=cyReqs.filter(x=>x.lv>getProgress());
-  const cls=future.length?'need':(cyReqs.length?'done':'other');
-  return {cyReqs,cls,nextLv:future.length?Math.min(...future.map(x=>x.lv)):Infinity};
-}
-function tierCols(name,cyReqs){
-  return TIERS.map((tier,idx)=>{
-    const atTier=cyReqs.filter(x=>x.rar===tier).map(x=>x.lv).sort((a,b)=>a-b);
-    let reqLv=null,needed=false;
-    if(atTier.length){const fut=atTier.filter(l=>l>getProgress()); if(fut.length){reqLv=fut[0];needed=true;} else {reqLv=atTier[atTier.length-1];}}
-    const met=isMet(state.cycle,name,tier), cnt=countAt(state.cycle,name,tier);
-    let tag;
-    if(reqLv!=null) tag=`<span class="rtag ${needed?'need':'past'}">${met?'✓ ':''}R${reqLv}</span>`;
-    else tag=`<span class="rtag ${met?'have':'none'}">${met?'✓':'·'}</span>`;
-    const cls="pcol"+(met?" got":"")+(cnt>0?" hascnt":"");
-    const buy=buyAt(name,idx), sell=sellAt(name,idx), rf=refundAt(name,idx);
-    const tip=`${name} · ${tier}${buy!=null?' · buy '+fmtBig(buy):''}${sell!=null?' · sell '+fmtBig(sell):''}${rf!=null?' · '+rf+' chips back':''} · spawn ${FLAWLESS[idx]}`;
-    const e=earnAt(name,idx);
-    const earn=e?`<div class="earn">${e}</div>`:`<div class="earn dim">—</div>`;
-    const c=chipAt(name,idx);   // chips to upgrade OUT of this tier (droid's own class); null at Beskar/unknown
-    const cost=c!=null?`<div class="cost1" style="color:${RC[TIERS[idx+1]]}">${c.toLocaleString()}${CHIPICON}</div>`:`<div class="cost1 dim">—</div>`;
-    const qpill=`<span class="qpill"><button class="qbtn" data-qt="-|${state.cycle}|${name}|${tier}" title="Remove one ${tier}">−</button><span class="qn${cnt>0?' pos':''}">${cnt}</span><button class="qbtn" data-qt="+|${state.cycle}|${name}|${tier}" title="Add one ${tier}">+</button></span>`;
-    return `<div class="${cls}" title="${tip}">${droidImg(name,tier,'')}<span class="pchip ${tier}">${tier}</span>${tag}${earn}${cost}${qpill}</div>`;
-  }).join("");
-}
-function droidCard(m){
-  const {cyReqs,cls,nextLv}=droidInfo(m);
-  const sub=cls==='need'?` · next R${nextLv}`:'';
-  const oi=ownedIdx(state.cycle,m.name), tot=totalOf(state.cycle,m.name);
-  const md=dmeta(m.name);
-  const meta=md?`<span class="cmeta ${md.cls}">${md.cls}${md.type?' · '+md.type:''}</span>`:'';
-  const headRar=(cyReqs[0]&&cyReqs[0].rar)||(oi>=0?TIERS[oi]:'Default');
-  const have=oi>=0?`<span class="have">have ${TIERS[oi]}${tot>1?' · '+tot+' total':''}</span>`:'';
-  return `<div class="pitem"><div class="ptop">${droidImg(m.name,headRar,'nameimg')}<span class="pname">${m.name}</span>${meta}${have}
-    <span class="pstatus ${cls}">${SLBL[cls]}${sub}</span></div>
-    <div class="pchips">${tierCols(m.name,cyReqs)}</div></div>`;
-}
-function renderSearch(){
-  const q=searchEl.value.trim().toUpperCase();
-  if(!q){panelEl.classList.add('hidden');panelEl.innerHTML="";return;}
-  let items=Object.values(gmap()).filter(m=>m.name.toUpperCase().includes(q)).map(m=>({m,...droidInfo(m)}));
-  if(!items.length){panelEl.innerHTML=`<div class="pempty">No droid matching “${searchEl.value}” in any cycle.</div>`;panelEl.classList.remove('hidden');return;}
-  items.sort((a,b)=>{const sa=a.m.name.toUpperCase().startsWith(q)?0:1,sb=b.m.name.toUpperCase().startsWith(q)?0:1;return ORD[a.cls]-ORD[b.cls]||sa-sb||a.nextLv-b.nextLv||a.m.name.localeCompare(b.m.name);});
-  panelEl.innerHTML=items.slice(0,10).map(it=>droidCard(it.m)).join("");
-  panelEl.classList.remove('hidden');
-}
-function renderAllDroids(){
-  const host=document.getElementById('alldroids');
-  let items=Object.values(gmap()).map(m=>({m,...droidInfo(m)}));
-  items.sort((a,b)=>ORD[a.cls]-ORD[b.cls]||a.nextLv-b.nextLv||a.m.name.localeCompare(b.m.name));
-  host.innerHTML=`<div class="sub" style="display:block;margin:0 0 12px">${items.length} droids · ${CYCLE_LABEL[state.cycle]} · needed-first</div>`+
-    items.map(it=>droidCard(it.m)).join("");
-}
-function renderInventory(){
-  const host=document.getElementById('inventory');
-  const owned=Object.values(gmap()).filter(m=>ownedIdx(state.cycle,m.name)>=0)
-    .sort((a,b)=>ownedIdx(state.cycle,b.name)-ownedIdx(state.cycle,a.name)||a.name.localeCompare(b.name));
-  if(!owned.length){host.innerHTML=`<div class="pempty">No droids owned yet in ${CYCLE_LABEL[state.cycle]}. Click any rarity in <b>All Droids</b> or search to add it here.</div>`;return;}
-  const total=owned.reduce((s,m)=>s+totalOf(state.cycle,m.name),0);
-  const byCls={}; let worth=0;
-  owned.forEach(m=>{const md=dmeta(m.name); const tt=totalOf(state.cycle,m.name);
-    if(md) byCls[md.cls]=(byCls[md.cls]||0)+tt;
-    TIERS.forEach((t,ti)=>{const c=countAt(state.cycle,m.name,t); if(c){const sv=sellAt(m.name,ti); if(sv!=null) worth+=sv*c;}});});
-  const order=["Common","Rare","Epic","Legendary","Mythic","Iconic"];
-  const brk=order.filter(c=>byCls[c]).map(c=>`${byCls[c]} ${c}`).join(' · ');
-  host.innerHTML=`<div class="sub" style="display:block;margin:0 0 12px">${owned.length} droids · ${total} copies${worth?' · sell worth '+fmtBig(worth):''}${brk?' — '+brk:''} · use −/+ per tier</div>`+
-    owned.map(m=>droidCard(m)).join("");
-}
 const PLAN_SORTS={tier:"Tier / rarity",rb:"Order needed",alpha:"Alphabetical"};
 const PLAN_GROUPS={sell:"Sellability",tier:"Tier",rb:"Rebirth level",none:"None"};
 const PLAN_COLS=[3,4,5,6,7,8,10];   // max cards per row
@@ -998,44 +900,7 @@ function openAddPicker(btn){
     const d=b.dataset.add; if(!state.planAdd)state.planAdd={}; const arr=state.planAdd[cy]||(state.planAdd[cy]=[]); if(!arr.includes(d))arr.push(d); save(); closePlanPop(); renderPlanner();});
   armPlanPop(); setTimeout(()=>inp.focus(),0);
 }
-searchEl.addEventListener('input',renderSearch);
-searchEl.addEventListener('focus',renderSearch);
-document.addEventListener('mousedown',e=>{if(!e.target.closest('.searchwrap'))panelEl.classList.add('hidden');});
 
-// ===================== HOVER CARD (checklist / keepers) =====================
-const hover=document.createElement('div'); hover.className='hovercard'; hover.style.display='none'; document.body.appendChild(hover);
-function placeHover(x,y){
-  const w=hover.offsetWidth,h=hover.offsetHeight,pad=12;
-  let left=x+16; if(left+w>window.innerWidth-pad) left=x-w-16; if(left<pad) left=pad;
-  let top=y+16;  if(top+h>window.innerHeight-pad) top=y-h-16; if(top<pad) top=pad;
-  hover.style.left=left+'px'; hover.style.top=top+'px';
-}
-function showHover(name,x,y){
-  const m=gmap()[String(name).toUpperCase()];
-  if(!m){hideHover();return;}
-  hover.innerHTML=droidCard(m);
-  hover.style.display='block';
-  placeHover(x,y);
-}
-function hideHover(){hover.style.display='none';}
-let hoverTimer=null, hideTimer=null, hoverName=null, hx=0, hy=0;
-const HOVER_DELAY=500, HIDE_GRACE=250;   // grace lets the pointer cross the gap onto the card
-function scheduleHover(name,x,y){
-  hx=x; hy=y;
-  if(name===hoverName){ clearTimeout(hideTimer); return; }   // same droid: card stays where it appeared
-  clearTimeout(hoverTimer); clearTimeout(hideTimer); hoverName=name; hideHover();
-  hoverTimer=setTimeout(()=>{ showHover(hoverName,hx,hy); }, HOVER_DELAY);
-}
-function cancelHover(){ clearTimeout(hoverTimer); clearTimeout(hideTimer); hoverTimer=null; hoverName=null; hideHover(); }
-function refreshHover(){ if(hover.style.display==='block'&&hoverName){ const m=gmap()[String(hoverName).toUpperCase()]; if(m) hover.innerHTML=droidCard(m); } }
-document.addEventListener('mouseover',e=>{const el=e.target.closest('[data-droid]'); if(el) scheduleHover(el.dataset.droid,e.clientX,e.clientY);});
-document.addEventListener('mousemove',e=>{
-  if(e.target.closest('.hovercard')){ clearTimeout(hideTimer); clearTimeout(hoverTimer); return; }  // interacting with the card: keep it
-  const el=e.target.closest('[data-droid]');
-  if(!el){ clearTimeout(hoverTimer); clearTimeout(hideTimer); hideTimer=setTimeout(cancelHover,HIDE_GRACE); return; }
-  clearTimeout(hideTimer);
-  hx=e.clientX; hy=e.clientY;   // card is placed once at show time; it no longer follows the cursor
-});
 
 // ===================== RENDER =====================
 function renderControls(){
@@ -1047,121 +912,6 @@ function renderControls(){
   if(sel&&!sel.options.length)for(let i=0;i<=MAXRB;i++){const o=document.createElement('option');o.value=i;o.textContent="R"+i;sel.appendChild(o);}
   if(sel)sel.value=getProgress();
   const ub=document.getElementById('undoBtn'); if(ub) ub.disabled=!undoAvailable();
-}
-function renderStats(){
-  const active=getProgress()+1;   // current = your level (rebirths done); active = the one you're working toward
-  let fTot=0,fDone=0,aTot=0,aDone=0,n2Tot=0,n2Done=0;
-  cur().forEach(rb=>rb.r.forEach(([d,r])=>{
-    const on=isMet(state.cycle,d,r);
-    if(rb.n>getProgress()){fTot++;if(on)fDone++;}
-    if(rb.n===active){aTot++;if(on)aDone++;}
-    if(rb.n===active+1||rb.n===active+2){n2Tot++;if(on)n2Done++;}
-  }));
-  const atMax=getProgress()>=MAXRB;
-  document.getElementById('stats').innerHTML=`
-    <div class="stat btn" id="rbBtn" title="${atMax?'At max rebirth':'Advance to the next rebirth'}">
-      <div class="num">R${getProgress()}${atMax?'':' ▶'}</div>
-      <div class="lbl">${atMax?'Max rebirth':'Tap to Rebirth → R'+(getProgress()+1)}</div>
-      <div class="bar"><i style="width:${getProgress()/MAXRB*100}%"></i></div></div>
-    <div class="stat"><div class="num">${aDone}/${aTot}</div><div class="lbl">Next (R${active})</div><div class="bar"><i style="width:${aTot?aDone/aTot*100:0}%"></i></div></div>
-    <div class="stat"><div class="num">${n2Done}/${n2Tot}</div><div class="lbl">Then${n2Tot?` (R${active+1}–${Math.min(active+2,MAXRB)})`:''}</div><div class="bar"><i style="width:${n2Tot?n2Done/n2Tot*100:0}%"></i></div></div>
-    <div class="stat"><div class="num">${fDone}/${fTot}</div><div class="lbl">Ahead (R${active}+)</div><div class="bar"><i style="width:${fTot?fDone/fTot*100:0}%"></i></div></div>`;
-  const b=document.getElementById('rbBtn'); if(b&&!atMax) b.onclick=doRebirth;
-}
-function metaLine(n){
-  let bits=[`<b>${CR[n-1]}</b> credits`];
-  if(NOVA[n]) bits.push(`<span class="nova">${NOVA[n]} nova</span>`);
-  if(CRED[n]) bits.push(`<span class="cr">+${CRED[n]}% cr</span>`);
-  if(XP[n]) bits.push(`<span class="xp">+${XP[n]}% xp</span>`);
-  if(UNLOCKS[n-1]) bits.push(`<span class="unlk">unlocks ${UNLOCKS[n-1]}</span>`);
-  return bits.join(" · ");
-}
-function rbCardEl(rb){
-  const active=getProgress()+1, reached=rb.n<=getProgress();
-  const cnt=rb.r.filter(([d,r])=>isMet(state.cycle,d,r)).length;
-  const done=reached||cnt===rb.r.length;
-  const isActive=rb.n===active, isThen=rb.n===active+1;
-  const label=isActive?'<div style="color:var(--accent)">Next rebirth · you are here</div>':(isThen?'<div style="color:var(--muted)">Then</div>':(reached?'<div style="color:var(--muted)">Reached</div>':''));
-  const el=document.createElement('div');
-  el.className="rb"+(done?" done":"")+(isActive?" current":"");
-  el.innerHTML=`
-    <div class="rb-head">
-      <div class="rb-num">${rb.n}<small>REBIRTH</small></div>
-      <div class="rb-meta">${metaLine(rb.n)}${label}</div>
-      <div class="rb-prog">${reached?'':cnt+'/3'}</div><div class="rb-check">${done?'✓':''}</div>
-    </div>
-    <div class="reqs">${rb.r.map(([d,r])=>{const oi=ownedIdx(state.cycle,d),ri=RIDX[r],on=oi>=ri;
-      const pill=`<span class="tag ${r} havepill${on?' met':''}">${r}</span>`;   // right pill = REQUIRED tier (never flips on click)
-      return `<div class="req${on?' on':''}" data-own="${state.cycle}|${d}|${r}" data-droid="${d}"><div class="box">${on?'✓':''}</div>${droidImg(d,r,'')}<span class="dname" style="color:${oi>=0?RC[TIERS[oi]]:'var(--txt)'}" title="requires ${r}${oi>=0?' · have '+TIERS[oi]:''}">${d}</span>${pill}</div>`;}).join("")}</div>`;
-  return el;
-}
-function renderRebirths(){
-  const host=document.getElementById('rebirths');host.innerHTML="";
-  if(!state.gapsOpen) state.gapsOpen={};
-  let run=[];
-  const flushRun=()=>{
-    if(!run.length)return;
-    const gF=run[0].n, gL=run[run.length-1].n, rng=gF===gL?'R'+gF:'R'+gF+'–R'+gL, open=!!state.gapsOpen[gF];
-    const word=gF>getProgress()?'ready':'complete';   // ahead but fully owned = ready; at/before current = complete
-    if(open){
-      const rows=run.map(rb=>`<div class="gap-row"><span class="gap-lv">R${rb.n}</span>${rb.r.map(([d,r])=>`<span class="npill ${r}" data-own="${state.cycle}|${d}|${r}" title="click to toggle owned">${droidImg(d,r,'pimg')}${d}</span>`).join("")}</div>`).join("");
-      host.insertAdjacentHTML('beforeend',`<div class="gap open"><div class="gap-hd" data-gap="${gF}"><div class="gap-title">▾ ${rng} ${word}</div><div class="gap-sub">don't sell these · click to collapse</div></div><div class="gap-grid">${rows}</div></div>`);
-    }else{
-      host.insertAdjacentHTML('beforeend',`<div class="gap"><div class="gap-hd" data-gap="${gF}"><div class="gap-title">▸ ${rng} ${word}</div><div class="gap-sub">don't sell these · click to view</div></div></div>`);
-    }
-    run=[];
-  };
-  const active=getProgress()+1;
-  cur().forEach(rb=>{
-    const reached=rb.n<=getProgress();
-    const cnt=rb.r.filter(([d,r])=>isMet(state.cycle,d,r)).length;
-    const done=reached||cnt===rb.r.length;
-    if(state.hidePast&&done&&rb.n!==active){ run.push(rb); return; }   // reached history + ready future → collapsible gap; active always shown
-    flushRun();
-    host.appendChild(rbCardEl(rb));
-  });
-  flushRun();
-  if(!host.children.length) host.innerHTML=`<div class="pempty">Nothing left in this cycle. 🎉</div>`;
-}
-function renderKeepers(){
-  const host=document.getElementById('keepers');host.innerHTML="";
-  const intro=document.createElement('div');intro.className="sub";intro.style.margin="0 0 14px";
-  intro.textContent=`Droids still needed in ${CYCLE_LABEL[state.cycle]} from Rebirth ${getProgress()+1} onward, ordered by when they're next required. Gold badge = needed 4+ times.`;
-  host.appendChild(intro);
-  const model=Object.values(droidMap(state.cycle)).filter(m=>m.future.length>0).sort((a,b)=>a.nextLv-b.nextLv||a.name.localeCompare(b.name));
-  if(!model.length){const e=document.createElement('div');e.className="pempty";e.textContent="Nothing left in this cycle. 🎉";host.appendChild(e);return;}
-  model.forEach(m=>{
-    const priority=m.future.length>=4;
-    const card=document.createElement('div');card.className="kcard";card.dataset.droid=m.name;
-    const headRar=(m.future[0]||m.reqs[0]).rar;
-    card.innerHTML=`<div class="ktop">${droidImg(m.name,headRar,'kimg')}<span class="kname">${m.name}</span>${priority?'<span class="priority">High value</span>':''}<span class="knext">next: Rebirth ${m.nextLv}</span></div>
-      <div class="pips">${m.reqs.map(q=>{const on=isMet(state.cycle,q.d,q.rar);const past=q.lv<=getProgress();
-        return `<span class="pip ${q.rar}${on?' on':''}" style="${past?'opacity:.4':''}" data-own="${state.cycle}|${q.d}|${q.rar}">${on?'✓ ':''}${q.rar} <span class="lv">R${q.lv}</span></span>`;}).join("")}</div>`;
-    host.appendChild(card);
-  });
-}
-function renderChips(){
-  const t=document.getElementById('chipTable');
-  t.innerHTML=`<tr><th>Class</th><th>→Gold</th><th>→Diamond</th><th>→Rainbow</th><th>→Beskar</th><th>Total</th></tr>`+
-    CHIPS.map(([cls,a,tot])=>`<tr><td class="cls">${cls}</td>${a.map(x=>`<td>${x.toLocaleString()}</td>`).join("")}<td class="tot">${tot.toLocaleString()}</td></tr>`).join("");
-}
-function renderRef(){
-  let h=`<div class="refsec"><div class="refh">Flawless spawn odds</div><div class="refrow flw">${TIERS.map((t,i)=>`<span>${t} <b>${FLAWLESS[i]}</b></span>`).join("")}</div></div>`;
-  for(const grp in NOVASHOP){
-    h+=`<div class="refsec"><div class="refh">Nova shop — ${grp} <span style="color:var(--muted);font-weight:600">(crystals per level)</span></div>`;
-    h+=NOVASHOP[grp].map(([n,arr])=>`<div class="refrow"><span class="refn">${n}</span><span class="refv">${arr.join(" · ")}</span></div>`).join("");
-    h+=`</div>`;
-  }
-  h+=`<div class="refsec"><div class="refh">Cosmetics — unlock requirements</div>`+
-    COSMETICS.map(([n,r])=>`<div class="refrow"><span class="refn">${n}</span><span class="refv">${r}</span></div>`).join("")+`</div>`;
-  document.getElementById('refBody').innerHTML=h;
-}
-function renderActiveView(){
-  if(state.view==='rebirths')renderRebirths();
-  else if(state.view==='keepers')renderKeepers();
-  else if(state.view==='inv')renderInventory();
-  else if(state.view==='plan')renderPlanner();
-  else renderAllDroids();
 }
 function renderAll(){
   renderControls();
@@ -1195,16 +945,6 @@ document.getElementById('cycleBtns').addEventListener('click',e=>{const b=e.targ
 document.getElementById('curSel').addEventListener('change',e=>{setProgress(+e.target.value);save();renderPlanner();});
 document.getElementById('rebirthBtn').addEventListener('click',()=>{if(getProgress()<MAXRB){setProgress(getProgress()+1);save();renderAll();}});
 
-// −/+ per tier : adjust how many copies you own at that exact tier (search / all / inventory)
-document.addEventListener('click',e=>{
-  const b=e.target.closest('[data-qt]');
-  if(!b) return;
-  e.stopPropagation();
-  const [op,cy,d,t]=b.dataset.qt.split('|');
-  if(op==='+') addAt(+cy,d,t); else subAt(+cy,d,t);
-  save(); renderStats(); renderActiveView(); refreshHover();
-  if(searchEl.value.trim() && !panelEl.classList.contains('hidden')) renderSearch();
-});
 // Planner: tick rebirth levels to include in the combined-needs summary
 document.addEventListener('change',e=>{
   const c=e.target.closest('[data-plan]');
@@ -1215,16 +955,7 @@ document.addEventListener('change',e=>{
   const i=arr.indexOf(n); if(i>=0)arr.splice(i,1); else arr.push(n);
   save(); renderPlanner();
 });
-// click a completed-gap marker to expand/collapse the hidden levels inline
-document.addEventListener('click',e=>{
-  const g=e.target.closest('[data-gap]');
-  if(!g) return;
-  const id=+g.dataset.gap;
-  if(!state.gapsOpen) state.gapsOpen={};
-  if(state.gapsOpen[id]) delete state.gapsOpen[id]; else state.gapsOpen[id]=true;
-  save(); renderRebirths();
-});
-// click any rarity (checklist req, search panel, All Droids, Inventory, keeper pip) to toggle owning that droid at that rarity
+// click any rarity pip in the planner (cards + sellable list) to toggle owning that droid at that rarity
 document.addEventListener('click',e=>{
   if(e.target.closest('[data-qt]')) return;   // −/+ buttons handle their own clicks
   if(e.target.closest('[data-rm]')) return;   // remove-from-plan × handles itself

@@ -73,7 +73,16 @@ describe('GET /api/auth/oidc/callback error handling', () => {
 		const { event, setCalls } = makeEvent();
 		await expect(callGET(event)).rejects.toMatchObject({ status: 303, location: '/checklist' });
 		expect(setCalls).toHaveLength(1);
+		expect(setCalls[0]).toMatchObject({ name: cookieName('session'), value: 'tok' });
+		expect(setCalls[0].opts).toMatchObject({ path: '/', httpOnly: true, sameSite: 'lax', secure: true });
+	});
+
+	it('in dev the session cookie keeps its bare name — __Host- requires https', async () => {
+		envState.dev = true;
+		const { event, setCalls } = makeEvent();
+		await expect(callGET(event)).rejects.toMatchObject({ status: 303, location: '/checklist' });
 		expect(setCalls[0]).toMatchObject({ name: 'session', value: 'tok' });
+		expect(setCalls[0].opts).toMatchObject({ secure: false });
 	});
 
 	it('in production the temp cookies are read and cleared under their __Host- names', async () => {

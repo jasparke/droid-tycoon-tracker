@@ -14,21 +14,20 @@ Komodo is pointed at this path directly.
 **Decision to confirm with Jason:** homelab stacks use pre-built `image:` refs, and
 `deploy.sh` rsyncs only the stack directory — a `build:` context pointing at `../../app`
 would not survive that rsync. So this stack pulls
-`${DROID_TYCOON_IMAGE:-ghcr.io/jasparke/droid-tycoon:latest}`, built+pushed manually from
-`droid-tycoon-tracker` (no CI yet — see (a) below).
+`${DROID_TYCOON_IMAGE:-ghcr.io/jasparke/droid-tycoon:latest}`, built+pushed by CI
+(see (a) below).
 
 ## (a) Build + push the image
 
-From the `droid-tycoon-tracker` repo root:
+CI does this: `.github/workflows/build-image.yml` builds `./app` and pushes
+`:latest` + `:sha-<short>` to ghcr on every merge to `main` that touches `app/**`
+(the sha tag is the digest-pin / rollback target — set `DROID_TYCOON_IMAGE` to it
+to pin). Manual fallback, from the `droid-tycoon-tracker` repo root:
 
 ```bash
 docker build -t ghcr.io/jasparke/droid-tycoon:latest ./app
 docker push ghcr.io/jasparke/droid-tycoon:latest
 ```
-
-Tag with a version/commit SHA too if you want a rollback target (see the digest-pin
-deferral below) — e.g. `docker build -t ghcr.io/jasparke/droid-tycoon:$(git rev-parse --short HEAD) ./app`
-and push both tags.
 
 ## (b) Deploy
 
@@ -102,8 +101,8 @@ OIDC_CLIENT_SECRET=changeme
 ### `TASKS.md` deferrals
 
 ```markdown
-- [ ] droid-tycoon: pin `DROID_TYCOON_IMAGE` to a digest/tag instead of `:latest` once a
-      release process exists (currently manual build+push, no CI).
+- [ ] droid-tycoon: pin `DROID_TYCOON_IMAGE` to a digest/tag instead of `:latest` — CI
+      now pushes a `:sha-<short>` tag per main merge to pin to.
 - [ ] droid-tycoon: run `docker compose exec app node drizzle/seed.mjs` once after first
       deploy to load reference game data (not run automatically by the image).
 - [ ] droid-tycoon: confirm the `./postgres` bind mount (vs. the named volumes the

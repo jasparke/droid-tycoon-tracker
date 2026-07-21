@@ -2,12 +2,12 @@
   "meta": {
     "project": "droid-tycoon-tracker",
     "title": "Asset acquisition manifest",
-    "generated": "2026-07-09",
-    "purpose": "Inventory of visual/media/font assets the rebuilt SvelteKit tracker needs to retrieve, self-host, or find. The dominant item (340 droid tier-art .webp files) is currently hot-linked from a third-party community site and must be self-hosted so the design isn't hostage to that host.",
+    "generated": "2026-07-21",
+    "purpose": "Inventory of visual/media/font assets for the SvelteKit tracker. The droid tier-art .webp set (379 files incl. Galactic) is self-hosted at 317/379; the 62 *_Galactic.webp are outstanding upstream (no source publishes them yet) and load via DroidImg's remote fallback until then.",
     "primarySources": {
       "gameDataset": "app/drizzle/seed-data.json (canonical; upstream truth is a Google Sheet)",
       "assetSpec": "docs/superpowers/specs/2026-07-04-frontend-design-handoff.md (§Assets)",
-      "loadingCode": "prototype/index.html:541-564 (droidImg / normName / IndexedDB cache)"
+      "loadingCode": "app/src/lib/components/DroidImg.svelte (local → remote fallback)"
     },
     "conventions": {
       "normName": "droid name uppercased with all non-alphanumerics stripped (e.g. 'IMPERIAL PROBE' -> 'IMPERIALPROBE', 'DRK-1 PROBE' -> 'DRK1PROBE')",
@@ -56,7 +56,7 @@
         "id": "app-icons",
         "need": 4,
         "priority": "P1",
-        "status": "missing"
+        "status": "partial 1/4 (favicon.svg)"
       },
       {
         "id": "fonts",
@@ -3367,13 +3367,13 @@
       "id": "app-icons",
       "title": "App icons & social share images",
       "priority": "P1",
-      "status": "missing",
+      "status": "partial 1/4 — favicon.svg self-hosted and linked in app.html",
       "action": "find or create",
-      "notes": "Only app/src/lib/assets/favicon.svg exists and it is NOT linked in app/src/app.html.",
+      "notes": "favicon.svg lives in app/static/ and is linked from app/src/app.html; ico / apple-touch / og-image still to create.",
       "items": [
         {
           "name": "favicon.svg link",
-          "need": "wire existing favicon.svg into app.html head",
+          "need": "done — linked in app/src/app.html head",
           "have": true
         },
         {
