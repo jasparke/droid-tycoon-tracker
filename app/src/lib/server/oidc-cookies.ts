@@ -14,3 +14,11 @@ export const oidcTempCookieNames = () => ({
 
 export const oidcTempCookieOpts = () =>
 	({ path: '/', httpOnly: true, sameSite: 'lax', secure: !dev, maxAge: 600 }) as const;
+
+// The long-lived session cookie gets the same treatment; every reader/writer
+// (auth hook, callback, logout) must resolve the name through here so the
+// prod/dev split can never desynchronise between set and get.
+export const sessionCookieName = () => name('session');
+
+export const sessionCookieOpts = (expires: Date) =>
+	({ path: '/', httpOnly: true, sameSite: 'lax', secure: !dev, expires }) as const;

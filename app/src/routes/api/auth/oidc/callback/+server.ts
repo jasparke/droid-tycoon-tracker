@@ -5,7 +5,7 @@ import { env as pub } from '$env/dynamic/public';
 import type { RequestHandler } from './$types';
 import { db } from '$lib/server/db';
 import { completeOidcCallback, type OidcConfig } from '$lib/server/oidc';
-import { oidcTempCookieNames } from '$lib/server/oidc-cookies';
+import { oidcTempCookieNames, sessionCookieName, sessionCookieOpts } from '$lib/server/oidc-cookies';
 import { findOrCreateOidcUser, createSession } from '$lib/server/services/users';
 
 function oidcConfig(): OidcConfig {
@@ -53,9 +53,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	try {
 		const user = await findOrCreateOidcUser(db, claims);
 		const { token, expiresAt } = await createSession(db, user.id);
-		cookies.set('session', token, {
-			path: '/', httpOnly: true, sameSite: 'lax', secure: !dev, expires: expiresAt
-		});
+		cookies.set(sessionCookieName(), token, sessionCookieOpts(expiresAt));
 	} catch (e) {
 		if (isRedirect(e)) throw e;
 		console.error('OIDC callback: user upsert / session mint failed', e);
