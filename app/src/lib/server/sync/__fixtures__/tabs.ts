@@ -34,14 +34,19 @@ export const COSMETIC_CSV = [
 ].join('\n');
 
 export const NOVA_CSV = [
-	row(38, { 5: 'banner' }),
-	row(38, { 0: 'NOVA SHOP - FEATURED', 5: 'NOVA SHOP - CORE UPGRADES', 27: 'NOVA SHOP - COSMETICS' }),
-	row(38, { 0: 'NOVA CRYSTAL COST', 5: 'NOVA CRYSTAL COST', 27: 'NOVA CRYSTAL COST', 34: 'INFORMATION' }),
-	row(38, { 0: 'LEVEL', 1: 'CRITICAL CHANCE', 5: 'LEVEL', 6: 'MAX HEALTH', 16: 'LEVEL', 17: 'LOUNGE SLOT', 27: 'LEVEL', 28: 'NOVA CRYSTAL BASE PAINT', 34: 'note\nwith newline' }),
-	row(38, { 0: '1', 1: '60', 5: '1', 6: '1', 16: '1', 17: '1', 27: '1', 28: '30' }),
-	row(38, { 0: '2', 1: '90', 5: '2', 6: '6', 16: '2', 17: '30', 27: '2', 28: '120', 34: 'NOVA CRYSTALS/RB LEVEL' }),
-	row(38, { 0: '3', 5: '3', 6: '13', 16: '3', 17: '60', 27: '3', 28: '400', 34: 'RB LEVEL', 35: 'CRYSTAL QUANTITY', 36: 'CREDIT MULT', 37: 'XP MULT' }),
-	row(38, { 34: 'RB 12', 35: '11 NOVA CRYSTALS', 36: '22%', 37: '110%' })
+	row(40, { 7: 'banner' }),
+	row(40, { 0: 'NOVA SHOP - FEATURED', 7: 'NOVA SHOP - CORE UPGRADES', 18: 'NOVA SHOP - WORKSHOP UPGRADES', 29: 'NOVA SHOP - COSMETICS' }),
+	row(40, { 0: 'NOVA CRYSTAL COST', 8: 'NOVA CRYSTAL COST', 19: 'NOVA CRYSTAL COST', 29: 'NOVA CRYSTAL COST', 36: 'INFORMATION' }),
+	row(40, { 0: 'LEVEL', 1: 'CRITICAL CHANCE', 2: 'CRITICAL AMOUNT', 3: 'COMPANION SLOT', 4: 'UPGRADE CHIP STATION', 5: 'DAILY CRYSTALS',
+	          7: 'LEVEL', 8: 'MAX HEALTH', 11: 'FLAWLESS CHARM',
+	          18: 'LEVEL', 19: 'LOUNGE SLOT', 23: 'CRAFTING SPEED',
+	          29: 'LEVEL', 30: 'NOVA CRYSTAL BASE PAINT', 36: 'note\nwith newline' }),
+	row(40, { 0: '1', 1: '60', 2: '30', 3: '250', 4: '120', 5: '30', 7: '1', 8: '1', 11: '500', 18: '1', 19: '1', 23: '3', 29: '1', 30: '30' }),
+	row(40, { 0: '2', 1: '90', 2: '90', 7: '2', 8: '6', 18: '2', 19: '30', 23: '18', 29: '2', 30: '120', 36: 'NOVA CRYSTALS/RB LEVEL' }),
+	row(40, { 0: '3', 1: '120', 2: '150', 7: '3', 8: '13', 18: '3', 19: '60', 23: '33', 29: '3', 30: '400',
+	          36: 'RB LEVEL', 37: 'CRYSTAL QUANTITY', 38: 'CREDIT MULT', 39: 'XP MULT' }),
+	row(40, { 36: 'RB 12', 37: '11 NOVA CRYSTALS', 38: '22%', 39: '110%' }),
+	row(40, { 36: 'RB 13', 37: '16 NOVA CRYSTALS', 38: '32%', 39: '160%' })
 ].join('\n');
 
 export const CSV_BY_GID = { '1248391507': DROID_CSV, '0': REBIRTH_CSV, '547464940': COSMETIC_CSV, '1548395368': NOVA_CSV };
