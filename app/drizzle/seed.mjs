@@ -9,7 +9,7 @@ const sql = postgres(url, { max: 1 });
 
 await sql.begin(async (tx) => {
 	// replace-all semantics: reference zone is owned by the seeder (later: sync worker)
-	await tx`truncate droids, droid_tiers, rebirth_reqs, chip_costs, rebirth_meta, nova_shop, cosmetics, droid_sell_values, flawless_spawn, nova_paint_stages`;
+	await tx`truncate droids, droid_tiers, rebirth_reqs, chip_costs, rebirth_meta, nova_shop, cosmetics, droid_sell_values, flawless_spawn, nova_paint_stages, crafting_times, companion_buffs, iconic_companion_effects`;
 	for (const r of d.droids)
 		await tx`insert into droids ${tx({ name: r.name, rarity: r.rarity, type: r.type, income_pct: r.incomePct ?? null, buy_nc: r.buyNc ?? null })}`;
 	for (const r of d.droidTiers)
@@ -28,11 +28,18 @@ await sql.begin(async (tx) => {
 		await tx`insert into flawless_spawn ${tx({ tier: r.tier, one_in: r.oneIn })}`;
 	for (const r of d.novaPaintStages ?? [])
 		await tx`insert into nova_paint_stages ${tx({ stage: r.stage, crystal_cost: r.crystalCost })}`;
+	for (const r of d.craftingTimes ?? [])
+		await tx`insert into crafting_times ${tx({ droid: r.droid, tier: r.tier, seconds: r.seconds })}`;
+	for (const r of d.companionBuffs ?? [])
+		await tx`insert into companion_buffs ${tx({ kind: r.kind, rarity: r.rarity, tier: r.tier, value: r.value })}`;
+	for (const r of d.iconicCompanionEffects ?? [])
+		await tx`insert into iconic_companion_effects ${tx({ droid: r.droid, effect: r.effect })}`;
 
 	const tables = {
 		droids: d.droids, droidTiers: d.droidTiers, rebirthReqs: d.rebirthReqs, chipCosts: d.chipCosts,
 		rebirthMeta: d.rebirthMeta, novaShop: d.novaShop, cosmetics: d.cosmetics,
-		droidSellValues: d.droidSellValues ?? [], flawlessSpawn: d.flawlessSpawn ?? [], novaPaintStages: d.novaPaintStages ?? []
+		droidSellValues: d.droidSellValues ?? [], flawlessSpawn: d.flawlessSpawn ?? [], novaPaintStages: d.novaPaintStages ?? [],
+		craftingTimes: d.craftingTimes ?? [], companionBuffs: d.companionBuffs ?? [], iconicCompanionEffects: d.iconicCompanionEffects ?? []
 	};
 	const payload = {
 		meta: {

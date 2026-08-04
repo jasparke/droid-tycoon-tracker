@@ -36,7 +36,9 @@ export async function stagePreview(sql: Sql, csvByGid: Record<string, string>, s
 	return stagePayload(sql, built);
 }
 
-const REF_TABLES = ['droids', 'droid_tiers', 'rebirth_reqs', 'chip_costs', 'rebirth_meta', 'nova_shop', 'cosmetics', 'droid_sell_values', 'flawless_spawn', 'nova_paint_stages'];
+// flawless_owned is deliberately absent: it is user data, not reference data, and must
+// survive every apply.
+const REF_TABLES = ['droids', 'droid_tiers', 'rebirth_reqs', 'chip_costs', 'rebirth_meta', 'nova_shop', 'cosmetics', 'droid_sell_values', 'flawless_spawn', 'nova_paint_stages', 'crafting_times', 'companion_buffs', 'iconic_companion_effects'];
 
 // payload rows are camelCase; convert to DB snake_case for insert. No reference table has a jsonb
 // column, so the postgres.js object helper handles the scalar values fine.
@@ -45,8 +47,10 @@ function snakeRow(r: Record<string, unknown>): Record<string, unknown> {
 	for (const [k, v] of Object.entries(r)) out[k.replace(/[A-Z]/g, (m) => '_' + m.toLowerCase())] = v;
 	return out;
 }
-function insertRows(tx: postgres.TransactionSql, table: string, rows: Record<string, unknown>[]) {
-	return Promise.all(rows.map((r) => tx`insert into ${tx(table)} ${tx(snakeRow(r))}`));
+// `rows` is `undefined` for a payload stored before a table existed (rollback / backfill-payload.mjs
+// replaying an old-shaped payload) — treat that as empty, mirroring diff.ts's rowsOf.
+function insertRows(tx: postgres.TransactionSql, table: string, rows: Record<string, unknown>[] | undefined) {
+	return Promise.all((rows ?? []).map((r) => tx`insert into ${tx(table)} ${tx(snakeRow(r))}`));
 }
 
 export async function applyPayload(sql: Sql, input: { baseVersionId: number; payloadChecksum: string; acknowledgedHolds: string[] }): Promise<{ versionId: number }> {
@@ -88,6 +92,9 @@ export async function applyPayload(sql: Sql, input: { baseVersionId: number; pay
 		await insertRows(tx, 'droid_sell_values', t.droidSellValues);
 		await insertRows(tx, 'flawless_spawn', t.flawlessSpawn);
 		await insertRows(tx, 'nova_paint_stages', t.novaPaintStages);
+		await insertRows(tx, 'crafting_times', t.craftingTimes);
+		await insertRows(tx, 'companion_buffs', t.companionBuffs);
+		await insertRows(tx, 'iconic_companion_effects', t.iconicCompanionEffects);
 
 		// same identity-serializer gotcha as stagePayload's insert: pre-stringify before tx.json().
 		const inserted = await tx`insert into data_versions (source, checksum, payload)

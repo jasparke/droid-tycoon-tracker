@@ -1,11 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { testDb, seedMinimalReference } from '../testing/db';
+import { testDb, seedMinimalReference, createTestUser } from '../testing/db';
+import { createProfile } from './profiles';
 import { stagePayload, stagePreview, applyPayload, rollback, listVersions } from './sync';
-import { validBuilt, CSV_BY_GID } from '../sync/__fixtures__/tabs';
+import { validBuilt, validTables, CSV_BY_GID } from '../sync/__fixtures__/tabs';
 import { checksumOf } from '../sync/canonical.js';
 
 let sql: Awaited<ReturnType<typeof testDb>>['sql'];
-beforeEach(async () => { ({ sql } = await testDb()); await seedMinimalReference(sql); });
+let db: Awaited<ReturnType<typeof testDb>>['db'];
+beforeEach(async () => { ({ sql, db } = await testDb()); await seedMinimalReference(sql); });
 
 describe('stagePayload / stagePreview', () => {
 	it('stages a valid payload and returns a diff + checksum', async () => {
@@ -98,11 +100,41 @@ describe('rollback / listVersions', () => {
 		expect(versions[0].id).toBe(rb.versionId);        // newest first
 		expect(versions.length).toBeGreaterThanOrEqual(3); // fixture v1 + v2 + rollback
 		expect(versions.find((v) => v.id === v2.versionId)?.rowCounts).toBeDefined();
+		const craft = await sql`select droid, tier, seconds from crafting_times order by droid, tier`;
+		expect(craft).toEqual([{ droid: 'MOUSE', tier: 'Base', seconds: 33 }]);
+		const buffs = await sql`select kind, rarity, tier, value from companion_buffs`;
+		expect(buffs).toEqual([{ kind: 'Worker', rarity: 'Common', tier: 'Base', value: 20 }]);
+		const effects = await sql`select droid, effect from iconic_companion_effects`;
+		expect(effects).toEqual([{ droid: 'BB8', effect: '100% UPGRADE CHIPS' }]);
+	});
+
+	it('a sync apply does not touch flawless ownership (user zone)', async () => {
+		const uid = (await createTestUser(db, 'flawless-survivor')).id;
+		const pid = (await createProfile(db, uid, { name: 'main' })).id;
+		await sql`insert into flawless_owned (profile_id, droid) values (${pid}, 'MOUSE')`;
+		const built = validBuilt();
+		const staged = await stagePayload(sql, built);
+		await applyPayload(sql, { baseVersionId: staged.baseVersionId, payloadChecksum: staged.payloadChecksum, acknowledgedHolds: [] });
+		const rows = await sql`select droid from flawless_owned where profile_id = ${pid}`;
+		expect(rows).toEqual([{ droid: 'MOUSE' }]);
 	});
 
 	it('rollback to a legacy null-payload version is a clean 422, not an uncaught 500', async () => {
 		await sql`insert into data_versions (source, checksum, payload) values ('legacy-import', ${'cafe'.repeat(16)}, null)`;
 		const legacy = await sql`select max(id)::int as id from data_versions`;
 		await expect(rollback(sql, legacy[0].id)).rejects.toMatchObject({ status: 422, code: 'no_payload' });
+	});
+
+	it('rollback of an old-shaped payload (predates crafting/companion tables) applies cleanly, writing zero rows to them', async () => {
+		const { craftingTimes, companionBuffs, iconicCompanionEffects, ...oldTables } = validTables();
+		void craftingTimes; void companionBuffs; void iconicCompanionEffects; // deliberately dropped — pre-A6 payload shape
+		const oldPayload = { meta: { source: 'legacy-preA6', fetchedAt: 't', tabChecksums: {}, rowCounts: {}, orphanReport: [] }, tables: oldTables };
+		await sql`insert into data_versions (source, checksum, payload) values ('legacy-preA6', 'old-shape', ${sql.json(JSON.stringify(oldPayload))})`;
+		const legacy = await sql`select max(id)::int as id from data_versions`;
+		const rb = await rollback(sql, legacy[0].id);
+		expect(rb.versionId).toBeGreaterThan(0);
+		expect(await sql`select * from crafting_times`).toEqual([]);
+		expect(await sql`select * from companion_buffs`).toEqual([]);
+		expect(await sql`select * from iconic_companion_effects`).toEqual([]);
 	});
 });
