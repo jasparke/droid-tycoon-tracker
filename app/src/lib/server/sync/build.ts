@@ -31,6 +31,11 @@ export function buildPayload(
 	if (tables.rebirthReqs.length !== 360) {
 		flags.push({ kind: 'reject', code: 'rebirth_count', message: `expected 360 rebirth reqs, got ${tables.rebirthReqs.length}`, table: 'rebirthReqs' });
 	}
+	// live-sheet nova shop total: Featured 39 + Core 80 + Workshop 56. New shop levels legitimately
+	// extend this — bump it deliberately after re-verifying the export, never to make a sync pass.
+	if (tables.novaShop.length !== 175) {
+		flags.push({ kind: 'reject', code: 'nova_row_count', message: `expected 175 nova shop rows, got ${tables.novaShop.length}`, table: 'novaShop' });
+	}
 	const roster = new Set(tables.droids.map((d) => d.name));
 	for (const req of tables.rebirthReqs) {
 		if (!roster.has(req.droid)) {

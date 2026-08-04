@@ -9,13 +9,19 @@ export const DROID_CSV = [
 	row(34, { 3: 'BASE', 6: 'GOLD', 9: 'DIAMOND', 12: 'RAINBOW', 15: 'BESKAR', 18: 'GALACTIC', 22: 'UPGRADE COSTS' }),
 	row(34, { 0: 'RARITY', 1: 'DROID', 2: 'TYPE', 3: 'COST', 4: 'INCOME', 5: 'VALUE', 22: 'RARITY', 23: 'BASE -> GOLD', 24: 'GOLD -> DIAMOND', 25: 'DIAMOND -> RAINBOW', 26: 'RAINBOW -> BESKAR', 27: 'BESKAR -> GALACTIC' }),
 	row(34, { 0: 'COMMON', 1: 'MOUSE', 2: 'WORKER', 3: '950', 4: '2/s', 5: '665', 6: '3.8k', 7: '4/s', 8: '2.66k', 18: '19.00k', 19: '48/s', 22: 'COMMON', 23: '5', 24: '25', 25: '40', 26: '80', 27: '120' }),
+	row(34, { 22: 'RARE', 23: '30', 24: '60', 25: '100', 26: '250', 27: '400' }),
+	row(34, { 22: 'EPIC', 23: '120', 24: '180', 25: '240', 26: '3,000', 27: '6,000' }),
+	row(34, { 22: 'LEGENDARY', 23: '400', 24: '1,200', 25: '3,000', 26: '7,500', 27: '20,000' }),
+	row(34, { 22: 'MYTHIC', 23: '4,000', 24: '8,000', 25: '20,000', 26: '40,000', 27: '70,000' }),
 	row(34, { 22: 'ICONIC', 23: 'N/A', 24: 'N/A', 25: 'N/A', 26: 'N/A', 27: 'N/A' }),
+	row(34, {}),                          // separator: blank col 22 ends the UPGRADE COSTS block
 	row(34, { 22: 'DROID SELL VALUE' }),
 	row(34, { 1: 'R2-D2', 2: 'ASTROMECH', 3: 'N/A', 4: '25%/s', 22: 'RARITY', 23: 'GOLD', 24: 'DIAMOND', 25: 'RAINBOW', 26: 'BESKAR', 27: 'GALACTIC' }),
 	row(34, { 22: 'COMMON', 23: '4', 24: '7', 25: '10', 26: '13', 27: '16' }),
+	row(34, {}),                          // separator: ends the DROID SELL VALUE block
 	row(34, { 22: 'FLAWLESS SPAWN PROBABILITY' }),
 	row(34, { 22: 'DEFAULT', 23: 'GOLD', 24: 'DIAMOND', 25: 'RAINBOW', 26: 'BESKAR', 27: 'GALACTIC' }),
-	row(34, { 22: '1/1000', 23: '1/500', 24: '1/250', 25: '1/125', 26: '1/100' })
+	row(34, { 22: '1/1000', 23: '1/500', 24: '1/250', 25: '1/125', 26: '1/100', 27: '1/75' })
 ].join('\n');
 
 export const REBIRTH_CSV = [
@@ -63,7 +69,11 @@ export function validTables(): PayloadTables {
 		rebirthReqs: [{ cycle: 1, rebirth: 1, droid: 'MOUSE', tier: 'Base', credits: '10K', unlock: null }],
 		chipCosts: ['Common', 'Rare', 'Epic', 'Legendary', 'Mythic'].map((rarity) => ({ rarity, toGold: 5, toDiamond: 25, toRainbow: 40, toBeskar: 80, toGalactic: 120 })),
 		rebirthMeta: [{ rebirth: 12, nova: 11, creditMult: 22, xpMult: 110 }],
-		novaShop: [], cosmetics: [{ category: 'Hats', name: 'F1l-ON1', requirement: 'FIND IN WORLD' }],
+		// one row per shop category — validate() rejects an empty novaShop or a missing category
+		novaShop: [{ category: 'Featured', item: 'Critical Chance', level: 1, cost: 60 },
+			{ category: 'Core upgrades', item: 'Max Health', level: 1, cost: 1 },
+			{ category: 'Workshop upgrades', item: 'Lounge Slot', level: 1, cost: 1 }],
+		cosmetics: [{ category: 'Hats', name: 'F1l-ON1', requirement: 'FIND IN WORLD' }],
 		droidSellValues: [{ rarity: 'Common', tier: 'Gold', multiplier: 4 }],
 		flawlessSpawn: [{ tier: 'Base', oneIn: 1000 }], novaPaintStages: [{ stage: 1, crystalCost: 30 }]
 	};

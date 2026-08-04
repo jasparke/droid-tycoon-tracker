@@ -15,4 +15,18 @@ describe('buildPayload', () => {
 		const { flags } = buildPayload(CSV_BY_GID, [], 'test', 't');
 		expect(flags.some((f) => f.kind === 'reject' && f.code === 'rebirth_count')).toBe(true);
 	});
+	it('flags a nova shop row count that is not the live sheet total', () => {
+		// Second layer behind the parser's header anchoring: anchoring can resolve cleanly and
+		// still lose a ladder if the sheet drifts, and a short table looks perfectly well-formed.
+		const { payload, flags } = buildPayload(CSV_BY_GID, [], 'test', 't');
+		expect(payload.meta.rowCounts.novaShop).toBe(19); // the fixture's own exact total
+		expect(flags.some((f) => f.kind === 'reject' && f.code === 'nova_row_count' && f.message.includes('175'))).toBe(true);
+	});
+	it('finds no structural or emptiness rejects in the repaired fixtures', () => {
+		const { flags } = buildPayload(CSV_BY_GID, [], 'test', 't');
+		const codes = flags.filter((f) => f.kind === 'reject').map((f) => f.code);
+		for (const code of ['empty_table', 'missing_shop_category', 'structural_item', 'bad_shop_level', 'bad_shop_cost', 'missing_chip_rarity']) {
+			expect(codes).not.toContain(code);
+		}
+	});
 });
