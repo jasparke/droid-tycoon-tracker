@@ -82,7 +82,7 @@ const SEED = path.join(dir, '../app/drizzle/seed-data.json');
 const OUT = path.join(dir, '../app/static/assets/droids');
 const REMOTE = 'https://droidtrakr.com/droid-tycoon/assets/droids/';
 const MANIFEST_URL = 'https://droidtrakr.com/droid-images.js';
-const TIERS = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar'];
+const TIERS = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar', 'Galactic'];
 
 // droidex fallback (see header). Pinned commit so the pull is reproducible.
 const DROIDEX_SHA = '4e159c2026dec6e84f43d8eabe04c4b542d3fc85';
@@ -172,10 +172,14 @@ async function droidtrakrManifest() {
 		return manifestIdx;
 	}
 	try {
+		// Upstream's generator now emits a trailing comma before the closing
+		// brace (valid JS object literal, invalid strict JSON) — added
+		// alongside the Galactic entries, so strip it before parsing.
 		const json = buf
 			.toString('utf8')
 			.replace(/^window\.DROID_IMAGES\s*=\s*/, '')
-			.replace(/;?\s*$/, '');
+			.replace(/;?\s*$/, '')
+			.replace(/,(\s*[}\]])/g, '$1');
 		const idx = new Map();
 		for (const [key, p] of Object.entries(JSON.parse(json))) {
 			const i = key.indexOf(':');
