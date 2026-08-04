@@ -39,7 +39,7 @@
 				<td>
 					{#if isFlawlessEligible(d)}
 						<button class="flawless" class:owned={t.flawlessOwned(d.name)} disabled={!t.editable()}
-							aria-pressed={t.flawlessOwned(d.name)} title="{d.name} flawless"
+							aria-pressed={t.flawlessOwned(d.name)} aria-label="{d.name} flawless" title="{d.name} flawless"
 							onclick={() => t.setFlawlessOwned(d.name, !t.flawlessOwned(d.name))}>✦</button>
 					{:else}
 						<span class="na" title="Iconic droids have no flawless variant">—</span>
