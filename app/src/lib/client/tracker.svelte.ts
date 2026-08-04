@@ -103,7 +103,12 @@ export function makeTracker(data: TrackerData) {
 		async setFlawlessOwned(droid: string, owned: boolean) {
 			const pid = state.activeId;
 			if (pid == null || !editable()) return;
-			const list = (state.flawless[pid] ??= []);
+			// don't bind `list` to the return value of `state.flawless[pid] ??= []` — that
+			// expression evaluates to the plain RHS, not the proxy Svelte wraps it in on
+			// write, so mutating it wouldn't be seen by state.flawless[pid] reads (mirrors
+			// the check-then-read pattern setCount uses above)
+			if (!state.flawless[pid]) state.flawless[pid] = [];
+			const list = state.flawless[pid];
 			const had = list.includes(droid);
 			if (owned && !had) list.push(droid);
 			else if (!owned && had) list.splice(list.indexOf(droid), 1);
