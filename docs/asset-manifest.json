@@ -89,7 +89,11 @@
       "verified": {
         "date": "2026-08-04",
         "note": "Live re-probe of all 8 missing filenames (7 non-Iconic *_Galactic.webp + CHOPPER_Default.webp) against both fallback sources: droidtrakr's droid-images.js manifest (after fixing a real bug in the fetch script \u2014 the manifest now ships a trailing comma before its closing brace, `window.DROID_IMAGES = {...,};`, which is valid JS but broke strict JSON.parse and was silently short-circuiting the entire manifest-then-droidex fallback chain for every fallback-dependent file; fixed by stripping trailing commas before parsing) and droidex. With the parser fixed, both sources return no entry for any of the 8 files \u2014 genuine content gaps, not fetch failures. All 55 newly-committed *_Galactic.webp files were also byte-verified (RIFF/WEBP magic bytes, 60KB-193KB, sha256 distinct from the known 13085-byte / 81f61d6c fake-200 fallback signature); zero fake-200s committed. See Task C4 report for the full probe log.",
-        "sourceCode": "scripts/fetch-droid-art.mjs (droidtrakrManifest())"
+        "sourceCode": "scripts/fetch-droid-art.mjs (droidtrakrManifest())",
+        "priorFindings": {
+          "date": "2026-07-19",
+          "note": "Carried forward from the prior (duplicate, now-removed) verified block, still accurate: C3P0_Default.webp's art has no droidtrakr source \u2014 it was obtained from erikpeik/droidex (C-3P0_DEFAULT.png) and converted PNG->webp with cwebp -q90, so files[]'s C3P0_Default.webp entry keeps its droidex remoteUrl instead of the usual remoteBaseUrl+filename pattern. Both C3P0 and R2D2's existing art are low-res (~130px) vs droidtrakr's 512x512 tiered art \u2014 quality-inferior; replace with 512px art if droidtrakr (or another source) ever publishes it."
+        }
       },
       "files": [
         {
@@ -1009,7 +1013,7 @@
           "tier": "Base",
           "rarity": "Iconic",
           "type": "Worker",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/C3P0_Default.webp",
+          "remoteUrl": "https://raw.githubusercontent.com/erikpeik/droidex/main/public/droids/C-3P0_DEFAULT.png",
           "localTarget": "app/static/assets/droids/C3P0_Default.webp"
         },
         {
@@ -3813,80 +3817,6 @@
           "localTarget": "app/static/assets/droids/VECTARM_Rainbow.webp"
         }
       ],
-      "verified": {
-        "date": "2026-07-19",
-        "note": "Galactic sweep. The GALACTIC variant tier is brand-new; NO self-hostable source publishes galactic droid art yet. droidtrakr.com returns HTTP 200 with an identical 13085-byte HTML fallback (sha256 81f61d6c...) for every *_Galactic.webp - verified across all 62 galactic names; droidex's authoritative GitHub repo (erikpeik/droidex, public/droids/) carries only Beskar/Default/Diamond/Gold/Rainbow PNGs, no galactic; hosted apps (droidex.web.app, droid-tycoon.pages.dev) return SPA shells for asset paths. New Iconic C3P0_Default.webp was obtained from erikpeik/droidex (C-3P0_DEFAULT.png), converted PNG->webp with cwebp -q90. R2D2_Default.webp was found already present on disk as real (low-res) art - the prior manifest's outstanding flag was stale; file left untouched, flag cleared. CAVEAT: both C-3P0 and the existing R2-D2 art are low-res (~130px) vs droidtrakr's 512x512 tiered art - quality-inferior; replace with 512px art when a source publishes it. C-3P0's 'type' field here is provisional (Worker) pending seed-data.json's canonical entry. Best lead for the 62 galactic files: re-poll the droidtrakr primary URL (https://droidtrakr.com/assets/droids/{normName}_Galactic.webp) - droidtrakr already shows a 'Galactic droid spawn' timer in-app, so it is expected to publish galactic art at the existing naming convention. Galactic files[] entries intentionally omitted until a real source exists (listing them now with dead remoteUrls would plant fallback landmines).",
-        "obtained": [
-          "C3P0_Default.webp (new Iconic, from erikpeik/droidex)"
-        ],
-        "alreadyPresent": [
-          "R2D2_Default.webp (stale outstanding flag cleared)"
-        ],
-        "outstanding": [
-          "2BB_Galactic.webp",
-          "ALT_Galactic.webp",
-          "AMPWALKER_Galactic.webp",
-          "ARG_Galactic.webp",
-          "B1BATTLE_Galactic.webp",
-          "B1HEAVY_Galactic.webp",
-          "B1SECURITY_Galactic.webp",
-          "B2HEAVY_Galactic.webp",
-          "B2RP_Galactic.webp",
-          "B2SUPER_Galactic.webp",
-          "BALCORE_Galactic.webp",
-          "BB9_Galactic.webp",
-          "BB_Galactic.webp",
-          "BDXEXPLORER_Galactic.webp",
-          "BU4D_Galactic.webp",
-          "CB_Galactic.webp",
-          "CYCLENS_Galactic.webp",
-          "CYCLOGRAV_Galactic.webp",
-          "DRFTR_Galactic.webp",
-          "DRK1PROBE_Galactic.webp",
-          "GONK_Galactic.webp",
-          "GROUNDMECH_Galactic.webp",
-          "GUNRUNNER_Galactic.webp",
-          "HAULR_Galactic.webp",
-          "HOVR_Galactic.webp",
-          "ID10_Galactic.webp",
-          "IG_Galactic.webp",
-          "IMPERIALPROBE_Galactic.webp",
-          "KX_Galactic.webp",
-          "LEP_Galactic.webp",
-          "LNGSHOT_Galactic.webp",
-          "LOADLIFTER_Galactic.webp",
-          "LO_Galactic.webp",
-          "MECHADROID_Galactic.webp",
-          "MONOWLKR_Galactic.webp",
-          "MOTRAK_Galactic.webp",
-          "MOUSE_Galactic.webp",
-          "NAVEX_Galactic.webp",
-          "OPTIPOD_Galactic.webp",
-          "OPTISTRK_Galactic.webp",
-          "ORBWALKER_Galactic.webp",
-          "PIT_Galactic.webp",
-          "PROTOROLLER_Galactic.webp",
-          "R2_Galactic.webp",
-          "R3_Galactic.webp",
-          "R4_Galactic.webp",
-          "R5_Galactic.webp",
-          "R6_Galactic.webp",
-          "R7_Galactic.webp",
-          "R8_Galactic.webp",
-          "R9_Galactic.webp",
-          "RIC1200_Galactic.webp",
-          "RIC_Galactic.webp",
-          "ROLLR_Galactic.webp",
-          "SENATEHOVERCAM_Galactic.webp",
-          "SENTRI_Galactic.webp",
-          "SNOWMOUSE_Galactic.webp",
-          "STRIKEORB_Galactic.webp",
-          "TRAKR_Galactic.webp",
-          "TRITEK_Galactic.webp",
-          "UTILTEC_Galactic.webp",
-          "VECTARM_Galactic.webp"
-        ]
-      },
       "sources": [
         {
           "name": "droidtrakr.com",
