@@ -28,7 +28,7 @@
       "sourcesEvaluated": [
         {
           "name": "droidtrakr.com",
-          "result": "PRIMARY, mostly complete \u2014 serves 293 real image files (an earlier HEAD sweep claimed 340/340 but some 200s were fallback responses, not images). Exact webp format + normName filenames; the prototype's existing source. All 315 files now on main were pulled from here."
+          "result": "PRIMARY, mostly complete \u2014 serves 293 real image files (an earlier HEAD sweep claimed 340/340 but some 200s were fallback responses, not images). Exact webp format + normName filenames; the prototype's existing source. As of this 2026-07-09 investigation, all 315 files then on main were pulled from here; the self-hosted set has since grown to 372/380 via the Galactic-tier and CHOPPER work (see categories[0].status for current numbers)."
         },
         {
           "name": "erikpeik/droidex (GitHub)",
@@ -3824,7 +3824,7 @@
           "baseUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/",
           "format": "webp",
           "naming": "matches this manifest's filenames exactly (normName + Title-case tier, Base->_Default)",
-          "coverage": "340/340 (verified 2026-07-09)",
+          "coverage": "primary source for the current 372/380 self-hosted set (see categories[0].status); an early 2026-07-09 HEAD sweep claimed 340/340 against the then-340-file universe, but that count included fallback-response false positives, not real images (see sourceInvestigation.sourcesEvaluated)",
           "howToPull": "download each files[].remoteUrl to files[].localTarget; no rename needed",
           "attribution": "required \u2014 credit droidtrakr.com in README"
         },
@@ -3835,7 +3835,7 @@
           "path": "public/droids/",
           "format": "png",
           "naming": "UPPERCASE tier + underscores-for-spaces, keeps hyphens (e.g. AMP_WALKER_BESKAR.png, A-LT_DEFAULT.png); map to ours via normName=strip-non-alphanumerics and Title-case the tier (DEFAULT->Base)",
-          "coverage": "258/340 \u2014 missing all 11 Mythics + Iconic upper tiers (~82 files)",
+          "coverage": "258/340 against the pre-Galactic 340-file universe (2026-07-09) \u2014 missing all 11 Mythics + Iconic upper tiers (~82 files); not re-verified against the current 380-file universe (Galactic tier + CHOPPER), which it likely also lacks entirely \u2014 this is a community mirror that predates the Galactic tier",
           "nameAliases": {
             "MONO-WLKR": "MONO_WALKER (droidex normName MONOWALKER)",
             "OPTI-STRK": "OPTI_STRIKE (droidex normName OPTISTRIKE)"
