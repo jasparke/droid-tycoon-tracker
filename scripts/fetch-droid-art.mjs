@@ -1,9 +1,13 @@
 /*
  * Fetch + self-host droid tier-art webp into app/static/assets/droids/.
  *
- * Primary source: droidtrakr.com. It publishes 293 of the 340 expected files
- * (68 droids x 5 tiers) as `.webp` at the normName path. The rest need the
- * fallbacks below.
+ * Primary source: droidtrakr.com. This script probes 70 droids x 6 tiers =
+ * 420 name/tier pairs, but only 380 of those are real files: 62 non-Iconic
+ * droids x 6 tiers + 8 single-tier Iconic droids' Default art. The other 40
+ * probes are Iconic droids' non-existent Gold/Diamond/Rainbow/Beskar/
+ * Galactic tiers and always come back as harmless skips (see the "After both
+ * fallbacks" note below). Of the 380 real files, 372 are self-hosted here as
+ * of the 2026-08-04 probe; the rest need the fallbacks below.
  *
  * IMPORTANT — droidtrakr does not 404 for a missing asset. It 308-redirects to
  * its single-page app, which answers 200 with a ~12.8 KB `text/html`
@@ -51,16 +55,24 @@
  *   same way (`cwebp -q 90`, native 195x178). droidex covers only LO's
  *   Gold/Diamond/Rainbow of our gaps.
  *
- * After both fallbacks, 25 filenames remained unfetched. 24 of them turned out
- * not to exist at all: Iconic droids (BB8 / MISTER BONES / IG-11 MARSHAL /
- * DJ-R3X / CB-23 / R2-D2) are single-tier — no tier grid, no chip costs — so
- * their Gold/Diamond/Rainbow/Beskar art was never real (this loop still probes
- * those names and logs skips; harmless). The one real gap, R2D2_Default.webp
- * (droidtrakr serves UnknownBlueprint for R2-D2), was recovered manually on
- * 2026-07-15 from droidex's *deployed* site — which hosts files absent from
- * its GitHub repo — at https://droidex.web.app/droids/R2-D2_DEFAULT.webp,
- * saved as-is (already webp; 128x145 vs the set's native 195x178) and renamed
- * to the normName convention. It is committed, so this script skips it.
+ * After both fallbacks, 40 of the 420 probed filenames are Iconic droids'
+ * non-Default tiers: BB8 / MISTER BONES / IG-11 MARSHAL / DJ-R3X / CB-23 /
+ * R2-D2 / C-3P0 / CHOPPER are single-tier — no tier grid, no chip costs — so
+ * their Gold/Diamond/Rainbow/Beskar/Galactic art was never real (this loop
+ * still probes those names and logs skips; harmless). Of the remaining
+ * 380-file real universe, a fresh probe on 2026-08-04 (after adding the
+ * Galactic tier and CHOPPER to the roster) confirmed 8 genuine gaps — present
+ * in none of droidtrakr's primary fetch, its PNG manifest fallback, or
+ * droidex: CHOPPER_Default.webp, plus the Galactic-tier art for 7 non-Iconic
+ * droids — SNOWMOUSE, RIC, LEP, RIC1200, MOTRAK, TRITEK, KX.
+ *
+ * One Iconic Default file, R2D2_Default.webp (droidtrakr serves
+ * UnknownBlueprint for R2-D2), was a genuine gap under the same policy but
+ * was recovered manually on 2026-07-15 from droidex's *deployed* site —
+ * which hosts files absent from its GitHub repo — at
+ * https://droidex.web.app/droids/R2-D2_DEFAULT.webp, saved as-is (already
+ * webp; 128x145 vs the set's native 195x178) and renamed to the normName
+ * convention. It is committed, so this script skips it.
  * Provenance is fully reconstructible from this file: the manifest URL, the
  * droidex repo + DROIDEX_SHA, the deployed-site URL above, the name remap
  * rules, and the cwebp command.
@@ -82,7 +94,7 @@ const SEED = path.join(dir, '../app/drizzle/seed-data.json');
 const OUT = path.join(dir, '../app/static/assets/droids');
 const REMOTE = 'https://droidtrakr.com/droid-tycoon/assets/droids/';
 const MANIFEST_URL = 'https://droidtrakr.com/droid-images.js';
-const TIERS = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar'];
+const TIERS = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar', 'Galactic'];
 
 // droidex fallback (see header). Pinned commit so the pull is reproducible.
 const DROIDEX_SHA = '4e159c2026dec6e84f43d8eabe04c4b542d3fc85';
@@ -172,10 +184,16 @@ async function droidtrakrManifest() {
 		return manifestIdx;
 	}
 	try {
+		// Upstream's generator now emits a trailing comma before the closing
+		// brace (valid JS object literal, invalid strict JSON) — added
+		// alongside the Galactic entries, so strip it before parsing. This
+		// assumes no string literal in the manifest itself contains ",}" or ",]"
+		// -- true for droidtrakr's asset paths, which are plain filenames/URLs.
 		const json = buf
 			.toString('utf8')
 			.replace(/^window\.DROID_IMAGES\s*=\s*/, '')
-			.replace(/;?\s*$/, '');
+			.replace(/;?\s*$/, '')
+			.replace(/,(\s*[}\]])/g, '$1');
 		const idx = new Map();
 		for (const [key, p] of Object.entries(JSON.parse(json))) {
 			const i = key.indexOf(':');
