@@ -2,6 +2,39 @@ import { describe, it, expect } from 'vitest';
 import { parseCraftingCompanions, hmsToSeconds, buffValue } from './craftingCompanions';
 import { CRAFTING_CSV } from '../__fixtures__/tabs';
 
+function row(width: number, cells: Record<number, string>): string {
+	const a = Array(width).fill('');
+	for (const [i, v] of Object.entries(cells)) a[Number(i)] = v;
+	return a.map((c) => (/[",\n]/.test(c) ? `"${c.replace(/"/g, '""')}"` : c)).join(',');
+}
+
+// The same tab with the whole right-hand stack pushed two columns right (label col 12, values
+// 13-18) — the shift the nova tab actually took in this patch. The four COMPAINION blocks are
+// located by their own header text, so the parse must come out identical to CRAFTING_CSV.
+const SHIFTED_CSV = [
+	row(19, { 3: 'banner', 12: 'banner' }),
+	row(19, { 3: 'CRAFTING TIME - NO BUFF', 12: 'WORKER COMPAINION DROIDS - CRAFTING SPEED BUFFS' }),
+	row(19, { 0: 'RARITY', 1: 'DROID', 2: 'TYPE', 3: 'BASIC', 4: 'GOLD', 5: 'DIAMOND', 6: 'RAINBOW', 7: 'BESKAR', 8: 'GALACTIC',
+	          12: 'RARITY', 13: 'BASIC', 14: 'GOLD', 15: 'DIAMOND', 16: 'RAINBOW', 17: 'BESKAR', 18: 'GALACTIC' }),
+	row(19, { 0: 'COMMON', 1: 'MOUSE', 2: 'WORKER', 3: '0:00:33', 4: '0:02:14', 5: '0:03:54', 6: '0:05:35', 7: '0:04:28', 8: '0:08:22',
+	          12: 'COMMON', 13: '20%', 14: '40%', 15: '60%', 16: '80%', 17: '100%', 18: '100%' }),
+	row(19, { 1: 'HAUL-R', 2: 'BATTLE', 3: '0:08:23', 4: '0:33:35', 5: '0:58:46', 6: '1:23:58', 7: '1:07:10',
+	          12: 'ICONIC', 13: 'N/A', 14: 'N/A', 15: 'N/A', 16: 'N/A', 17: 'N/A', 18: 'N/A' }),
+	row(19, { 0: 'ICONIC ', 1: 'BB-8', 2: 'ASTROMECH', 3: 'N/A' }),
+	row(19, { 12: 'ASTROMECH COMPAINION DROIDS - PICKAXE LEVEL BUFFS' }),
+	row(19, { 12: 'RARITY', 13: 'BASIC', 14: 'GOLD', 15: 'DIAMOND', 16: 'RAINBOW', 17: 'BESKAR', 18: 'GALACTIC' }),
+	row(19, { 12: 'COMMON', 13: '+1', 14: '+2', 15: '+3', 16: '+4', 17: '+5', 18: '+6' }),
+	row(19, {}),
+	row(19, { 12: 'BATTLE COMPAINION DROIDS - MAX HEALTH BUFFS' }),
+	row(19, { 12: 'RARITY', 13: 'BASIC', 14: 'GOLD', 15: 'DIAMOND', 16: 'RAINBOW', 17: 'BESKAR', 18: 'GALACTIC' }),
+	row(19, { 12: 'COMMON', 13: '+20', 14: '+60', 15: '+100', 16: '+140', 17: '+180', 18: '+220' }),
+	row(19, {}),
+	row(19, { 12: 'COMPAINION DROIDS - ICONIC DROIDS' }),
+	row(19, { 12: 'DROID', 13: 'BASIC' }),
+	row(19, { 12: 'BB-8', 13: '100% UPGRADE CHIPS' }),
+	row(19, { 12: 'CHOPPER', 13: '+50% CRIT CHANCE & DAMAGE' })
+].join('\n');
+
 describe('hmsToSeconds', () => {
 	it('converts H:MM:SS', () => {
 		expect(hmsToSeconds('0:00:33')).toBe(33);
@@ -84,6 +117,13 @@ describe('parseCraftingCompanions', () => {
 
 	it('tolerates the sheet\'s "ICONIC " trailing space in the rarity column', () => {
 		expect(out.craftingTimes.some((c) => c.droid === 'BB8')).toBe(true);
+	});
+
+	it('reads a right-hand stack that has moved columns identically', () => {
+		// Column-anchored where the sheet can move: the buff/iconic blocks are found by header
+		// text in whatever column they sit in. The left grid is row-anchored on its own
+		// RARITY/DROID/TYPE triple at 0-2 and throws (below) rather than guess if that moves.
+		expect(parseCraftingCompanions(SHIFTED_CSV)).toEqual(out);
 	});
 
 	it('fails loudly when the left grid header is gone', () => {
