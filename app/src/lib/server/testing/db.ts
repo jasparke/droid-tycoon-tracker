@@ -17,7 +17,7 @@ export async function testDb() {
 }
 
 export async function resetUserZone(sql: postgres.Sql) {
-	await sql`truncate users, sessions, profiles, counts, plans restart identity cascade`;
+	await sql`truncate users, sessions, profiles, counts, plans, flawless_owned restart identity cascade`;
 }
 
 // tests that only need "some user" create one keyed by a readable sub
@@ -29,7 +29,7 @@ export async function createTestUser(
 }
 
 export async function seedMinimalReference(sql: postgres.Sql) {
-	await sql`truncate droids, droid_tiers, rebirth_reqs, chip_costs, rebirth_meta, nova_shop, cosmetics, droid_sell_values, flawless_spawn, nova_paint_stages, sync_previews, data_versions restart identity cascade`;
+	await sql`truncate droids, droid_tiers, rebirth_reqs, chip_costs, rebirth_meta, nova_shop, cosmetics, droid_sell_values, flawless_spawn, nova_paint_stages, crafting_times, companion_buffs, iconic_companion_effects, sync_previews, data_versions restart identity cascade`;
 	await sql`insert into droids (name, rarity, type, income_pct, buy_nc) values
 		('MOUSE','Common','Worker',null,null),
 		('CB','Common','Astromech',null,null),
@@ -46,5 +46,12 @@ export async function seedMinimalReference(sql: postgres.Sql) {
 	await sql`insert into droid_sell_values (rarity, tier, multiplier) values ('Common','Gold',4), ('Common','Beskar',13)`;
 	await sql`insert into flawless_spawn (tier, one_in) values ('Base',1000), ('Beskar',100)`;
 	await sql`insert into nova_paint_stages (stage, crystal_cost) values (1,30), (2,120), (3,400)`;
+	await sql`insert into crafting_times (droid, tier, seconds) values
+		('MOUSE','Base',33), ('MOUSE','Gold',134), ('CB','Base',35), ('CB','Galactic',null)`;
+	await sql`insert into companion_buffs (kind, rarity, tier, value) values
+		('Worker','Common','Base',20), ('Astromech','Common','Base',1),
+		('Battle','Common','Base',20), ('Worker','Iconic','Base',null)`;
+	await sql`insert into iconic_companion_effects (droid, effect) values
+		('R2-D2','2x ASSIGNED ASTROMECH MISSION REWARD'), ('CB-23','SECRET ASTROMECH MISSION')`;
 	await sql`insert into data_versions (source, checksum, payload) values ('test-fixture','deadbeef','{}'::jsonb)`;
 }

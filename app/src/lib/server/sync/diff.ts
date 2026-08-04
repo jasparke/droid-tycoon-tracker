@@ -3,7 +3,8 @@ import type { PayloadTables, DiffResult, TableDiff, RowChange } from './types';
 const PK: Record<string, string[]> = {
 	droids: ['name'], droidTiers: ['droid', 'tier'], rebirthReqs: ['cycle', 'rebirth', 'droid', 'tier'],
 	chipCosts: ['rarity'], rebirthMeta: ['rebirth'], novaShop: ['category', 'item', 'level'],
-	cosmetics: ['category', 'name'], droidSellValues: ['rarity', 'tier'], flawlessSpawn: ['tier'], novaPaintStages: ['stage']
+	cosmetics: ['category', 'name'], droidSellValues: ['rarity', 'tier'], flawlessSpawn: ['tier'], novaPaintStages: ['stage'],
+	craftingTimes: ['droid', 'tier'], companionBuffs: ['kind', 'rarity', 'tier'], iconicCompanionEffects: ['droid']
 };
 const keyOf = (row: Record<string, unknown>, keys: string[]) => keys.map((k) => String(row[k])).join('/');
 
@@ -28,12 +29,13 @@ function diffOne(prev: Record<string, unknown>[], next: Record<string, unknown>[
 
 export function diffTables(prev: PayloadTables, next: PayloadTables): DiffResult {
 	const out: DiffResult = {};
+	// `prev` is often a payload deserialized from data_versions, frozen in whatever shape shipped
+	// when it was applied, so a table added since then is simply absent — read it as empty and its
+	// rows show up as added. Emptiness in `next` is validate()'s NEVER_EMPTY reject, not ours.
+	const rowsOf = (t: PayloadTables, table: string) =>
+		(t as unknown as Record<string, Record<string, unknown>[] | undefined>)[table] ?? [];
 	for (const table of Object.keys(PK)) {
-		out[table] = diffOne(
-			(prev as unknown as Record<string, Record<string, unknown>[]>)[table],
-			(next as unknown as Record<string, Record<string, unknown>[]>)[table],
-			PK[table]
-		);
+		out[table] = diffOne(rowsOf(prev, table), rowsOf(next, table), PK[table]);
 	}
 	return out;
 }

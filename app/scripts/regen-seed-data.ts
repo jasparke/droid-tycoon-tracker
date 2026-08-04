@@ -1,15 +1,16 @@
-// Rebuild drizzle/seed-data.json from Google Sheets CSV exports of the four
+// Rebuild drizzle/seed-data.json from Google Sheets CSV exports of the five
 // synced tabs, through the same parsers + validation the live sync uses — so a
 // later sync against the same sheet state stages a clean (empty) diff.
 //
 // Usage (from app/):
 //   npx tsx scripts/regen-seed-data.ts <csv-dir>
 //
-// <csv-dir> must contain gid_<gid>.csv for the four tabs:
+// <csv-dir> must contain gid_<gid>.csv for the five synced tabs:
 //   gid_0.csv           DroidexRebirths
 //   gid_1248391507.csv  Droid Reference Sheet (costs/values)
 //   gid_547464940.csv   Cosmetics
 //   gid_1548395368.csv  Nova Crystals + Shop Reference
+//   gid_1131770079.csv  Droid Crafting Times + Companion Buffs
 // each fetched via .../export?format=csv&gid=<gid> on the sheet.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -22,12 +23,26 @@ if (!dir) {
 	console.error('usage: npx tsx scripts/regen-seed-data.ts <csv-dir>');
 	process.exit(1);
 }
-const GIDS = ['0', '1248391507', '547464940', '1548395368'];
+const GIDS = ['0', '1248391507', '547464940', '1548395368', '1131770079'];
+
+// Holds are "an admin must look at this" signals. Regenerating the committed seed is not an
+// admin session, so an unexpected hold aborts. Add a key here (with a comment saying why and
+// when it should clear) only when the sheet state is knowingly accepted.
+const ALLOWED_HOLDS = new Set<string>([]);
+
 const csvByGid = Object.fromEntries(GIDS.map((g) => [g, readFileSync(join(dir, `gid_${g}.csv`), 'utf8')]));
 
 const { payload, flags } = buildPayload(csvByGid, [], 'regen-seed-data', new Date().toISOString());
-for (const f of flags.filter((f) => f.kind !== 'reject')) {
-	console.warn(`[${f.kind}] ${f.code}: ${f.message}`);
+for (const f of flags.filter((f) => f.kind === 'report')) console.warn(`[report] ${f.code}: ${f.message}`);
+
+const holds = flags.filter((f) => f.kind === 'hold');
+const unexpected = holds.filter((f) => !ALLOWED_HOLDS.has(f.key ?? ''));
+for (const f of holds) console.warn(`[hold] ${f.code}: ${f.message}`);
+if (unexpected.length) {
+	console.error(`\n${unexpected.length} unexpected hold(s) — refusing to regenerate the seed.`);
+	console.error('Investigate the sheet, then either fix the parser/aliases or add the key to ALLOWED_HOLDS with a reason:');
+	for (const f of unexpected) console.error(`  ${f.key ?? '(no key)'}  ${f.code}: ${f.message}`);
+	process.exit(1);
 }
 const rejects = rejectsOf(flags);
 if (rejects.length) {

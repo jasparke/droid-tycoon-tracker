@@ -17,6 +17,7 @@ export const SINGLE_TIER_DROIDS: ReadonlySet<string> = new Set([
 	'BB8',
 	'C3P0',
 	'CB23',
+	'CHOPPER',
 	'DJR3X',
 	'IG11MARSHAL',
 	'MISTERBONES',

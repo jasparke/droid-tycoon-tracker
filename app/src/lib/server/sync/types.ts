@@ -11,6 +11,9 @@ export interface CosmeticRow { category: string; name: string; requirement: stri
 export interface SellValueRow { rarity: string; tier: Tier; multiplier: number; }
 export interface FlawlessRow { tier: Tier; oneIn: number; }
 export interface PaintStageRow { stage: number; crystalCost: number; }
+export interface CraftingTimeRow { droid: string; tier: Tier; seconds: number | null; }        // null = blank (unpublished) or Iconic N/A
+export interface CompanionBuffRow { kind: string; rarity: string; tier: Tier; value: number | null; } // Worker=%, Astromech=+levels, Battle=+health
+export interface IconicCompanionEffectRow { droid: string; effect: string; }                   // free text, verbatim
 
 export interface PayloadTables {
 	droids: DroidRow[];
@@ -23,6 +26,9 @@ export interface PayloadTables {
 	droidSellValues: SellValueRow[];
 	flawlessSpawn: FlawlessRow[];
 	novaPaintStages: PaintStageRow[];
+	craftingTimes: CraftingTimeRow[];
+	companionBuffs: CompanionBuffRow[];
+	iconicCompanionEffects: IconicCompanionEffectRow[];
 }
 
 export interface OrphanRow { droid: string; tier: string; profileId: number; }

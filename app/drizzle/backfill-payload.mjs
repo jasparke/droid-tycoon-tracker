@@ -6,7 +6,7 @@ const sql = postgres(url, { max: 1 });
 const num = (v) => (v == null ? null : Number(v));
 const nulls = await sql`select id from data_versions where payload is null`;
 if (nulls.length) {
-	const [droids, droidTiers, rebirthReqs, chipCosts, rebirthMeta, novaShop, cosmetics, droidSellValues, flawlessSpawn, novaPaintStages] = await Promise.all([
+	const [droids, droidTiers, rebirthReqs, chipCosts, rebirthMeta, novaShop, cosmetics, droidSellValues, flawlessSpawn, novaPaintStages, craftingTimes, companionBuffs, iconicCompanionEffects] = await Promise.all([
 		sql`select name, rarity, type, income_pct as "incomePct", buy_nc as "buyNc" from droids`,
 		sql`select droid, tier, buy, income, sell from droid_tiers`,
 		sql`select cycle, rebirth, droid, tier, credits, unlock from rebirth_reqs`,
@@ -16,12 +16,16 @@ if (nulls.length) {
 		sql`select category, name, requirement from cosmetics`,
 		sql`select rarity, tier, multiplier from droid_sell_values`,
 		sql`select tier, one_in as "oneIn" from flawless_spawn`,
-		sql`select stage, crystal_cost as "crystalCost" from nova_paint_stages`
+		sql`select stage, crystal_cost as "crystalCost" from nova_paint_stages`,
+		sql`select droid, tier, seconds from crafting_times`,
+		sql`select kind, rarity, tier, value from companion_buffs`,
+		sql`select droid, effect from iconic_companion_effects`
 	]);
 	const tables = {
 		droids: droids.map((r) => ({ name: r.name, rarity: r.rarity, type: r.type, incomePct: num(r.incomePct), buyNc: r.buyNc })),
 		droidTiers: droidTiers.map((r) => ({ droid: r.droid, tier: r.tier, buy: num(r.buy), income: num(r.income), sell: num(r.sell) })),
-		rebirthReqs, chipCosts, rebirthMeta, novaShop, cosmetics, droidSellValues, flawlessSpawn, novaPaintStages
+		rebirthReqs, chipCosts, rebirthMeta, novaShop, cosmetics, droidSellValues, flawlessSpawn, novaPaintStages,
+		craftingTimes, companionBuffs, iconicCompanionEffects
 	};
 	const payload = { meta: { source: 'backfill', fetchedAt: new Date().toISOString(), tabChecksums: {}, rowCounts: Object.fromEntries(Object.entries(tables).map(([k, v]) => [k, v.length])), orphanReport: [] }, tables };
 	for (const { id } of nulls) await sql`update data_versions set payload = ${sql.json(payload)}, checksum = ${checksumOf(tables)} where id = ${id} and payload is null`;

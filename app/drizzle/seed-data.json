@@ -482,6 +482,13 @@
    "type": "Worker",
    "incomePct": 25,
    "buyNc": null
+  },
+  {
+   "name": "CHOPPER",
+   "rarity": "Iconic",
+   "type": "Astromech",
+   "incomePct": 15,
+   "buyNc": null
   }
  ],
  "droidTiers": [
@@ -525,7 +532,7 @@
    "tier": "Galactic",
    "buy": 19000,
    "income": 48,
-   "sell": null
+   "sell": 13300
   },
   {
    "droid": "PIT",
@@ -609,7 +616,7 @@
    "tier": "Galactic",
    "buy": 60000,
    "income": 96,
-   "sell": null
+   "sell": 42000
   },
   {
    "droid": "CB",
@@ -651,7 +658,7 @@
    "tier": "Galactic",
    "buy": 40000,
    "income": 72,
-   "sell": null
+   "sell": 28000
   },
   {
    "droid": "R3",
@@ -987,7 +994,7 @@
    "tier": "Galactic",
    "buy": 500000,
    "income": 360,
-   "sell": null
+   "sell": 350000
   },
   {
    "droid": "ARG",
@@ -1113,7 +1120,7 @@
    "tier": "Galactic",
    "buy": 2600000,
    "income": 1390,
-   "sell": null
+   "sell": 1820000
   },
   {
    "droid": "BAL-CORE",
@@ -1239,7 +1246,7 @@
    "tier": "Galactic",
    "buy": 600000,
    "income": 408,
-   "sell": 420000000
+   "sell": 420000
   },
   {
    "droid": "A-LT",
@@ -1323,7 +1330,7 @@
    "tier": "Galactic",
    "buy": 2200000,
    "income": 1200,
-   "sell": null
+   "sell": 1540000
   },
   {
    "droid": "R9",
@@ -1365,7 +1372,7 @@
    "tier": "Galactic",
    "buy": 2400000,
    "income": 1290,
-   "sell": null
+   "sell": 1680000
   },
   {
    "droid": "B1 SECURITY",
@@ -1491,7 +1498,7 @@
    "tier": "Galactic",
    "buy": 1040000,
    "income": 648,
-   "sell": null
+   "sell": 728000
   },
   {
    "droid": "HOV-R",
@@ -1525,7 +1532,7 @@
    "droid": "HOV-R",
    "tier": "Beskar",
    "buy": 2240000,
-   "income": 774,
+   "income": 744,
    "sell": 1560000
   },
   {
@@ -1533,7 +1540,7 @@
    "tier": "Galactic",
    "buy": 2800000,
    "income": 1480,
-   "sell": null
+   "sell": 1960000
   },
   {
    "droid": "GROUNDMECH",
@@ -1743,7 +1750,7 @@
    "tier": "Galactic",
    "buy": 1080000000,
    "income": 20280,
-   "sell": null
+   "sell": 756000000
   },
   {
    "droid": "GUNRUNNER",
@@ -1827,7 +1834,7 @@
    "tier": "Galactic",
    "buy": 360000000,
    "income": 7800,
-   "sell": null
+   "sell": 252000000
   },
   {
    "droid": "R2",
@@ -1869,7 +1876,7 @@
    "tier": "Galactic",
    "buy": 990000000,
    "income": 18720,
-   "sell": null
+   "sell": 693000000
   },
   {
    "droid": "R6",
@@ -2079,7 +2086,7 @@
    "tier": "Galactic",
    "buy": 1800000000,
    "income": 31200,
-   "sell": null
+   "sell": 1260000000
   },
   {
    "droid": "B2 SUPER",
@@ -2163,7 +2170,7 @@
    "tier": "Galactic",
    "buy": 1350000000,
    "income": 24960,
-   "sell": null
+   "sell": 945000000
   },
   {
    "droid": "STRIKE-ORB",
@@ -2247,7 +2254,7 @@
    "tier": "Galactic",
    "buy": 720000000,
    "income": 14040,
-   "sell": null
+   "sell": 504000000
   },
   {
    "droid": "LNG-SHOT",
@@ -2709,7 +2716,7 @@
    "tier": "Galactic",
    "buy": 958800000000,
    "income": 224400,
-   "sell": null
+   "sell": 671160000000
   },
   {
    "droid": "LOADLIFTER",
@@ -2793,7 +2800,7 @@
    "tier": "Galactic",
    "buy": 1180000000000,
    "income": 286000,
-   "sell": null
+   "sell": 829080000000
   },
   {
    "droid": "RIC-1200",
@@ -2835,7 +2842,7 @@
    "tier": "Galactic",
    "buy": 1070000000000,
    "income": 255200,
-   "sell": null
+   "sell": 750120000000
   },
   {
    "droid": "DRFT-R",
@@ -2919,7 +2926,7 @@
    "tier": "Galactic",
    "buy": 846000000000,
    "income": 193600,
-   "sell": null
+   "sell": 592200000000
   },
   {
    "droid": "MO-TRAK",
@@ -2961,7 +2968,7 @@
    "tier": "Galactic",
    "buy": 1410000000000,
    "income": 316800,
-   "sell": null
+   "sell": 987000000000
   },
   {
    "droid": "TRI-TEK",
@@ -3003,28 +3010,28 @@
    "tier": "Galactic",
    "buy": 1180000000000,
    "income": 286000,
-   "sell": null
+   "sell": 829080000000
   },
   {
    "droid": "IG",
    "tier": "Base",
    "buy": 228000000,
    "income": 5800,
-   "sell": 239400000
+   "sell": 159600000
   },
   {
    "droid": "IG",
    "tier": "Gold",
    "buy": 912000000,
    "income": 11600,
-   "sell": 959000000
+   "sell": 638400000
   },
   {
    "droid": "IG",
    "tier": "Diamond",
    "buy": 1820000000,
    "income": 23200,
-   "sell": 1910000000
+   "sell": 1270000000
   },
   {
    "droid": "IG",
@@ -3038,14 +3045,14 @@
    "tier": "Beskar",
    "buy": 182400000000,
    "income": 92800,
-   "sell": 191520000000
+   "sell": 127680000000
   },
   {
    "droid": "IG",
    "tier": "Galactic",
    "buy": 1070000000000,
    "income": 255200,
-   "sell": null
+   "sell": 750120000000
   },
   {
    "droid": "KX",
@@ -3382,12 +3389,54 @@
    "buy": null,
    "income": null,
    "sell": null
+  },
+  {
+   "droid": "CHOPPER",
+   "tier": "Base",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "CHOPPER",
+   "tier": "Gold",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "CHOPPER",
+   "tier": "Diamond",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "CHOPPER",
+   "tier": "Rainbow",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "CHOPPER",
+   "tier": "Beskar",
+   "buy": null,
+   "income": null,
+   "sell": null
+  },
+  {
+   "droid": "CHOPPER",
+   "tier": "Galactic",
+   "buy": null,
+   "income": null,
+   "sell": null
   }
  ],
  "chipCosts": [
   {
    "rarity": "Common",
-   "toGold": 5,
+   "toGold": 10,
    "toDiamond": 25,
    "toRainbow": 40,
    "toBeskar": 80,
@@ -3406,24 +3455,24 @@
    "toGold": 120,
    "toDiamond": 180,
    "toRainbow": 240,
-   "toBeskar": 5000,
-   "toGalactic": 9000
+   "toBeskar": 3000,
+   "toGalactic": 6000
   },
   {
    "rarity": "Legendary",
    "toGold": 400,
    "toDiamond": 1200,
-   "toRainbow": 4000,
-   "toBeskar": 12000,
-   "toGalactic": 35000
+   "toRainbow": 3000,
+   "toBeskar": 7500,
+   "toGalactic": 20000
   },
   {
    "rarity": "Mythic",
-   "toGold": 6000,
-   "toDiamond": 13000,
-   "toRainbow": 30000,
-   "toBeskar": 75000,
-   "toGalactic": 120000
+   "toGold": 4000,
+   "toDiamond": 8000,
+   "toRainbow": 20000,
+   "toBeskar": 40000,
+   "toGalactic": 70000
   },
   {
    "rarity": "Iconic",
@@ -3581,6 +3630,10 @@
   {
    "tier": "Beskar",
    "oneIn": 100
+  },
+  {
+   "tier": "Galactic",
+   "oneIn": 75
   }
  ],
  "rebirthReqs": [
@@ -6597,6 +6650,11 @@
    "requirement": "TRAVELING MERCHANT - 1.50B"
   },
   {
+   "category": "Hats",
+   "name": "CHOPPER HAT",
+   "requirement": "CHOPPER EVENT"
+  },
+  {
    "category": "Base Paints",
    "name": "RED PAINT (DEFAULT",
    "requirement": "NONE"
@@ -6727,6 +6785,11 @@
    "requirement": "COLLECT 60 GALACTIC DROIDS"
   },
   {
+   "category": "Base Paints",
+   "name": "CHOPPER PAINT",
+   "requirement": "CHOPPER EVENT"
+  },
+  {
    "category": "Droid Effects",
    "name": "GROOVY AURA",
    "requirement": "DJ R-3X EVENT"
@@ -6805,7 +6868,91 @@
    "category": "Featured",
    "item": "Critical Chance",
    "level": 4,
+   "cost": 150
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 5,
    "cost": 180
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 6,
+   "cost": 210
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 7,
+   "cost": 240
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 8,
+   "cost": 270
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 9,
+   "cost": 300
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 10,
+   "cost": 330
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 11,
+   "cost": 360
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 12,
+   "cost": 390
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 13,
+   "cost": 420
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 14,
+   "cost": 450
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 15,
+   "cost": 480
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 16,
+   "cost": 510
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 17,
+   "cost": 540
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Chance",
+   "level": 18,
+   "cost": 570
   },
   {
    "category": "Featured",
@@ -6835,7 +6982,103 @@
    "category": "Featured",
    "item": "Critical Amount",
    "level": 5,
+   "cost": 270
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Amount",
+   "level": 6,
    "cost": 330
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Amount",
+   "level": 7,
+   "cost": 390
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Amount",
+   "level": 8,
+   "cost": 450
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Amount",
+   "level": 9,
+   "cost": 510
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Amount",
+   "level": 10,
+   "cost": 570
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Amount",
+   "level": 11,
+   "cost": 630
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Amount",
+   "level": 12,
+   "cost": 690
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Amount",
+   "level": 13,
+   "cost": 750
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Amount",
+   "level": 14,
+   "cost": 810
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Amount",
+   "level": 15,
+   "cost": 870
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Amount",
+   "level": 16,
+   "cost": 930
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Amount",
+   "level": 17,
+   "cost": 990
+  },
+  {
+   "category": "Featured",
+   "item": "Critical Amount",
+   "level": 18,
+   "cost": 1050
+  },
+  {
+   "category": "Featured",
+   "item": "Companion Slot",
+   "level": 1,
+   "cost": 250
+  },
+  {
+   "category": "Featured",
+   "item": "Upgrade Chip Station",
+   "level": 1,
+   "cost": 120
+  },
+  {
+   "category": "Featured",
+   "item": "Daily Crystals",
+   "level": 1,
+   "cost": 30
   },
   {
    "category": "Core upgrades",
@@ -7040,6 +7283,48 @@
    "item": "Credits",
    "level": 18,
    "cost": 70
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 19,
+   "cost": 74
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 20,
+   "cost": 78
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 21,
+   "cost": 82
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 22,
+   "cost": 86
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 23,
+   "cost": 90
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 24,
+   "cost": 94
+  },
+  {
+   "category": "Core upgrades",
+   "item": "Credits",
+   "level": 25,
+   "cost": 98
   },
   {
    "category": "Core upgrades",
@@ -7439,6 +7724,42 @@
   },
   {
    "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 14,
+   "cost": 415
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 15,
+   "cost": 445
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 16,
+   "cost": 475
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 17,
+   "cost": 505
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 18,
+   "cost": 535
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Scrap Value",
+   "level": 19,
+   "cost": 565
+  },
+  {
+   "category": "Workshop upgrades",
    "item": "Blueprint Scrap",
    "level": 1,
    "cost": 1
@@ -7520,6 +7841,12 @@
    "item": "Crafting Speed",
    "level": 10,
    "cost": 138
+  },
+  {
+   "category": "Workshop upgrades",
+   "item": "Crafting Speed",
+   "level": 11,
+   "cost": 445
   },
   {
    "category": "Workshop upgrades",
@@ -7681,7 +8008,7 @@
   },
   {
    "rebirth": 30,
-   "nova": 252,
+   "nova": 254,
    "creditMult": 508,
    "xpMult": 2540
   }
@@ -7698,6 +8025,2792 @@
   {
    "stage": 3,
    "crystalCost": 400
+  }
+ ],
+ "craftingTimes": [
+  {
+   "droid": "MOUSE",
+   "tier": "Base",
+   "seconds": 33
+  },
+  {
+   "droid": "MOUSE",
+   "tier": "Gold",
+   "seconds": 134
+  },
+  {
+   "droid": "MOUSE",
+   "tier": "Diamond",
+   "seconds": 234
+  },
+  {
+   "droid": "MOUSE",
+   "tier": "Rainbow",
+   "seconds": 335
+  },
+  {
+   "droid": "MOUSE",
+   "tier": "Beskar",
+   "seconds": 268
+  },
+  {
+   "droid": "MOUSE",
+   "tier": "Galactic",
+   "seconds": 502
+  },
+  {
+   "droid": "PIT",
+   "tier": "Base",
+   "seconds": 33
+  },
+  {
+   "droid": "PIT",
+   "tier": "Gold",
+   "seconds": 134
+  },
+  {
+   "droid": "PIT",
+   "tier": "Diamond",
+   "seconds": 234
+  },
+  {
+   "droid": "PIT",
+   "tier": "Rainbow",
+   "seconds": 335
+  },
+  {
+   "droid": "PIT",
+   "tier": "Beskar",
+   "seconds": 268
+  },
+  {
+   "droid": "PIT",
+   "tier": "Galactic",
+   "seconds": 502
+  },
+  {
+   "droid": "GONK",
+   "tier": "Base",
+   "seconds": 37
+  },
+  {
+   "droid": "GONK",
+   "tier": "Gold",
+   "seconds": 148
+  },
+  {
+   "droid": "GONK",
+   "tier": "Diamond",
+   "seconds": 259
+  },
+  {
+   "droid": "GONK",
+   "tier": "Rainbow",
+   "seconds": 370
+  },
+  {
+   "droid": "GONK",
+   "tier": "Beskar",
+   "seconds": 296
+  },
+  {
+   "droid": "GONK",
+   "tier": "Galactic",
+   "seconds": 555
+  },
+  {
+   "droid": "CB",
+   "tier": "Base",
+   "seconds": 35
+  },
+  {
+   "droid": "CB",
+   "tier": "Gold",
+   "seconds": 141
+  },
+  {
+   "droid": "CB",
+   "tier": "Diamond",
+   "seconds": 246
+  },
+  {
+   "droid": "CB",
+   "tier": "Rainbow",
+   "seconds": 352
+  },
+  {
+   "droid": "CB",
+   "tier": "Beskar",
+   "seconds": 282
+  },
+  {
+   "droid": "CB",
+   "tier": "Galactic",
+   "seconds": 528
+  },
+  {
+   "droid": "R3",
+   "tier": "Base",
+   "seconds": 35
+  },
+  {
+   "droid": "R3",
+   "tier": "Gold",
+   "seconds": 141
+  },
+  {
+   "droid": "R3",
+   "tier": "Diamond",
+   "seconds": 246
+  },
+  {
+   "droid": "R3",
+   "tier": "Rainbow",
+   "seconds": 352
+  },
+  {
+   "droid": "R3",
+   "tier": "Beskar",
+   "seconds": 282
+  },
+  {
+   "droid": "R3",
+   "tier": "Galactic",
+   "seconds": 528
+  },
+  {
+   "droid": "R5",
+   "tier": "Base",
+   "seconds": 35
+  },
+  {
+   "droid": "R5",
+   "tier": "Gold",
+   "seconds": 141
+  },
+  {
+   "droid": "R5",
+   "tier": "Diamond",
+   "seconds": 246
+  },
+  {
+   "droid": "R5",
+   "tier": "Rainbow",
+   "seconds": 352
+  },
+  {
+   "droid": "R5",
+   "tier": "Beskar",
+   "seconds": 282
+  },
+  {
+   "droid": "R5",
+   "tier": "Galactic",
+   "seconds": 528
+  },
+  {
+   "droid": "R8",
+   "tier": "Base",
+   "seconds": 37
+  },
+  {
+   "droid": "R8",
+   "tier": "Gold",
+   "seconds": 148
+  },
+  {
+   "droid": "R8",
+   "tier": "Diamond",
+   "seconds": 259
+  },
+  {
+   "droid": "R8",
+   "tier": "Rainbow",
+   "seconds": 370
+  },
+  {
+   "droid": "R8",
+   "tier": "Beskar",
+   "seconds": 296
+  },
+  {
+   "droid": "R8",
+   "tier": "Galactic",
+   "seconds": 555
+  },
+  {
+   "droid": "IMPERIAL PROBE",
+   "tier": "Base",
+   "seconds": 40
+  },
+  {
+   "droid": "IMPERIAL PROBE",
+   "tier": "Gold",
+   "seconds": 162
+  },
+  {
+   "droid": "IMPERIAL PROBE",
+   "tier": "Diamond",
+   "seconds": 283
+  },
+  {
+   "droid": "IMPERIAL PROBE",
+   "tier": "Rainbow",
+   "seconds": 405
+  },
+  {
+   "droid": "IMPERIAL PROBE",
+   "tier": "Beskar",
+   "seconds": 324
+  },
+  {
+   "droid": "IMPERIAL PROBE",
+   "tier": "Galactic",
+   "seconds": 607
+  },
+  {
+   "droid": "B1 BATTLE",
+   "tier": "Base",
+   "seconds": 38
+  },
+  {
+   "droid": "B1 BATTLE",
+   "tier": "Gold",
+   "seconds": 155
+  },
+  {
+   "droid": "B1 BATTLE",
+   "tier": "Diamond",
+   "seconds": 271
+  },
+  {
+   "droid": "B1 BATTLE",
+   "tier": "Rainbow",
+   "seconds": 387
+  },
+  {
+   "droid": "B1 BATTLE",
+   "tier": "Beskar",
+   "seconds": 310
+  },
+  {
+   "droid": "B1 BATTLE",
+   "tier": "Galactic",
+   "seconds": 581
+  },
+  {
+   "droid": "DRK-1 PROBE",
+   "tier": "Base",
+   "seconds": 35
+  },
+  {
+   "droid": "DRK-1 PROBE",
+   "tier": "Gold",
+   "seconds": 141
+  },
+  {
+   "droid": "DRK-1 PROBE",
+   "tier": "Diamond",
+   "seconds": 246
+  },
+  {
+   "droid": "DRK-1 PROBE",
+   "tier": "Rainbow",
+   "seconds": 352
+  },
+  {
+   "droid": "DRK-1 PROBE",
+   "tier": "Beskar",
+   "seconds": 282
+  },
+  {
+   "droid": "DRK-1 PROBE",
+   "tier": "Galactic",
+   "seconds": 528
+  },
+  {
+   "droid": "ID10",
+   "tier": "Base",
+   "seconds": 37
+  },
+  {
+   "droid": "ID10",
+   "tier": "Gold",
+   "seconds": 148
+  },
+  {
+   "droid": "ID10",
+   "tier": "Diamond",
+   "seconds": 259
+  },
+  {
+   "droid": "ID10",
+   "tier": "Rainbow",
+   "seconds": 370
+  },
+  {
+   "droid": "ID10",
+   "tier": "Beskar",
+   "seconds": 296
+  },
+  {
+   "droid": "ID10",
+   "tier": "Galactic",
+   "seconds": 555
+  },
+  {
+   "droid": "BDX EXPLORER",
+   "tier": "Base",
+   "seconds": 56
+  },
+  {
+   "droid": "BDX EXPLORER",
+   "tier": "Gold",
+   "seconds": 225
+  },
+  {
+   "droid": "BDX EXPLORER",
+   "tier": "Diamond",
+   "seconds": 394
+  },
+  {
+   "droid": "BDX EXPLORER",
+   "tier": "Rainbow",
+   "seconds": 563
+  },
+  {
+   "droid": "BDX EXPLORER",
+   "tier": "Beskar",
+   "seconds": 450
+  },
+  {
+   "droid": "BDX EXPLORER",
+   "tier": "Galactic",
+   "seconds": 844
+  },
+  {
+   "droid": "ARG",
+   "tier": "Base",
+   "seconds": 103
+  },
+  {
+   "droid": "ARG",
+   "tier": "Gold",
+   "seconds": 414
+  },
+  {
+   "droid": "ARG",
+   "tier": "Diamond",
+   "seconds": 725
+  },
+  {
+   "droid": "ARG",
+   "tier": "Rainbow",
+   "seconds": 1037
+  },
+  {
+   "droid": "ARG",
+   "tier": "Beskar",
+   "seconds": 829
+  },
+  {
+   "droid": "ARG",
+   "tier": "Galactic",
+   "seconds": 1555
+  },
+  {
+   "droid": "SENATE HOVERCAM",
+   "tier": "Base",
+   "seconds": 110
+  },
+  {
+   "droid": "SENATE HOVERCAM",
+   "tier": "Gold",
+   "seconds": 442
+  },
+  {
+   "droid": "SENATE HOVERCAM",
+   "tier": "Diamond",
+   "seconds": 775
+  },
+  {
+   "droid": "SENATE HOVERCAM",
+   "tier": "Rainbow",
+   "seconds": 1107
+  },
+  {
+   "droid": "SENATE HOVERCAM",
+   "tier": "Beskar",
+   "seconds": 885
+  },
+  {
+   "droid": "SENATE HOVERCAM",
+   "tier": "Galactic",
+   "seconds": 1660
+  },
+  {
+   "droid": "BU-4D",
+   "tier": "Base",
+   "seconds": 131
+  },
+  {
+   "droid": "BU-4D",
+   "tier": "Gold",
+   "seconds": 527
+  },
+  {
+   "droid": "BU-4D",
+   "tier": "Diamond",
+   "seconds": 830
+  },
+  {
+   "droid": "BU-4D",
+   "tier": "Rainbow",
+   "seconds": 1317
+  },
+  {
+   "droid": "BU-4D",
+   "tier": "Beskar",
+   "seconds": 1063
+  },
+  {
+   "droid": "BU-4D",
+   "tier": "Galactic",
+   "seconds": 1976
+  },
+  {
+   "droid": "BAL-CORE",
+   "tier": "Base",
+   "seconds": 70
+  },
+  {
+   "droid": "BAL-CORE",
+   "tier": "Gold",
+   "seconds": 281
+  },
+  {
+   "droid": "BAL-CORE",
+   "tier": "Diamond",
+   "seconds": 492
+  },
+  {
+   "droid": "BAL-CORE",
+   "tier": "Rainbow",
+   "seconds": 703
+  },
+  {
+   "droid": "BAL-CORE",
+   "tier": "Beskar",
+   "seconds": 562
+  },
+  {
+   "droid": "BAL-CORE",
+   "tier": "Galactic",
+   "seconds": 1055
+  },
+  {
+   "droid": "ROLL-R",
+   "tier": "Base",
+   "seconds": 84
+  },
+  {
+   "droid": "ROLL-R",
+   "tier": "Gold",
+   "seconds": 337
+  },
+  {
+   "droid": "ROLL-R",
+   "tier": "Diamond",
+   "seconds": 590
+  },
+  {
+   "droid": "ROLL-R",
+   "tier": "Rainbow",
+   "seconds": 844
+  },
+  {
+   "droid": "ROLL-R",
+   "tier": "Beskar",
+   "seconds": 675
+  },
+  {
+   "droid": "ROLL-R",
+   "tier": "Galactic",
+   "seconds": 1266
+  },
+  {
+   "droid": "2BB",
+   "tier": "Base",
+   "seconds": 59
+  },
+  {
+   "droid": "2BB",
+   "tier": "Gold",
+   "seconds": 239
+  },
+  {
+   "droid": "2BB",
+   "tier": "Diamond",
+   "seconds": 418
+  },
+  {
+   "droid": "2BB",
+   "tier": "Rainbow",
+   "seconds": 598
+  },
+  {
+   "droid": "2BB",
+   "tier": "Beskar",
+   "seconds": 478
+  },
+  {
+   "droid": "2BB",
+   "tier": "Galactic",
+   "seconds": 897
+  },
+  {
+   "droid": "A-LT",
+   "tier": "Base",
+   "seconds": 93
+  },
+  {
+   "droid": "A-LT",
+   "tier": "Gold",
+   "seconds": 372
+  },
+  {
+   "droid": "A-LT",
+   "tier": "Diamond",
+   "seconds": 652
+  },
+  {
+   "droid": "A-LT",
+   "tier": "Rainbow",
+   "seconds": 931
+  },
+  {
+   "droid": "A-LT",
+   "tier": "Beskar",
+   "seconds": 745
+  },
+  {
+   "droid": "A-LT",
+   "tier": "Galactic",
+   "seconds": 1397
+  },
+  {
+   "droid": "R4",
+   "tier": "Base",
+   "seconds": 117
+  },
+  {
+   "droid": "R4",
+   "tier": "Gold",
+   "seconds": 471
+  },
+  {
+   "droid": "R4",
+   "tier": "Diamond",
+   "seconds": 824
+  },
+  {
+   "droid": "R4",
+   "tier": "Rainbow",
+   "seconds": 1177
+  },
+  {
+   "droid": "R4",
+   "tier": "Beskar",
+   "seconds": 942
+  },
+  {
+   "droid": "R4",
+   "tier": "Galactic",
+   "seconds": 1766
+  },
+  {
+   "droid": "R9",
+   "tier": "Base",
+   "seconds": 124
+  },
+  {
+   "droid": "R9",
+   "tier": "Gold",
+   "seconds": 499
+  },
+  {
+   "droid": "R9",
+   "tier": "Diamond",
+   "seconds": 873
+  },
+  {
+   "droid": "R9",
+   "tier": "Rainbow",
+   "seconds": 1247
+  },
+  {
+   "droid": "R9",
+   "tier": "Beskar",
+   "seconds": 998
+  },
+  {
+   "droid": "R9",
+   "tier": "Galactic",
+   "seconds": 1871
+  },
+  {
+   "droid": "B1 SECURITY",
+   "tier": "Base",
+   "seconds": 145
+  },
+  {
+   "droid": "B1 SECURITY",
+   "tier": "Gold",
+   "seconds": 583
+  },
+  {
+   "droid": "B1 SECURITY",
+   "tier": "Diamond",
+   "seconds": 1020
+  },
+  {
+   "droid": "B1 SECURITY",
+   "tier": "Rainbow",
+   "seconds": 1488
+  },
+  {
+   "droid": "B1 SECURITY",
+   "tier": "Beskar",
+   "seconds": 1166
+  },
+  {
+   "droid": "B1 SECURITY",
+   "tier": "Galactic",
+   "seconds": 2187
+  },
+  {
+   "droid": "NAV-EX",
+   "tier": "Base",
+   "seconds": 61
+  },
+  {
+   "droid": "NAV-EX",
+   "tier": "Gold",
+   "seconds": 246
+  },
+  {
+   "droid": "NAV-EX",
+   "tier": "Diamond",
+   "seconds": 431
+  },
+  {
+   "droid": "NAV-EX",
+   "tier": "Rainbow",
+   "seconds": 615
+  },
+  {
+   "droid": "NAV-EX",
+   "tier": "Beskar",
+   "seconds": 492
+  },
+  {
+   "droid": "NAV-EX",
+   "tier": "Galactic",
+   "seconds": 923
+  },
+  {
+   "droid": "VECT-ARM",
+   "tier": "Base",
+   "seconds": 77
+  },
+  {
+   "droid": "VECT-ARM",
+   "tier": "Gold",
+   "seconds": 309
+  },
+  {
+   "droid": "VECT-ARM",
+   "tier": "Diamond",
+   "seconds": 541
+  },
+  {
+   "droid": "VECT-ARM",
+   "tier": "Rainbow",
+   "seconds": 773
+  },
+  {
+   "droid": "VECT-ARM",
+   "tier": "Beskar",
+   "seconds": 619
+  },
+  {
+   "droid": "VECT-ARM",
+   "tier": "Galactic",
+   "seconds": 1160
+  },
+  {
+   "droid": "HOV-R",
+   "tier": "Base",
+   "seconds": 138
+  },
+  {
+   "droid": "HOV-R",
+   "tier": "Gold",
+   "seconds": 555
+  },
+  {
+   "droid": "HOV-R",
+   "tier": "Diamond",
+   "seconds": 971
+  },
+  {
+   "droid": "HOV-R",
+   "tier": "Rainbow",
+   "seconds": 1388
+  },
+  {
+   "droid": "HOV-R",
+   "tier": "Beskar",
+   "seconds": 1110
+  },
+  {
+   "droid": "HOV-R",
+   "tier": "Galactic",
+   "seconds": 2082
+  },
+  {
+   "droid": "GROUNDMECH",
+   "tier": "Base",
+   "seconds": 240
+  },
+  {
+   "droid": "GROUNDMECH",
+   "tier": "Gold",
+   "seconds": 962
+  },
+  {
+   "droid": "GROUNDMECH",
+   "tier": "Diamond",
+   "seconds": 1684
+  },
+  {
+   "droid": "GROUNDMECH",
+   "tier": "Rainbow",
+   "seconds": 2406
+  },
+  {
+   "droid": "GROUNDMECH",
+   "tier": "Beskar",
+   "seconds": 1924
+  },
+  {
+   "droid": "GROUNDMECH",
+   "tier": "Galactic",
+   "seconds": 3609
+  },
+  {
+   "droid": "LO",
+   "tier": "Base",
+   "seconds": 451
+  },
+  {
+   "droid": "LO",
+   "tier": "Gold",
+   "seconds": 451
+  },
+  {
+   "droid": "LO",
+   "tier": "Diamond",
+   "seconds": 3158
+  },
+  {
+   "droid": "LO",
+   "tier": "Rainbow",
+   "seconds": 4512
+  },
+  {
+   "droid": "LO",
+   "tier": "Beskar",
+   "seconds": 3609
+  },
+  {
+   "droid": "LO",
+   "tier": "Galactic",
+   "seconds": 6768
+  },
+  {
+   "droid": "AMP WALKER",
+   "tier": "Base",
+   "seconds": 1030
+  },
+  {
+   "droid": "AMP WALKER",
+   "tier": "Gold",
+   "seconds": 4121
+  },
+  {
+   "droid": "AMP WALKER",
+   "tier": "Diamond",
+   "seconds": 7212
+  },
+  {
+   "droid": "AMP WALKER",
+   "tier": "Rainbow",
+   "seconds": 10303
+  },
+  {
+   "droid": "AMP WALKER",
+   "tier": "Beskar",
+   "seconds": 8242
+  },
+  {
+   "droid": "AMP WALKER",
+   "tier": "Galactic",
+   "seconds": 15455
+  },
+  {
+   "droid": "SEN-TRI",
+   "tier": "Base",
+   "seconds": 925
+  },
+  {
+   "droid": "SEN-TRI",
+   "tier": "Gold",
+   "seconds": 3700
+  },
+  {
+   "droid": "SEN-TRI",
+   "tier": "Diamond",
+   "seconds": 6475
+  },
+  {
+   "droid": "SEN-TRI",
+   "tier": "Rainbow",
+   "seconds": 9250
+  },
+  {
+   "droid": "SEN-TRI",
+   "tier": "Beskar",
+   "seconds": 7400
+  },
+  {
+   "droid": "SEN-TRI",
+   "tier": "Galactic",
+   "seconds": 13875
+  },
+  {
+   "droid": "OPTI-POD",
+   "tier": "Base",
+   "seconds": 714
+  },
+  {
+   "droid": "OPTI-POD",
+   "tier": "Gold",
+   "seconds": 2572
+  },
+  {
+   "droid": "OPTI-POD",
+   "tier": "Diamond",
+   "seconds": 5001
+  },
+  {
+   "droid": "OPTI-POD",
+   "tier": "Rainbow",
+   "seconds": 6430
+  },
+  {
+   "droid": "OPTI-POD",
+   "tier": "Beskar",
+   "seconds": 5715
+  },
+  {
+   "droid": "OPTI-POD",
+   "tier": "Galactic",
+   "seconds": 10716
+  },
+  {
+   "droid": "GUNRUNNER",
+   "tier": "Base",
+   "seconds": 1188
+  },
+  {
+   "droid": "GUNRUNNER",
+   "tier": "Gold",
+   "seconds": 4753
+  },
+  {
+   "droid": "GUNRUNNER",
+   "tier": "Diamond",
+   "seconds": 8318
+  },
+  {
+   "droid": "GUNRUNNER",
+   "tier": "Rainbow",
+   "seconds": 11883
+  },
+  {
+   "droid": "GUNRUNNER",
+   "tier": "Beskar",
+   "seconds": 9506
+  },
+  {
+   "droid": "GUNRUNNER",
+   "tier": "Galactic",
+   "seconds": 17824
+  },
+  {
+   "droid": "BB",
+   "tier": "Base",
+   "seconds": 293
+  },
+  {
+   "droid": "BB",
+   "tier": "Gold",
+   "seconds": 1173
+  },
+  {
+   "droid": "BB",
+   "tier": "Diamond",
+   "seconds": 2052
+  },
+  {
+   "droid": "BB",
+   "tier": "Rainbow",
+   "seconds": 2932
+  },
+  {
+   "droid": "BB",
+   "tier": "Beskar",
+   "seconds": 2346
+  },
+  {
+   "droid": "BB",
+   "tier": "Galactic",
+   "seconds": 4398
+  },
+  {
+   "droid": "R2",
+   "tier": "Base",
+   "seconds": 661
+  },
+  {
+   "droid": "R2",
+   "tier": "Gold",
+   "seconds": 2647
+  },
+  {
+   "droid": "R2",
+   "tier": "Diamond",
+   "seconds": 4632
+  },
+  {
+   "droid": "R2",
+   "tier": "Rainbow",
+   "seconds": 6618
+  },
+  {
+   "droid": "R2",
+   "tier": "Beskar",
+   "seconds": 5294
+  },
+  {
+   "droid": "R2",
+   "tier": "Galactic",
+   "seconds": 9927
+  },
+  {
+   "droid": "R6",
+   "tier": "Base",
+   "seconds": 556
+  },
+  {
+   "droid": "R6",
+   "tier": "Gold",
+   "seconds": 2226
+  },
+  {
+   "droid": "R6",
+   "tier": "Diamond",
+   "seconds": 3895
+  },
+  {
+   "droid": "R6",
+   "tier": "Rainbow",
+   "seconds": 5565
+  },
+  {
+   "droid": "R6",
+   "tier": "Beskar",
+   "seconds": 4452
+  },
+  {
+   "droid": "R6",
+   "tier": "Galactic",
+   "seconds": 8347
+  },
+  {
+   "droid": "TRAK-R",
+   "tier": "Base",
+   "seconds": 609
+  },
+  {
+   "droid": "TRAK-R",
+   "tier": "Gold",
+   "seconds": 2436
+  },
+  {
+   "droid": "TRAK-R",
+   "tier": "Diamond",
+   "seconds": 4264
+  },
+  {
+   "droid": "TRAK-R",
+   "tier": "Rainbow",
+   "seconds": 6091
+  },
+  {
+   "droid": "TRAK-R",
+   "tier": "Beskar",
+   "seconds": 4873
+  },
+  {
+   "droid": "TRAK-R",
+   "tier": "Galactic",
+   "seconds": null
+  },
+  {
+   "droid": "ORB-WALKER",
+   "tier": "Base",
+   "seconds": 345
+  },
+  {
+   "droid": "ORB-WALKER",
+   "tier": "Gold",
+   "seconds": 1383
+  },
+  {
+   "droid": "ORB-WALKER",
+   "tier": "Diamond",
+   "seconds": 2421
+  },
+  {
+   "droid": "ORB-WALKER",
+   "tier": "Rainbow",
+   "seconds": 3459
+  },
+  {
+   "droid": "ORB-WALKER",
+   "tier": "Beskar",
+   "seconds": 2767
+  },
+  {
+   "droid": "ORB-WALKER",
+   "tier": "Galactic",
+   "seconds": 5188
+  },
+  {
+   "droid": "UTIL-TEC",
+   "tier": "Base",
+   "seconds": 398
+  },
+  {
+   "droid": "UTIL-TEC",
+   "tier": "Gold",
+   "seconds": 1594
+  },
+  {
+   "droid": "UTIL-TEC",
+   "tier": "Diamond",
+   "seconds": 2789
+  },
+  {
+   "droid": "UTIL-TEC",
+   "tier": "Rainbow",
+   "seconds": 3985
+  },
+  {
+   "droid": "UTIL-TEC",
+   "tier": "Beskar",
+   "seconds": 3188
+  },
+  {
+   "droid": "UTIL-TEC",
+   "tier": "Galactic",
+   "seconds": 5978
+  },
+  {
+   "droid": "B1 HEAVY",
+   "tier": "Base",
+   "seconds": 1083
+  },
+  {
+   "droid": "B1 HEAVY",
+   "tier": "Gold",
+   "seconds": 4332
+  },
+  {
+   "droid": "B1 HEAVY",
+   "tier": "Diamond",
+   "seconds": 7581
+  },
+  {
+   "droid": "B1 HEAVY",
+   "tier": "Rainbow",
+   "seconds": 10830
+  },
+  {
+   "droid": "B1 HEAVY",
+   "tier": "Beskar",
+   "seconds": 8664
+  },
+  {
+   "droid": "B1 HEAVY",
+   "tier": "Galactic",
+   "seconds": 13086
+  },
+  {
+   "droid": "B2 SUPER",
+   "tier": "Base",
+   "seconds": 767
+  },
+  {
+   "droid": "B2 SUPER",
+   "tier": "Gold",
+   "seconds": 3068
+  },
+  {
+   "droid": "B2 SUPER",
+   "tier": "Diamond",
+   "seconds": 5369
+  },
+  {
+   "droid": "B2 SUPER",
+   "tier": "Rainbow",
+   "seconds": 7671
+  },
+  {
+   "droid": "B2 SUPER",
+   "tier": "Beskar",
+   "seconds": 6136
+  },
+  {
+   "droid": "B2 SUPER",
+   "tier": "Galactic",
+   "seconds": null
+  },
+  {
+   "droid": "B2 HEAVY",
+   "tier": "Base",
+   "seconds": 872
+  },
+  {
+   "droid": "B2 HEAVY",
+   "tier": "Gold",
+   "seconds": 3489
+  },
+  {
+   "droid": "B2 HEAVY",
+   "tier": "Diamond",
+   "seconds": 6107
+  },
+  {
+   "droid": "B2 HEAVY",
+   "tier": "Rainbow",
+   "seconds": 8724
+  },
+  {
+   "droid": "B2 HEAVY",
+   "tier": "Beskar",
+   "seconds": 6979
+  },
+  {
+   "droid": "B2 HEAVY",
+   "tier": "Galactic",
+   "seconds": 13086
+  },
+  {
+   "droid": "STRIKE-ORB",
+   "tier": "Base",
+   "seconds": 977
+  },
+  {
+   "droid": "STRIKE-ORB",
+   "tier": "Gold",
+   "seconds": 3910
+  },
+  {
+   "droid": "STRIKE-ORB",
+   "tier": "Diamond",
+   "seconds": 6843
+  },
+  {
+   "droid": "STRIKE-ORB",
+   "tier": "Rainbow",
+   "seconds": 9777
+  },
+  {
+   "droid": "STRIKE-ORB",
+   "tier": "Beskar",
+   "seconds": 7821
+  },
+  {
+   "droid": "STRIKE-ORB",
+   "tier": "Galactic",
+   "seconds": 14665
+  },
+  {
+   "droid": "HAUL-R",
+   "tier": "Base",
+   "seconds": 503
+  },
+  {
+   "droid": "HAUL-R",
+   "tier": "Gold",
+   "seconds": 2015
+  },
+  {
+   "droid": "HAUL-R",
+   "tier": "Diamond",
+   "seconds": 3526
+  },
+  {
+   "droid": "HAUL-R",
+   "tier": "Rainbow",
+   "seconds": 5038
+  },
+  {
+   "droid": "HAUL-R",
+   "tier": "Beskar",
+   "seconds": 4030
+  },
+  {
+   "droid": "HAUL-R",
+   "tier": "Galactic",
+   "seconds": null
+  },
+  {
+   "droid": "LNG-SHOT",
+   "tier": "Base",
+   "seconds": 819
+  },
+  {
+   "droid": "LNG-SHOT",
+   "tier": "Gold",
+   "seconds": 3279
+  },
+  {
+   "droid": "LNG-SHOT",
+   "tier": "Diamond",
+   "seconds": 5738
+  },
+  {
+   "droid": "LNG-SHOT",
+   "tier": "Rainbow",
+   "seconds": 8197
+  },
+  {
+   "droid": "LNG-SHOT",
+   "tier": "Beskar",
+   "seconds": 6558
+  },
+  {
+   "droid": "LNG-SHOT",
+   "tier": "Galactic",
+   "seconds": 12296
+  },
+  {
+   "droid": "PROTO-ROLLER",
+   "tier": "Base",
+   "seconds": 1735
+  },
+  {
+   "droid": "PROTO-ROLLER",
+   "tier": "Gold",
+   "seconds": 6943
+  },
+  {
+   "droid": "PROTO-ROLLER",
+   "tier": "Diamond",
+   "seconds": 12151
+  },
+  {
+   "droid": "PROTO-ROLLER",
+   "tier": "Rainbow",
+   "seconds": 17358
+  },
+  {
+   "droid": "PROTO-ROLLER",
+   "tier": "Beskar",
+   "seconds": 13886
+  },
+  {
+   "droid": "PROTO-ROLLER",
+   "tier": "Galactic",
+   "seconds": null
+  },
+  {
+   "droid": "MECHA-DROID",
+   "tier": "Base",
+   "seconds": 2213
+  },
+  {
+   "droid": "MECHA-DROID",
+   "tier": "Gold",
+   "seconds": 8852
+  },
+  {
+   "droid": "MECHA-DROID",
+   "tier": "Diamond",
+   "seconds": 15492
+  },
+  {
+   "droid": "MECHA-DROID",
+   "tier": "Rainbow",
+   "seconds": 22132
+  },
+  {
+   "droid": "MECHA-DROID",
+   "tier": "Beskar",
+   "seconds": 17705
+  },
+  {
+   "droid": "MECHA-DROID",
+   "tier": "Galactic",
+   "seconds": 33198
+  },
+  {
+   "droid": "MONO-WLKR",
+   "tier": "Base",
+   "seconds": 2662
+  },
+  {
+   "droid": "MONO-WLKR",
+   "tier": "Gold",
+   "seconds": 10650
+  },
+  {
+   "droid": "MONO-WLKR",
+   "tier": "Diamond",
+   "seconds": 18637
+  },
+  {
+   "droid": "MONO-WLKR",
+   "tier": "Rainbow",
+   "seconds": 26625
+  },
+  {
+   "droid": "MONO-WLKR",
+   "tier": "Beskar",
+   "seconds": 21300
+  },
+  {
+   "droid": "MONO-WLKR",
+   "tier": "Galactic",
+   "seconds": 39937
+  },
+  {
+   "droid": "BB9",
+   "tier": "Base",
+   "seconds": 2311
+  },
+  {
+   "droid": "BB9",
+   "tier": "Gold",
+   "seconds": 9246
+  },
+  {
+   "droid": "BB9",
+   "tier": "Diamond",
+   "seconds": 16180
+  },
+  {
+   "droid": "BB9",
+   "tier": "Rainbow",
+   "seconds": 23115
+  },
+  {
+   "droid": "BB9",
+   "tier": "Beskar",
+   "seconds": 18492
+  },
+  {
+   "droid": "BB9",
+   "tier": "Galactic",
+   "seconds": 34672
+  },
+  {
+   "droid": "R7",
+   "tier": "Base",
+   "seconds": 2662
+  },
+  {
+   "droid": "R7",
+   "tier": "Gold",
+   "seconds": 9585
+  },
+  {
+   "droid": "R7",
+   "tier": "Diamond",
+   "seconds": 18637
+  },
+  {
+   "droid": "R7",
+   "tier": "Rainbow",
+   "seconds": 26625
+  },
+  {
+   "droid": "R7",
+   "tier": "Beskar",
+   "seconds": 21300
+  },
+  {
+   "droid": "R7",
+   "tier": "Galactic",
+   "seconds": 39937
+  },
+  {
+   "droid": "B2-RP",
+   "tier": "Base",
+   "seconds": 2318
+  },
+  {
+   "droid": "B2-RP",
+   "tier": "Gold",
+   "seconds": 9274
+  },
+  {
+   "droid": "B2-RP",
+   "tier": "Diamond",
+   "seconds": 16229
+  },
+  {
+   "droid": "B2-RP",
+   "tier": "Rainbow",
+   "seconds": 23185
+  },
+  {
+   "droid": "B2-RP",
+   "tier": "Beskar",
+   "seconds": 23185
+  },
+  {
+   "droid": "B2-RP",
+   "tier": "Galactic",
+   "seconds": 34777
+  },
+  {
+   "droid": "CYCLO-GRAV",
+   "tier": "Base",
+   "seconds": 2241
+  },
+  {
+   "droid": "CYCLO-GRAV",
+   "tier": "Gold",
+   "seconds": 8965
+  },
+  {
+   "droid": "CYCLO-GRAV",
+   "tier": "Diamond",
+   "seconds": 15689
+  },
+  {
+   "droid": "CYCLO-GRAV",
+   "tier": "Rainbow",
+   "seconds": 22413
+  },
+  {
+   "droid": "CYCLO-GRAV",
+   "tier": "Beskar",
+   "seconds": 17930
+  },
+  {
+   "droid": "CYCLO-GRAV",
+   "tier": "Galactic",
+   "seconds": 33619
+  },
+  {
+   "droid": "OPTI-STRK",
+   "tier": "Base",
+   "seconds": 2662
+  },
+  {
+   "droid": "OPTI-STRK",
+   "tier": "Gold",
+   "seconds": 10650
+  },
+  {
+   "droid": "OPTI-STRK",
+   "tier": "Diamond",
+   "seconds": 18637
+  },
+  {
+   "droid": "OPTI-STRK",
+   "tier": "Rainbow",
+   "seconds": 26625
+  },
+  {
+   "droid": "OPTI-STRK",
+   "tier": "Beskar",
+   "seconds": 21300
+  },
+  {
+   "droid": "OPTI-STRK",
+   "tier": "Galactic",
+   "seconds": 39937
+  },
+  {
+   "droid": "SNOW MOUSE",
+   "tier": "Base",
+   "seconds": 5220
+  },
+  {
+   "droid": "SNOW MOUSE",
+   "tier": "Gold",
+   "seconds": 20880
+  },
+  {
+   "droid": "SNOW MOUSE",
+   "tier": "Diamond",
+   "seconds": 36540
+  },
+  {
+   "droid": "SNOW MOUSE",
+   "tier": "Rainbow",
+   "seconds": 52200
+  },
+  {
+   "droid": "SNOW MOUSE",
+   "tier": "Beskar",
+   "seconds": 41760
+  },
+  {
+   "droid": "SNOW MOUSE",
+   "tier": "Galactic",
+   "seconds": 78300
+  },
+  {
+   "droid": "RIC",
+   "tier": "Base",
+   "seconds": 5710
+  },
+  {
+   "droid": "RIC",
+   "tier": "Gold",
+   "seconds": 22840
+  },
+  {
+   "droid": "RIC",
+   "tier": "Diamond",
+   "seconds": 39970
+  },
+  {
+   "droid": "RIC",
+   "tier": "Rainbow",
+   "seconds": null
+  },
+  {
+   "droid": "RIC",
+   "tier": "Beskar",
+   "seconds": 45680
+  },
+  {
+   "droid": "RIC",
+   "tier": "Galactic",
+   "seconds": 85650
+  },
+  {
+   "droid": "LOADLIFTER",
+   "tier": "Base",
+   "seconds": 7180
+  },
+  {
+   "droid": "LOADLIFTER",
+   "tier": "Gold",
+   "seconds": 28720
+  },
+  {
+   "droid": "LOADLIFTER",
+   "tier": "Diamond",
+   "seconds": 50260
+  },
+  {
+   "droid": "LOADLIFTER",
+   "tier": "Rainbow",
+   "seconds": 71800
+  },
+  {
+   "droid": "LOADLIFTER",
+   "tier": "Beskar",
+   "seconds": 57440
+  },
+  {
+   "droid": "LOADLIFTER",
+   "tier": "Galactic",
+   "seconds": 107700
+  },
+  {
+   "droid": "LEP",
+   "tier": "Base",
+   "seconds": 6690
+  },
+  {
+   "droid": "LEP",
+   "tier": "Gold",
+   "seconds": 26760
+  },
+  {
+   "droid": "LEP",
+   "tier": "Diamond",
+   "seconds": 46830
+  },
+  {
+   "droid": "LEP",
+   "tier": "Rainbow",
+   "seconds": 60220
+  },
+  {
+   "droid": "LEP",
+   "tier": "Beskar",
+   "seconds": 53520
+  },
+  {
+   "droid": "LEP",
+   "tier": "Galactic",
+   "seconds": 100350
+  },
+  {
+   "droid": "RIC-1200",
+   "tier": "Base",
+   "seconds": 6200
+  },
+  {
+   "droid": "RIC-1200",
+   "tier": "Gold",
+   "seconds": 24800
+  },
+  {
+   "droid": "RIC-1200",
+   "tier": "Diamond",
+   "seconds": 43400
+  },
+  {
+   "droid": "RIC-1200",
+   "tier": "Rainbow",
+   "seconds": 62000
+  },
+  {
+   "droid": "RIC-1200",
+   "tier": "Beskar",
+   "seconds": 44640
+  },
+  {
+   "droid": "RIC-1200",
+   "tier": "Galactic",
+   "seconds": 93000
+  },
+  {
+   "droid": "DRFT-R",
+   "tier": "Base",
+   "seconds": 6200
+  },
+  {
+   "droid": "DRFT-R",
+   "tier": "Gold",
+   "seconds": 24800
+  },
+  {
+   "droid": "DRFT-R",
+   "tier": "Diamond",
+   "seconds": 43400
+  },
+  {
+   "droid": "DRFT-R",
+   "tier": "Rainbow",
+   "seconds": 62000
+  },
+  {
+   "droid": "DRFT-R",
+   "tier": "Beskar",
+   "seconds": 44640
+  },
+  {
+   "droid": "DRFT-R",
+   "tier": "Galactic",
+   "seconds": 93000
+  },
+  {
+   "droid": "CYCLENS",
+   "tier": "Base",
+   "seconds": 4698
+  },
+  {
+   "droid": "CYCLENS",
+   "tier": "Gold",
+   "seconds": 20880
+  },
+  {
+   "droid": "CYCLENS",
+   "tier": "Diamond",
+   "seconds": 36540
+  },
+  {
+   "droid": "CYCLENS",
+   "tier": "Rainbow",
+   "seconds": 52200
+  },
+  {
+   "droid": "CYCLENS",
+   "tier": "Beskar",
+   "seconds": 41760
+  },
+  {
+   "droid": "CYCLENS",
+   "tier": "Galactic",
+   "seconds": 78300
+  },
+  {
+   "droid": "MO-TRAK",
+   "tier": "Base",
+   "seconds": 7153
+  },
+  {
+   "droid": "MO-TRAK",
+   "tier": "Gold",
+   "seconds": 28720
+  },
+  {
+   "droid": "MO-TRAK",
+   "tier": "Diamond",
+   "seconds": 50260
+  },
+  {
+   "droid": "MO-TRAK",
+   "tier": "Rainbow",
+   "seconds": 71800
+  },
+  {
+   "droid": "MO-TRAK",
+   "tier": "Beskar",
+   "seconds": 57440
+  },
+  {
+   "droid": "MO-TRAK",
+   "tier": "Galactic",
+   "seconds": 107700
+  },
+  {
+   "droid": "TRI-TEK",
+   "tier": "Base",
+   "seconds": 6690
+  },
+  {
+   "droid": "TRI-TEK",
+   "tier": "Gold",
+   "seconds": 26760
+  },
+  {
+   "droid": "TRI-TEK",
+   "tier": "Diamond",
+   "seconds": 46830
+  },
+  {
+   "droid": "TRI-TEK",
+   "tier": "Rainbow",
+   "seconds": 60220
+  },
+  {
+   "droid": "TRI-TEK",
+   "tier": "Beskar",
+   "seconds": 53520
+  },
+  {
+   "droid": "TRI-TEK",
+   "tier": "Galactic",
+   "seconds": 100350
+  },
+  {
+   "droid": "IG",
+   "tier": "Base",
+   "seconds": 6200
+  },
+  {
+   "droid": "IG",
+   "tier": "Gold",
+   "seconds": 24800
+  },
+  {
+   "droid": "IG",
+   "tier": "Diamond",
+   "seconds": 43400
+  },
+  {
+   "droid": "IG",
+   "tier": "Rainbow",
+   "seconds": 62000
+  },
+  {
+   "droid": "IG",
+   "tier": "Beskar",
+   "seconds": 44640
+  },
+  {
+   "droid": "IG",
+   "tier": "Galactic",
+   "seconds": 93000
+  },
+  {
+   "droid": "KX",
+   "tier": "Base",
+   "seconds": 7180
+  },
+  {
+   "droid": "KX",
+   "tier": "Gold",
+   "seconds": 28720
+  },
+  {
+   "droid": "KX",
+   "tier": "Diamond",
+   "seconds": 50260
+  },
+  {
+   "droid": "KX",
+   "tier": "Rainbow",
+   "seconds": 71800
+  },
+  {
+   "droid": "KX",
+   "tier": "Beskar",
+   "seconds": 57440
+  },
+  {
+   "droid": "KX",
+   "tier": "Galactic",
+   "seconds": 107700
+  },
+  {
+   "droid": "BB8",
+   "tier": "Base",
+   "seconds": null
+  },
+  {
+   "droid": "BB8",
+   "tier": "Gold",
+   "seconds": null
+  },
+  {
+   "droid": "BB8",
+   "tier": "Diamond",
+   "seconds": null
+  },
+  {
+   "droid": "BB8",
+   "tier": "Rainbow",
+   "seconds": null
+  },
+  {
+   "droid": "BB8",
+   "tier": "Beskar",
+   "seconds": null
+  },
+  {
+   "droid": "BB8",
+   "tier": "Galactic",
+   "seconds": null
+  },
+  {
+   "droid": "MISTER BONES",
+   "tier": "Base",
+   "seconds": null
+  },
+  {
+   "droid": "MISTER BONES",
+   "tier": "Gold",
+   "seconds": null
+  },
+  {
+   "droid": "MISTER BONES",
+   "tier": "Diamond",
+   "seconds": null
+  },
+  {
+   "droid": "MISTER BONES",
+   "tier": "Rainbow",
+   "seconds": null
+  },
+  {
+   "droid": "MISTER BONES",
+   "tier": "Beskar",
+   "seconds": null
+  },
+  {
+   "droid": "MISTER BONES",
+   "tier": "Galactic",
+   "seconds": null
+  },
+  {
+   "droid": "IG-11 MARSHAL",
+   "tier": "Base",
+   "seconds": null
+  },
+  {
+   "droid": "IG-11 MARSHAL",
+   "tier": "Gold",
+   "seconds": null
+  },
+  {
+   "droid": "IG-11 MARSHAL",
+   "tier": "Diamond",
+   "seconds": null
+  },
+  {
+   "droid": "IG-11 MARSHAL",
+   "tier": "Rainbow",
+   "seconds": null
+  },
+  {
+   "droid": "IG-11 MARSHAL",
+   "tier": "Beskar",
+   "seconds": null
+  },
+  {
+   "droid": "IG-11 MARSHAL",
+   "tier": "Galactic",
+   "seconds": null
+  },
+  {
+   "droid": "DJ-R3X",
+   "tier": "Base",
+   "seconds": null
+  },
+  {
+   "droid": "DJ-R3X",
+   "tier": "Gold",
+   "seconds": null
+  },
+  {
+   "droid": "DJ-R3X",
+   "tier": "Diamond",
+   "seconds": null
+  },
+  {
+   "droid": "DJ-R3X",
+   "tier": "Rainbow",
+   "seconds": null
+  },
+  {
+   "droid": "DJ-R3X",
+   "tier": "Beskar",
+   "seconds": null
+  },
+  {
+   "droid": "DJ-R3X",
+   "tier": "Galactic",
+   "seconds": null
+  },
+  {
+   "droid": "CB-23",
+   "tier": "Base",
+   "seconds": null
+  },
+  {
+   "droid": "CB-23",
+   "tier": "Gold",
+   "seconds": null
+  },
+  {
+   "droid": "CB-23",
+   "tier": "Diamond",
+   "seconds": null
+  },
+  {
+   "droid": "CB-23",
+   "tier": "Rainbow",
+   "seconds": null
+  },
+  {
+   "droid": "CB-23",
+   "tier": "Beskar",
+   "seconds": null
+  },
+  {
+   "droid": "CB-23",
+   "tier": "Galactic",
+   "seconds": null
+  },
+  {
+   "droid": "R2-D2",
+   "tier": "Base",
+   "seconds": null
+  },
+  {
+   "droid": "R2-D2",
+   "tier": "Gold",
+   "seconds": null
+  },
+  {
+   "droid": "R2-D2",
+   "tier": "Diamond",
+   "seconds": null
+  },
+  {
+   "droid": "R2-D2",
+   "tier": "Rainbow",
+   "seconds": null
+  },
+  {
+   "droid": "R2-D2",
+   "tier": "Beskar",
+   "seconds": null
+  },
+  {
+   "droid": "R2-D2",
+   "tier": "Galactic",
+   "seconds": null
+  },
+  {
+   "droid": "C-3P0",
+   "tier": "Base",
+   "seconds": null
+  },
+  {
+   "droid": "C-3P0",
+   "tier": "Gold",
+   "seconds": null
+  },
+  {
+   "droid": "C-3P0",
+   "tier": "Diamond",
+   "seconds": null
+  },
+  {
+   "droid": "C-3P0",
+   "tier": "Rainbow",
+   "seconds": null
+  },
+  {
+   "droid": "C-3P0",
+   "tier": "Beskar",
+   "seconds": null
+  },
+  {
+   "droid": "C-3P0",
+   "tier": "Galactic",
+   "seconds": null
+  },
+  {
+   "droid": "CHOPPER",
+   "tier": "Base",
+   "seconds": null
+  },
+  {
+   "droid": "CHOPPER",
+   "tier": "Gold",
+   "seconds": null
+  },
+  {
+   "droid": "CHOPPER",
+   "tier": "Diamond",
+   "seconds": null
+  },
+  {
+   "droid": "CHOPPER",
+   "tier": "Rainbow",
+   "seconds": null
+  },
+  {
+   "droid": "CHOPPER",
+   "tier": "Beskar",
+   "seconds": null
+  },
+  {
+   "droid": "CHOPPER",
+   "tier": "Galactic",
+   "seconds": null
+  }
+ ],
+ "companionBuffs": [
+  {
+   "kind": "Worker",
+   "rarity": "Common",
+   "tier": "Base",
+   "value": 20
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Common",
+   "tier": "Gold",
+   "value": 40
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Common",
+   "tier": "Diamond",
+   "value": 60
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Common",
+   "tier": "Rainbow",
+   "value": 80
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Common",
+   "tier": "Beskar",
+   "value": 100
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Common",
+   "tier": "Galactic",
+   "value": 100
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Rare",
+   "tier": "Base",
+   "value": 40
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Rare",
+   "tier": "Gold",
+   "value": 60
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Rare",
+   "tier": "Diamond",
+   "value": 80
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Rare",
+   "tier": "Rainbow",
+   "value": 100
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Rare",
+   "tier": "Beskar",
+   "value": 120
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Rare",
+   "tier": "Galactic",
+   "value": 120
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Epic",
+   "tier": "Base",
+   "value": 60
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Epic",
+   "tier": "Gold",
+   "value": 80
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Epic",
+   "tier": "Diamond",
+   "value": 100
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Epic",
+   "tier": "Rainbow",
+   "value": 120
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Epic",
+   "tier": "Beskar",
+   "value": 140
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Epic",
+   "tier": "Galactic",
+   "value": 140
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Legendary",
+   "tier": "Base",
+   "value": 80
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Legendary",
+   "tier": "Gold",
+   "value": 100
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Legendary",
+   "tier": "Diamond",
+   "value": 120
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Legendary",
+   "tier": "Rainbow",
+   "value": 140
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Legendary",
+   "tier": "Beskar",
+   "value": 160
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Legendary",
+   "tier": "Galactic",
+   "value": 160
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Mythic",
+   "tier": "Base",
+   "value": 100
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Mythic",
+   "tier": "Gold",
+   "value": 120
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Mythic",
+   "tier": "Diamond",
+   "value": 140
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Mythic",
+   "tier": "Rainbow",
+   "value": 160
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Mythic",
+   "tier": "Beskar",
+   "value": 180
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Mythic",
+   "tier": "Galactic",
+   "value": 180
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Iconic",
+   "tier": "Base",
+   "value": null
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Iconic",
+   "tier": "Gold",
+   "value": null
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Iconic",
+   "tier": "Diamond",
+   "value": null
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Iconic",
+   "tier": "Rainbow",
+   "value": null
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Iconic",
+   "tier": "Beskar",
+   "value": null
+  },
+  {
+   "kind": "Worker",
+   "rarity": "Iconic",
+   "tier": "Galactic",
+   "value": null
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Common",
+   "tier": "Base",
+   "value": 1
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Common",
+   "tier": "Gold",
+   "value": 2
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Common",
+   "tier": "Diamond",
+   "value": 3
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Common",
+   "tier": "Rainbow",
+   "value": 4
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Common",
+   "tier": "Beskar",
+   "value": 5
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Common",
+   "tier": "Galactic",
+   "value": 6
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Rare",
+   "tier": "Base",
+   "value": 2
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Rare",
+   "tier": "Gold",
+   "value": 3
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Rare",
+   "tier": "Diamond",
+   "value": 4
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Rare",
+   "tier": "Rainbow",
+   "value": 5
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Rare",
+   "tier": "Beskar",
+   "value": 6
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Rare",
+   "tier": "Galactic",
+   "value": 7
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Epic",
+   "tier": "Base",
+   "value": 3
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Epic",
+   "tier": "Gold",
+   "value": 4
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Epic",
+   "tier": "Diamond",
+   "value": 5
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Epic",
+   "tier": "Rainbow",
+   "value": 6
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Epic",
+   "tier": "Beskar",
+   "value": 7
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Epic",
+   "tier": "Galactic",
+   "value": 8
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Legendary",
+   "tier": "Base",
+   "value": 4
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Legendary",
+   "tier": "Gold",
+   "value": 5
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Legendary",
+   "tier": "Diamond",
+   "value": 6
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Legendary",
+   "tier": "Rainbow",
+   "value": 7
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Legendary",
+   "tier": "Beskar",
+   "value": 8
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Legendary",
+   "tier": "Galactic",
+   "value": 9
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Mythic",
+   "tier": "Base",
+   "value": 5
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Mythic",
+   "tier": "Gold",
+   "value": 6
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Mythic",
+   "tier": "Diamond",
+   "value": 7
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Mythic",
+   "tier": "Rainbow",
+   "value": 8
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Mythic",
+   "tier": "Beskar",
+   "value": 9
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Mythic",
+   "tier": "Galactic",
+   "value": 10
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Iconic",
+   "tier": "Base",
+   "value": null
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Iconic",
+   "tier": "Gold",
+   "value": null
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Iconic",
+   "tier": "Diamond",
+   "value": null
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Iconic",
+   "tier": "Rainbow",
+   "value": null
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Iconic",
+   "tier": "Beskar",
+   "value": null
+  },
+  {
+   "kind": "Astromech",
+   "rarity": "Iconic",
+   "tier": "Galactic",
+   "value": null
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Common",
+   "tier": "Base",
+   "value": 20
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Common",
+   "tier": "Gold",
+   "value": 60
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Common",
+   "tier": "Diamond",
+   "value": 100
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Common",
+   "tier": "Rainbow",
+   "value": 140
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Common",
+   "tier": "Beskar",
+   "value": 180
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Common",
+   "tier": "Galactic",
+   "value": 220
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Rare",
+   "tier": "Base",
+   "value": 40
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Rare",
+   "tier": "Gold",
+   "value": 80
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Rare",
+   "tier": "Diamond",
+   "value": 120
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Rare",
+   "tier": "Rainbow",
+   "value": 160
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Rare",
+   "tier": "Beskar",
+   "value": 200
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Rare",
+   "tier": "Galactic",
+   "value": 240
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Epic",
+   "tier": "Base",
+   "value": 60
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Epic",
+   "tier": "Gold",
+   "value": 100
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Epic",
+   "tier": "Diamond",
+   "value": 140
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Epic",
+   "tier": "Rainbow",
+   "value": 180
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Epic",
+   "tier": "Beskar",
+   "value": 220
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Epic",
+   "tier": "Galactic",
+   "value": 260
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Legendary",
+   "tier": "Base",
+   "value": 80
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Legendary",
+   "tier": "Gold",
+   "value": 120
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Legendary",
+   "tier": "Diamond",
+   "value": 160
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Legendary",
+   "tier": "Rainbow",
+   "value": 200
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Legendary",
+   "tier": "Beskar",
+   "value": 240
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Legendary",
+   "tier": "Galactic",
+   "value": 280
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Mythic",
+   "tier": "Base",
+   "value": 100
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Mythic",
+   "tier": "Gold",
+   "value": 140
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Mythic",
+   "tier": "Diamond",
+   "value": 180
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Mythic",
+   "tier": "Rainbow",
+   "value": 220
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Mythic",
+   "tier": "Beskar",
+   "value": 260
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Mythic",
+   "tier": "Galactic",
+   "value": 300
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Iconic",
+   "tier": "Base",
+   "value": null
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Iconic",
+   "tier": "Gold",
+   "value": null
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Iconic",
+   "tier": "Diamond",
+   "value": null
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Iconic",
+   "tier": "Rainbow",
+   "value": null
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Iconic",
+   "tier": "Beskar",
+   "value": null
+  },
+  {
+   "kind": "Battle",
+   "rarity": "Iconic",
+   "tier": "Galactic",
+   "value": null
+  }
+ ],
+ "iconicCompanionEffects": [
+  {
+   "droid": "BB8",
+   "effect": "100% UPGRADE CHIPS"
+  },
+  {
+   "droid": "MISTER BONES",
+   "effect": "x2 DAMAGE"
+  },
+  {
+   "droid": "IG-11 MARSHAL",
+   "effect": "BLUEPRINT SHIELD"
+  },
+  {
+   "droid": "DJ-R3X",
+   "effect": "x2 WORLD QUEST REWARDS"
+  },
+  {
+   "droid": "CB-23",
+   "effect": "SECRET ASTROMECH MISSION"
+  },
+  {
+   "droid": "R2-D2",
+   "effect": "2x ASSIGNED ASTROMECH MISSION REWARD"
+  },
+  {
+   "droid": "C-3P0",
+   "effect": "100% DROID SELL VALUE"
+  },
+  {
+   "droid": "CHOPPER",
+   "effect": "+50% CRIT CHANCE & DAMAGE"
   }
  ]
 }

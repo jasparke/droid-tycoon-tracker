@@ -29,4 +29,17 @@ describe('getReference', () => {
 		expect(ref.novaPaintStages).toHaveLength(3);
 		expect(ref.droids.find((d) => d.name === 'R2-D2')).toMatchObject({ incomePct: '25', buyNc: null });
 	});
+
+	it('serves the crafting and companion reference tables', async () => {
+		const ref = await getReference(db);
+		expect(ref.craftingTimes).toEqual(expect.arrayContaining([
+			{ droid: 'MOUSE', tier: 'Base', seconds: 33 },
+			{ droid: 'CB', tier: 'Galactic', seconds: null }
+		]));
+		expect(ref.companionBuffs).toEqual(expect.arrayContaining([
+			{ kind: 'Worker', rarity: 'Common', tier: 'Base', value: 20 },
+			{ kind: 'Worker', rarity: 'Iconic', tier: 'Base', value: null }
+		]));
+		expect(ref.iconicCompanionEffects.map((e) => e.droid).sort()).toEqual(['CB-23', 'R2-D2']);
+	});
 });

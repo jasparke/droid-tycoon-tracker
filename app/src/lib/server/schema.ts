@@ -40,6 +40,13 @@ export const plans = pgTable('plans', {
 	rebirth: integer('rebirth').notNull()
 }, (t) => [primaryKey({ columns: [t.profileId, t.cycle, t.rebirth] })]);
 
+// Flawless ownership is an axis, not a tier: row presence = owned (same idiom as `plans`),
+// no cycle axis, eligible for non-Iconic droids only. Never truncated by a sync apply.
+export const flawlessOwned = pgTable('flawless_owned', {
+	profileId: integer('profile_id').notNull().references(() => profiles.id, { onDelete: 'cascade' }),
+	droid: text('droid').notNull()
+}, (t) => [primaryKey({ columns: [t.profileId, t.droid] })]);
+
 // ---------- reference zone (no FKs from user zone — see spec) ----------
 export const droids = pgTable('droids', {
 	name: text('name').primaryKey(),
@@ -117,6 +124,24 @@ export const flawlessSpawn = pgTable('flawless_spawn', {
 export const novaPaintStages = pgTable('nova_paint_stages', {
 	stage: integer('stage').primaryKey(),   // global ladder: 1→30, 2→120, 3→400
 	crystalCost: integer('crystal_cost').notNull()
+});
+
+export const craftingTimes = pgTable('crafting_times', {
+	droid: text('droid').notNull(),
+	tier: text('tier').notNull(),
+	seconds: integer('seconds')             // null = blank in the sheet (unpublished) or Iconic N/A
+}, (t) => [primaryKey({ columns: [t.droid, t.tier] })]);
+
+export const companionBuffs = pgTable('companion_buffs', {
+	kind: text('kind').notNull(),           // Worker | Astromech | Battle (matches droids.type casing)
+	rarity: text('rarity').notNull(),
+	tier: text('tier').notNull(),
+	value: integer('value')                 // Worker = crafting-speed %, Astromech = +pickaxe levels, Battle = +max health; null = Iconic N/A
+}, (t) => [primaryKey({ columns: [t.kind, t.rarity, t.tier] })]);
+
+export const iconicCompanionEffects = pgTable('iconic_companion_effects', {
+	droid: text('droid').primaryKey(),
+	effect: text('effect').notNull()        // free text, verbatim from the sheet
 });
 
 export const syncPreviews = pgTable('sync_previews', {
