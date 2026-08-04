@@ -72,6 +72,23 @@ describe('parseNovaShop — live (post-shift) geometry', () => {
 		expect(out.novaShop).toHaveLength(19);
 	});
 
+	it('a stray non-banner cell in the banner row does not silently truncate a section', () => {
+		// Sections are bounded by the next real "NOVA SHOP - " banner, not by any non-empty
+		// cell: an annotation dropped into the banner row used to clamp Featured at column 3
+		// and silently lose its last three items (19 rows -> 16) with no error raised.
+		const lines = NOVA_CSV.split('\n');
+		const bannerRow = lines[1].split(',');
+		bannerRow[3] = 'NOTE';
+		lines[1] = bannerRow.join(',');
+
+		const strayed = parseNovaShop(lines.join('\n'));
+		expect(strayed.novaShop).toHaveLength(19);
+		for (const item of ['Companion Slot', 'Upgrade Chip Station', 'Daily Crystals']) {
+			expect(strayed.novaShop.some((n) => n.category === 'Featured' && n.item === item)).toBe(true);
+		}
+		expect(strayed.novaShop).toEqual(out.novaShop); // the stray cell changes nothing at all
+	});
+
 	it('paint stages and rebirth meta come from their own anchors', () => {
 		expect(out.novaPaintStages).toEqual([
 			{ stage: 1, crystalCost: 30 }, { stage: 2, crystalCost: 120 }, { stage: 3, crystalCost: 400 }

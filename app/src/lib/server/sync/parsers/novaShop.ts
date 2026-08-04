@@ -50,8 +50,11 @@ export function parseNovaShop(csv: string) {
 	const r = toRows(csv);
 	const bannerRow = findBannerRow(r);
 	const banners = r[bannerRow];
-	// every non-empty banner cell bounds the section to its left
-	const boundaries = banners.map((c, i) => (c.trim() ? i : -1)).filter((i) => i >= 0);
+	// Only a real section banner bounds the section to its left. Treating *any* non-empty
+	// cell as a boundary would let a stray annotation in the banner row silently truncate a
+	// section's item columns — a drop the `!items.length` guard below cannot see.
+	const isBanner = (c: string) => /^NOVA SHOP - /.test(norm(c));
+	const boundaries = banners.map((c, i) => (isBanner(c) ? i : -1)).filter((i) => i >= 0);
 	const endOf = (anchor: number, width: number) =>
 		boundaries.find((b) => b > anchor) ?? width;
 
