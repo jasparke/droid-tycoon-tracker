@@ -55,7 +55,33 @@ export const NOVA_CSV = [
 	row(40, { 36: 'RB 13', 37: '16 NOVA CRYSTALS', 38: '32%', 39: '160%' })
 ].join('\n');
 
-export const CSV_BY_GID = { '1248391507': DROID_CSV, '0': REBIRTH_CSV, '547464940': COSMETIC_CSV, '1548395368': NOVA_CSV };
+// Width 17. `COMPAINION` and the trailing space in 'ICONIC ' are the sheet's own text,
+// reproduced deliberately — the parser matches them, it never corrects them.
+export const CRAFTING_CSV = [
+	row(17, { 3: 'banner', 10: 'banner' }),
+	row(17, { 3: 'CRAFTING TIME - NO BUFF', 10: 'WORKER COMPAINION DROIDS - CRAFTING SPEED BUFFS' }),
+	row(17, { 0: 'RARITY', 1: 'DROID', 2: 'TYPE', 3: 'BASIC', 4: 'GOLD', 5: 'DIAMOND', 6: 'RAINBOW', 7: 'BESKAR', 8: 'GALACTIC',
+	          10: 'RARITY', 11: 'BASIC', 12: 'GOLD', 13: 'DIAMOND', 14: 'RAINBOW', 15: 'BESKAR', 16: 'GALACTIC' }),
+	row(17, { 0: 'COMMON', 1: 'MOUSE', 2: 'WORKER', 3: '0:00:33', 4: '0:02:14', 5: '0:03:54', 6: '0:05:35', 7: '0:04:28', 8: '0:08:22',
+	          10: 'COMMON', 11: '20%', 12: '40%', 13: '60%', 14: '80%', 15: '100%', 16: '100%' }),
+	row(17, { 1: 'HAUL-R', 2: 'BATTLE', 3: '0:08:23', 4: '0:33:35', 5: '0:58:46', 6: '1:23:58', 7: '1:07:10',
+	          10: 'ICONIC', 11: 'N/A', 12: 'N/A', 13: 'N/A', 14: 'N/A', 15: 'N/A', 16: 'N/A' }),
+	row(17, { 0: 'ICONIC ', 1: 'BB-8', 2: 'ASTROMECH', 3: 'N/A' }),
+	row(17, { 10: 'ASTROMECH COMPAINION DROIDS - PICKAXE LEVEL BUFFS' }),
+	row(17, { 10: 'RARITY', 11: 'BASIC', 12: 'GOLD', 13: 'DIAMOND', 14: 'RAINBOW', 15: 'BESKAR', 16: 'GALACTIC' }),
+	row(17, { 10: 'COMMON', 11: '+1', 12: '+2', 13: '+3', 14: '+4', 15: '+5', 16: '+6' }),
+	row(17, {}),
+	row(17, { 10: 'BATTLE COMPAINION DROIDS - MAX HEALTH BUFFS' }),
+	row(17, { 10: 'RARITY', 11: 'BASIC', 12: 'GOLD', 13: 'DIAMOND', 14: 'RAINBOW', 15: 'BESKAR', 16: 'GALACTIC' }),
+	row(17, { 10: 'COMMON', 11: '+20', 12: '+60', 13: '+100', 14: '+140', 15: '+180', 16: '+220' }),
+	row(17, {}),
+	row(17, { 10: 'COMPAINION DROIDS - ICONIC DROIDS' }),
+	row(17, { 10: 'DROID', 11: 'BASIC' }),
+	row(17, { 10: 'BB-8', 11: '100% UPGRADE CHIPS' }),
+	row(17, { 10: 'CHOPPER', 11: '+50% CRIT CHANCE & DAMAGE' })
+].join('\n');
+
+export const CSV_BY_GID = { '1248391507': DROID_CSV, '0': REBIRTH_CSV, '547464940': COSMETIC_CSV, '1548395368': NOVA_CSV, '1131770079': CRAFTING_CSV };
 
 // A reject-free minimal built payload for stage/apply integration tests (bypasses the parsers,
 // so it isn't subject to buildPayload's 360-rebirth assert). validate() finds no rejects here.

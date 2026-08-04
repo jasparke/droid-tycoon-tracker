@@ -8,7 +8,7 @@ describe('buildPayload', () => {
 		const b = buildPayload(CSV_BY_GID, [], 'test', '2026-07-05T00:00:00Z');
 		expect(a.checksum).toBe(b.checksum);
 		expect(a.checksum).toMatch(/^[0-9a-f]{64}$/);
-		expect(Object.keys(a.payload.meta.tabChecksums).sort()).toEqual(['0', '1248391507', '1548395368', '547464940']);
+		expect(Object.keys(a.payload.meta.tabChecksums).sort()).toEqual(['0', '1131770079', '1248391507', '1548395368', '547464940']);
 		expect(a.payload.meta.rowCounts.droids).toBeGreaterThan(0);
 	});
 	it('flags the partial rebirth set as a reject (not 324)', () => {
