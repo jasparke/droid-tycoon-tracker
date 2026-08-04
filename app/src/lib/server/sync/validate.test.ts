@@ -20,7 +20,7 @@ function base(): PayloadTables {
 		novaShop: [{ category: 'Featured', item: 'Critical Chance', level: 1, cost: 60 },
 			{ category: 'Core upgrades', item: 'Max Health', level: 1, cost: 1 },
 			{ category: 'Workshop upgrades', item: 'Lounge Slot', level: 1, cost: 1 }],
-		cosmetics: [],
+		cosmetics: [{ category: 'Hats', name: 'F1l-ON1', requirement: 'FIND IN WORLD' }],
 		droidSellValues: [{ rarity: 'Common', tier: 'Gold', multiplier: 4 }],
 		flawlessSpawn: [{ tier: 'Base', oneIn: 1000 }],
 		novaPaintStages: [{ stage: 1, crystalCost: 30 }],
@@ -67,8 +67,10 @@ describe('validate', () => {
 		expect(flags.some((f) => f.kind === 'report' && f.code === 'orphan_count' && f.message.includes('GONE'))).toBe(true);
 	});
 	it('rejects any never-empty table that parsed to nothing (silent geometry drift)', () => {
+		// droids and droidTiers pass every per-row check vacuously when empty, and an empty cosmetics
+		// would truncate-and-apply cleanly — emptiness is the one thing per-row checks cannot see.
 		for (const table of ['novaShop', 'rebirthMeta', 'novaPaintStages', 'droidSellValues', 'flawlessSpawn',
-			'craftingTimes', 'companionBuffs', 'iconicCompanionEffects'] as const) {
+			'craftingTimes', 'companionBuffs', 'iconicCompanionEffects', 'cosmetics', 'droids', 'droidTiers'] as const) {
 			const t = base();
 			(t[table] as unknown[]) = [];
 			const rejects = rejectsOf(validate(t, []));
@@ -116,5 +118,16 @@ describe('validate', () => {
 		t.craftingTimes.push({ droid: 'IG', tier: 'Galactic', seconds: null });
 		const bad = rejectsOf(validate(t, [])).filter((f) => f.code === 'bad_craft_time');
 		expect(bad.map((f) => f.key).sort()).toEqual(['IG/Beskar', 'IG/Diamond', 'IG/Gold', 'IG/Rainbow']);
+	});
+	it('rejects a companion buff whose kind or rarity is not a known one', () => {
+		// The exact-108 count guard only catches lost rows. A sheet rename keeps the count intact and
+		// writes a bogus label instead: rarity() title-cases whatever it is given, so MYTHIC → MYTHICAL
+		// arrives as a well-formed "Mythical" row that no other check can see.
+		const t = base();
+		t.companionBuffs.push({ kind: 'Worker', rarity: 'Mythical', tier: 'Base', value: 20 });
+		t.companionBuffs.push({ kind: 'Wrker', rarity: 'Common', tier: 'Gold', value: 40 });
+		const rejects = rejectsOf(validate(t, []));
+		expect(rejects.some((f) => f.code === 'bad_buff_rarity' && f.key === 'Worker/Mythical/Base')).toBe(true);
+		expect(rejects.some((f) => f.code === 'bad_buff_kind' && f.key === 'Wrker/Common/Gold')).toBe(true);
 	});
 });

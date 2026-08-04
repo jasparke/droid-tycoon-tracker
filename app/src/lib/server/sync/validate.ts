@@ -6,7 +6,7 @@ const REQUIRED_CHIP_RARITIES = ['Common', 'Rare', 'Epic', 'Legendary', 'Mythic']
 // Tables that are never legitimately empty. A geometry drift used to parse "successfully"
 // into nothing (or into garbage) — an empty table is now a hard reject, not a quiet sync.
 const NEVER_EMPTY = ['novaShop', 'rebirthMeta', 'novaPaintStages', 'droidSellValues', 'flawlessSpawn',
-	'craftingTimes', 'companionBuffs', 'iconicCompanionEffects'] as const;
+	'craftingTimes', 'companionBuffs', 'iconicCompanionEffects', 'cosmetics', 'droids', 'droidTiers'] as const;
 const SHOP_CATEGORIES = ['Featured', 'Core upgrades', 'Workshop upgrades'];
 // 'Level' / 'Nova Crystal Cost' are structural headers; seeing one as an item name means the
 // parser read a header column as a data column (the pre-2026-08 positional-parser failure).
@@ -75,6 +75,15 @@ export function validate(t: PayloadTables, existingCountKeys: { droid: string; t
 		if (c.seconds !== null && (!Number.isInteger(c.seconds) || c.seconds <= 0)) {
 			flags.push({ kind: 'reject', code: 'bad_craft_time', message: `${c.droid}/${c.tier}: seconds=${c.seconds}`, table: 'craftingTimes', key: `${c.droid}/${c.tier}` });
 		}
+	}
+
+	// The exact-108 count guard in build.ts only catches lost rows; a renamed sheet label keeps the
+	// count and writes a bogus one, because rarity() title-cases whatever it is handed. The three
+	// buff kinds are the three droid TYPES by construction — one block header per companion role.
+	for (const b of t.companionBuffs) {
+		const key = `${b.kind}/${b.rarity}/${b.tier}`;
+		if (!TYPES.has(b.kind)) flags.push({ kind: 'reject', code: 'bad_buff_kind', message: `${key}: ${b.kind}`, table: 'companionBuffs', key });
+		if (!RARITIES.has(b.rarity)) flags.push({ kind: 'reject', code: 'bad_buff_rarity', message: `${key}: ${b.rarity}`, table: 'companionBuffs', key });
 	}
 
 	// orphan report
