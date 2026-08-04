@@ -14,6 +14,7 @@ export type TrackerData = {
 	profiles: ProfileRow[];
 	countsByProfile: Record<number, CountRow[]>;
 	plansByCycle: Record<number, Record<number, number[]>>;
+	flawlessByProfile: Record<number, string[]>;
 };
 
 export function makeTracker(data: TrackerData) {
@@ -23,6 +24,7 @@ export function makeTracker(data: TrackerData) {
 		activeId: data.profiles.filter(isMine)[0]?.id ?? data.profiles[0]?.id ?? null,
 		counts: structuredClone(data.countsByProfile) as Record<number, CountRow[]>,
 		plans: structuredClone(data.plansByCycle) as Record<number, Record<number, number[]>>,
+		flawless: structuredClone(data.flawlessByProfile ?? {}) as Record<number, string[]>,
 		hideDoneOverride: null as boolean | null
 	});
 	const active = () => state.profiles.find((p) => p.id === state.activeId) ?? null;
@@ -68,6 +70,7 @@ export function makeTracker(data: TrackerData) {
 			state.profiles = next.profiles;
 			state.counts = structuredClone(next.countsByProfile);
 			state.plans = structuredClone(next.plansByCycle);
+			state.flawless = structuredClone(next.flawlessByProfile ?? {});
 			if (!state.profiles.some((p) => p.id === state.activeId))
 				state.activeId = next.profiles.filter(isMine)[0]?.id ?? next.profiles[0]?.id ?? null;
 		},
@@ -92,6 +95,28 @@ export function makeTracker(data: TrackerData) {
 				const j = rows.findIndex((r) => r.cycle === cycle && r.droid === droid && r.tier === tier);
 				if (j >= 0) { if (prev === 0) rows.splice(j, 1); else rows[j].n = prev; }
 				else if (prev > 0) rows.push({ cycle, droid, tier, n: prev });
+				toast(`Save failed: ${(e as Error).message}`);
+			}
+		},
+		flawlessList: () => state.flawless[state.activeId ?? -1] ?? [],
+		flawlessOwned: (droid: string) => (state.flawless[state.activeId ?? -1] ?? []).includes(droid),
+		async setFlawlessOwned(droid: string, owned: boolean) {
+			const pid = state.activeId;
+			if (pid == null || !editable()) return;
+			const list = (state.flawless[pid] ??= []);
+			const had = list.includes(droid);
+			if (owned && !had) list.push(droid);
+			else if (!owned && had) list.splice(list.indexOf(droid), 1);
+			try {
+				await apiFetch(`/api/profiles/${pid}/flawless/${encodeURIComponent(droid)}`, {
+					method: 'PUT', body: JSON.stringify({ owned })
+				});
+			} catch (e) {
+				// rollback to the pre-edit membership
+				const now = state.flawless[pid] ?? [];
+				const idx = now.indexOf(droid);
+				if (had && idx < 0) now.push(droid);
+				else if (!had && idx >= 0) now.splice(idx, 1);
 				toast(`Save failed: ${(e as Error).message}`);
 			}
 		},
