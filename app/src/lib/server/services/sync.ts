@@ -6,7 +6,7 @@ import type { Payload, PayloadTables, Flag } from '../sync/types';
 import { ApiError } from '../api-error';
 import { checksumOf } from '../sync/canonical.js';
 
-const EMPTY_TABLES: PayloadTables = { droids: [], droidTiers: [], rebirthReqs: [], chipCosts: [], rebirthMeta: [], novaShop: [], cosmetics: [], droidSellValues: [], flawlessSpawn: [], novaPaintStages: [] };
+const EMPTY_TABLES: PayloadTables = { droids: [], droidTiers: [], rebirthReqs: [], chipCosts: [], rebirthMeta: [], novaShop: [], cosmetics: [], droidSellValues: [], flawlessSpawn: [], novaPaintStages: [], craftingTimes: [], companionBuffs: [], iconicCompanionEffects: [] };
 const SYNC_APPLY_LOCK = 4242; // fixed advisory-lock key serializing all apply/rollback transactions
 
 async function activeVersion(sql: Sql): Promise<{ id: number; checksum: string; payload: Payload | null } | null> {

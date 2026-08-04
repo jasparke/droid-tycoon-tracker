@@ -12,7 +12,10 @@ const PK = {
 	cosmetics: ['category', 'name'],
 	droidSellValues: ['rarity', 'tier'],
 	flawlessSpawn: ['tier'],
-	novaPaintStages: ['stage']
+	novaPaintStages: ['stage'],
+	craftingTimes: ['droid', 'tier'],
+	companionBuffs: ['kind', 'rarity', 'tier'],
+	iconicCompanionEffects: ['droid']
 };
 
 /**

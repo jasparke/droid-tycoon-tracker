@@ -10,6 +10,14 @@ const okFetch: typeof fetch = async (input) => {
 };
 
 describe('fetchTabs', () => {
+	// The crafting/companions tab only ever existed as a fixture; without its gid here the parser
+	// runs on nothing in a real sync while every unit test stays green.
+	it('fetches the crafting/companions tab', async () => {
+		expect(GIDS).toContain('1131770079');
+		const tabs = await fetchTabs(okFetch);
+		expect(tabs['1131770079']).toBe(csvFor('1131770079'));
+	});
+
 	// pins the pre-existing contract
 	it('returns the CSV text of every tab keyed by gid', async () => {
 		const tabs = await fetchTabs(okFetch);

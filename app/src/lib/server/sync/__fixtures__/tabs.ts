@@ -101,7 +101,10 @@ export function validTables(): PayloadTables {
 			{ category: 'Workshop upgrades', item: 'Lounge Slot', level: 1, cost: 1 }],
 		cosmetics: [{ category: 'Hats', name: 'F1l-ON1', requirement: 'FIND IN WORLD' }],
 		droidSellValues: [{ rarity: 'Common', tier: 'Gold', multiplier: 4 }],
-		flawlessSpawn: [{ tier: 'Base', oneIn: 1000 }], novaPaintStages: [{ stage: 1, crystalCost: 30 }]
+		flawlessSpawn: [{ tier: 'Base', oneIn: 1000 }], novaPaintStages: [{ stage: 1, crystalCost: 30 }],
+		craftingTimes: [{ droid: 'MOUSE', tier: 'Base', seconds: 33 }],
+		companionBuffs: [{ kind: 'Worker', rarity: 'Common', tier: 'Base', value: 20 }],
+		iconicCompanionEffects: [{ droid: 'BB8', effect: '100% UPGRADE CHIPS' }]
 	};
 }
 export function validBuilt(extraFlags: Flag[] = []): { payload: Payload; flags: Flag[]; checksum: string } {

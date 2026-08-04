@@ -26,6 +26,9 @@ export interface PayloadTables {
 	droidSellValues: SellValueRow[];
 	flawlessSpawn: FlawlessRow[];
 	novaPaintStages: PaintStageRow[];
+	craftingTimes: CraftingTimeRow[];
+	companionBuffs: CompanionBuffRow[];
+	iconicCompanionEffects: IconicCompanionEffectRow[];
 }
 
 export interface OrphanRow { droid: string; tier: string; profileId: number; }

@@ -22,6 +22,27 @@ describe('buildPayload', () => {
 		expect(payload.meta.rowCounts.novaShop).toBe(19); // the fixture's own exact total
 		expect(flags.some((f) => f.kind === 'reject' && f.code === 'nova_row_count' && f.message.includes('175'))).toBe(true);
 	});
+	it('carries the crafting tab into the payload', () => {
+		const { payload } = buildPayload(CSV_BY_GID, [], 'test', 't');
+		expect(payload.meta.rowCounts.craftingTimes).toBeGreaterThan(0);
+		expect(payload.meta.rowCounts.companionBuffs).toBeGreaterThan(0);
+		expect(payload.meta.rowCounts.iconicCompanionEffects).toBeGreaterThan(0);
+	});
+	it('flags crafting/companion row counts that are not the live sheet totals', () => {
+		// By design on the fixture, exactly as nova_row_count is: these counts are the backstop
+		// behind the parser's bounded block scans, which can resolve cleanly and still lose a block.
+		const { flags } = buildPayload(CSV_BY_GID, [], 'test', 't');
+		const rejects = flags.filter((f) => f.kind === 'reject');
+		for (const [code, total] of [['crafting_time_row_count', '420'], ['companion_buff_row_count', '108'], ['iconic_effect_row_count', '8']]) {
+			expect(rejects.some((f) => f.code === code && f.message.includes(total))).toBe(true);
+		}
+	});
+	it('holds a craft time or iconic effect for a droid missing from the roster', () => {
+		const { flags } = buildPayload(CSV_BY_GID, [], 'test', 't');
+		const holds = flags.filter((f) => f.kind === 'hold' && f.code === 'unknown_droid');
+		expect(holds.some((f) => f.table === 'craftingTimes' && f.key === 'HAUL-R/Base')).toBe(true);
+		expect(holds.some((f) => f.table === 'iconicCompanionEffects' && f.key === 'CHOPPER')).toBe(true);
+	});
 	it('finds no structural or emptiness rejects in the repaired fixtures', () => {
 		const { flags } = buildPayload(CSV_BY_GID, [], 'test', 't');
 		const codes = flags.filter((f) => f.kind === 'reject').map((f) => f.code);

@@ -1,5 +1,7 @@
 const SHEET = '1otLCKSCMKICMlnefirQ8KZhh_rdZTd5Mp8h0UYFUiqg';
-export const GIDS = ['1248391507', '0', '547464940', '1548395368'] as const;
+// Inventory Manager (200719463) and Contact Info are deliberately excluded — player-facing
+// calculators with formulas and #VALUE! cells, not reference data.
+export const GIDS = ['1248391507', '0', '547464940', '1548395368', '1131770079'] as const;
 const url = (gid: string) => `https://docs.google.com/spreadsheets/d/${SHEET}/export?format=csv&gid=${gid}`;
 
 // The sheet URL is hardcoded (no SSRF surface); the timeout and size cap only keep a

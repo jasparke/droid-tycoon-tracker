@@ -5,7 +5,8 @@ const TYPES = new Set(['Worker', 'Astromech', 'Battle']);
 const REQUIRED_CHIP_RARITIES = ['Common', 'Rare', 'Epic', 'Legendary', 'Mythic'];
 // Tables that are never legitimately empty. A geometry drift used to parse "successfully"
 // into nothing (or into garbage) — an empty table is now a hard reject, not a quiet sync.
-const NEVER_EMPTY = ['novaShop', 'rebirthMeta', 'novaPaintStages'] as const;
+const NEVER_EMPTY = ['novaShop', 'rebirthMeta', 'novaPaintStages', 'droidSellValues', 'flawlessSpawn',
+	'craftingTimes', 'companionBuffs', 'iconicCompanionEffects'] as const;
 const SHOP_CATEGORIES = ['Featured', 'Core upgrades', 'Workshop upgrades'];
 // 'Level' / 'Nova Crystal Cost' are structural headers; seeing one as an item name means the
 // parser read a header column as a data column (the pre-2026-08 positional-parser failure).
@@ -66,6 +67,14 @@ export function validate(t: PayloadTables, existingCountKeys: { droid: string; t
 		// sheet through parseInt, which yields NaN for an unparseable cell instead of throwing.
 		if (!Number.isInteger(n.level) || n.level < 1) flags.push({ kind: 'reject', code: 'bad_shop_level', message: `${key}: level must be a positive integer`, table: 'novaShop', key });
 		if (!Number.isInteger(n.cost) || n.cost < 0) flags.push({ kind: 'reject', code: 'bad_shop_cost', message: `${key}: cost=${n.cost}`, table: 'novaShop', key });
+	}
+
+	// null seconds is data (blank = unpublished, N/A = Iconic); anything else non-integral or
+	// non-positive means hmsToSeconds' arithmetic produced something a duration can't be.
+	for (const c of t.craftingTimes) {
+		if (c.seconds !== null && (!Number.isInteger(c.seconds) || c.seconds <= 0)) {
+			flags.push({ kind: 'reject', code: 'bad_craft_time', message: `${c.droid}/${c.tier}: seconds=${c.seconds}`, table: 'craftingTimes', key: `${c.droid}/${c.tier}` });
+		}
 	}
 
 	// orphan report

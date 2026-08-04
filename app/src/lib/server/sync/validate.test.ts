@@ -20,8 +20,13 @@ function base(): PayloadTables {
 		novaShop: [{ category: 'Featured', item: 'Critical Chance', level: 1, cost: 60 },
 			{ category: 'Core upgrades', item: 'Max Health', level: 1, cost: 1 },
 			{ category: 'Workshop upgrades', item: 'Lounge Slot', level: 1, cost: 1 }],
-		cosmetics: [], droidSellValues: [], flawlessSpawn: [],
-		novaPaintStages: [{ stage: 1, crystalCost: 30 }]
+		cosmetics: [],
+		droidSellValues: [{ rarity: 'Common', tier: 'Gold', multiplier: 4 }],
+		flawlessSpawn: [{ tier: 'Base', oneIn: 1000 }],
+		novaPaintStages: [{ stage: 1, crystalCost: 30 }],
+		craftingTimes: [{ droid: 'IG', tier: 'Base', seconds: 6200 }],
+		companionBuffs: [{ kind: 'Worker', rarity: 'Common', tier: 'Base', value: 20 }],
+		iconicCompanionEffects: [{ droid: 'BB8', effect: '100% UPGRADE CHIPS' }]
 	};
 }
 
@@ -61,8 +66,9 @@ describe('validate', () => {
 		const flags = validate(base(), [{ droid: 'GONE', tier: 'Base', profileId: 7 }]);
 		expect(flags.some((f) => f.kind === 'report' && f.code === 'orphan_count' && f.message.includes('GONE'))).toBe(true);
 	});
-	it('rejects an empty novaShop / rebirthMeta / novaPaintStages (silent geometry drift)', () => {
-		for (const table of ['novaShop', 'rebirthMeta', 'novaPaintStages'] as const) {
+	it('rejects any never-empty table that parsed to nothing (silent geometry drift)', () => {
+		for (const table of ['novaShop', 'rebirthMeta', 'novaPaintStages', 'droidSellValues', 'flawlessSpawn',
+			'craftingTimes', 'companionBuffs', 'iconicCompanionEffects'] as const) {
 			const t = base();
 			(t[table] as unknown[]) = [];
 			const rejects = rejectsOf(validate(t, []));
@@ -98,5 +104,17 @@ describe('validate', () => {
 		expect(rejects.some((f) => f.code === 'bad_shop_cost' && f.key === 'Featured/Critical Chance/2')).toBe(true);
 		expect(rejects.some((f) => f.code === 'bad_shop_level' && f.key === 'Featured/Critical Amount/NaN')).toBe(true);
 		expect(rejects.some((f) => f.code === 'bad_shop_cost' && f.key === 'Featured/Daily Crystals/1')).toBe(true);
+	});
+	it('rejects a craft time that is not a positive whole number of seconds', () => {
+		// hmsToSeconds returns null for a blank or N/A cell — that is data, not corruption, and must
+		// stay clean. Anything else non-integral means the duration arithmetic went wrong.
+		const t = base();
+		t.craftingTimes.push({ droid: 'IG', tier: 'Gold', seconds: 0 });
+		t.craftingTimes.push({ droid: 'IG', tier: 'Diamond', seconds: -5 });
+		t.craftingTimes.push({ droid: 'IG', tier: 'Rainbow', seconds: 12.5 });
+		t.craftingTimes.push({ droid: 'IG', tier: 'Beskar', seconds: NaN });
+		t.craftingTimes.push({ droid: 'IG', tier: 'Galactic', seconds: null });
+		const bad = rejectsOf(validate(t, [])).filter((f) => f.code === 'bad_craft_time');
+		expect(bad.map((f) => f.key).sort()).toEqual(['IG/Beskar', 'IG/Diamond', 'IG/Gold', 'IG/Rainbow']);
 	});
 });
