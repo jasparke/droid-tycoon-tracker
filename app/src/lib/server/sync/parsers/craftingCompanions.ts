@@ -88,15 +88,28 @@ export function parseCraftingCompanions(csv: string) {
 	const labelCol = findLabelCol(r);
 	const label = (i: number) => cell(r[i] ?? [], labelCol).trim();
 
+	// Each block runs to the *next block's header*, and a blank label inside one is a spacer to
+	// skip, not the end of the block. Ending at the first blank label would drop every row below
+	// a stray spacer without parsing them — a loss nothing downstream can see. Over-running is
+	// the safe direction by comparison: a stray value cell throws out of buffValue.
+	const headOf = (re: RegExp, missing: string) => {
+		const i = r.findIndex((row) => re.test(cell(row, labelCol).trim()));
+		return i >= 0 ? i : fail(missing);
+	};
+	const buffHeads = BUFF_BLOCKS.map(({ re, kind }) => ({ kind, head: headOf(re, `${kind} buff block header not found`) }));
+	const iconicHead = headOf(ICONIC_BLOCK, 'COMPAINION DROIDS - ICONIC DROIDS block not found');
+	const markers = [...buffHeads.map((b) => b.head), iconicHead].sort((a, b) => a - b);
+	const endOf = (head: number) => markers.find((m) => m > head) ?? r.length;
+
 	const companionBuffs: CompanionBuffRow[] = [];
-	for (const { re, kind } of BUFF_BLOCKS) {
-		const head = r.findIndex((row) => re.test(cell(row, labelCol).trim()));
-		if (head < 0) fail(`${kind} buff block header not found`);
+	for (const { kind, head } of buffHeads) {
 		const hdr = head + 1;
 		if (norm(label(hdr)) !== 'RARITY') fail(`${kind} buff block: expected a RARITY header at row ${hdr}`);
 		const cols = tierCols(r[hdr], labelCol + 1, `${kind} buffs`);
+		const end = endOf(head);
 		let rows = 0;
-		for (let i = hdr + 1; i < r.length && label(i); i++) {
+		for (let i = hdr + 1; i < end; i++) {
+			if (!label(i)) continue; // spacer row
 			const rar = normRarity(label(i)); // trims "ICONIC " -> "Iconic"
 			for (const tier of TIERS) {
 				companionBuffs.push({ kind, rarity: rar, tier, value: buffValue(cell(r[i], cols[tier])) });
@@ -106,12 +119,11 @@ export function parseCraftingCompanions(csv: string) {
 		if (!rows) fail(`${kind} buff block has no rarity rows`);
 	}
 
-	const iconicHead = r.findIndex((row) => ICONIC_BLOCK.test(cell(row, labelCol).trim()));
-	if (iconicHead < 0) fail('COMPAINION DROIDS - ICONIC DROIDS block not found');
 	const iconicHdr = iconicHead + 1;
 	if (norm(label(iconicHdr)) !== 'DROID') fail(`iconic effects block: expected a DROID header at row ${iconicHdr}`);
 	const iconicCompanionEffects: IconicCompanionEffectRow[] = [];
-	for (let i = iconicHdr + 1; i < r.length && label(i); i++) {
+	for (let i = iconicHdr + 1; i < endOf(iconicHead); i++) {
+		if (!label(i)) continue; // spacer row
 		iconicCompanionEffects.push({ droid: resolveDroid(label(i)), effect: cell(r[i], labelCol + 1).trim() });
 	}
 	if (!iconicCompanionEffects.length) fail('iconic effects block has no droid rows');

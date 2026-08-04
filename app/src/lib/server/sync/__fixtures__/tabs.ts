@@ -65,7 +65,7 @@ export const CRAFTING_CSV = [
 	row(17, { 0: 'COMMON', 1: 'MOUSE', 2: 'WORKER', 3: '0:00:33', 4: '0:02:14', 5: '0:03:54', 6: '0:05:35', 7: '0:04:28', 8: '0:08:22',
 	          10: 'COMMON', 11: '20%', 12: '40%', 13: '60%', 14: '80%', 15: '100%', 16: '100%' }),
 	row(17, { 1: 'HAUL-R', 2: 'BATTLE', 3: '0:08:23', 4: '0:33:35', 5: '0:58:46', 6: '1:23:58', 7: '1:07:10',
-	          10: 'ICONIC', 11: 'N/A', 12: 'N/A', 13: 'N/A', 14: 'N/A', 15: 'N/A', 16: 'N/A' }),
+	          10: 'ICONIC ', 11: 'N/A', 12: 'N/A', 13: 'N/A', 14: 'N/A', 15: 'N/A', 16: 'N/A' }),
 	row(17, { 0: 'ICONIC ', 1: 'BB-8', 2: 'ASTROMECH', 3: 'N/A' }),
 	row(17, { 10: 'ASTROMECH COMPAINION DROIDS - PICKAXE LEVEL BUFFS' }),
 	row(17, { 10: 'RARITY', 11: 'BASIC', 12: 'GOLD', 13: 'DIAMOND', 14: 'RAINBOW', 15: 'BESKAR', 16: 'GALACTIC' }),
