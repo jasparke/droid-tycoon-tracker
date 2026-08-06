@@ -14,7 +14,7 @@
 	const req = $derived(earliestReq(ref.rebirthReqs, cycle, t.rebirth(), droid));
 	const counts = $derived(t.countsFor(cycle, droid));
 	// Iconic droids are single-tier (see isSingleTier / art.ts): they have no
-	// Gold/Diamond/Rainbow/Beskar form, so show only the one tier that exists.
+	// Gold/Diamond/Rainbow/Beskar/Galactic form, so show only the one tier that exists.
 	const single = $derived(isSingleTier(droid));
 	const rows = $derived(
 		(single ? (['Base'] as const) : TIERS).map((tier) => {

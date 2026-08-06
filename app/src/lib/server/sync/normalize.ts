@@ -47,9 +47,17 @@ export function tierWord(s: string): Tier {
 }
 
 // The sheet writes unlock cells in ALL CAPS ("WORKER SLOT", "NONE"); the DB and
-// UI use title case ("Worker Slot", "None").
+// UI use title case ("Worker Slot", "None"). Acronyms the sheet already spells
+// short elsewhere ("XP MULT", "75 NC") must survive whole — plain title case
+// would render them "Xp"/"Nc". None of these is an English word, so no shipping
+// label collides with the set.
+const ACRONYMS = new Set(['XP', 'HP', 'NC', 'AFK']);
 export function unlockLabel(s: string): string {
-	return s.trim().toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+	return s
+		.trim()
+		.replace(/\w+/g, (w) =>
+			ACRONYMS.has(w.toUpperCase()) ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1).toLowerCase()
+		);
 }
 
 export function rarity(s: string): string {

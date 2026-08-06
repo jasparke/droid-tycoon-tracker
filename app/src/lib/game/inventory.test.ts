@@ -81,7 +81,7 @@ describe('satisfyingIdxOf (per-tier array form)', () => {
 			{ cycle: 1, droid: 'Mouse', tier: 'Base', n: 1 },
 			{ cycle: 1, droid: 'Mouse', tier: 'Diamond', n: 2 }
 		];
-		const per = [1, 0, 2, 0, 0];
+		const per = [1, 0, 2, 0, 0, 0];
 		expect(satisfyingIdxOf(per, 'Gold')).toBe(satisfyingIdx(mouseRows, 1, 'Mouse', 'Gold'));
 	});
 });

@@ -34,7 +34,7 @@
 			.map(([rb, reqRows]) => {
 				const rows = reqRows.map((r) => {
 					const tier = r.tier as Tier;
-					const counts = t.countsFor(cycle, r.droid); // per-tier [B,G,D,R,BK], scanned once
+					const counts = t.countsFor(cycle, r.droid); // per-tier [B,G,D,R,BK,GL], scanned once
 					const sat = satisfyingIdxOf(counts, tier);
 					return {
 						droid: r.droid,
