@@ -73,33 +73,41 @@
 </table>
 
 <h2>Companion buffs</h2>
-{#each BUFF_KINDS as k}
-	<h3>{k.title}</h3>
+{#if buffs.length}
+	{#each BUFF_KINDS as k}
+		<h3>{k.title}</h3>
+		<table>
+			<thead><tr><th>Rarity</th>{#each TIERS as tier}<th class="tier-{tier}">{tier}</th>{/each}</tr></thead>
+			<tbody>
+				{#each buffRarities as rarity}
+					<tr>
+						<td>{rarity}</td>
+						{#each TIERS as tier}
+							{@const v = buff(k.kind, rarity, tier)}
+							<td>{v === null ? 'N/A' : `${k.unit === '%' ? v + '%' : '+' + v}`}</td>
+						{/each}
+					</tr>
+				{/each}
+			</tbody>
+		</table>
+	{/each}
+{:else}
+	<p class="hint">Companion buffs are not available for this data version</p>
+{/if}
+
+<h2>Iconic companion effects</h2>
+{#if iconicEffects.length}
 	<table>
-		<thead><tr><th>Rarity</th>{#each TIERS as tier}<th class="tier-{tier}">{tier}</th>{/each}</tr></thead>
+		<thead><tr><th>Droid</th><th>Effect</th></tr></thead>
 		<tbody>
-			{#each buffRarities as rarity}
-				<tr>
-					<td>{rarity}</td>
-					{#each TIERS as tier}
-						{@const v = buff(k.kind, rarity, tier)}
-						<td>{v === null ? 'N/A' : `${k.unit === '%' ? v + '%' : '+' + v}`}</td>
-					{/each}
-				</tr>
+			{#each iconicEffects as e}
+				<tr><td><DroidImg name={e.droid} size={20} /> {e.droid}</td><td>{e.effect}</td></tr>
 			{/each}
 		</tbody>
 	</table>
-{/each}
-
-<h2>Iconic companion effects</h2>
-<table>
-	<thead><tr><th>Droid</th><th>Effect</th></tr></thead>
-	<tbody>
-		{#each iconicEffects as e}
-			<tr><td><DroidImg name={e.droid} size={20} /> {e.droid}</td><td>{e.effect}</td></tr>
-		{/each}
-	</tbody>
-</table>
+{:else}
+	<p class="hint">Iconic companion effects are not available for this data version</p>
+{/if}
 
 <style>
 	.metrics { margin: 0 0 0.5rem; }

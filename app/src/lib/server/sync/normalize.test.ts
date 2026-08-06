@@ -35,6 +35,14 @@ describe('normalize', () => {
 		expect(unlockLabel('LOUNGE SLOT')).toBe('Lounge Slot');
 		expect(unlockLabel('NONE')).toBe('None');
 		expect(unlockLabel('Worker Slot')).toBe('Worker Slot');
+		expect(unlockLabel('UPGRADE CHIP STATION')).toBe('Upgrade Chip Station');
+	});
+	it('unlockLabel keeps known acronyms whole', () => {
+		expect(unlockLabel('XP BOOST')).toBe('XP Boost');
+		expect(unlockLabel('AFK CREDITS')).toBe('AFK Credits');
+		expect(unlockLabel('MAX HP')).toBe('Max HP');
+		expect(unlockLabel('NC VENDOR')).toBe('NC Vendor');
+		expect(unlockLabel('XP-BOOST')).toBe('XP-Boost'); // hyphens split words, as before
 	});
 	it('resolveDroid maps the known misspellings/renames', () => {
 		expect(resolveDroid('MONO-WALKER')).toBe('MONO-WLKR');
