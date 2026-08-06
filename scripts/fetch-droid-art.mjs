@@ -7,12 +7,14 @@
  * probes are Iconic droids' non-existent Gold/Diamond/Rainbow/Beskar/
  * Galactic tiers and always come back as harmless skips (see the "After both
  * fallbacks" note below). Of the 380 real files, 372 are self-hosted here as
- * of the 2026-08-04 probe; the rest need the fallbacks below.
+ * of the 2026-08-06 probe; the rest need the fallbacks below.
  *
  * IMPORTANT — droidtrakr does not 404 for a missing asset. It 308-redirects to
- * its single-page app, which answers 200 with a ~12.8 KB `text/html`
- * (`<!doctype html>`) body. That HTML body IS droidtrakr's "not found" signal.
- * So this script classifies a response by its *bytes*, not its status code:
+ * its single-page app, which answers 200 with a `text/html` (`<!doctype html>`)
+ * body — 18821 bytes on 2026-08-06, but that figure is incidental and will
+ * drift with any SPA rebuild: nothing here keys off it. That HTML body IS
+ * droidtrakr's "not found" signal, so this script classifies a response by its
+ * *bytes* (magic number, never length), not its status code:
  *   - valid webp (image/webp + RIFF/WEBP magic, non-empty) -> save.
  *   - not-found signal (non-webp body, e.g. the SPA HTML, or a 4xx) -> try the
  *     fallbacks below, else logged skip.
@@ -60,11 +62,13 @@
  * R2-D2 / C-3P0 / CHOPPER are single-tier — no tier grid, no chip costs — so
  * their Gold/Diamond/Rainbow/Beskar/Galactic art was never real (this loop
  * still probes those names and logs skips; harmless). Of the remaining
- * 380-file real universe, a fresh probe on 2026-08-04 (after adding the
- * Galactic tier and CHOPPER to the roster) confirmed 8 genuine gaps — present
- * in none of droidtrakr's primary fetch, its PNG manifest fallback, or
- * droidex: CHOPPER_Default.webp, plus the Galactic-tier art for 7 non-Iconic
- * droids — SNOWMOUSE, RIC, LEP, RIC1200, MOTRAK, TRITEK, KX.
+ * 380-file real universe, a fresh probe on 2026-08-06 (first run 2026-08-04,
+ * after adding the Galactic tier and CHOPPER to the roster) confirmed 8 genuine
+ * gaps — present in none of droidtrakr's primary fetch, its PNG manifest
+ * fallback, or droidex: CHOPPER_Default.webp, plus the Galactic-tier art for 7
+ * non-Iconic droids — SNOWMOUSE, RIC, LEP, RIC1200, MOTRAK, TRITEK, KX. The
+ * gap is upstream content, not a stale pin: droidex's repo has moved on to
+ * aae5aff since DROIDEX_SHA below was pinned and still carries none of the 8.
  *
  * One Iconic Default file, R2D2_Default.webp (droidtrakr serves
  * UnknownBlueprint for R2-D2), was a genuine gap under the same policy but
