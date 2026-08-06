@@ -1,13 +1,15 @@
 /*
  * Fetch + self-host droid tier-art webp into app/static/assets/droids/.
  *
- * Primary source: droidtrakr.com. This script probes 70 droids x 6 tiers =
- * 420 name/tier pairs, but only 380 of those are real files: 62 non-Iconic
- * droids x 6 tiers + 8 single-tier Iconic droids' Default art. The other 40
- * probes are Iconic droids' non-existent Gold/Diamond/Rainbow/Beskar/
- * Galactic tiers and always come back as harmless skips (see the "After both
- * fallbacks" note below). Of the 380 real files, 372 are self-hosted here as
- * of the 2026-08-06 probe; the rest need the fallbacks below.
+ * Primary source: droidtrakr.com. The real universe is 380 files: 62 non-Iconic
+ * droids x 6 tiers + 8 single-tier Iconic droids' Default art. The probe list is
+ * built to match it exactly — Iconic droids (seed `rarity === 'Iconic'`) are
+ * probed at Base only, since their Gold/Diamond/Rainbow/Beskar/Galactic art was
+ * never real (no tier grid, no chip costs). Earlier revisions probed a flat
+ * 70 x 6 = 420 grid and discarded the 40 impossible pairs as "harmless skips";
+ * they were harmless but noisy, inflating the unavailable list five-fold.
+ * Of the 380 real files, 372 are self-hosted here as of the 2026-08-06 probe;
+ * the rest need the fallbacks below.
  *
  * IMPORTANT — droidtrakr does not 404 for a missing asset. It 308-redirects to
  * its single-page app, which answers 200 with a `text/html` (`<!doctype html>`)
@@ -49,7 +51,27 @@
  *   preserved; no upscaling). Manifest entries already ending in `.webp` are
  *   ignored — those are the normName paths the primary fetch already tried.
  *
- * Fallback 2 — droidex (https://github.com/erikpeik/droidex), no LICENSE:
+ * Fallback 2 — droidtrakr's `Iconic` manifest tier (Iconic droids only):
+ *   The manifest carries a seventh tier this script's TIERS does not model,
+ *   `"{NAME}:Iconic"`, holding full-size 512x512 webp art for the single-tier
+ *   Iconic droids. It is a *fallback*, not a preference: where the normName
+ *   Default path resolves (BB8, IG-11 MARSHAL, ...) that art wins, and the
+ *   Iconic entry is genuinely different art, not a higher-res twin
+ *   (IG11MARSHALL_Iconic.webp is 24786 B vs IG11MARSHAL_Default.webp's 70452 B).
+ *   Two names need aliasing because normName cannot reconcile them — droidtrakr
+ *   writes "C3PO" (letter O) where the seed has "C-3P0" (zero), and
+ *   "IG11MARSHALL" with a doubled L; see MANIFEST_ICONIC_ALIAS.
+ *   This tier supplied C3P0_Default.webp and R2D2_Default.webp on 2026-08-06
+ *   (33364 B / 37152 B, both 512x512 RGBA, saved byte-identical — no re-encode).
+ *   It must be tried *before* droidex, which also carries C-3P0/R2-D2 Default
+ *   art but only at ~133x126. Those two files had been stuck at that quality:
+ *   the committed C3P0_Default.webp was a cropped film still on black
+ *   (133x126, via droidex) and R2D2_Default.webp a screenshot of a game UI card
+ *   with "Iconic" burnt into the corner (128x145, via droidex's deployed site).
+ *   Neither matched the set's render style; both are now clean transparent
+ *   full-body renders. Replacements, not additions — the count stays 372/380.
+ *
+ * Fallback 3 — droidex (https://github.com/erikpeik/droidex), no LICENSE:
  *   The droidex GitHub repo at a pinned commit stores PNGs under
  *   public/droids/ named `{NAME}_{TIER}.png` where NAME is the droid name
  *   upper-cased with spaces -> "_" and hyphens kept (e.g. "IG-11 MARSHAL" ->
@@ -57,29 +79,42 @@
  *   same way (`cwebp -q 90`, native 195x178). droidex covers only LO's
  *   Gold/Diamond/Rainbow of our gaps.
  *
- * After both fallbacks, 40 of the 420 probed filenames are Iconic droids'
- * non-Default tiers: BB8 / MISTER BONES / IG-11 MARSHAL / DJ-R3X / CB-23 /
- * R2-D2 / C-3P0 / CHOPPER are single-tier — no tier grid, no chip costs — so
- * their Gold/Diamond/Rainbow/Beskar/Galactic art was never real (this loop
- * still probes those names and logs skips; harmless). Of the remaining
- * 380-file real universe, a fresh probe on 2026-08-06 (first run 2026-08-04,
+ * After all three fallbacks, a fresh probe on 2026-08-06 (first run 2026-08-04,
  * after adding the Galactic tier and CHOPPER to the roster) confirmed 8 genuine
- * gaps — present in none of droidtrakr's primary fetch, its PNG manifest
- * fallback, or droidex: CHOPPER_Default.webp, plus the Galactic-tier art for 7
- * non-Iconic droids — SNOWMOUSE, RIC, LEP, RIC1200, MOTRAK, TRITEK, KX. The
- * gap is upstream content, not a stale pin: droidex's repo has moved on to
- * aae5aff since DROIDEX_SHA below was pinned and still carries none of the 8.
+ * gaps in the 380-file universe: CHOPPER_Default.webp, plus the Galactic-tier
+ * art for 7 non-Iconic droids — SNOWMOUSE, RIC, LEP, RIC1200, MOTRAK, TRITEK,
+ * KX. The 2026-08-06 sweep widened the search well past droidtrakr and droidex
+ * and still found nothing: droidex.web.app, the Droid Tycoon Fandom wiki (full
+ * allimages API — its only Chopper asset is an event splash screenshot),
+ * tycoon-tools.com, droidex.dubtrackr.win and droid-tycoon.pages.dev. The last
+ * three know CHOPPER and the Galactic tier as *stats* but host no droid art at
+ * all. Every negative was a genuine upstream not-found; there were no network
+ * errors and no 5xx anywhere in that sweep. The gap is upstream content, not a
+ * stale pin — droidex is now pinned at its newest ref (aae5aff, 2026-07-21),
+ * which adds only ~133x126 C-3P0/R2-D2 PNGs (no better than what we already
+ * had) and still has zero GALACTIC files; it has never carried that tier.
  *
- * One Iconic Default file, R2D2_Default.webp (droidtrakr serves
- * UnknownBlueprint for R2-D2), was a genuine gap under the same policy but
- * was recovered manually on 2026-07-15 from droidex's *deployed* site —
- * which hosts files absent from its GitHub repo — at
- * https://droidex.web.app/droids/R2-D2_DEFAULT.webp, saved as-is (already
- * webp; 128x145 vs the set's native 195x178) and renamed to the normName
- * convention. It is committed, so this script skips it.
- * Provenance is fully reconstructible from this file: the manifest URL, the
- * droidex repo + DROIDEX_SHA, the deployed-site URL above, the name remap
- * rules, and the cwebp command.
+ * Do NOT try to synthesise the 7 missing Galactic files by recolouring Beskar.
+ * That was measured against the 55 real Beskar/Galactic pairs on 2026-08-06 and
+ * rejected. Default/Gold/Diamond/Rainbow share one render; Beskar and Galactic
+ * are a separate, later batch (all 55 Galactic files are 500x500, against
+ * 512x512 for most of the set). Bbox-aligned they are the same geometry (mean
+ * alpha-mask IoU 0.85, median 0.90), so the pairing is sound — but Beskar is
+ * achromatic, mean per-pixel saturation 0.063 with channel means within 1-2
+ * levels (GONK 193,192,191), while Galactic is 0.533 and retains per-droid
+ * accent colours plus an added starfield. A per-pixel function of a greyscale
+ * input can only emit a luminance ramp, so it can produce neither the
+ * region-varying hue nor the stars. Confirmed numerically: cross-droid variance
+ * of the mapped colour conditioned on Beskar luma is 19.76/255 versus 18.40
+ * unconditioned — conditioning on the input adds nothing. Leave-one-out RMSE of
+ * the best such recolour is 70.94/255 against 82.67 for flooding the silhouette
+ * with a single flat purple, and it is *worse* than that flat fill for TRAKR
+ * (80.05 vs 75.66). These 7 stay on DroidImg's remote fallback until upstream
+ * publishes them.
+ *
+ * Provenance is fully reconstructible from this file: the manifest URL and its
+ * `Iconic` tier, the droidex repo + DROIDEX_SHA, the name remap rules, and the
+ * cwebp command.
  *
  * Idempotent: files already on disk are skipped without any network call, so a
  * re-run against the committed set exits 0 and re-downloads nothing. cwebp is
@@ -99,9 +134,19 @@ const OUT = path.join(dir, '../app/static/assets/droids');
 const REMOTE = 'https://droidtrakr.com/droid-tycoon/assets/droids/';
 const MANIFEST_URL = 'https://droidtrakr.com/droid-images.js';
 const TIERS = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar', 'Galactic'];
+// Iconic droids are single-tier: their only real file is the Base/Default art.
+const ICONIC_TIERS = ['Base'];
+
+// droidtrakr's manifest spells two Iconic droids differently from our seed, and
+// normName does not reconcile them: an O-for-zero swap, and a doubled L. Keyed
+// by normName(seed name) -> normName(droidtrakr name).
+const MANIFEST_ICONIC_ALIAS = new Map([
+	['C3P0', 'C3PO'], // seed "C-3P0" (zero) vs droidtrakr "C3PO" (letter O)
+	['IG11MARSHAL', 'IG11MARSHALL'],
+]);
 
 // droidex fallback (see header). Pinned commit so the pull is reproducible.
-const DROIDEX_SHA = '4e159c2026dec6e84f43d8eabe04c4b542d3fc85';
+const DROIDEX_SHA = 'aae5affc05d77017a1797751ddb34bd2ea1bb181';
 const DROIDEX_RAW = `https://raw.githubusercontent.com/erikpeik/droidex/${DROIDEX_SHA}/public/droids/`;
 
 // Network error / 5xx / corrupt source — must abort the run with exit 1,
@@ -227,7 +272,29 @@ async function recoverFromManifestPng(name, tier, dest) {
 	return pngToWebp(buf, dest, src);
 }
 
-// Fallback 2: droidex PNG -> webp at `dest`. True on success, false on a
+// Fallback 2: droidtrakr's `Iconic` manifest tier -> `dest`. Only meaningful
+// for the 8 single-tier Iconic droids (see header). True on success, false on a
+// genuine miss; throws HardFail on network/5xx or a conversion failure.
+async function recoverFromManifestIconic(name, dest) {
+	const idx = await droidtrakrManifest();
+	if (!idx) return false;
+	const key = normName(name);
+	const alias = MANIFEST_ICONIC_ALIAS.get(key);
+	const p = idx.get(`${key}:Iconic`) ?? (alias ? idx.get(`${alias}:Iconic`) : undefined);
+	if (!p) return false;
+	const src = path.posix.basename(p);
+	const buf = await fetchOrHardFail(REMOTE + encodeURIComponent(src), `droidtrakr iconic ${src}`);
+	if (buf === null) return false;
+	// Unlike the PNG fallback this tier is webp-first, so take either encoding.
+	if (isWebp(buf)) {
+		await writeFile(dest, buf);
+		return true;
+	}
+	if (!isPng(buf)) return false; // SPA HTML = manifest entry is stale
+	return pngToWebp(buf, dest, src);
+}
+
+// Fallback 3: droidex PNG -> webp at `dest`. True on success, false on a
 // genuine miss (404 = droidex lacks it); throws HardFail on network/5xx or a
 // conversion failure (missing/broken cwebp).
 async function recoverFromDroidex(name, tier, dest) {
@@ -240,17 +307,28 @@ async function recoverFromDroidex(name, tier, dest) {
 
 const { droids } = JSON.parse(await readFile(SEED, 'utf8'));
 await mkdir(OUT, { recursive: true });
-const pairs = droids.flatMap((d) => TIERS.map((t) => ({ name: d.name, tier: t })));
-console.log(`${droids.length} droids × ${TIERS.length} tiers = ${pairs.length} files`);
+// Only real files are probed: non-Iconic droids have the full tier grid, Iconic
+// droids have Default alone. Probing Iconic droids' non-existent Gold/Diamond/
+// Rainbow/Beskar/Galactic would add 40 pointless requests and 40 bogus
+// "unavailable" lines to the report.
+const iconic = (d) => d.rarity === 'Iconic';
+const pairs = droids.flatMap((d) =>
+	(iconic(d) ? ICONIC_TIERS : TIERS).map((t) => ({ name: d.name, tier: t, iconic: iconic(d) }))
+);
+const iconicCount = droids.filter(iconic).length;
+console.log(
+	`${droids.length - iconicCount} droids × ${TIERS.length} tiers + ${iconicCount} Iconic × ${ICONIC_TIERS.length} = ${pairs.length} files`
+);
 
 let onDisk = 0;
 let fromTrakr = 0;
 const recoveredPng = [];
+const recoveredIconic = [];
 const recoveredDroidex = [];
 const unavailable = [];
 const hardFailed = [];
 
-for (const { name, tier } of pairs) {
+for (const { name, tier, iconic: isIconic } of pairs) {
 	const f = artFile(name, tier);
 	const dest = path.join(OUT, f);
 	if (await exists(dest)) {
@@ -285,6 +363,10 @@ for (const { name, tier } of pairs) {
 	try {
 		if (await recoverFromManifestPng(name, tier, dest)) {
 			recoveredPng.push(f);
+		} else if (isIconic && (await recoverFromManifestIconic(name, dest))) {
+			// Must precede droidex: droidex also carries C-3P0/R2-D2 Default art,
+			// but only at ~133x126 — the Iconic tier serves the real 512x512.
+			recoveredIconic.push(f);
 		} else if (await recoverFromDroidex(name, tier, dest)) {
 			recoveredDroidex.push(f);
 		} else {
@@ -297,11 +379,15 @@ for (const { name, tier } of pairs) {
 }
 
 console.log(
-	`on disk (skipped) ${onDisk} | droidtrakr webp ${fromTrakr} | droidtrakr png ${recoveredPng.length} | droidex ${recoveredDroidex.length} | unavailable ${unavailable.length}`
+	`on disk (skipped) ${onDisk} | droidtrakr webp ${fromTrakr} | droidtrakr png ${recoveredPng.length} | droidtrakr iconic ${recoveredIconic.length} | droidex ${recoveredDroidex.length} | unavailable ${unavailable.length}`
 );
 if (recoveredPng.length) {
 	console.log(`converted from droidtrakr manifest PNGs (${recoveredPng.length}):`);
 	for (const x of recoveredPng) console.log('  ' + x);
+}
+if (recoveredIconic.length) {
+	console.log(`recovered from droidtrakr's Iconic tier (${recoveredIconic.length}):`);
+	for (const x of recoveredIconic) console.log('  ' + x);
 }
 if (recoveredDroidex.length) {
 	console.log(`recovered from droidex (${recoveredDroidex.length}):`);
@@ -318,5 +404,6 @@ if (hardFailed.length) {
 	for (const x of hardFailed) console.error('  ' + x);
 	process.exit(1);
 }
-const total = onDisk + fromTrakr + recoveredPng.length + recoveredDroidex.length;
+const total =
+	onDisk + fromTrakr + recoveredPng.length + recoveredIconic.length + recoveredDroidex.length;
 console.log(`present ${total}/${pairs.length} droid art files (${unavailable.length} genuinely unavailable)`);

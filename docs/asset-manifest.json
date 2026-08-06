@@ -2,8 +2,8 @@
   "meta": {
     "project": "droid-tycoon-tracker",
     "title": "Asset acquisition manifest",
-    "generated": "2026-08-04",
-    "purpose": "Inventory of visual/media/font assets for the SvelteKit tracker. The droid tier-art .webp set (380 files incl. Galactic tier and the new Iconic droid CHOPPER) is self-hosted at 372/380; 7 non-Iconic droids' Galactic-tier art plus CHOPPER's sole required file (CHOPPER_Default.webp) are outstanding upstream (droidtrakr's manifest has no entry and droidex has no matching file for any of the 8) and load via DroidImg's remote fallback until then.",
+    "generated": "2026-08-06",
+    "purpose": "Inventory of visual/media/font assets for the SvelteKit tracker. The droid tier-art .webp set (380 files incl. Galactic tier and the new Iconic droid CHOPPER) is self-hosted at 372/380; 7 non-Iconic droids' Galactic-tier art plus CHOPPER's sole required file (CHOPPER_Default.webp) are outstanding upstream and load via DroidImg's remote fallback until then. The count held at 372/380 on 2026-08-06: C3P0_Default.webp and R2D2_Default.webp were replaced in place with real 512x512 art from droidtrakr's Iconic manifest tier, not added.",
     "primarySources": {
       "gameDataset": "app/drizzle/seed-data.json (canonical; upstream truth is a Google Sheet)",
       "assetSpec": "docs/superpowers/specs/2026-07-04-frontend-design-handoff.md (\u00a7Assets)",
@@ -50,7 +50,7 @@
         "id": "droid-art",
         "need": 380,
         "priority": "P0",
-        "status": "self-hosted 372/380: 7 non-Iconic droids' Galactic tier (SNOWMOUSE, RIC, LEP, RIC1200, MOTRAK, TRITEK, KX) + CHOPPER_Default.webp outstanding — confirmed no upstream source (droidtrakr manifest, droidex) publishes them"
+        "status": "self-hosted 372/380: 7 non-Iconic droids' Galactic tier (SNOWMOUSE, RIC, LEP, RIC1200, MOTRAK, TRITEK, KX) + CHOPPER_Default.webp outstanding \u2014 confirmed no upstream source (droidtrakr manifest, droidex) publishes them"
       },
       {
         "id": "app-icons",
@@ -77,7 +77,7 @@
       "id": "droid-art",
       "title": "Droid tier art",
       "priority": "P0 \u2014 critical (bulk of the work)",
-      "status": "self-hosted 372/380: 55/62 tiered droids have full Base->Galactic art; 7 (SNOWMOUSE, RIC, LEP, RIC1200, MOTRAK, TRITEK, KX) are missing Galactic only. 7 of 8 Iconic droids present at their sole tier; CHOPPER (new Iconic, this cycle's addition) has no art published upstream at all, on any tier. Confirmed via a live droidtrakr-manifest + droidex re-fetch, not a stale flag (see 'verified' below).",
+      "status": "self-hosted 372/380: 55/62 tiered droids have full Base->Galactic art; 7 (SNOWMOUSE, RIC, LEP, RIC1200, MOTRAK, TRITEK, KX) are missing Galactic only. 7 of 8 Iconic droids present at their sole tier; CHOPPER (new Iconic, this cycle's addition) has no art published upstream at all, on any tier. On 2026-08-06 the two remaining sub-500px files, C3P0_Default.webp and R2D2_Default.webp, were replaced in place with authentic 512x512 art from droidtrakr's Iconic manifest tier \u2014 a replacement, not an addition, so the total is unchanged at 372/380. Those were the only *_Default.webp files under 500px; no other Iconic droid needs upgrading.",
       "action": "retrieve + self-host",
       "format": "webp",
       "count": 380,
@@ -87,13 +87,9 @@
       "attribution": "Community site droidtrakr.com \u2014 keep credit in README when self-hosting.",
       "notes": "Iconic droids (BB8, CB-23, DJ-R3X, IG-11 MARSHAL, MISTER BONES, R2-D2, C-3P0, CHOPPER) have exactly ONE tier \u2014 no tier grid, no chip costs (see game-domain reference \u00a75.8). Only their _Default art exists or is needed; earlier manifest revisions wrongly listed 68\u00d75=340 files. CHOPPER is the newest Iconic droid (this cycle's addition) and, uniquely among the 8, has no self-hostable art at all \u2014 not even _Default \u2014 confirmed genuinely unavailable upstream, not a fetch failure (see 'verified' below).",
       "verified": {
-        "date": "2026-08-04",
-        "note": "Live re-probe of all 8 missing filenames (7 non-Iconic *_Galactic.webp + CHOPPER_Default.webp) against both fallback sources: droidtrakr's droid-images.js manifest (after fixing a real bug in the fetch script \u2014 the manifest now ships a trailing comma before its closing brace, `window.DROID_IMAGES = {...,};`, which is valid JS but broke strict JSON.parse and was silently short-circuiting the entire manifest-then-droidex fallback chain for every fallback-dependent file; fixed by stripping trailing commas before parsing) and droidex. With the parser fixed, both sources return no entry for any of the 8 files \u2014 genuine content gaps, not fetch failures. All 55 newly-committed *_Galactic.webp files were also byte-verified (RIFF/WEBP magic bytes, 60KB-193KB, sha256 distinct from the known 13085-byte / 81f61d6c fake-200 fallback signature); zero fake-200s committed. See Task C4 report for the full probe log.",
-        "sourceCode": "scripts/fetch-droid-art.mjs (droidtrakrManifest())",
-        "priorFindings": {
-          "date": "2026-07-19",
-          "note": "Carried forward from the prior (duplicate, now-removed) verified block, still accurate: C3P0_Default.webp's art has no droidtrakr source \u2014 it was obtained from erikpeik/droidex (C-3P0_DEFAULT.png) and converted PNG->webp with cwebp -q90, so files[]'s C3P0_Default.webp entry keeps its droidex remoteUrl instead of the usual remoteBaseUrl+filename pattern. Both C3P0 and R2D2's existing art are low-res (~130px) vs droidtrakr's 512x512 tiered art \u2014 quality-inferior; replace with 512px art if droidtrakr (or another source) ever publishes it."
-        }
+        "date": "2026-08-06",
+        "note": "Widened sweep for the 8 outstanding filenames (7 non-Iconic *_Galactic.webp + CHOPPER_Default.webp), classifying every response by magic bytes (RIFF/WEBP, 89504e47) and never by status code or body length \u2014 droidtrakr answers 200 text/html with its SPA shell for a missing asset. Sources probed and empty: droidtrakr's droid-images.js manifest (379 entries, 75 names; exactly 55 Galactic keys, none for the 7, and no CHOPPER key on any tier), droidtrakr direct webp and PNG-convention probes, droidex's GitHub repo at its newest ref aae5aff (317 droid images: DEFAULT 69, GOLD 62, DIAMOND 62, RAINBOW 62, BESKAR 62 \u2014 zero GALACTIC, zero CHOPPER; it has never carried the Galactic tier), droidex's deployed site droidex.web.app, the Droid Tycoon Fandom wiki via its full allimages API (90 images; its only Chopper asset is an event splash screenshot, and it holds no per-droid Galactic art), tycoon-tools.com, droidex.dubtrackr.win and droid-tycoon.pages.dev \u2014 the last three carry CHOPPER and Galactic as stats but host no droid art at all. Every negative was a genuine upstream not-found: zero network errors and zero 5xx across the sweep, so none of the 8 can be reclassified as a transient failure. The same sweep found droidtrakr's Iconic manifest tier, which supplied the C3P0/R2D2 upgrades; the fetch script now uses it as a fallback and reproduces both files byte-for-byte from a clean pull.",
+        "galacticDerivationRejected": "Synthesising the 7 missing Galactic files by recolouring Beskar was measured against the 55 real Beskar/Galactic pairs on 2026-08-06 and rejected; do not retry it. Default/Gold/Diamond/Rainbow share one render, while Beskar and Galactic are a separate later batch (all 55 Galactic files are 500x500 against 512x512 for most of the set). Bbox-aligned the pairs are the same geometry (mean alpha-mask IoU 0.85, median 0.90), but Beskar is achromatic \u2014 mean per-pixel saturation 0.063, channel means within 1-2 levels (GONK 193,192,191) \u2014 while Galactic is 0.533, retains per-droid accent colours and adds a starfield. A per-pixel function of a greyscale input can only emit a luminance ramp, so it can produce neither the region-varying hue nor the stars. Cross-droid variance of the mapped colour conditioned on Beskar luminance is 19.76/255 versus 18.40 unconditioned \u2014 conditioning on the input adds nothing. Leave-one-out RMSE of the best such recolour is 70.94/255 against 82.67 for flooding the silhouette with a single flat purple, and it is worse than that flat fill for TRAKR (80.05 vs 75.66)."
       },
       "files": [
         {
@@ -1013,8 +1009,14 @@
           "tier": "Base",
           "rarity": "Iconic",
           "type": "Worker",
-          "remoteUrl": "https://raw.githubusercontent.com/erikpeik/droidex/main/public/droids/C-3P0_DEFAULT.png",
-          "localTarget": "app/static/assets/droids/C3P0_Default.webp"
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/C3PO_Iconic.webp",
+          "localTarget": "app/static/assets/droids/C3P0_Default.webp",
+          "sourceTier": "Iconic (droidtrakr manifest key 'C3PO:Iconic'; droidtrakr spells it C3PO with a letter O, the seed uses C-3P0 with a zero)",
+          "authenticity": "authentic",
+          "dimensions": "512x512",
+          "bytes": 33364,
+          "sha256": "a6a46c055e547d742d9f15c9c70630339acb840ec3adb216619fb90a13a55f21",
+          "note": "Upgraded 2026-08-06, saved byte-identical (no re-encode). Replaces a 133x126 RGB crop of a film still on a black background (4622 B, converted from droidex's C-3P0_DEFAULT.png), which did not match the set's render style."
         },
         {
           "filename": "CB23_Default.webp",
@@ -2713,8 +2715,14 @@
           "tier": "Base",
           "rarity": "Iconic",
           "type": "Astromech",
-          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2D2_Default.webp",
-          "localTarget": "app/static/assets/droids/R2D2_Default.webp"
+          "remoteUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/R2D2_Iconic.webp",
+          "localTarget": "app/static/assets/droids/R2D2_Default.webp",
+          "sourceTier": "Iconic (droidtrakr manifest key 'R2D2:Iconic')",
+          "authenticity": "authentic",
+          "dimensions": "512x512",
+          "bytes": 37152,
+          "sha256": "6aa1608c5943ebdfa7338ba27eb6e4dbff3bf3db87f36eca80554bac2abaaccf",
+          "note": "Upgraded 2026-08-06, saved byte-identical (no re-encode). Replaces a 128x145 RGB screenshot of a game UI card with 'Iconic' burnt into the corner (2622 B, from droidex's deployed site), which did not match the set's render style."
         },
         {
           "filename": "R2_Beskar.webp",
@@ -3835,7 +3843,7 @@
           "path": "public/droids/",
           "format": "png",
           "naming": "UPPERCASE tier + underscores-for-spaces, keeps hyphens (e.g. AMP_WALKER_BESKAR.png, A-LT_DEFAULT.png); map to ours via normName=strip-non-alphanumerics and Title-case the tier (DEFAULT->Base)",
-          "coverage": "258/340 against the pre-Galactic 340-file universe (2026-07-09) \u2014 missing all 11 Mythics + Iconic upper tiers (~82 files); not re-verified against the current 380-file universe (Galactic tier + CHOPPER), which it likely also lacks entirely \u2014 this is a community mirror that predates the Galactic tier",
+          "coverage": "Re-verified 2026-08-06 against the current 380-file universe at the repo's newest ref aae5aff (2026-07-21): 317 droid images \u2014 DEFAULT 69, GOLD 62, DIAMOND 62, RAINBOW 62, BESKAR 62. It has zero GALACTIC files and no CHOPPER, so it covers none of the 8 outstanding filenames. The newer ref does add C-3P0_DEFAULT.png and R2-D2_DEFAULT.png, but both are only ~133x126 \u2014 no better than what was already committed, and superseded by droidtrakr's Iconic tier.",
           "nameAliases": {
             "MONO-WLKR": "MONO_WALKER (droidex normName MONOWALKER)",
             "OPTI-STRK": "OPTI_STRIKE (droidex normName OPTISTRIKE)"
@@ -3845,6 +3853,17 @@
             "PNG not webp (convert if webp desired)",
             "incomplete for Mythic/Iconic \u2014 use droidtrakr for those"
           ]
+        },
+        {
+          "name": "droidtrakr.com Iconic manifest tier",
+          "role": "fallback",
+          "baseUrl": "https://droidtrakr.com/droid-tycoon/assets/droids/",
+          "format": "webp",
+          "naming": "droid-images.js key '{NAME}:Iconic' -> '{NAME}_Iconic.webp'; two names need aliasing because normName cannot reconcile them (seed 'C-3P0' -> droidtrakr 'C3PO', seed 'IG-11 MARSHAL' -> droidtrakr 'IG11MARSHALL')",
+          "coverage": "7 of the 8 Iconic droids (all but CHOPPER) at 512x512. Only reached when the normName _Default path misses, which is the case for C-3P0 and R2-D2 alone \u2014 and it must be tried before droidex, which carries the same two droids at ~133x126.",
+          "howToPull": "scripts/fetch-droid-art.mjs fallback 2 (recoverFromManifestIconic); saved byte-identical, no conversion",
+          "caveat": "Iconic-tier art is genuinely different art, not a higher-res twin of the Default art: IG11MARSHALL_Iconic.webp is 24786 B against IG11MARSHAL_Default.webp's 70452 B. Keep it a fallback, never a preference.",
+          "attribution": "required \u2014 credit droidtrakr.com in README"
         }
       ]
     },
