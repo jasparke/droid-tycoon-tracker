@@ -8,6 +8,8 @@ import { applyPayload } from '$lib/server/services/sync';
 export const POST: RequestHandler = ({ locals, request }) =>
 	guard(async () => {
 		requireUser(locals);
+		// acknowledgedHolds entries are `code:key` tokens (e.g. `ratio_violation:IG/Base`, or `code:`
+		// for a keyless hold) — the string each 422 unacknowledged_hold message quotes back.
 		const body = (await request.json().catch(() => null)) as {
 			baseVersionId?: number;
 			payloadChecksum?: string;

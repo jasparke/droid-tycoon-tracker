@@ -1,6 +1,8 @@
 import type { PayloadTables, DiffResult, TableDiff, RowChange } from './types';
 
-const PK: Record<string, string[]> = {
+// Exported for the completeness test: a payload table missing from this map is never diffed at all,
+// so the preview shows nothing and an admin approves rows they were never shown.
+export const PK: Record<string, string[]> = {
 	droids: ['name'], droidTiers: ['droid', 'tier'], rebirthReqs: ['cycle', 'rebirth', 'droid', 'tier'],
 	chipCosts: ['rarity'], rebirthMeta: ['rebirth'], novaShop: ['category', 'item', 'level'],
 	cosmetics: ['category', 'name'], droidSellValues: ['rarity', 'tier'], flawlessSpawn: ['tier'], novaPaintStages: ['stage'],

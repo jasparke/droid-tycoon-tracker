@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { diffTables, isEmpty } from './diff';
+import { diffTables, isEmpty, PK } from './diff';
+import { validTables } from './__fixtures__/tabs';
 import type { PayloadTables } from './types';
 
 const empty: PayloadTables = { droids: [], droidTiers: [], rebirthReqs: [], chipCosts: [], rebirthMeta: [], novaShop: [], cosmetics: [], droidSellValues: [], flawlessSpawn: [], novaPaintStages: [], craftingTimes: [], companionBuffs: [], iconicCompanionEffects: [] };
@@ -51,6 +52,12 @@ describe('diffTables', () => {
 		const d = diffTables(legacy as unknown as PayloadTables, next);
 		expect(d.craftingTimes.added).toHaveLength(1);
 		expect(d.craftingTimes.removed).toHaveLength(0);
+	});
+	it('has a primary key for every table in the payload', () => {
+		// Unlike canonical.serialize, a missing PK entry here is silent: diffTables iterates its own
+		// keys, so a table added to the payload but not to PK is simply never diffed. The preview then
+		// shows no change for it and an admin approves rows they were never shown.
+		expect(Object.keys(PK).sort()).toEqual(Object.keys(validTables()).sort());
 	});
 	it('does not report a row as changed when only object key order differs', () => {
 		const aa = { ...empty, chipCosts: [{ rarity: 'Common', toGold: 5, toDiamond: 25, toRainbow: 40, toBeskar: 80, toGalactic: 120 }] };
