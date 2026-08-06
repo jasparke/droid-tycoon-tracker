@@ -5,6 +5,7 @@ import { diffTables } from '../sync/diff';
 import type { Payload, PayloadTables, Flag } from '../sync/types';
 import { ApiError } from '../api-error';
 import { checksumOf } from '../sync/canonical.js';
+import { holdToken } from '../sync/validate';
 
 const EMPTY_TABLES: PayloadTables = { droids: [], droidTiers: [], rebirthReqs: [], chipCosts: [], rebirthMeta: [], novaShop: [], cosmetics: [], droidSellValues: [], flawlessSpawn: [], novaPaintStages: [], craftingTimes: [], companionBuffs: [], iconicCompanionEffects: [] };
 const SYNC_APPLY_LOCK = 4242; // fixed advisory-lock key serializing all apply/rollback transactions
@@ -65,9 +66,13 @@ export async function applyPayload(sql: Sql, input: { baseVersionId: number; pay
 	const payload = (typeof rawPayload === 'string' ? JSON.parse(rawPayload) : rawPayload) as Payload;
 
 	if (flags.some((f) => f.kind === 'reject')) throw new ApiError(422, 'ingest_rejected', 'Payload failed a reject-class invariant — ingest refused');
+	// acknowledgements are `code:key` tokens, not bare keys: two hold codes can share a key (both
+	// unknown_droid and ratio_violation key on droid/tier), and a bare key acknowledged one of them
+	// while silently clearing the other. The message quotes the exact token the caller must send.
 	const ackd = new Set(input.acknowledgedHolds);
 	for (const f of flags.filter((x) => x.kind === 'hold')) {
-		if (!f.key || !ackd.has(f.key)) throw new ApiError(422, 'unacknowledged_hold', `Hold not acknowledged: ${f.key ?? '(no key)'} (${f.message})`);
+		const token = holdToken(f);
+		if (!ackd.has(token)) throw new ApiError(422, 'unacknowledged_hold', `Hold not acknowledged: ${token} (${f.message})`);
 	}
 
 	let versionId = 0;

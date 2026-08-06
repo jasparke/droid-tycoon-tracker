@@ -97,3 +97,12 @@ export function validate(t: PayloadTables, existingCountKeys: { droid: string; t
 export function rejectsOf(flags: Flag[]): Flag[] {
 	return flags.filter((f) => f.kind === 'reject');
 }
+
+// The wire identity of a hold: `code:key`. Keys alone collide — unknown_droid and ratio_violation
+// both key on droid/tier, so a bare-key acknowledgement of the one an admin read used to clear the
+// other too. Codes never contain ':', so the first colon delimits unambiguously. A keyless hold is
+// `code:` with a deliberate trailing colon: still explicitly acknowledgeable, but never matched by a
+// stray '' in the caller's list.
+export function holdToken(f: Flag): string {
+	return `${f.code}:${f.key ?? ''}`;
+}

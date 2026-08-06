@@ -49,12 +49,38 @@ describe('applyPayload', () => {
 		const p = await stagePayload(sql, built);
 		await expect(applyPayload(sql, { baseVersionId: p.baseVersionId, payloadChecksum: p.payloadChecksum, acknowledgedHolds: [] }))
 			.rejects.toMatchObject({ status: 422, code: 'unacknowledged_hold' });
-		const res = await applyPayload(sql, { baseVersionId: p.baseVersionId, payloadChecksum: p.payloadChecksum, acknowledgedHolds: ['IG/Base'] });
+		const res = await applyPayload(sql, { baseVersionId: p.baseVersionId, payloadChecksum: p.payloadChecksum, acknowledgedHolds: ['ratio_violation:IG/Base'] });
 		expect(res.versionId).toBeGreaterThan(p.baseVersionId);
 		expect(await sql`select * from sync_previews where checksum = ${p.payloadChecksum}`).toHaveLength(0); // consumed
 		const dv = await sql`select payload from data_versions where id = ${res.versionId}`;
 		expect(dv[0].payload).not.toBeNull(); // payload invariant
 		expect(await sql`select name from droids`).toEqual([{ name: 'MOUSE' }]); // reference zone swapped
+	});
+
+	it('acknowledging one hold code does not wave through a different code on the same key', async () => {
+		// unknown_droid and ratio_violation both key on droid/tier, so a bare-key acknowledgement of
+		// the one an admin actually read silently cleared the other — in the exact place a human
+		// believes they are being deliberate.
+		const built = validBuilt([
+			{ kind: 'hold', code: 'unknown_droid', message: 'IG/Base: tier row for a droid missing from the reference tab', table: 'droidTiers', key: 'IG/Base' },
+			{ kind: 'hold', code: 'ratio_violation', message: 'IG/Base: sell/buy=0.31 (expected ~0.70) — likely corrupt', table: 'droidTiers', key: 'IG/Base' }
+		]);
+		const p = await stagePayload(sql, built);
+		await expect(applyPayload(sql, { baseVersionId: p.baseVersionId, payloadChecksum: p.payloadChecksum, acknowledgedHolds: ['unknown_droid:IG/Base'] }))
+			.rejects.toMatchObject({ status: 422, code: 'unacknowledged_hold' });
+		const res = await applyPayload(sql, { baseVersionId: p.baseVersionId, payloadChecksum: p.payloadChecksum, acknowledgedHolds: ['unknown_droid:IG/Base', 'ratio_violation:IG/Base'] });
+		expect(res.versionId).toBeGreaterThan(p.baseVersionId);
+	});
+
+	it('a keyless hold is acknowledgeable only by its explicit code: token, never by an empty string', async () => {
+		const built = validBuilt([{ kind: 'hold', code: 'rebirth_shortfall', message: 'fewer rebirth rows than the previous version', table: 'rebirthReqs' }]);
+		const p = await stagePayload(sql, built);
+		for (const ack of [[], [''], ['rebirth_shortfall']]) {
+			await expect(applyPayload(sql, { baseVersionId: p.baseVersionId, payloadChecksum: p.payloadChecksum, acknowledgedHolds: ack }))
+				.rejects.toMatchObject({ status: 422, code: 'unacknowledged_hold' });
+		}
+		const res = await applyPayload(sql, { baseVersionId: p.baseVersionId, payloadChecksum: p.payloadChecksum, acknowledgedHolds: ['rebirth_shortfall:'] });
+		expect(res.versionId).toBeGreaterThan(p.baseVersionId);
 	});
 
 	it('409 on a stale base version', async () => {

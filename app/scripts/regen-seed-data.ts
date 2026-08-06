@@ -16,7 +16,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildPayload } from '../src/lib/server/sync/build';
-import { rejectsOf } from '../src/lib/server/sync/validate';
+import { holdToken, rejectsOf } from '../src/lib/server/sync/validate';
 
 const dir = process.argv[2];
 if (!dir) {
@@ -26,8 +26,10 @@ if (!dir) {
 const GIDS = ['0', '1248391507', '547464940', '1548395368', '1131770079'];
 
 // Holds are "an admin must look at this" signals. Regenerating the committed seed is not an
-// admin session, so an unexpected hold aborts. Add a key here (with a comment saying why and
-// when it should clear) only when the sheet state is knowingly accepted.
+// admin session, so an unexpected hold aborts. Add a `code:key` token here (with a comment saying
+// why and when it should clear) only when the sheet state is knowingly accepted — the same tokens
+// POST /api/sync/apply takes in acknowledgedHolds. Allowing a bare key would clear every hold code
+// sharing that key, which is exactly the signal this list exists to keep.
 const ALLOWED_HOLDS = new Set<string>([]);
 
 const csvByGid = Object.fromEntries(GIDS.map((g) => [g, readFileSync(join(dir, `gid_${g}.csv`), 'utf8')]));
@@ -36,12 +38,12 @@ const { payload, flags } = buildPayload(csvByGid, [], 'regen-seed-data', new Dat
 for (const f of flags.filter((f) => f.kind === 'report')) console.warn(`[report] ${f.code}: ${f.message}`);
 
 const holds = flags.filter((f) => f.kind === 'hold');
-const unexpected = holds.filter((f) => !ALLOWED_HOLDS.has(f.key ?? ''));
+const unexpected = holds.filter((f) => !ALLOWED_HOLDS.has(holdToken(f)));
 for (const f of holds) console.warn(`[hold] ${f.code}: ${f.message}`);
 if (unexpected.length) {
 	console.error(`\n${unexpected.length} unexpected hold(s) — refusing to regenerate the seed.`);
-	console.error('Investigate the sheet, then either fix the parser/aliases or add the key to ALLOWED_HOLDS with a reason:');
-	for (const f of unexpected) console.error(`  ${f.key ?? '(no key)'}  ${f.code}: ${f.message}`);
+	console.error('Investigate the sheet, then either fix the parser/aliases or add the token to ALLOWED_HOLDS with a reason:');
+	for (const f of unexpected) console.error(`  ${holdToken(f)}  ${f.message}`);
 	process.exit(1);
 }
 const rejects = rejectsOf(flags);
